@@ -16,7 +16,9 @@
     background: #000; color: #EDE8DD;
     user-select: none;
     -webkit-font-smoothing: antialiased;
+    touch-action: manipulation;
   }
+  button, .nav-card, .invite-card, .response-card, .guess-option, .salon-question-card, .reset-btn, .test-btn, .salon-back, .murmur-back, .compose-back, .library-back, .hotspot { cursor: pointer; touch-action: manipulation; }
   .scene {
     position: fixed; inset: 0;
     display: flex; flex-direction: column;
@@ -227,8 +229,8 @@
   .fiche-self-message { padding: 20px; text-align: center; font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #A8A095; line-height: 1.6; }
 
   /* MODAL DEVINETTE */
-  #guess-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.6s; }
-  #guess-modal.active { opacity: 1; pointer-events: auto; }
+  #guess-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; align-items: center; justify-content: center; padding: 24px; opacity: 0; transition: opacity 0.6s; }
+  #guess-modal.active { display: flex; opacity: 1; }
   .guess-content { max-width: 380px; width: 100%; transform: scale(0.92); transition: transform 0.6s; }
   #guess-modal.active .guess-content { transform: scale(1); }
   .guess-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; margin-bottom: 16px; text-align: center; }
@@ -245,8 +247,8 @@
   .guess-cancel { margin-top: 18px; background: transparent; border: none; color: #A8A095; padding: 12px; font-size: 11px; letter-spacing: 0.2em; cursor: pointer; width: 100%; font-family: 'Inter', sans-serif; }
 
   /* MODAL BILAN */
-  #recap-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; padding: 32px; opacity: 0; pointer-events: none; transition: opacity 0.6s; }
-  #recap-modal.active { opacity: 1; pointer-events: auto; }
+  #recap-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; align-items: center; justify-content: center; padding: 32px; opacity: 0; transition: opacity 0.6s; }
+  #recap-modal.active { display: flex; opacity: 1; }
   .recap-content { max-width: 360px; text-align: center; }
   .recap-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; margin-bottom: 22px; }
   .recap-score { font-family: 'Fraunces', serif; font-size: 64px; font-weight: 300; color: #EDE8DD; line-height: 1; margin-bottom: 8px; }
@@ -500,6 +502,20 @@
 </div>
 
 <script>
+// === DÉTECTION D'ERREUR GLOBALE (debug) ===
+window.addEventListener('error', function(e) {
+  console.error('[VESPERA ERROR]', e.message, 'at', e.filename + ':' + e.lineno);
+  // Afficher l'erreur visiblement en bas de l'écran pour debug mobile
+  let div = document.getElementById('errorDebug');
+  if (!div) {
+    div = document.createElement('div');
+    div.id = 'errorDebug';
+    div.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#5C0000;color:#fff;padding:8px;font-size:11px;z-index:9999;font-family:monospace;max-height:120px;overflow:auto;';
+    document.body.appendChild(div);
+  }
+  div.innerHTML += '<div>' + e.message + ' (' + e.lineno + ')</div>';
+});
+
 // ====================================================================
 // VESPERA — Cycle des Reflets, Saison 1 — V5 (Commit 1)
 // ====================================================================
