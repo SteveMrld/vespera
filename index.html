@@ -717,7 +717,10 @@ function showScene(sceneId) {
 }
 
 function goToRitual() {
-  userSeal = SEALS[Math.floor(Math.random() * SEALS.length)];
+  // Exclure les Sceaux déjà pris par les Invités fictifs
+  const takenSeals = INVITES.map(function(inv){ return inv.sealId; });
+  const availableSeals = SEALS.filter(function(s){ return takenSeals.indexOf(s.id) === -1; });
+  userSeal = availableSeals[Math.floor(Math.random() * availableSeals.length)];
   document.getElementById('userSealCircle').innerHTML = renderSealHTML(userSeal.id);
   document.getElementById('sealName').textContent = userSeal.name;
   document.getElementById('sealDesc').textContent = userSeal.desc;
