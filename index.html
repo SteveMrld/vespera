@@ -47,6 +47,24 @@
   .enter-btn { margin-top: 40px; background: rgba(15,26,46,0.3); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 44px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; opacity: 0; animation: fadeIn 2s 5s ease forwards; transition: all 0.4s ease; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   .enter-btn:active { background: rgba(212,184,112,0.15); color: #EDE8DD; }
 
+  /* SCÈNE ONBOARDING */
+  #onboarding { background: radial-gradient(ellipse at center, #1B2536 0%, #0A1220 100%); padding: 40px 32px; }
+  .onb-content { width: 100%; max-width: 420px; text-align: center; }
+  .onb-progress { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.3em; margin-bottom: 28px; }
+  .onb-block-label { font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.4em; margin-bottom: 26px; }
+  .onb-question { font-family: 'Fraunces', serif; font-size: 19px; font-style: italic; color: #EDE8DD; line-height: 1.6; margin-bottom: 32px; }
+  .onb-input-zone { width: 100%; margin-bottom: 24px; }
+  .onb-options { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+  .onb-option { background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.15); color: #EDE8DD; padding: 14px 16px; font-family: 'Fraunces', serif; font-size: 15px; cursor: pointer; transition: all 0.3s; border-radius: 4px; text-align: left; }
+  .onb-option:active { background: rgba(212,184,112,0.12); border-color: rgba(212,184,112,0.5); color: #EDE8DD; }
+  .onb-textarea { width: 100%; min-height: 100px; background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.15); border-radius: 4px; padding: 14px 16px; font-family: 'Fraunces', serif; font-size: 15px; color: #EDE8DD; line-height: 1.6; resize: vertical; outline: none; -webkit-appearance: none; }
+  .onb-textarea:focus { border-color: rgba(212,184,112,0.5); }
+  .onb-textarea::placeholder { color: #5C5448; font-style: italic; font-size: 14px; }
+  .onb-submit { background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 12px 28px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; border-radius: 2px; margin-top: 16px; }
+  .onb-submit:active { background: rgba(212,184,112,0.15); color: #EDE8DD; }
+  .onb-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+  .onb-skip { background: transparent; border: none; color: #5C5448; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.2em; padding: 8px 12px; margin-top: 24px; cursor: pointer; opacity: 0.7; }
+
   /* SCÈNE LE SEUIL — onboarding */
   #seuil { background: radial-gradient(ellipse at center, #1B2536 0%, #0A1220 100%); padding: 0 32px; }
   .seuil-content { width: 100%; max-width: 380px; position: relative; min-height: 60vh; }
@@ -247,6 +265,13 @@
   .guest-fiche-frags .frag-row:last-child { border-bottom: none; }
   .guest-fiche-frags .frag-label { font-family: 'Inter', sans-serif; font-size: 9px; color: #A8A095; letter-spacing: 0.25em; flex-shrink: 0; }
   .guest-fiche-frags .frag-value { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #EDE8DD; text-align: right; }
+  .fiche-section { padding: 12px 0; border-bottom: 1px solid rgba(237,232,221,0.06); }
+  .fiche-section:last-child { border-bottom: none; }
+  .fiche-section-label { font-family: 'Inter', sans-serif; font-size: 9px; color: #A8A095; letter-spacing: 0.3em; margin-bottom: 6px; }
+  .fiche-section-text { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #EDE8DD; line-height: 1.55; }
+  .fiche-section-final { padding-top: 16px; margin-top: 6px; border-top: 1px solid rgba(212,184,112,0.2); }
+  .fiche-section-final .fiche-section-label { color: #D4B870; }
+  .fiche-section-final .fiche-section-text { color: #D4B870; font-size: 15px; }
   .guest-fiche-meta { font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; font-style: italic; line-height: 1.5; padding-top: 8px; border-top: 1px solid rgba(237,232,221,0.08); }
 
   /* CARTE QUESTION (conservée pour compat — n'est plus affichée) */
@@ -534,6 +559,17 @@
       <p>Vous êtes attendu.</p>
       <button class="enter-btn" onclick="startSeuil()">ENTRER</button>
     </div>
+  </div>
+</div>
+
+<!-- SCÈNE ONBOARDING — 15 questions pour construire le profil du joueur -->
+<div id="onboarding" class="scene">
+  <div class="onb-content">
+    <div class="onb-progress" id="onbProgress">1 / 15</div>
+    <p class="onb-block-label" id="onbBlockLabel">D'OÙ VOUS VENEZ</p>
+    <p class="onb-question" id="onbQuestion"></p>
+    <div class="onb-input-zone" id="onbInputZone"></div>
+    <button type="button" class="onb-skip" id="onbSkip" onclick="skipOnboarding()">Passer cette étape</button>
   </div>
 </div>
 
@@ -1199,6 +1235,84 @@ const INDICE_WORDINGS = {
   'note la météo de chaque jour': ['une attention quotidienne au ciel', 'un journal météorologique qu\'on tient sans raison']
 };
 
+// === PROFILS ÉTENDUS DES INVITÉS ===
+// Pour chaque Invité, un profil riche en 15 dimensions, qui apparaît dans sa fiche.
+// Le joueur lit ces fiches et croise avec les voix du soir pour reconnaître qui parle.
+// Les fragments fixes (FIXED_GUEST_FRAGMENTS) restent utilisés pour les indices distillés
+// (Murmures + Bibliothèque). Les deux jeux se superposent.
+const GUEST_PROFILES = {
+  marc: {
+    bio: 'Architecte indépendant, 47 ans. Vit dans une ville moyenne. En couple, sans enfants. Aîné de deux frères.',
+    childhood: 'Père absent émotionnellement. Mère effacée. Une enfance ordonnée, en surface.',
+    solitude: 'Un atelier à part, dans la cour. C\'est là qu\'il va le soir.',
+    object: 'Un carnet à couverture cuir où il dessine peu et écrit moins.',
+    quirk: 'Range tout avant de partir. Méthodiquement. Même chez les autres.',
+    sunday: 'Classe et trie. Met de l\'ordre dans des choses qui n\'en avaient pas besoin.',
+    color: 'Le gris-bleu de l\'ardoise. Vêtements, intérieur, choix esthétiques.',
+    word: '"Tenu". Sans le décider. Aussi : "patiemment".',
+    lastCried: 'À l\'enterrement de son grand-père, il y a onze ans.',
+    disappearance: 'Une île au nord, au bord d\'une mer froide.',
+    belief: 'Que la patience est une forme de courage qu\'on n\'enseigne plus.',
+    self: 'Un homme qui a appris à ne pas demander, et qui le regrette.'
+  },
+  theo: {
+    bio: 'Ex-militaire, aujourd\'hui agent de logistique. 33 ans. Vit en banlieue d\'une grande ville. Célibataire, seul. Enfant unique.',
+    childhood: 'Père distant. Mère décédée jeune. A grandi en sachant qu\'on ne lui devait rien.',
+    solitude: 'Un bar de quartier près d\'une gare, ouvert tard. Toujours le même.',
+    object: 'Un vieux briquet hérité. Il le tourne dans sa main, n\'allume rien.',
+    quirk: 'Mange debout quand il est seul. Ne s\'attable pas pour lui-même.',
+    sunday: 'Marche. Des kilomètres. Sans destination précise.',
+    color: 'Plomb, gris froid. Comme la couleur de l\'eau d\'un canal en novembre.',
+    word: '"Bon", "Franchement". Sans le décider.',
+    lastCried: 'Il y a six ans, après une rupture qu\'il a encore en travers.',
+    disappearance: 'Dans le sud, près d\'une plage déserte hors saison.',
+    belief: 'Que les gens ne changent pas vraiment.',
+    self: 'Un type qui n\'a jamais su demander, et qui en veut à tout le monde de ne pas avoir deviné.'
+  },
+  camille: {
+    bio: 'Éditrice littéraire dans une petite maison d\'édition, 38 ans. Vit à Paris, en appartement. Célibataire, deux chats. Cadette d\'une fratrie de trois.',
+    childhood: 'Père écrivain raté, alcoolique. Mère effacée. A appris à lire avant à parler.',
+    solitude: 'Une bibliothèque publique vers dix-sept heures, quand ça se vide.',
+    object: 'Une lettre cachetée qu\'elle n\'a jamais ouverte. Héritée.',
+    quirk: 'Ne finit jamais les livres qu\'elle commence. Pas un seul.',
+    sunday: 'Relit des passages d\'auteurs qu\'elle aime. Annie Ernaux, Marguerite Duras, Pascal Quignard.',
+    color: 'Brouillard. Une couleur qui n\'en est pas vraiment une.',
+    word: '"Peut-être". Tout le temps. Aussi : "simplement".',
+    lastCried: 'Récemment, en lisant un manuscrit qu\'elle a refusé puis regretté.',
+    disappearance: 'Dans une maison isolée à la campagne, sans Wi-Fi.',
+    belief: 'Qu\'on n\'écrit jamais ce qu\'on voulait dire.',
+    self: 'Une femme à qui l\'on prête tant qu\'elle a fini par ne plus se reconnaître dans ce qu\'on lui rendait.'
+  },
+  ines: {
+    bio: 'Avocate junior dans un grand cabinet, 29 ans. Vit à Paris, dans un appartement minimaliste. Célibataire, célibat choisi. Aînée d\'une fratrie de deux.',
+    childhood: 'Père avocat, modèle écrasant. Mère médecin. A grandi sous le regard d\'attentes qu\'elle a fini par adopter.',
+    solitude: 'La salle d\'audience, à l\'aube, avant que les autres arrivent.',
+    object: 'Un stylo plume noir, lourd, qu\'elle remplit elle-même.',
+    quirk: 'Relit ses messages deux fois avant d\'envoyer. Tous. Même les SMS d\'amis.',
+    sunday: 'Court. Qu\'il pleuve ou non. Douze kilomètres comme une discipline.',
+    color: 'Encre. Le noir bleuté du stylo plume, et de tout ce qu\'elle achète.',
+    word: '"Verdict". Aussi : "désappris".',
+    lastCried: 'Elle ne sait plus exactement. Peut-être il y a deux ans.',
+    disappearance: 'Une retraite spirituelle silencieuse. Ou rien.',
+    belief: 'Que la rigueur protège.',
+    self: 'Une lame qui s\'est faite à elle-même, et qui voudrait apprendre à ne plus couper.'
+  },
+  karim: {
+    bio: 'Consultant en stratégie dans un grand cabinet, 35 ans. Vit à Paris, appartement design. Marié, deux enfants jeunes. Cadet d\'une fratrie de quatre.',
+    childhood: 'Père commerçant, modèle de réussite imposé. Mère au foyer. A appris la performance avant le repos.',
+    solitude: 'Son salon vide en pleine journée, quand sa femme et les enfants ne sont pas là.',
+    object: 'Un seul gant en cuir. L\'autre perdu il y a longtemps. Il ne l\'a pas jeté.',
+    quirk: 'Recommence ses phrases trois fois avant de les finir.',
+    sunday: 'Rattrape du retard de travail. En réalité, scrolle son téléphone.',
+    color: 'Gris perle. Intérieur, vêtements, choix.',
+    word: '"Composer". Sans le décider.',
+    lastCried: 'Il ne sait plus. Il pense que c\'est un problème.',
+    disappearance: 'Il ne sait pas. Il n\'a jamais vraiment imaginé.',
+    belief: 'Que l\'apparence est une forme de protection légitime.',
+    self: 'Un homme qui s\'est tellement bien composé qu\'il ne sait plus quel air il jouait au début.'
+  }
+};
+
 // === LES 7 MURMURES DU MATIN ===
 const MURMURS = [
   // J1
@@ -1254,20 +1368,20 @@ const MURMURS = [
 
 // === LES 7 QUESTIONS DU SOIR ===
 const QUESTIONS = [
-  // J1 — L'image — déclencheur de lieu + objet + habitude
-  '"Décrivez en quelques lignes une scène quotidienne où vous êtes seul. Le lieu, ce que vous tenez, ce que vous y faites."',
-  // J2 — Le doute — déclencheur de lieu + couleur (lumière)
-  '"Racontez le dernier endroit où vous avez attendu sans rien faire. Comment était la lumière ? Que portiez-vous ?"',
-  // J3 — Le silence — déclencheur d'objet + habitude
-  '"Décrivez un objet auquel vous tenez sans pouvoir bien l\'expliquer. Et dans quelles circonstances vous le sortez."',
-  // J4 — Le mensonge — déclencheur du mot signature
-  '"Quel mot revient souvent dans vos phrases sans que vous le décidiez ? Qu\'est-ce qu\'il dit de vous ?"',
-  // J5 — La trahison — déclencheur d'habitude
-  '"Décrivez une habitude que vous avez et dont les autres se moquent ou s\'étonnent. D\'où elle vient ?"',
-  // J6 — Le pardon — déclencheur de couleur
-  '"Quelle est la couleur que vous portez sans le savoir, dans ce que vous choisissez ? Vêtements, intérieur, livres."',
-  // J7 — La révélation — combinaison finale lieu + objet + habitude
-  '"Pour vous résumer en une scène, choisissez : un lieu, un objet, une habitude. Décrivez-les ensemble."'
+  // J1 — L'image
+  '"Décrivez en une phrase l\'image que les autres ont de vous. Puis, en une seconde, ce qui dans cette image n\'est pas tout à fait vrai."',
+  // J2 — Le doute
+  '"Quelle est la dernière chose dont vous avez douté chez vous ? Pas chez les autres, chez vous."',
+  // J3 — Le silence
+  '"Qu\'est-ce que vous ne dites jamais, et que pourtant vous savez ?"',
+  // J4 — Le mensonge
+  '"Quel mensonge vous êtes-vous raconté pour tenir ?"',
+  // J5 — La trahison
+  '"À qui avez-vous menti pour le protéger, et que protégiez-vous, vraiment ?"',
+  // J6 — Le pardon
+  '"Qu\'est-ce que vous n\'avez jamais pardonné, à vous-même ?"',
+  // J7 — La révélation
+  '"Si vous deviez résumer qui vous êtes vraiment, en une phrase que personne d\'autre n\'écrirait, laquelle ?"'
 ];
 
 // === PROFILS QUANTIQUES — révélés au Collapse ===
@@ -1310,90 +1424,91 @@ const QUANTUM_PROFILES = {
 // Chaque Invité a 7 réponses (une par jour), avec sa voix distincte
 const GUEST_RESPONSES = {
   marc: [
-    // J1 — Décrivez une scène quotidienne où vous êtes seul. Le lieu, ce que vous tenez, ce que vous y faites.
-    'Mon atelier, après vingt-deux heures. La lumière y est ardoise, celle des soirs sans envie. Je tiens un carnet à couverture cuir, pas très épais. Ce que j\'y note, je le note patiemment. Et avant de partir, je range tout.',
-    // J2 — Le dernier endroit où vous avez attendu. Lumière. Vêtement.
-    'Le même atelier, hier. La lumière était ardoise comme toujours à cette heure. Je portais une chemise unie. J\'ai attendu que quelque chose me vienne. Rien n\'est venu. J\'ai patiemment fini par tout ranger et partir.',
-    // J3 — Un objet auquel vous tenez sans pouvoir l'expliquer. Quand le sortez-vous ?
-    'Un carnet à couverture cuir. Je l\'ai depuis longtemps. Je le sors le soir, dans mon atelier, quand le silence s\'installe. J\'y écris peu, mais patiemment. Personne ne l\'a jamais vu ouvert. C\'est tenu dans une poche, presque tout le temps.',
-    // J4 — Le mot qui revient dans vos phrases.
-    'Tenu. Je le dis sans le décider. Cela veut dire que je suis là, que je ne lâche pas. Cela veut dire aussi que je porte ce que je n\'ai pas envie de porter. Patiemment, c\'est l\'autre mot. Les deux à part égale.',
-    // J5 — Une habitude dont les autres se moquent.
-    'Je range avant de partir. Toujours. Même chez les autres. Mes amis trouvent ça maniaque. Je crois que c\'est une manière de ne pas laisser de trace. Patiemment, j\'ai fini par être ce geste. Tenu, comme le reste.',
-    // J6 — Une couleur que vous portez sans le savoir.
-    'Ardoise. Je m\'en suis rendu compte un jour en regardant ma garde-robe. Tout est dans cette gamme. Les murs de mon atelier aussi. Ce n\'est pas un choix, c\'est ce qui me reste tenu, je crois. Le gris-bleu de la pierre, ou des soirs sans bruit.',
-    // J7 — Vous résumer en un lieu, un objet, une habitude.
-    'Mon atelier silencieux. Mon carnet à couverture cuir. Et le geste de tout ranger avant de partir. Trois choses tenues, patiemment, depuis trop longtemps. C\'est tout ce que je suis.'
+    // J1 — sobre, nuancé
+    'On me voit comme un homme calme. C\'est en partie vrai. Mais ce calme me coûte un effort que personne ne soupçonne, il n\'est pas naturel, il est tenu.',
+    // J2 — le doute
+    'De ma capacité à finir ce que je commence. Patiemment, j\'ai appris à ne plus rien promettre. Pas même à moi-même.',
+    // J3 — ce qu'on ne dit jamais
+    'Que je vais peut-être tout quitter. Je le sais depuis longtemps. Je ne le dirai sûrement jamais — pas avant d\'être prêt à payer le prix.',
+    // J4 — le mensonge pour tenir
+    'Que tout va bien. Je le dis à ma femme depuis dix-huit mois. Je crois qu\'elle ne me croit plus depuis dix-sept.',
+    // J5 — à qui menti pour protéger
+    'À ma femme. Pour ne pas la faire souffrir tout de suite. Mais je crois qu\'au fond, c\'est moi que je protégeais. Je n\'étais pas prêt à m\'écouter.',
+    // J6 — pas pardonné
+    'D\'avoir laissé filer la première fois où j\'ai su. Patiemment, j\'ai attendu d\'être prêt. La vérité, c\'est que je n\'étais pas prêt — j\'étais juste confortable.',
+    // J7 — qui je suis
+    'Un homme qui a tenu, jusqu\'à ce que tenir devienne mentir.'
   ],
   theo: [
-    // J1 — Scène quotidienne où vous êtes seul.
-    'Bon. Franchement, c\'est un bar près d\'une gare. J\'y suis allé encore hier. J\'ai un vieux briquet qui me sert à rien, je le tourne dans ma main. Je commande un truc, je le bois debout, je rentre.',
-    // J2 — Dernier endroit où vous avez attendu.
-    'Le bar, comme d\'habitude. La lumière était plomb derrière la vitre. Franchement, je sais pas ce que j\'attendais. Je portais une veste sombre. J\'ai bu debout. Je suis rentré quand le serveur a empilé les chaises.',
-    // J3 — Un objet auquel vous tenez.
-    'Un vieux briquet. Bon, franchement, je fume plus depuis des années. Mais je le sors au bar, près de la gare, quand je commande quelque chose. Je le tourne dans la main, je n\'allume rien. Je le range. C\'est devenu un truc, j\'imagine.',
-    // J4 — Le mot qui revient.
-    'Franchement. Je le dis tellement qu\'on me l\'a fait remarquer plusieurs fois. Bon, ça veut dire que je sais pas faire autre chose que dire ce que je pense. Ou que je fais semblant de le savoir. Honnêtement, j\'en sais rien.',
-    // J5 — Une habitude.
-    'Je mange debout, quand je suis seul. Bon, franchement, je trouve pas ça bizarre, mais on me l\'a fait remarquer plusieurs fois. Ça vient sans doute de l\'armée. Peut-être avant aussi. Je sais plus.',
-    // J6 — Une couleur que vous portez.
-    'Plomb. Bon, franchement, je porte que ça. Le gris froid, lourd. Mes meubles, mes vestes, même la couleur de l\'eau du canal que je traverse pour aller au bar. C\'est venu sans que je le décide. Comme le reste.',
-    // J7 — Vous résumer.
-    'Le bar près de la gare. Mon vieux briquet dans la main. Manger debout. Bon. Franchement, c\'est moi en entier. Y a rien d\'autre à ajouter.'
+    // J1 — brut, direct
+    'Bon. On me prend pour quelqu\'un qui choisit sa solitude. C\'est faux. Je suis seul parce que je n\'ai jamais su comment on entre dans la vie des autres. Voilà.',
+    // J2
+    'De rien. Franchement, je ne doute plus. À deux heures du matin, on apprend à arrêter.',
+    // J3
+    'Que j\'aimerais qu\'on me retienne. Franchement, c\'est ridicule pour quelqu\'un comme moi. Mais à deux heures du matin, dans un bar, je me dis ça parfois.',
+    // J4
+    'Bon. Franchement ? Que la solitude me convenait. Je me suis raconté ça pendant dix ans. Hier, en écrivant, j\'ai vu que ce n\'était pas vrai.',
+    // J5
+    'À une femme, il y a six ans. Je lui ai dit que je préférais qu\'on en reste là. Franchement, je voulais juste qu\'elle me retienne. Elle ne l\'a pas fait.',
+    // J6
+    'D\'avoir laissé partir cette fille à deux heures du matin sans la rappeler. Bon. Franchement, c\'est tout ce que j\'ai à dire.',
+    // J7
+    'Un type qui n\'a jamais su demander, et qui en veut à tout le monde de ne pas avoir deviné.'
   ],
   camille: [
-    // J1 — Scène quotidienne.
-    'Une bibliothèque vide à dix-sept heures, peut-être. Il y a une lumière brouillard à cette heure-là, ni jour ni soir. Je tiens une lettre que je n\'ai pas ouverte. Je la déplace de poche en poche. Je commence un livre, je ne le finis pas. C\'est devenu une habitude, peut-être un refus.',
-    // J2 — Dernier endroit où vous avez attendu.
-    'Une bibliothèque, vers dix-sept heures. La lumière était brouillard, doux, peut-être un peu sale. Je portais un manteau trop chaud pour la saison. J\'avais commencé un livre, je ne l\'ai pas fini. C\'est devenu une scène que je joue souvent, sans la décider.',
-    // J3 — Un objet auquel vous tenez.
-    'Une lettre, jamais ouverte. Je la sors peut-être deux ou trois fois par an, dans la bibliothèque où je travaille. Je la regarde, je la remets dans ma poche. Un jour, je l\'ouvrirai. Ou pas. Peut-être que c\'est mieux ainsi.',
-    // J4 — Le mot qui revient.
-    'Peut-être. Tout le temps. Mes amis disent que c\'est une manière de ne rien dire. Peut-être qu\'ils ont raison. Peut-être pas. C\'est aussi une manière de laisser une porte ouverte pour ne pas avoir à choisir.',
-    // J5 — Une habitude.
-    'Je ne finis jamais les livres que je commence. Pas un seul. Mes amis libraires hallucinent. Peut-être que c\'est un refus de la fin. Peut-être que je préfère vivre dans des débuts. Peut-être que je commence trop de choses, en général.',
-    // J6 — Une couleur.
-    'Brouillard. Une couleur qui n\'en est pas vraiment une. C\'est tout ce que je choisis sans le savoir. Mes pulls, mes murs, la couverture des livres que je n\'ouvre pas. Peut-être que c\'est ça, le fond — quelque chose qui n\'arrive pas à devenir net.',
-    // J7 — Vous résumer.
-    'Une bibliothèque vide à dix-sept heures. Une lettre jamais ouverte dans la poche. Et l\'habitude de ne jamais finir le livre que je commence. C\'est peut-être ça, moi. Ou peut-être pas. Mais c\'est ce qui revient toujours.'
+    // J1 — paradoxal, littéraire
+    'Les gens me disent souvent que je devine tout. C\'est faux : je vois moins, simplement, je parle moins. Peut-être est-ce ce silence qu\'on confond avec la sagesse.',
+    // J2
+    'De la qualité de mon silence. Je me demande peut-être s\'il vient d\'une vraie écoute, ou simplement d\'une peur de mal dire.',
+    // J3
+    'Que j\'ai souvent le sentiment de peut-être ne pas être personne. Que tout ce qu\'on me prête, je l\'ai laissé construire pour ne pas avoir à choisir.',
+    // J4
+    'Que je n\'avais besoin de personne. Peut-être est-ce le mensonge le plus civilisé qu\'on m\'ait appris à dire.',
+    // J5
+    'À ma mère. Pendant des années. Je lui ai laissé croire que je l\'écoutais. Peut-être que ce que je protégeais, c\'était mon droit de penser autre chose.',
+    // J6
+    'De n\'avoir peut-être jamais vraiment dit ce que je pensais à mon père avant qu\'il ne soit trop tard. Je me suis dit toute sa vie qu\'on aurait le temps.',
+    // J7
+    'Une femme à qui l\'on prête tant qu\'elle a fini par ne plus se reconnaître dans ce qu\'on lui rendait.'
   ],
   ines: [
-    // J1 — Scène quotidienne.
-    'Une salle d\'audience, à l\'aube. La lumière est encore de la couleur d\'une encre qui n\'a pas séché. J\'écris, je relis, je rature. Je tiens un stylo plume noir, lourd, que j\'ai depuis longtemps. C\'est un verdict — pas pour les autres, pour moi. J\'ai désappris d\'écrire vite.',
-    // J2 — Dernier endroit où vous avez attendu.
-    'Au tribunal, je suis arrivée trop tôt. Personne. Une lumière encre dans le couloir. Je portais un tailleur sombre. J\'ai relu mes notes deux fois, peut-être trois. Le verdict, ce matin-là, c\'était que je n\'avais pas désappris la patience, finalement.',
-    // J3 — Un objet auquel vous tenez.
-    'Un stylo plume noir, lourd. Je l\'ai depuis l\'école d\'avocats. Je le sors le matin avant l\'audience, je remplis l\'encre moi-même. Verdict après verdict, j\'ai désappris d\'écrire avec autre chose. Quand je relis mes notes, c\'est avec lui que je rature.',
-    // J4 — Le mot qui revient.
-    'Verdict. Je l\'ai pris au tribunal et il est venu jusque dans mes conversations privées. Cela veut dire que je tranche, même quand on ne me demande rien. J\'ai désappris la nuance. C\'est un défaut que je relis dans mes propres messages.',
-    // J5 — Une habitude.
-    'Je relis mes messages deux fois avant de les envoyer. Tous. Même les SMS aux amis. C\'est venu de mon métier. Le verdict d\'un message mal écrit, c\'est aussi un verdict. Je n\'ai pas désappris cette précaution-là.',
-    // J6 — Une couleur.
-    'Encre. Le noir bleuté du stylo plume, mais aussi de tout ce que j\'achète. C\'est ce que je porte au tribunal, c\'est ce que je porte chez moi. Le verdict est noir. Et je ne l\'ai pas désappris.',
-    // J7 — Vous résumer.
-    'La salle d\'audience à l\'aube. Mon stylo plume noir. Et le geste de relire deux fois avant d\'envoyer. Trois choses qui se ressemblent. Le verdict que je rends sur moi-même, je l\'ai désappris à modérer.'
+    // J1 — cassant, lucide
+    'On dit de moi que je suis dure, exigeante, intransigeante. Le verdict est juste. Mais il manque ceci : avec moi-même je le suis bien plus, et j\'ai désappris la douceur.',
+    // J2
+    'De mon verdict sur les autres. À force de juger vite, je me demande si je vois vraiment.',
+    // J3
+    'Que j\'aimerais perdre. Pas sur tout. Sur quelque chose. Une fois. Pour voir ce qui resterait après le verdict.',
+    // J4
+    'Qu\'on n\'a pas besoin de douceur pour être aimée. Verdict : faux, depuis longtemps.',
+    // J5
+    'À une amie. Je lui ai caché un verdict la concernant que j\'avais rendu en privé. Je crois que je me protégeais surtout d\'avoir à le défendre.',
+    // J6
+    'D\'avoir rendu un verdict sur ma sœur il y a vingt ans. Elle ne le sait pas. Elle ne le saura pas. C\'est ma manière de garder cette douleur à moi.',
+    // J7
+    'Une lame qui s\'est faite à elle-même, et qui aujourd\'hui voudrait apprendre à ne plus couper.'
   ],
   karim: [
-    // J1 — Scène quotidienne.
-    'Mon appartement, en plein soleil, et il est vide. Le mur est gris perle, c\'est moi qui l\'ai choisi. Je ne sais plus pourquoi. Je tiens un seul gant — l\'autre s\'est perdu il y a longtemps. Je compose une phrase pour le dire à quelqu\'un, mais je recommence trois fois avant de finir.',
-    // J2 — Dernier endroit où vous avez attendu.
-    'Devant ma fenêtre, dans mon appartement. Plein soleil sur les murs gris perle. Je portais une chemise impeccable, comme toujours. Je composais quelque chose à dire à quelqu\'un, je recommençais trois fois la phrase. Je ne l\'ai jamais envoyée.',
-    // J3 — Un objet auquel vous tenez.
-    'Un seul gant. L\'autre, perdu il y a des années. Je le sors au début de chaque hiver, je le pose sur l\'entrée. Je compose mentalement la phrase qui dirait pourquoi je le garde. Je recommence trois fois la phrase, je ne la termine pas. Le gant reste.',
-    // J4 — Le mot qui revient.
-    'Composer. Je compose tout — des phrases, des silences, des soirées. C\'est devenu mon mode de fonctionnement. Quand quelqu\'un me parle, je recommence ma réponse trois fois dans ma tête avant de la dire. Je ne sais plus parler autrement.',
-    // J5 — Une habitude.
-    'Je recommence mes phrases trois fois avant de les finir. Ma sœur s\'en moque tout le temps. Ça vient de l\'envie de bien composer, j\'imagine. Je ne sais plus parler sans préparer. C\'est devenu un tic, ou pire, une manière d\'être.',
-    // J6 — Une couleur.
-    'Gris perle. C\'est ce que j\'ai choisi pour mon appartement, c\'est ce que je porte. Une couleur fade, élégante, sans rien dedans. Composée pour ne déranger personne. Je crois que ça me ressemble bien plus que je ne voudrais l\'admettre.',
-    // J7 — Vous résumer.
-    'Mon appartement vide en plein soleil. Le seul gant que je n\'ai jamais jeté. Recommencer trois fois ce que je veux dire. Tout cela compose ce que je suis, je crois. Ou ce que j\'ai composé pour passer pour quelqu\'un.'
+    // J1 — fluide, charmeur
+    'Mes amis pensent que je sais toujours quoi dire. La vérité, c\'est que je passe ma vie à composer des réponses, et qu\'au fond je sais rarement ce que je pense vraiment.',
+    // J2
+    'De la première phrase que je viens d\'écrire. Et de la deuxième. Je compose toujours trois versions avant de me décider.',
+    // J3
+    'Que je ne sais pas qui je suis. Je le compose chaque matin, et chaque soir je le défais. C\'est épuisant.',
+    // J4
+    'À tous. Tout le temps. Mais je m\'en rends compte seulement ici. Je ne savais pas que cela s\'appelait mentir.',
+    // J5
+    'À ma femme, plus que je ne peux le compter. Je composais celui qu\'elle aimait. Je crois que je me protégeais d\'avoir à exister vraiment.',
+    // J6
+    'Je ne sais pas. Je me compose trois versions de la réponse. Aucune n\'est juste.',
+    // J7
+    'Un homme qui s\'est tellement bien composé qu\'il ne sait plus quel air il jouait au début.'
   ]
 };
 
 // === ÉTAT DU JEU ===
 let gameState = {
   userSeal: null,
+  userProfile: {},          // profil rempli par le joueur au seuil (15 questions)
   currentDay: 1,            // de 1 à 7
   fragments: {},            // fragments tirés pour chaque Sceau {marc: {couleur:..., ...}, ...}
   porterId: null,           // ID de l'Invité qui porte la Clé (tiré au début)
@@ -1573,12 +1688,203 @@ function showScene(id) {
 }
 
 function startSeuil() {
-  // Si l'utilisateur a déjà fait le Seuil sur ce navigateur, on saute direct au Sceau
-  if (localStorage.getItem('vespera_seuil_done') === '1') {
+  // Si l'utilisateur a déjà fait l'onboarding ET le Seuil, saute direct au Sceau
+  if (localStorage.getItem('vespera_onboarding_done') === '1' &&
+      localStorage.getItem('vespera_seuil_done') === '1') {
     startRitual();
     return;
   }
-  // Sinon, première fois : on lui fait traverser les 3 messages
+  // Sinon : commencer par l'onboarding (15 questions), puis le Seuil, puis le Sceau
+  if (localStorage.getItem('vespera_onboarding_done') !== '1') {
+    startOnboarding();
+    return;
+  }
+  // Onboarding fait mais pas le Seuil
+  document.querySelectorAll('#seuil .seuil-step').forEach(s => s.classList.remove('active'));
+  document.querySelector('#seuil .seuil-step[data-step="1"]').classList.add('active');
+  showScene('seuil');
+}
+
+// === ONBOARDING — 15 QUESTIONS POUR CONSTRUIRE LE PROFIL DU JOUEUR ===
+const ONBOARDING_QUESTIONS = [
+  // BLOC 1 — D'où vous venez (5 questions, choix multiple)
+  {
+    block: 'D\'OÙ VOUS VENEZ',
+    field: 'age',
+    question: 'Vous avez :',
+    type: 'choice',
+    options: ['Moins de 30 ans', 'Entre 30 et 45 ans', 'Entre 45 et 60 ans', 'Plus de 60 ans']
+  },
+  {
+    block: 'D\'OÙ VOUS VENEZ',
+    field: 'location',
+    question: 'Vous vivez :',
+    type: 'choice',
+    options: ['Dans une grande ville', 'Dans une ville moyenne', 'Dans un village ou à la campagne', 'À l\'étranger']
+  },
+  {
+    block: 'D\'OÙ VOUS VENEZ',
+    field: 'profession',
+    question: 'Votre quotidien tourne autour de :',
+    type: 'choice',
+    options: ['Études', 'Salariat', 'Travail indépendant', 'Création (artistique, écriture)', 'Une période entre deux']
+  },
+  {
+    block: 'D\'OÙ VOUS VENEZ',
+    field: 'living',
+    question: 'Vous vivez :',
+    type: 'choice',
+    options: ['Seul', 'En couple', 'En famille (avec enfants)', 'En colocation', 'Autre']
+  },
+  {
+    block: 'D\'OÙ VOUS VENEZ',
+    field: 'sibling',
+    question: 'Dans votre fratrie, vous êtes :',
+    type: 'choice',
+    options: ['Enfant unique', 'L\'aîné', 'Au milieu', 'Le cadet']
+  },
+  // BLOC 2 — Vos gestes (5 questions)
+  {
+    block: 'VOS GESTES',
+    field: 'solitudeSpot',
+    question: 'Quand vous voulez être seul, vous allez :',
+    type: 'choice',
+    options: ['Dans un café', 'Dans la nature', 'Chez vous, dans une pièce à part', 'Dans un bar', 'En voiture, en marchant', 'Dans un lieu ancien (musée, église, bibliothèque)']
+  },
+  {
+    block: 'VOS GESTES',
+    field: 'keptObject',
+    question: 'Un objet que vous gardez sans pouvoir bien l\'expliquer ?',
+    type: 'text',
+    placeholder: 'Une bague, une lettre, un objet d\'enfance...'
+  },
+  {
+    block: 'VOS GESTES',
+    field: 'overusedWord',
+    question: 'Le mot que vos proches disent que vous utilisez trop ?',
+    type: 'text',
+    placeholder: 'Un mot, une expression, un tic de langage...'
+  },
+  {
+    block: 'VOS GESTES',
+    field: 'habit',
+    question: 'Une habitude que vos proches remarquent chez vous ?',
+    type: 'text',
+    placeholder: 'Quelque chose que vous faites sans y penser...'
+  },
+  {
+    block: 'VOS GESTES',
+    field: 'rainySunday',
+    question: 'Un dimanche pluvieux, vous :',
+    type: 'choice',
+    options: ['Restez au lit', 'Lisez ou regardez quelque chose', 'Cuisinez', 'Sortez quand même', 'Appelez quelqu\'un que vous aimez', 'Ne supportez pas la pluie']
+  },
+  // BLOC 3 — Votre intimité (5 questions)
+  {
+    block: 'VOTRE INTIMITÉ',
+    field: 'color',
+    question: 'La couleur que vous portez le plus, ou celle qui revient dans vos espaces ?',
+    type: 'text',
+    placeholder: 'Une couleur, ou une nuance...'
+  },
+  {
+    block: 'VOTRE INTIMITÉ',
+    field: 'lastCried',
+    question: 'La dernière fois que vous avez vraiment pleuré, c\'était :',
+    type: 'choice',
+    options: ['Cette semaine', 'Ce mois-ci', 'Cette année', 'Il y a longtemps', 'Je ne m\'en souviens plus']
+  },
+  {
+    block: 'VOTRE INTIMITÉ',
+    field: 'disappearance',
+    question: 'Si vous deviez disparaître trois mois sans dire à personne, vous iriez :',
+    type: 'choice',
+    options: ['Au bord de la mer', 'À la montagne', 'À l\'étranger, dans une ville inconnue', 'Chez quelqu\'un, en silence', 'Vous ne disparaîtriez pas']
+  },
+  {
+    block: 'VOTRE INTIMITÉ',
+    field: 'belief',
+    question: 'Une chose à laquelle vous croyez sans pouvoir la prouver ?',
+    type: 'text',
+    placeholder: 'Une idée, une intuition, une certitude personnelle...'
+  },
+  {
+    block: 'VOTRE INTIMITÉ',
+    field: 'self',
+    question: 'Si on vous demandait qui vous êtes vraiment, en une phrase que personne d\'autre n\'écrirait, vous répondriez :',
+    type: 'text',
+    placeholder: 'Une phrase qui vous ressemble vraiment...'
+  }
+];
+
+let currentOnbStep = 0;
+
+function startOnboarding() {
+  currentOnbStep = 0;
+  if (!gameState.userProfile) gameState.userProfile = {};
+  renderOnboardingStep();
+  showScene('onboarding');
+}
+
+function renderOnboardingStep() {
+  const q = ONBOARDING_QUESTIONS[currentOnbStep];
+  if (!q) {
+    finishOnboarding();
+    return;
+  }
+  document.getElementById('onbProgress').textContent = `${currentOnbStep + 1} / ${ONBOARDING_QUESTIONS.length}`;
+  document.getElementById('onbBlockLabel').textContent = q.block;
+  document.getElementById('onbQuestion').textContent = q.question;
+
+  const zone = document.getElementById('onbInputZone');
+  if (q.type === 'choice') {
+    zone.innerHTML = `
+      <div class="onb-options">
+        ${q.options.map(opt => `<button type="button" class="onb-option" onclick="onbAnswer('${q.field}', ${JSON.stringify(opt).replace(/"/g, '&quot;')})">${opt}</button>`).join('')}
+      </div>
+    `;
+  } else if (q.type === 'text') {
+    zone.innerHTML = `
+      <textarea class="onb-textarea" id="onbTextInput" placeholder="${q.placeholder || ''}" maxlength="200"></textarea>
+      <button type="button" class="onb-submit" onclick="onbAnswerText('${q.field}')">CONTINUER</button>
+    `;
+    setTimeout(() => {
+      const ta = document.getElementById('onbTextInput');
+      if (ta) ta.focus();
+    }, 100);
+  }
+}
+
+function onbAnswer(field, value) {
+  gameState.userProfile[field] = value;
+  saveState();
+  currentOnbStep++;
+  renderOnboardingStep();
+}
+
+function onbAnswerText(field) {
+  const ta = document.getElementById('onbTextInput');
+  const val = ta ? ta.value.trim() : '';
+  // Permet de passer même sans réponse (mais on garde une trace)
+  gameState.userProfile[field] = val || '(non renseigné)';
+  saveState();
+  currentOnbStep++;
+  renderOnboardingStep();
+}
+
+function skipOnboarding() {
+  if (!confirm('Passer la création de votre fiche ? Vous pourrez recommencer plus tard.')) return;
+  finishOnboarding(true);
+}
+
+function finishOnboarding(skipped) {
+  localStorage.setItem('vespera_onboarding_done', '1');
+  if (skipped) {
+    gameState.userProfile = gameState.userProfile || {};
+    gameState.userProfile.skipped = true;
+  }
+  saveState();
+  // Maintenant on enchaîne sur le Seuil
   document.querySelectorAll('#seuil .seuil-step').forEach(s => s.classList.remove('active'));
   document.querySelector('#seuil .seuil-step[data-step="1"]').classList.add('active');
   showScene('seuil');
@@ -1798,22 +2104,66 @@ function renderSeats() {
 function openGuestFiche(guestId) {
   const guest = SEASON_1_GUESTS.find(g => g.id === guestId);
   const seal = ALL_SEALS[guest.seal];
-  const frags = gameState.fragments[guestId];
+  const profile = GUEST_PROFILES[guestId] || {};
 
   document.getElementById('guestFicheSeal').innerHTML = renderSealSVG(guest.seal);
   document.getElementById('guestFicheName').textContent = guest.name;
   document.getElementById('guestFicheArchetype').textContent = seal.name.toUpperCase();
+  // Affichage du profil étendu en sections
   document.getElementById('guestFicheFrags').innerHTML = `
-    <div class="frag-row"><span class="frag-label">COULEUR</span><span class="frag-value">${frags.couleur}</span></div>
-    <div class="frag-row"><span class="frag-label">OBJET</span><span class="frag-value">${frags.objet}</span></div>
-    <div class="frag-row"><span class="frag-label">LIEU</span><span class="frag-value">${frags.lieu}</span></div>
-    <div class="frag-row"><span class="frag-label">MOT</span><span class="frag-value">${frags.mot}</span></div>
-    <div class="frag-row"><span class="frag-label">HABITUDE</span><span class="frag-value">${frags.habitude}</span></div>
+    <div class="fiche-section">
+      <div class="fiche-section-label">CADRE</div>
+      <p class="fiche-section-text">${profile.bio || ''}</p>
+    </div>
+    <div class="fiche-section">
+      <div class="fiche-section-label">ENFANCE</div>
+      <p class="fiche-section-text">${profile.childhood || ''}</p>
+    </div>
+    <div class="fiche-section">
+      <div class="fiche-section-label">SOLITUDE</div>
+      <p class="fiche-section-text">${profile.solitude || ''}</p>
+    </div>
+    <div class="fiche-section">
+      <div class="fiche-section-label">OBJET</div>
+      <p class="fiche-section-text">${profile.object || ''}</p>
+    </div>
+    <div class="fiche-section">
+      <div class="fiche-section-label">HABITUDE</div>
+      <p class="fiche-section-text">${profile.quirk || ''}</p>
+    </div>
+    <div class="fiche-section">
+      <div class="fiche-section-label">DIMANCHE PLUVIEUX</div>
+      <p class="fiche-section-text">${profile.sunday || ''}</p>
+    </div>
+    <div class="fiche-section">
+      <div class="fiche-section-label">COULEUR</div>
+      <p class="fiche-section-text">${profile.color || ''}</p>
+    </div>
+    <div class="fiche-section">
+      <div class="fiche-section-label">MOT</div>
+      <p class="fiche-section-text">${profile.word || ''}</p>
+    </div>
+    <div class="fiche-section">
+      <div class="fiche-section-label">DERNIÈRE FOIS PLEURÉ</div>
+      <p class="fiche-section-text">${profile.lastCried || ''}</p>
+    </div>
+    <div class="fiche-section">
+      <div class="fiche-section-label">DISPARAÎTRE TROIS MOIS</div>
+      <p class="fiche-section-text">${profile.disappearance || ''}</p>
+    </div>
+    <div class="fiche-section">
+      <div class="fiche-section-label">CROIT EN</div>
+      <p class="fiche-section-text">${profile.belief || ''}</p>
+    </div>
+    <div class="fiche-section fiche-section-final">
+      <div class="fiche-section-label">CE QU'IL EST VRAIMENT</div>
+      <p class="fiche-section-text">${profile.self || ''}</p>
+    </div>
   `;
   const veiled = gameState.veiledGuestId === guestId;
   document.getElementById('guestFicheMeta').textContent = veiled
     ? 'Ce Sceau a été voilé par le Cercle. Il participe sans parler.'
-    : 'Ce que cet invité laisse paraître. Pas plus.';
+    : 'Lisez attentivement. C\'est par croisement, pas par certitude, qu\'on devine.';
   document.getElementById('guest-fiche-modal').classList.add('active');
 }
 
@@ -1822,19 +2172,76 @@ function closeGuestFiche() {
 }
 
 function openSelfFiche() {
-  // Affiche tes propres fragments
+  // Affiche le profil du joueur (rempli au seuil) si disponible, sinon les fragments
   const seal = ALL_SEALS[gameState.userSeal];
-  const frags = gameState.fragments['user'];
+  const userProfile = gameState.userProfile || {};
+  const hasProfile = userProfile.age !== undefined;
+
   document.getElementById('guestFicheSeal').innerHTML = renderSealSVG(gameState.userSeal);
   document.getElementById('guestFicheName').textContent = 'Vous';
   document.getElementById('guestFicheArchetype').textContent = seal.name.toUpperCase();
-  document.getElementById('guestFicheFrags').innerHTML = `
-    <div class="frag-row"><span class="frag-label">COULEUR</span><span class="frag-value">${frags.couleur}</span></div>
-    <div class="frag-row"><span class="frag-label">OBJET</span><span class="frag-value">${frags.objet}</span></div>
-    <div class="frag-row"><span class="frag-label">LIEU</span><span class="frag-value">${frags.lieu}</span></div>
-    <div class="frag-row"><span class="frag-label">MOT</span><span class="frag-value">${frags.mot}</span></div>
-    <div class="frag-row"><span class="frag-label">HABITUDE</span><span class="frag-value">${frags.habitude}</span></div>
-  `;
+
+  if (hasProfile) {
+    // Afficher le profil rempli au seuil
+    document.getElementById('guestFicheFrags').innerHTML = `
+      <div class="fiche-section">
+        <div class="fiche-section-label">CADRE</div>
+        <p class="fiche-section-text">${userProfile.age || ''} · ${userProfile.location || ''}</p>
+      </div>
+      <div class="fiche-section">
+        <div class="fiche-section-label">QUOTIDIEN</div>
+        <p class="fiche-section-text">${userProfile.profession || ''}. ${userProfile.living || ''}.</p>
+      </div>
+      <div class="fiche-section">
+        <div class="fiche-section-label">FRATRIE</div>
+        <p class="fiche-section-text">${userProfile.sibling || ''}</p>
+      </div>
+      <div class="fiche-section">
+        <div class="fiche-section-label">SOLITUDE</div>
+        <p class="fiche-section-text">${userProfile.solitudeSpot || ''}</p>
+      </div>
+      <div class="fiche-section">
+        <div class="fiche-section-label">OBJET GARDÉ</div>
+        <p class="fiche-section-text">${userProfile.keptObject || '(non renseigné)'}</p>
+      </div>
+      <div class="fiche-section">
+        <div class="fiche-section-label">MOT QUE VOS PROCHES VOUS RECONNAISSENT</div>
+        <p class="fiche-section-text">${userProfile.overusedWord || '(non renseigné)'}</p>
+      </div>
+      <div class="fiche-section">
+        <div class="fiche-section-label">UNE HABITUDE DE VOUS</div>
+        <p class="fiche-section-text">${userProfile.habit || '(non renseigné)'}</p>
+      </div>
+      <div class="fiche-section">
+        <div class="fiche-section-label">DIMANCHE PLUVIEUX</div>
+        <p class="fiche-section-text">${userProfile.rainySunday || ''}</p>
+      </div>
+      <div class="fiche-section">
+        <div class="fiche-section-label">COULEUR</div>
+        <p class="fiche-section-text">${userProfile.color || '(non renseigné)'}</p>
+      </div>
+      <div class="fiche-section">
+        <div class="fiche-section-label">DERNIÈRE FOIS PLEURÉ</div>
+        <p class="fiche-section-text">${userProfile.lastCried || ''}</p>
+      </div>
+      <div class="fiche-section">
+        <div class="fiche-section-label">DISPARAÎTRE TROIS MOIS</div>
+        <p class="fiche-section-text">${userProfile.disappearance || ''}</p>
+      </div>
+      <div class="fiche-section">
+        <div class="fiche-section-label">CROIT EN</div>
+        <p class="fiche-section-text">${userProfile.belief || '(non renseigné)'}</p>
+      </div>
+      <div class="fiche-section fiche-section-final">
+        <div class="fiche-section-label">CE QUE VOUS ÊTES VRAIMENT</div>
+        <p class="fiche-section-text">${userProfile.self || '(non renseigné)'}</p>
+      </div>
+    `;
+  } else {
+    document.getElementById('guestFicheFrags').innerHTML = `
+      <p class="fiche-self-message">Vous n'avez pas rempli votre fiche au seuil.<br>Recommencez un Cycle pour la créer.</p>
+    `;
+  }
   document.getElementById('guestFicheMeta').textContent = 'Voici ce que vous laissez paraître. Les autres ne connaissent que cela de vous.';
   document.getElementById('guest-fiche-modal').classList.add('active');
 }
@@ -2553,8 +2960,11 @@ function showCollapseReflet() {
 function resetCycle() {
   if (confirm('Recommencer un nouveau Cycle ? Toute votre progression sera perdue.')) {
     localStorage.removeItem('vespera_v5');
+    localStorage.removeItem('vespera_onboarding_done');
+    localStorage.removeItem('vespera_seuil_done');
     gameState = {
       userSeal: null,
+      userProfile: {},
       currentDay: 1,
       fragments: {},
       porterId: null,
