@@ -254,6 +254,93 @@
   .seat-pos-4 { top: 50%; left: 82%; }   /* 3h — milieu-droite, INES */
   .seat-pos-5 { top: 80%; left: 68%; }   /* 5h — bas-droite, KARIM */
 
+  /* === MODE VOIX DU SOIR === */
+  /* Quand on est en voice-mode, on cache tout sauf la table + médaillons */
+  #salon.voice-mode .salon-header,
+  #salon.voice-mode .salon-mode-indicator,
+  #salon.voice-mode .day-progress,
+  #salon.voice-mode .table-objects,
+  #salon.voice-mode .salon-footer { display: none; }
+
+  /* Le cartouche central s'agrandit pour afficher la voix complète */
+  .table-center.voice-active {
+    width: 58%;
+    aspect-ratio: 0.9;
+    background: rgba(8, 6, 4, 0.92);
+    border-color: rgba(212,184,112,0.6);
+    box-shadow: 0 0 30px rgba(212,184,112,0.3), inset 0 0 20px rgba(0,0,0,0.5);
+    padding: 18px 16px;
+  }
+  .table-center.voice-active .voice-text {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #F5F0E5;
+    margin: 12px 0;
+  }
+  .table-center.voice-active .voice-text em {
+    font-weight: 500;
+    color: #E8C77A;
+    font-style: italic;
+  }
+  .table-center.voice-active .center-label {
+    font-size: 9px;
+    color: #D4B870;
+    letter-spacing: 0.35em;
+  }
+  .table-center.voice-active .center-cta {
+    font-size: 9px;
+    color: #D4B870;
+    letter-spacing: 0.3em;
+    margin-top: 12px;
+    opacity: 0.8;
+  }
+
+  /* En voice-mode, les médaillons ont un curseur "pointer" et un halo subtil pour suggérer qu'ils sont cliquables */
+  #salon.voice-mode .seat:not(.seat-self) .seat-img {
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.5),
+      0 0 0 2px rgba(245, 235, 210, 0.25),
+      0 0 12px rgba(212, 184, 112, 0.25),
+      inset 0 0 6px rgba(80, 50, 20, 0.2);
+  }
+
+  /* Le médaillon "Vous" est désactivé en voice-mode (on connaît notre réponse) */
+  #salon.voice-mode .seat-self {
+    pointer-events: none;
+  }
+  #salon.voice-mode .seat-self .seat-img {
+    opacity: 0.4;
+    filter: grayscale(0.5);
+  }
+
+  /* Animations feedback : halo vert (juste) ou rouge (faux) */
+  .seat.guess-correct .seat-img {
+    animation: pulseGreen 1.8s ease-out;
+  }
+  .seat.guess-wrong .seat-img {
+    animation: pulseRed 1.8s ease-out;
+  }
+  .seat.guess-reveal .seat-img {
+    animation: pulseReveal 1.8s ease-out;
+  }
+  @keyframes pulseGreen {
+    0% { box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 2px rgba(245,235,210,0.25); }
+    30% { box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 4px rgba(124,181,124,0.6), 0 0 30px rgba(124,181,124,0.7); border-color: #7CB57C; }
+    100% { box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 2px rgba(245,235,210,0.25); }
+  }
+  @keyframes pulseRed {
+    0% { box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 2px rgba(245,235,210,0.25); }
+    30% { box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 4px rgba(216,128,128,0.6), 0 0 30px rgba(216,128,128,0.7); border-color: #D88080; }
+    100% { box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 2px rgba(245,235,210,0.25); }
+  }
+  @keyframes pulseReveal {
+    0%, 100% { box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 2px rgba(245,235,210,0.25); }
+    50% { box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 3px rgba(212,184,112,0.7), 0 0 25px rgba(212,184,112,0.6); }
+  }
+
   .table-hint { text-align: center; padding: 18px 24px 0; font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.1em; font-style: italic; }
   #salon.day .table-hint { color: #6B6358; }
 
@@ -2107,7 +2194,7 @@ function renderSeats() {
     if (p.id === 'user') {
       const seal = ALL_SEALS[gameState.userSeal];
       return `
-        <button type="button" class="seat seat-self seat-pos-${p.pos}" onclick="openSelfFiche()">
+        <button type="button" class="seat seat-self seat-pos-${p.pos}" onclick="onSeatTap('user')">
           <div class="seat-img">${renderSealSVG(gameState.userSeal)}</div>
           <div class="seat-name">Vous</div>
         </button>
@@ -2117,7 +2204,7 @@ function renderSeats() {
     const seal = ALL_SEALS[guest.seal];
     const veiled = gameState.veiledGuestId === guest.id;
     return `
-      <button type="button" class="seat seat-pos-${p.pos}${veiled ? ' seat-veiled' : ''}" onclick="openGuestFiche('${guest.id}')">
+      <button type="button" class="seat seat-pos-${p.pos}${veiled ? ' seat-veiled' : ''}" onclick="onSeatTap('${guest.id}')">
         <div class="seat-img">${renderSealSVG(guest.seal)}</div>
         <div class="seat-name">${guest.name}${veiled ? ' (voilé)' : ''}</div>
       </button>
@@ -2608,9 +2695,167 @@ function sealResponse() {
 }
 
 // === RESPONSES ===
+// === MODE VOIX DU SOIR — devinette intégrée au Salon ===
+let voiceMode = false;
+let voicesQueue = [];
+let currentVoiceIndex = 0;
+let voiceLocked = false;  // évite double-tap pendant l'animation
+
 function openResponses() {
-  showScene('responses');
-  renderResponses();
+  // Au lieu d'ouvrir la scène responses (liste), on lance le voice reveal
+  startVoiceReveal();
+}
+
+function startVoiceReveal() {
+  const dayIndex = gameState.currentDay - 1;
+  if (!gameState.daysData[gameState.currentDay]) gameState.daysData[gameState.currentDay] = {};
+  const dayData = gameState.daysData[gameState.currentDay];
+  const guesses = dayData.guesses || {};
+
+  // Construire la queue : 5 voix à deviner (les invités)
+  voicesQueue = SEASON_1_GUESTS.map(g => ({
+    id: g.id,
+    text: GUEST_RESPONSES[g.id][dayIndex],
+    guessed: guesses[g.id] != null,
+    guessedAs: guesses[g.id] || null
+  }));
+
+  // Mélange déterministe par jour
+  if (!dayData.shuffleOrder) {
+    const shuffled = [0,1,2,3,4];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    dayData.shuffleOrder = shuffled;
+    saveState();
+  }
+  voicesQueue = dayData.shuffleOrder.map(i => voicesQueue[i]);
+
+  // Trouver la première voix non encore devinée
+  currentVoiceIndex = voicesQueue.findIndex(v => !v.guessed);
+  if (currentVoiceIndex === -1) {
+    // Toutes devinées, recap direct
+    showRecap();
+    return;
+  }
+
+  // Activer le voice mode
+  voiceMode = true;
+  voiceLocked = false;
+  document.getElementById('salon').classList.add('voice-mode');
+  renderVoice();
+}
+
+function renderVoice() {
+  const voice = voicesQueue[currentVoiceIndex];
+  if (!voice) return;
+
+  const guessedCount = voicesQueue.filter(v => v.guessed).length;
+  const total = voicesQueue.length;
+
+  const centerContent = document.getElementById('tableCenterContent');
+  centerContent.innerHTML = `
+    <span class="center-label">VOIX ${guessedCount + 1} / ${total}</span>
+    <span class="voice-text">« ${voice.text} »</span>
+    <span class="center-cta">QUI PARLE ?</span>
+  `;
+  document.getElementById('tableCenter').classList.add('voice-active');
+
+  // Hint
+  document.getElementById('tableHint').textContent = 'Tapez le Sceau de celui qui vous semble être l\'auteur.';
+}
+
+function onSeatTap(guestId) {
+  // Routeur de tap : voice mode ou consultation de fiche
+  if (voiceMode) {
+    handleVoiceGuess(guestId);
+  } else {
+    if (guestId === 'user') openSelfFiche();
+    else openGuestFiche(guestId);
+  }
+}
+
+function handleVoiceGuess(guestId) {
+  if (voiceLocked) return;
+  // Le joueur ne peut pas deviner sur son propre Sceau
+  if (guestId === 'user') return;
+
+  const voice = voicesQueue[currentVoiceIndex];
+  if (!voice || voice.guessed) return;
+
+  voiceLocked = true;
+  const correct = guestId === voice.id;
+
+  // Stocker le guess
+  if (!gameState.daysData[gameState.currentDay].guesses) {
+    gameState.daysData[gameState.currentDay].guesses = {};
+  }
+  gameState.daysData[gameState.currentDay].guesses[voice.id] = guestId;
+  voice.guessed = true;
+  voice.guessedAs = guestId;
+  saveState();
+
+  // Animation : halo vert ou rouge sur le médaillon tapé
+  const tappedSeat = document.querySelector('.seat-pos-' + getPosForGuestId(guestId));
+  if (tappedSeat) {
+    tappedSeat.classList.add(correct ? 'guess-correct' : 'guess-wrong');
+  }
+  // Si faux, on révèle aussi le bon
+  if (!correct) {
+    const realSeat = document.querySelector('.seat-pos-' + getPosForGuestId(voice.id));
+    if (realSeat) realSeat.classList.add('guess-reveal');
+  }
+
+  // Afficher le résultat au centre
+  const realGuest = SEASON_1_GUESTS.find(g => g.id === voice.id);
+  const realSeal = ALL_SEALS[realGuest.seal];
+  const centerContent = document.getElementById('tableCenterContent');
+  if (correct) {
+    centerContent.innerHTML = `
+      <span class="center-label" style="color:#9CC79C;">JUSTE</span>
+      <span class="voice-text">C'était <em>${realGuest.name}</em>, ${realSeal.name.toLowerCase()}.</span>
+    `;
+  } else {
+    const guessedGuest = SEASON_1_GUESTS.find(g => g.id === guestId);
+    centerContent.innerHTML = `
+      <span class="center-label" style="color:#D8A0A0;">VOUS AVEZ DIT ${guessedGuest.name.toUpperCase()}</span>
+      <span class="voice-text">C'était <em>${realGuest.name}</em>, ${realSeal.name.toLowerCase()}.</span>
+    `;
+  }
+
+  // Passer à la voix suivante après 2.5s
+  setTimeout(() => {
+    if (tappedSeat) tappedSeat.classList.remove('guess-correct', 'guess-wrong');
+    document.querySelectorAll('.guess-reveal').forEach(el => el.classList.remove('guess-reveal'));
+
+    // Trouver la prochaine voix non devinée
+    let next = currentVoiceIndex + 1;
+    while (next < voicesQueue.length && voicesQueue[next].guessed) next++;
+
+    if (next >= voicesQueue.length) {
+      // Plus de voix à deviner
+      finishVoiceReveal();
+    } else {
+      currentVoiceIndex = next;
+      voiceLocked = false;
+      renderVoice();
+    }
+  }, 2500);
+}
+
+function finishVoiceReveal() {
+  voiceMode = false;
+  voiceLocked = false;
+  document.getElementById('salon').classList.remove('voice-mode');
+  document.getElementById('tableCenter').classList.remove('voice-active');
+  document.getElementById('tableHint').textContent = 'Tapez un Sceau pour lire sa fiche.';
+  showRecap();
+}
+
+function getPosForGuestId(guestId) {
+  const positions = ['marc','theo','camille','user','ines','karim'];
+  return positions.indexOf(guestId);
 }
 
 function renderResponses() {
