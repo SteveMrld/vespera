@@ -236,6 +236,42 @@
   .fragment-value { font-family: 'Fraunces', serif; font-size: 14px; color: #EDE8DD; font-style: italic; line-height: 1.4; }
   .fiche-self-message { padding: 20px; text-align: center; font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #A8A095; line-height: 1.6; }
 
+  /* ONGLETS DE LA CHAMBRE */
+  .chambre-tabs { display: flex; gap: 0; padding: 0 24px; margin-bottom: 16px; border-bottom: 1px solid rgba(237,232,221,0.12); }
+  .chambre-tab { flex: 1; padding: 14px 8px; background: transparent; border: none; color: #A8A095; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.25em; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.3s; }
+  .chambre-tab.active { color: #D4B870; border-bottom-color: #D4B870; }
+  .chambre-tab span { color: #D4B870; font-weight: 500; margin-left: 4px; }
+
+  /* NOTES (indices collectés) */
+  #chambreContentNotes { padding: 0 24px 32px; }
+  .notes-empty { text-align: center; padding: 40px 20px; font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #A8A095; line-height: 1.7; }
+  .note-card { padding: 18px 20px; background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; margin-bottom: 10px; border-left: 2px solid rgba(212,184,112,0.4); }
+  .note-meta { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.2em; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .note-meta .note-source { color: #A8A095; font-style: italic; text-transform: lowercase; letter-spacing: 0.1em; }
+  .note-text { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #EDE8DD; line-height: 1.65; }
+
+  /* BOUTON COULOIR (CTA depuis la Chambre) */
+  .chambre-footer { padding: 24px 24px 40px; text-align: center; border-top: 1px solid rgba(237,232,221,0.08); margin-top: 12px; }
+  .couloir-btn { background: rgba(212,184,112,0.12); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 28px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; border-radius: 2px; }
+  .couloir-btn:active { background: rgba(212,184,112,0.22); color: #EDE8DD; }
+  .couloir-hint { margin-top: 14px; font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; font-style: italic; }
+
+  /* SCÈNE COULOIR */
+  #couloir { background: radial-gradient(ellipse at top, #1A1B2E 0%, #0A0B14 100%); align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .couloir-intro { padding: 36px 32px 24px; text-align: center; }
+  .couloir-current { margin: 0 24px 18px; padding: 14px 18px; background: rgba(212,184,112,0.08); border: 1px solid rgba(212,184,112,0.3); border-radius: 4px; text-align: center; font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #D4B870; }
+  .couloir-options { padding: 0 24px 40px; display: flex; flex-direction: column; gap: 10px; }
+  .couloir-option { display: flex; align-items: center; gap: 16px; padding: 16px; background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; cursor: pointer; transition: all 0.3s; }
+  .couloir-option.selected { background: rgba(212,184,112,0.14); border-color: rgba(212,184,112,0.6); }
+  .couloir-option-seal { width: 50px; height: 50px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: rgba(212,184,112,0.08); border: 1px solid rgba(212,184,112,0.2); }
+  .couloir-option-seal img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .couloir-option-info { flex: 1; text-align: left; }
+  .couloir-option-name { font-family: 'Fraunces', serif; font-size: 16px; color: #EDE8DD; }
+  .couloir-option-archetype { font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.15em; margin-top: 2px; }
+  .couloir-check { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(212,184,112,0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .couloir-option.selected .couloir-check { background: #D4B870; border-color: #D4B870; }
+  .couloir-option.selected .couloir-check::after { content: '✓'; color: #0A0B14; font-size: 12px; font-weight: bold; }
+
   /* MODAL DEVINETTE */
   #guess-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; align-items: center; justify-content: center; padding: 24px; opacity: 0; transition: opacity 0.6s; }
   #guess-modal.active { display: flex; opacity: 1; }
@@ -257,6 +293,14 @@
   /* MODAL BILAN */
   #recap-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: none; align-items: center; justify-content: center; padding: 32px; opacity: 0; transition: opacity 0.6s; }
   #recap-modal.active { display: flex; opacity: 1; }
+
+  /* MODAL INDICE DE BIBLIOTHÈQUE */
+  #library-clue-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: none; align-items: center; justify-content: center; padding: 32px; }
+  #library-clue-modal.active { display: flex; }
+  .library-clue-content { max-width: 380px; text-align: center; }
+  .library-clue-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; margin-bottom: 22px; }
+  .library-clue-text { font-family: 'Fraunces', serif; font-size: 17px; font-style: italic; color: #EDE8DD; line-height: 1.7; margin-bottom: 24px; padding: 0 8px; }
+  .library-clue-meta { font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.05em; margin-bottom: 30px; font-style: italic; }
   .recap-content { max-width: 360px; text-align: center; }
   .recap-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; margin-bottom: 22px; }
   .recap-score { font-family: 'Fraunces', serif; font-size: 64px; font-weight: 300; color: #EDE8DD; line-height: 1; margin-bottom: 8px; }
@@ -276,6 +320,11 @@
   .collapse-intro-sig { font-family: 'Fraunces', serif; font-size: 14px; color: #D4B870; text-align: center; letter-spacing: 0.3em; margin-bottom: 50px; opacity: 0; animation: fadeIn 1.5s 3.5s ease forwards; }
   .collapse-intro-btn { display: block; margin: 0 auto; background: rgba(212,184,112,0.1); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 16px 40px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; opacity: 0; animation: fadeIn 1.5s 4.5s ease forwards; }
   .collapse-intro-btn:active { background: rgba(212,184,112,0.2); color: #EDE8DD; }
+
+  /* RÉVÉLATION DU PORTEUR */
+  .collapse-reveal-seal { width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle, rgba(212,184,112,0.2) 0%, rgba(212,184,112,0.05) 100%); border: 1px solid rgba(212,184,112,0.4); display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; box-shadow: 0 0 80px rgba(212,184,112,0.25); overflow: hidden; }
+  .collapse-reveal-seal img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .collapse-reveal-archetype { font-family: 'Inter', sans-serif; font-size: 12px; color: #D4B870; letter-spacing: 0.3em; text-align: center; margin-top: -30px; margin-bottom: 36px; }
 
   /* Animations */
   @keyframes fadeIn { to { opacity: 1; } }
@@ -376,6 +425,17 @@
       </div>
       <div class="nav-card-arrow">→</div>
     </button>
+
+    <button type="button" class="nav-card" id="couloirNavCard" onclick="openCouloir()" style="display:none;">
+      <div class="nav-card-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M9 10v4M15 10v4"/></svg>
+      </div>
+      <div class="nav-card-content">
+        <div class="nav-card-title">Le Couloir</div>
+        <div class="nav-card-subtitle" id="couloirNavSubtitle">VOTRE VOTE SUR LA CLÉ</div>
+      </div>
+      <div class="nav-card-arrow">→</div>
+    </button>
   </div>
 
   <!-- Section Invités -->
@@ -463,7 +523,7 @@
 <!-- SCÈNE CHAMBRE -->
 <div id="chambre" class="scene">
   <div class="chambre-header">
-    <button class="murmur-back" onclick="goToSalon()">← RETOUR</button>
+    <button type="button" class="murmur-back" onclick="goToSalon()">← RETOUR</button>
     <div class="murmur-label">LA CHAMBRE</div>
     <div style="width: 56px;"></div>
   </div>
@@ -471,7 +531,41 @@
     <h2 class="chambre-title">Les fiches du Cercle</h2>
     <p class="chambre-desc">Voici ce que les autres Invités laissent paraître d'eux. Votre fiche, vous, ne s'écrira qu'à la fin du Cycle.</p>
   </div>
-  <div class="fiche-cards" id="ficheCards"></div>
+
+  <!-- Onglets -->
+  <div class="chambre-tabs">
+    <button type="button" class="chambre-tab active" id="tabFiches" onclick="switchChambreTab('fiches')">LES FICHES</button>
+    <button type="button" class="chambre-tab" id="tabNotes" onclick="switchChambreTab('notes')">MES NOTES <span id="notesCount"></span></button>
+  </div>
+
+  <div id="chambreContentFiches">
+    <div class="fiche-cards" id="ficheCards"></div>
+  </div>
+
+  <div id="chambreContentNotes" style="display:none;">
+    <div id="notesContent"></div>
+  </div>
+
+  <!-- Bouton Couloir : visible une fois assez d'indices collectés -->
+  <div class="chambre-footer" id="chambreCouloirCTA" style="display:none;">
+    <button type="button" class="couloir-btn" onclick="openCouloir()">ALLER AU COULOIR →</button>
+    <p class="couloir-hint">Vous y voterez en secret pour celui que vous pensez porter la Clé.</p>
+  </div>
+</div>
+
+<!-- SCÈNE COULOIR — vote secret sur le Porteur -->
+<div id="couloir" class="scene">
+  <div class="chambre-header">
+    <button type="button" class="murmur-back" onclick="goToSalon()">← RETOUR</button>
+    <div class="murmur-label">LE COULOIR</div>
+    <div style="width: 56px;"></div>
+  </div>
+  <div class="couloir-intro">
+    <h2 class="chambre-title">Votre vote</h2>
+    <p class="chambre-desc">Qui pensez-vous porte la Clé ? Votre vote restera secret jusqu'à la Nuit du Collapse. Vous pouvez changer d'avis tant que le Cycle n'est pas terminé.</p>
+  </div>
+  <div class="couloir-current" id="couloirCurrent" style="display:none;"></div>
+  <div class="couloir-options" id="couloirOptions"></div>
 </div>
 
 <!-- MODAL DEVINETTE -->
@@ -493,19 +587,38 @@
     <p class="recap-score-total">sur 5 réponses</p>
     <p class="recap-text" id="recapText"></p>
     <p class="recap-v-sig">V.</p>
-    <button class="recap-close" onclick="closeRecap()">CONTINUER</button>
+    <button type="button" class="recap-close" onclick="closeRecap()">CONTINUER</button>
   </div>
 </div>
 
-<!-- SCÈNE COLLAPSE (placeholder, sera étoffée au commit suivant) -->
+<!-- MODAL INDICE DE BIBLIOTHÈQUE -->
+<div id="library-clue-modal">
+  <div class="library-clue-content">
+    <p class="library-clue-label">UNE TRACE</p>
+    <p class="library-clue-text" id="libraryClueText"></p>
+    <p class="library-clue-meta">Cet indice rejoint vos notes dans la Chambre.</p>
+    <button type="button" class="recap-close" onclick="closeLibraryClue()">FERMER</button>
+  </div>
+</div>
+
+<!-- SCÈNE COLLAPSE -->
 <div id="collapse" class="scene">
   <div class="collapse-step" id="collapseStepDefault">
     <p class="collapse-intro-label">LA NUIT DU COLLAPSE</p>
     <h1 class="collapse-intro-title">L'Heure</h1>
-    <p class="collapse-intro-text">Vous avez traversé sept soirées. Le Cycle touche à sa fin. Bientôt, la boîte s'ouvrira.</p>
-    <p class="collapse-intro-text" style="font-size: 14px; color: #A8A095;">Le Collapse complet sera disponible à la prochaine version.</p>
+    <p class="collapse-intro-text" id="collapseIntroText">Vous avez traversé sept soirées. Le Cycle touche à sa fin. La boîte va s'ouvrir.</p>
     <p class="collapse-intro-sig">V.</p>
-    <button type="button" class="collapse-intro-btn" onclick="resetCycle()">RECOMMENCER LE CYCLE</button>
+    <button type="button" class="collapse-intro-btn" id="collapseRevealBtn" onclick="revealCollapse()">RÉVÉLER LA CLÉ</button>
+  </div>
+
+  <div class="collapse-step" id="collapseStepReveal" style="display:none;">
+    <p class="collapse-intro-label" id="collapseRevealLabel">LE PORTEUR</p>
+    <div class="collapse-reveal-seal" id="collapseRevealSeal"></div>
+    <h1 class="collapse-intro-title" id="collapseRevealName"></h1>
+    <p class="collapse-reveal-archetype" id="collapseRevealArchetype"></p>
+    <p class="collapse-intro-text" id="collapseRevealText"></p>
+    <p class="collapse-intro-sig">V.</p>
+    <button type="button" class="collapse-intro-btn" onclick="resetCycle()">RECOMMENCER UN CYCLE</button>
   </div>
 </div>
 
@@ -622,6 +735,192 @@ const FRAGMENT_POOLS = {
     'compte les marches en montant', 'cache ses photos d\'enfance',
     'se lave les mains plus souvent qu\'il ne faut', 'note la météo de chaque jour'
   ]
+};
+
+// === POOL DE WORDINGS D'INDICES ===
+// Pour chaque fragment, des formulations énigmatiques que V utilise pour pointer subtilement vers le Porteur.
+const INDICE_WORDINGS = {
+  // COULEURS — wordings qui évoquent la couleur sans la nommer
+  'ardoise': ['une teinte qui se tient entre la pierre froide et le ciel d\'avant l\'orage', 'le gris des choses qu\'on a effacées sans les jeter'],
+  'bleu marine': ['un bleu qui n\'est plus le bleu, sans être encore le noir', 'la couleur du ciel quelques minutes avant que la nuit ne soit complète'],
+  'bordeaux': ['une couleur qui sent la chaleur d\'un soir, et l\'arrière-goût d\'un mot qu\'on a regretté', 'ce rouge sombre qui ne fait pas envie mais qu\'on garde quand même'],
+  'brouillard': ['une couleur qui n\'en est pas vraiment une', 'la nuance des pensées du dimanche soir, quand on ne sait plus à quelle heure on s\'est couché'],
+  'café fumé': ['un brun chaud, mais pas tout à fait, il y a quelque chose qui brûle dedans', 'la teinte d\'un fond de tasse qu\'on n\'a pas fini'],
+  'céladon': ['un vert pâle qui n\'est ni l\'eau ni la pierre', 'la nuance des tasses anciennes, celles qu\'on a peur de casser'],
+  'cendre': ['une couleur qui parle de ce qui a brûlé', 'le gris qu\'on trouve au fond des cheminées qu\'on n\'a pas allumées depuis longtemps'],
+  'cire d\'abeille': ['un jaune chaud qui sent autre chose', 'la couleur des bougies qu\'on rallume parce qu\'on aime le geste, pas la lumière'],
+  'cuivre éteint': ['un orangé qui a oublié d\'être brillant', 'la couleur d\'une vieille pièce de monnaie qu\'on garde sans savoir pourquoi'],
+  'émeraude pâle': ['un vert qui se rappelle d\'avoir été plus vif', 'la nuance d\'une bague qu\'on n\'a portée qu\'une saison'],
+  'encre': ['un noir qui n\'est pas tout à fait noir', 'la teinte qu\'on retrouve sur les doigts quand on a écrit longtemps'],
+  'fauve': ['un brun roux qui sent le pelage d\'un animal qu\'on n\'a pas approché', 'la couleur d\'un manteau qu\'on n\'ose plus porter mais qu\'on n\'a pas donné'],
+  'fer rouillé': ['une couleur qui a vu la pluie souvent', 'la teinte des outils qu\'on a hérités, qu\'on n\'a jamais nettoyés'],
+  'froment': ['un blond chaud qui parle d\'une autre saison', 'la couleur des cheveux d\'un enfant sur une photo qui jaunit'],
+  'gris perle': ['une couleur qui n\'ose pas être une couleur', 'la nuance d\'un costume qu\'on ressort une fois par an'],
+  'ivoire jauni': ['un blanc qui a connu plusieurs hivers', 'la couleur des touches d\'un piano qu\'on n\'a pas accordé depuis longtemps'],
+  'lichen': ['un vert gris, vivant mais discret', 'la couleur de la pierre des tombes anciennes, dans les cimetières où l\'on ne va plus'],
+  'lie de vin': ['un rouge profond qui sent la fin d\'un repas', 'la couleur d\'une nappe tachée qu\'on n\'a pas mise au lavage'],
+  'mauve sombre': ['un violet retenu, qui n\'éclate pas', 'la couleur d\'une enveloppe qu\'on n\'ouvre pas tout de suite'],
+  'mousse humide': ['un vert qui sent la terre après la pluie', 'la couleur d\'un mur exposé au nord, qu\'on n\'a jamais voulu repeindre'],
+  'nuit étoilée': ['un bleu si profond qu\'il pourrait contenir des points clairs', 'la couleur d\'un papier peint qu\'on a passé des heures à fixer, étant petit'],
+  'ocre brûlé': ['un orangé qui a connu le feu', 'la couleur des murs des cuisines provençales qu\'on n\'a pas refaites depuis trente ans'],
+  'paille': ['un jaune sec, qui ne demande rien', 'la couleur d\'un panier qu\'on n\'a pas réutilisé depuis longtemps'],
+  'parchemin': ['un beige qui a tenu longtemps', 'la couleur des lettres qu\'on a gardées dans une boîte sous le lit'],
+  'pétrole': ['un bleu vert si sombre qu\'on hésite à le nommer', 'la couleur de ce qui dort sous une surface plus claire'],
+  'plomb': ['un gris froid, lourd, qui ne ment pas', 'la couleur de l\'eau d\'un canal en novembre'],
+  'prune': ['un violet rouge qui contient un fruit', 'la couleur d\'une chemise qu\'on garde pour les soirs où l\'on a envie d\'être un peu autre'],
+  'rose poussiéreux': ['un rose qui a perdu son envie d\'être rose', 'la couleur d\'une vieille robe rangée, qu\'on hésite à ressortir'],
+  'rouge brique': ['un rouge qui parle de murs et d\'usines', 'la couleur d\'un vieux bâtiment industriel qu\'on a transformé en logement'],
+  'sable mouillé': ['une couleur qui change selon qu\'on la regarde de près ou de loin', 'la nuance d\'une serviette qu\'on a oubliée sur la plage'],
+  'sang séché': ['un rouge sombre qui parle d\'avant', 'la couleur d\'un mouchoir qu\'on a gardé sans s\'expliquer pourquoi'],
+  'sauge': ['un vert tendre, presque gris, qui parle de calme', 'la couleur des feuilles qu\'on garde dans un torchon dans la cuisine'],
+  'terre cuite': ['un orangé chaud qui parle de l\'argile et du four', 'la couleur d\'un sol provençal qu\'on a foulé pieds nus, un été'],
+  'vert sombre': ['un vert qui contient de la nuit', 'la couleur d\'un velours qu\'on n\'aurait pas choisi soi-même mais qu\'on garde pour les invités'],
+  'zinc': ['un gris froid, métallique, qui sent les comptoirs', 'la couleur d\'un comptoir de bistrot qu\'on a usé du coude'],
+
+  // OBJETS — wordings qui décrivent l'objet sans le nommer
+  'une bague qu\'il ne porte plus': ['une marque pâle, sur une main, qui se referme lentement avec le temps', 'un objet rangé dans un tiroir qu\'on n\'ouvre plus, qu\'on ouvre encore parfois la nuit'],
+  'une boîte d\'allumettes vide': ['une chose qu\'on garde longtemps après qu\'elle a cessé d\'être utile', 'un petit carton plat avec un nom de bar imprimé en lettres effacées'],
+  'une carte d\'embarquement déchirée': ['le souvenir d\'un voyage qu\'on n\'a pas fait', 'une moitié de ticket avec une destination à moitié visible'],
+  'une carte postale jamais envoyée': ['quelques mots qu\'on a écrits pour quelqu\'un et qu\'on a gardés pour soi', 'une carte avec une adresse qu\'on connaît par cœur, et qu\'on n\'a jamais utilisée'],
+  'un carnet à couverture cuir': ['un objet qu\'on emporte partout sans jamais l\'ouvrir devant quelqu\'un', 'un petit cahier dont la couverture s\'est patinée à force d\'être tenue'],
+  'une chaîne fine sans pendentif': ['quelque chose qui manque, et qu\'on continue de porter quand même', 'un bijou qui a perdu ce qu\'il portait, et qui reste comme un témoin'],
+  'une clé sans serrure': ['un objet qui ne sert plus, et qu\'on garde pourtant', 'une clé qu\'on a gardée d\'un appartement qu\'on n\'habite plus'],
+  'un coquillage poli par la main': ['un objet ramassé un jour, et tenu si longtemps qu\'il a changé', 'une coquille devenue chaude à force d\'avoir été tenue'],
+  'un crayon mâché': ['une chose qu\'on tient dans la bouche sans s\'en rendre compte', 'un petit bout de bois marqué de morsures fines, comme s\'il avait servi à mâcher des phrases'],
+  'un disque vinyle rayé': ['un objet qui ne joue plus tout, qu\'on remet quand même', 'un trente-trois tours qu\'on remet souvent, en sachant à quel endroit il va sauter'],
+  'un foulard en soie ancien': ['un tissu fin qu\'on porte autrement que pour le froid', 'un carré de soie aux motifs effacés, plié dans un tiroir'],
+  'une horloge arrêtée': ['un objet qui marque toujours la même heure', 'un cadran dont les aiguilles ne bougent plus depuis longtemps'],
+  'une lampe à abat-jour': ['une lumière qu\'on filtre', 'une lampe qu\'on garde sur la table de nuit, qu\'on n\'éteint pas tout de suite quand on se couche'],
+  'une lettre jamais ouverte': ['une chose qu\'on a reçue, qu\'on a posée, qu\'on n\'a pas lue', 'une enveloppe à l\'écriture familière, conservée intacte, qu\'on déplace sans l\'ouvrir'],
+  'un livre annoté en marge': ['un objet qu\'on n\'a pas lu seul', 'un volume qu\'on ne prête pas, parce que ce qu\'on y a écrit ne regarde plus que soi'],
+  'un médaillon vide': ['un bijou qui contenait quelque chose qu\'on n\'a pas remplacé', 'un médaillon avec un fermoir usé, qui contenait une photo qu\'on a retirée'],
+  'une montre ancienne': ['un objet qui mesure le temps autrement', 'une montre héritée, à laquelle il manque parfois quelques secondes par jour'],
+  'un mouchoir brodé': ['un carré de tissu qu\'on n\'a pas utilisé', 'un mouchoir avec deux lettres brodées, qui ne sont pas les siennes'],
+  'un paquet de cigarettes presque plein': ['un objet d\'avant, qu\'on n\'a pas fini', 'un paquet entamé, qu\'on n\'a pas jeté en arrêtant'],
+  'une page de roman pliée en quatre': ['un fragment de quelque chose qu\'on a aimé', 'une page arrachée d\'un livre qu\'on a aimé, gardée dans un portefeuille'],
+  'une pierre plate ramassée à un endroit précis': ['un caillou qu\'on a choisi entre tous', 'un galet ramassé un certain jour, dans un certain endroit, qu\'on n\'a jamais reposé'],
+  'un pinceau sec': ['un outil qui n\'a pas servi récemment', 'un pinceau dont les poils sont durcis par une couleur qu\'on n\'a pas nettoyée'],
+  'une plume d\'oiseau noire': ['une chose tombée du ciel, qu\'on a ramassée', 'une plume noire, intacte, gardée dans un livre qu\'on n\'a pas terminé'],
+  'un rasoir mécanique': ['un objet ancien qu\'on a préféré aux modernes', 'un rasoir de sûreté à l\'ancienne, gardé dans une boîte en cuir'],
+  'un ruban de tissu': ['une chose fine qu\'on garde sans pouvoir l\'expliquer', 'un ruban dont on connaît l\'origine, qu\'on n\'a jamais voulu jeter'],
+  'un sablier': ['un objet qui mesure le temps de façon visible', 'un sablier qui mesure exactement le temps d\'une infusion, ou d\'un appel difficile'],
+  'un seul gant': ['un objet qui ne va plus avec rien', 'un gant unique, en cuir ou en laine, dont l\'autre s\'est perdu un jour précis'],
+  'un stylo plume noir': ['un instrument qu\'on a choisi pour la lenteur', 'un stylo lourd, à l\'encre dense, qu\'on remplit soi-même'],
+  'une tasse ébréchée': ['une chose abîmée qu\'on n\'a pas remplacée', 'une tasse avec un éclat sur le bord, qu\'on prend toujours'],
+  'un trousseau de clés trop lourd': ['un objet qui pèse plus qu\'il ne devrait', 'un trousseau garni de clés dont on a oublié certaines serrures'],
+  'un vieux briquet': ['une chose qu\'on garde dans la poche pour faire craquer le silence', 'un petit objet en métal, dont l\'usure forme une trace au pouce'],
+  'un volet fermé': ['une chose qu\'on a tirée pour ne plus voir', 'une fenêtre obstinément close, dans une maison où d\'autres sont ouvertes'],
+  'une enveloppe sans adresse': ['un courrier qu\'on n\'a pas su où envoyer', 'une enveloppe trouvée dans un livre, fermée, sans le moindre nom dessus'],
+  'une bougie à demi consumée': ['un objet qui a été allumé quelque part', 'une bougie qu\'on a choisie pour son odeur précise, qu\'on ne rallume que dans certaines circonstances'],
+  'un cahier d\'écolier': ['un carnet à carreaux fins, gardé pour des raisons d\'enfance', 'un cahier d\'enfance avec des dessins en marge, et des mots qu\'on a oubliés avoir écrits'],
+
+  // LIEUX — wordings qui évoquent le lieu sans le nommer
+  'la mer en hiver': ['un endroit que l\'on regarde quand on a besoin de se sentir petit', 'une eau qui n\'invite pas à entrer, mais qu\'on regarde longtemps'],
+  'une bibliothèque vide à 17h': ['un lieu qui sent le papier et la patience', 'une salle qui se vide à une heure précise, qu\'on connaît par cœur'],
+  'une salle d\'audience à l\'aube': ['un endroit où l\'on arrive avant les autres pour ne pas avoir à parler en marchant', 'une pièce officielle où la lumière du matin tombe d\'une fenêtre haute'],
+  'un train de nuit': ['un endroit qui bouge pendant qu\'on dort', 'une chose qui traverse la France pendant qu\'on dort à demi'],
+  'un bar près d\'une gare': ['un endroit où l\'on attend sans vraiment attendre', 'un comptoir où l\'on commande une dernière chose qu\'on n\'avait pas prévue'],
+  'un parc où on ne va pas': ['un lieu qu\'on évite sans bien savoir pourquoi', 'un endroit que l\'on traverse plutôt que d\'y rester'],
+  'une église en semaine': ['un lieu vide qui ne l\'est pas vraiment', 'une nef où l\'écho est plus présent que les voix'],
+  'un appartement vide en plein soleil': ['un endroit qu\'on a quitté en oubliant les rideaux', 'une pièce que la lumière traverse sans rencontrer personne'],
+  'une cuisine la nuit': ['un endroit où l\'on se retrouve seul à 3h du matin sans savoir pourquoi', 'une pièce où l\'on tient une tasse sans la boire'],
+  'un quai désert': ['un lieu où l\'on attend sans certitude', 'un endroit où l\'on regarde les rails sans intention de partir'],
+  'un cinéma à la dernière séance': ['une salle où il reste plus de fauteuils que de spectateurs', 'un endroit où l\'on entre seul, vraiment seul'],
+  'un escalier qui ne mène nulle part': ['un endroit dont l\'usage s\'est perdu', 'des marches qu\'on monte sans avoir d\'arrivée à atteindre'],
+  'une chambre d\'hôtel inconnue': ['un lieu où l\'on s\'allonge sans savoir qui s\'y est allongé avant', 'un endroit qui ne contient rien à soi'],
+  'un jardin abandonné': ['un endroit qui pousse sans qu\'on s\'en occupe', 'un terrain où la nature reprend ce qu\'on lui avait pris'],
+  'une route qu\'on prend toujours': ['un trajet que les pieds connaissent par cœur', 'un chemin qu\'on emprunte même quand on n\'a pas besoin d\'aller où il mène'],
+  'une cabine téléphonique': ['un endroit obsolète qui existe encore parfois', 'un petit espace de verre où l\'on peut être seul en pleine rue'],
+  'un cimetière au printemps': ['un lieu où la vie pousse sur la mort', 'un jardin qu\'on n\'aurait jamais cru beau'],
+  'un grenier': ['un endroit qu\'on n\'a pas visité depuis le déménagement', 'une pièce qui contient des choses dont on ne peut plus expliquer l\'utilité'],
+  'une cave qu\'on a peur d\'ouvrir': ['un endroit qui sent le froid et la mémoire', 'une porte qu\'on remet à plus tard depuis trop d\'années'],
+  'un balcon donnant sur rien': ['un espace de respiration qui ne donne sur aucune vue', 'un endroit où l\'on sort sans avoir rien à regarder'],
+  'une plage hors saison': ['un endroit où le sable retrouve son silence', 'une côte qui n\'appartient plus aux vacanciers'],
+  'un café qui ferme': ['un endroit où l\'on s\'attarde au-delà de l\'heure raisonnable', 'une terrasse où le serveur empile les chaises pendant qu\'on finit son verre'],
+  'un atelier silencieux': ['un endroit où l\'on travaille sans bruit, par respect', 'une pièce où chaque geste compte plus qu\'il ne devrait'],
+  'un musée à la fermeture': ['un endroit où l\'on aime être quand il n\'y a plus personne', 'une salle où les œuvres semblent enfin respirer'],
+  'une cour d\'immeuble haussmannien': ['un endroit gris où la lumière descend sans toucher le sol', 'une cour pavée où les pas résonnent plus que de raison'],
+  'une forêt après la pluie': ['un endroit où chaque feuille pèse plus qu\'avant', 'un sous-bois où l\'odeur de terre prend le dessus'],
+  'un pont au crépuscule': ['un endroit où l\'on s\'arrête au milieu sans savoir pourquoi', 'un point précis d\'une traversée où l\'on hésite à avancer'],
+  'une station-service la nuit': ['un endroit éclairé en plein noir, où l\'on ne fait que passer', 'une halte qu\'on n\'avait pas prévue'],
+  'une maison de famille qu\'on n\'habite plus': ['un endroit qui contient plus de soi qu\'on ne le pensait', 'une bâtisse vide où chaque pièce a son odeur'],
+  'un couloir d\'hôpital': ['un endroit où l\'on attend en regardant ses chaussures', 'un passage où l\'on apprend à marcher sans bruit'],
+  'une cabane au fond d\'un jardin': ['un endroit qu\'on s\'est construit pour avoir un endroit', 'un petit refuge où l\'on a passé plus de temps que prévu'],
+  'une terrasse abandonnée': ['un endroit en hauteur où l\'on ne va plus', 'un espace ouvert dont les meubles ont été oubliés sous la pluie'],
+  'une boutique qui n\'existe plus': ['une devanture qu\'on regarde par habitude, même si rien ne s\'y trouve plus', 'un endroit dont on a la carte mentale, mais pas la réalité'],
+  'une chambre d\'enfance qu\'on a refaite': ['un endroit qui n\'est plus le sien, et qui l\'est encore', 'une pièce dont le papier peint a changé mais pas la lumière'],
+
+  // MOTS — wordings qui évoquent un mot favori sans le citer
+  'tenu': ['un mot qui parle de ce qui ne lâche pas', 'un mot court qui pèse plus qu\'il ne le montre'],
+  'patiemment': ['un mot qui dit la lenteur acceptée', 'un mot qu\'on emploie quand on a renoncé à se presser'],
+  'franchement': ['un mot qui s\'excuse de la vérité qui suit', 'un mot qui ouvre les phrases comme on ouvre une porte qu\'on n\'aurait pas voulu pousser'],
+  'peut-être': ['un mot qui hésite avant de s\'engager', 'un mot qui laisse toujours la porte entrouverte'],
+  'verdict': ['un mot qui tranche, qui vient des prétoires', 'un mot qui pèse comme une décision sans appel'],
+  'composer': ['un mot qui parle d\'un effort silencieux pour fabriquer ce qu\'on dit', 'un mot qu\'on emploie en cuisine, en musique, et dans les phrases qu\'on prépare'],
+  'honnêtement': ['un mot qui prévient, comme s\'il fallait excuser ce qui suit', 'un mot qu\'on place avant les choses difficiles'],
+  'désappris': ['un mot qui dit qu\'on a su, et qu\'on ne sait plus', 'un mot rare, presque douloureux, qui parle d\'une perte qu\'on a laissée arriver'],
+  'simplement': ['un mot qui voudrait alléger ce qu\'il accompagne', 'un mot qui ralentit la phrase au milieu'],
+  'au fond': ['une expression qui dit la vérité après les autres', 'deux mots qu\'on emploie quand on n\'a plus envie de tourner autour'],
+  'presque': ['un mot qui frôle sans atteindre', 'un mot qui retient l\'absolu'],
+  'à force': ['une expression qui dit le résultat d\'une longue répétition', 'deux mots qui parlent de ce que le temps finit par produire'],
+  'néanmoins': ['un mot un peu désuet qui fait pivoter la phrase', 'un mot qui change de direction sans hâte'],
+  'justement': ['un mot qui souligne la coïncidence', 'un mot qui appuie sur ce qui vient d\'être dit'],
+  'droit': ['un mot court, ferme, qui parle d\'un alignement', 'un mot qui dit la verticale'],
+  'retenu': ['un mot qui parle d\'un effort pour ne pas relâcher', 'un mot qui dit le contraire du laisser-aller'],
+  'tenace': ['un mot qui dit quelque chose qui ne lâche pas, malgré tout', 'un mot qui s\'accroche'],
+  'parfois': ['un mot qui admet que ce n\'est pas toujours', 'un mot qui ouvre une porte de temps en temps'],
+  'forcément': ['un mot qui referme la phrase comme une évidence', 'un mot qui ne laisse pas de choix'],
+  'sans doute': ['une expression qui hésite à affirmer', 'deux mots qui posent la probabilité plutôt que la certitude'],
+  'vraiment': ['un mot qui souligne, qui appuie', 'un mot qu\'on glisse pour donner du poids à ce qu\'on dit'],
+  'exactement': ['un mot précis qui ne souffre pas l\'à-peu-près', 'un mot qui marque le point juste'],
+  'somme toute': ['une expression qui résume après les détails', 'deux mots qui clôturent l\'argumentation'],
+  'pourtant': ['un mot qui résiste à ce qui précède', 'un mot qui contredit doucement'],
+  'délibérément': ['un mot qui dit l\'intention pleine', 'un mot qui retire le hasard'],
+  'malgré tout': ['une expression qui persiste contre les obstacles', 'deux mots qui parlent d\'une force qui dure'],
+  'en somme': ['une expression qui prend le pas en arrière', 'deux mots qui résument ce qui a été dit'],
+  'tranquillement': ['un mot qui ralentit, qui calme', 'un mot qui dit qu\'on n\'est pas pressé'],
+  'enfin': ['un mot qui marque un soulagement, ou une fin', 'un mot qui ferme et qui ouvre à la fois'],
+  'en réalité': ['une expression qui corrige une apparence', 'deux mots qui révèlent ce qui était caché'],
+  'cependant': ['un mot qui marque l\'opposition avec mesure', 'un mot qui change de cap sans brusquerie'],
+  'à vrai dire': ['une expression qui prévient d\'un changement de ton', 'trois mots qui annoncent une vérité plus simple'],
+  'visiblement': ['un mot qui constate ce qu\'on voit', 'un mot qui appuie sur l\'évidence'],
+  'en vérité': ['une expression solennelle qui annonce le vrai', 'deux mots qui prennent un peu de hauteur'],
+
+  // HABITUDES — wordings qui décrivent l'habitude sans la nommer
+  'range avant de partir': ['un geste qu\'on fait toujours avant de quitter une pièce', 'une manie qui transforme chaque départ en un petit rituel'],
+  'ne dort pas avant 2h du matin': ['une habitude qui prolonge la nuit comme une marge', 'une lumière qui reste allumée bien après celle des autres'],
+  'reformule les questions avant d\'y répondre': ['une manière de gagner du temps en répétant', 'un geste verbal qui arrive avant la réponse'],
+  'marche en comptant ses pas': ['une habitude silencieuse qui ordonne le déplacement', 'une comptabilité intérieure de chaque trajet'],
+  'recommence ses phrases trois fois avant de finir': ['une façon de chercher la formulation juste, à voix haute', 'une hésitation visible qui se répète'],
+  'efface ce qu\'il vient d\'écrire': ['un geste qui revient en arrière sur ses propres mots', 'une manie qui défait ce qu\'on vient de faire'],
+  'arrive toujours dix minutes en avance': ['une habitude qui devance toujours l\'heure', 'une ponctualité qui dépasse la ponctualité'],
+  'laisse traîner ses tasses': ['une trace qu\'il laisse derrière lui sans le faire exprès', 'des objets qui marquent ses passages'],
+  'ferme les yeux pour répondre': ['un geste qui coupe le monde au moment de parler', 'une manière de chercher la réponse à l\'intérieur'],
+  'soupire avant de dire oui': ['un souffle qui précède l\'accord', 'un signe qui dit que oui n\'est pas si simple'],
+  'répète à voix basse ce qu\'il vient de lire': ['un murmure qui suit la lecture', 'une voix qui mâche les mots qu\'elle découvre'],
+  'compte les jours en début de mois': ['une comptabilité du temps qui revient avec la saison', 'un calcul qu\'on refait au calendrier'],
+  'plie ses billets avant de les ranger': ['un soin pour les choses petites', 'un geste qui ralentit les transactions'],
+  'relit deux fois ses messages avant d\'envoyer': ['une vigilance avant chaque mot envoyé', 'une habitude qui retarde l\'envoi'],
+  'ne finit jamais les livres qu\'il commence': ['une habitude qui laisse des piles', 'un rapport au livre qui ressemble à un rapport aux choses'],
+  'note tout sur des bouts de papier': ['une mémoire qui passe par la main', 'des fragments écrits qu\'on retrouve dans toutes les poches'],
+  'murmure parfois sans s\'en rendre compte': ['une voix qui pense à voix basse', 'un son léger qui accompagne le silence'],
+  'évite les miroirs après 23h': ['un geste qu\'on fait sans s\'expliquer', 'une superstition douce qui revient chaque soir'],
+  'sourit quand il est gêné': ['une expression qui ne dit pas ce qu\'on croit', 'un sourire qui sert à autre chose qu\'à la joie'],
+  'parle aux objets qu\'il pose': ['une voix qui s\'adresse à ce qui n\'écoute pas', 'une tendresse pour les choses qu\'on manipule'],
+  'attend toujours que l\'autre raccroche': ['une politesse qui prolonge les fins de conversation', 'une habitude qui retarde le silence'],
+  'pose une question quand on lui en pose une': ['une manière de renvoyer plutôt que de répondre', 'une stratégie de conversation qui détourne'],
+  'tourne autour de la table avant de s\'asseoir': ['une approche qui prend son temps', 'un mouvement qui hésite à se poser'],
+  'retient son souffle dans les ascenseurs': ['une habitude qui dit une peur ancienne', 'une suspension qui dure le temps d\'un trajet'],
+  'mange debout quand il est seul': ['une manière de ne pas faire de la solitude un repas', 'une posture qui refuse de s\'attabler'],
+  'ne parle jamais le matin avant le café': ['un silence qui dure jusqu\'à la première gorgée', 'une règle non dite qu\'il s\'impose chaque matin'],
+  'relit les mêmes pages d\'un livre qu\'il aime': ['une fidélité aux passages qu\'on connaît déjà', 'une lecture qui revient sur ses pas'],
+  'arrive dans une pièce sans savoir pourquoi': ['une habitude des étourderies', 'un mouvement qui devance la pensée'],
+  'ne jette jamais les billets de cinéma': ['une accumulation discrète de souvenirs minuscules', 'des petits papiers gardés pour rien d\'avouable'],
+  'boit toujours dans la même tasse': ['un attachement à un objet plutôt qu\'à un autre', 'une fidélité matérielle qu\'on ne s\'explique pas'],
+  'compte les marches en montant': ['une comptabilité ascensionnelle', 'un nombre qui se forme à chaque escalier'],
+  'cache ses photos d\'enfance': ['un soin à ne pas laisser voir d\'où l\'on vient', 'une réserve sur les images d\'avant'],
+  'se lave les mains plus souvent qu\'il ne faut': ['une propreté qui dépasse l\'utile', 'un geste qui se répète plus que nécessaire'],
+  'note la météo de chaque jour': ['une attention quotidienne au ciel', 'un journal météorologique qu\'on tient sans raison']
 };
 
 // === LES 7 MURMURES DU MATIN ===
@@ -791,7 +1090,17 @@ let gameState = {
     // 1: { userResponse: '...', guesses: {marc: 'theo', ...}, score: 2, completed: true, foundObjects: [...] },
   },
   // Sceau voilé (J4+)
-  veiledGuestId: null
+  veiledGuestId: null,
+  // Plan d'indices distribués pendant le Cycle (généré au début)
+  cluesPlan: {
+    murmurs: [],   // 7 entrées : indice à afficher dans le Murmure de chaque jour (null pour J1 et J7)
+    library: []    // 3 entrées : 1 par hotspot (letter, candle, book)
+  },
+  // Indices que le joueur a collectés (en lisant les Murmures et en visitant la Bibliothèque)
+  collectedClues: [],  // [{day, source, fragmentType, wording, guestId (révélé au Collapse)}]
+  // Vote sur le Porteur (au Couloir)
+  porterVote: null,    // 'marc' | 'theo' | ... | null
+  cycleEnded: false    // true après le Collapse
 };
 
 let isDayMode = false;
@@ -892,11 +1201,56 @@ function initNewCycle() {
   // Tirer le Porteur de la Clé (un des 5 Invités)
   gameState.porterId = pickRandom(SEASON_1_GUESTS.map(g => g.id));
 
+  // Générer le plan d'indices : 5 Murmures (J2 à J6) + 3 hotspots Bibliothèque
+  // Tous pointent vers les fragments du Porteur (pour que la déduction soit possible)
+  gameState.cluesPlan = generateCluesPlan(gameState.porterId, gameState.fragments[gameState.porterId]);
+
   gameState.currentDay = 1;
   gameState.daysData = {};
   gameState.veiledGuestId = null;
+  gameState.collectedClues = [];
+  gameState.porterVote = null;
+  gameState.cycleEnded = false;
 
   saveState();
+}
+
+// === GÉNÉRATION DU PLAN D'INDICES ===
+function generateCluesPlan(porterId, porterFragments) {
+  // 8 indices à distribuer : 5 Murmures (J2-J6) + 3 Bibliothèque
+  // On veut au moins 1 indice par catégorie de fragment, varié et pas répétitif
+  const types = ['couleur', 'objet', 'lieu', 'mot', 'habitude'];
+
+  // On crée 5 indices pour Murmures (un par jour J2 à J6)
+  // + 3 indices pour Bibliothèque
+  // Total 8 : on prend chaque fragment au moins une fois, et on en répète 3 différents
+  // (puisqu'on a 5 fragments et 8 slots)
+  const slots = [];
+  // 1 par fragment (5)
+  types.forEach(t => slots.push(t));
+  // +3 répétitions aléatoires (pour avoir 8 au total et varier)
+  for (let i = 0; i < 3; i++) {
+    slots.push(pickRandom(types));
+  }
+  // Mélanger
+  for (let i = slots.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [slots[i], slots[j]] = [slots[j], slots[i]];
+  }
+
+  // Pour chaque slot, choisir un wording du fragment correspondant
+  const clues = slots.map(type => {
+    const fragmentValue = porterFragments[type];
+    const wordings = INDICE_WORDINGS[fragmentValue] || ['un fragment difficile à dire'];
+    const wording = pickRandom(wordings);
+    return { type, value: fragmentValue, wording };
+  });
+
+  // Distribuer : 5 premiers pour Murmures J2 à J6 (index 1 à 5 dans le tableau MURMURS), 3 derniers pour Bibliothèque
+  return {
+    murmurs: [null, clues[0], clues[1], clues[2], clues[3], clues[4], null], // J1 et J7 sans indice
+    library: [clues[5], clues[6], clues[7]]
+  };
 }
 
 // === NAVIGATION ENTRE SCÈNES ===
@@ -974,6 +1328,22 @@ function renderSalon() {
     murmurBadge.style.display = 'none';
   }
 
+  // Couloir : visible dès qu'on a au moins 2 indices
+  const couloirCard = document.getElementById('couloirNavCard');
+  const cluesCount = (gameState.collectedClues || []).length;
+  if (cluesCount >= 2 && !gameState.cycleEnded) {
+    couloirCard.style.display = 'flex';
+    const sub = document.getElementById('couloirNavSubtitle');
+    if (gameState.porterVote) {
+      const g = SEASON_1_GUESTS.find(x => x.id === gameState.porterVote);
+      sub.textContent = `VOTE ACTUEL : ${g.name.toUpperCase()}`;
+    } else {
+      sub.textContent = 'VOTRE VOTE SUR LA CLÉ';
+    }
+  } else {
+    couloirCard.style.display = 'none';
+  }
+
   // Sceau du joueur en haut + Invités
   renderInvites();
 }
@@ -1020,7 +1390,45 @@ function openMurmur() {
   document.getElementById('murmurText').innerHTML = m.text.replace(/\n\n/g, '<br><br>');
   document.getElementById('murmurAmorce').textContent = m.amorce;
 
-  // Marquer comme lu
+  // Indice distillé du jour
+  const indiceEl = document.getElementById('murmurIndice');
+  const indiceData = (gameState.cluesPlan && gameState.cluesPlan.murmurs) ? gameState.cluesPlan.murmurs[dayIndex] : null;
+  if (indiceData) {
+    // Phrase d'introduction à l'indice (varie selon le jour pour ne pas être répétitif)
+    const intros = [
+      '',
+      'L\'un d\'entre vous, hier, a laissé glisser quelque chose. Quelque chose de petit, qu\'on remarque seulement si l\'on regarde bien.',  // J2
+      'Il y a, dans le Cercle, quelqu\'un qui porte ',                                                                                          // J3
+      'Quelqu\'un parmi vous a, je crois, ',                                                                                                    // J4
+      'Si vous lisez bien, vous trouverez, dans les mots de quelqu\'un, ',                                                                      // J5
+      'Une dernière chose, avant que je ne me taise. L\'un d\'entre vous a ',                                                                    // J6
+      ''
+    ];
+    const intro = intros[dayIndex] || '';
+    let phrase;
+    if (intro.endsWith('a ') || intro.endsWith('porte ')) {
+      // L'intro se termine en attendant une suite : on enchaîne
+      phrase = intro + indiceData.wording + '.';
+    } else if (intro === '') {
+      phrase = indiceData.wording.charAt(0).toUpperCase() + indiceData.wording.slice(1) + '.';
+    } else {
+      phrase = intro + ' ' + indiceData.wording.charAt(0).toUpperCase() + indiceData.wording.slice(1) + '.';
+    }
+    indiceEl.textContent = phrase;
+    indiceEl.style.display = 'block';
+    // Marquer comme collecté
+    addCollectedClue({
+      day: gameState.currentDay,
+      source: 'murmur',
+      type: indiceData.type,
+      value: indiceData.value,
+      wording: indiceData.wording
+    });
+  } else {
+    indiceEl.style.display = 'none';
+  }
+
+  // Marquer le Murmure comme lu
   if (!gameState.daysData[gameState.currentDay]) {
     gameState.daysData[gameState.currentDay] = {};
   }
@@ -1028,10 +1436,79 @@ function openMurmur() {
   saveState();
 }
 
+function addCollectedClue(clue) {
+  // Évite les doublons (même jour, même source, même type)
+  const exists = gameState.collectedClues.some(c =>
+    c.day === clue.day && c.source === clue.source && c.type === clue.type
+  );
+  if (!exists) {
+    gameState.collectedClues.push(clue);
+    saveState();
+  }
+}
+
 // === CHAMBRE — fiches publiques ===
 function openChambre() {
   showScene('chambre');
+  switchChambreTab('fiches'); // toujours commencer sur les fiches
   renderFiches();
+  renderNotes();
+  updateNotesCount();
+  updateCouloirCTA();
+}
+
+function switchChambreTab(tab) {
+  document.getElementById('tabFiches').classList.toggle('active', tab === 'fiches');
+  document.getElementById('tabNotes').classList.toggle('active', tab === 'notes');
+  document.getElementById('chambreContentFiches').style.display = tab === 'fiches' ? 'block' : 'none';
+  document.getElementById('chambreContentNotes').style.display = tab === 'notes' ? 'block' : 'none';
+}
+
+function updateNotesCount() {
+  const count = (gameState.collectedClues || []).length;
+  const span = document.getElementById('notesCount');
+  span.textContent = count > 0 ? '(' + count + ')' : '';
+}
+
+function updateCouloirCTA() {
+  // Le Couloir devient accessible dès qu'on a au moins 2 indices collectés
+  const cta = document.getElementById('chambreCouloirCTA');
+  if (gameState.cycleEnded) {
+    cta.style.display = 'none';
+    return;
+  }
+  const count = (gameState.collectedClues || []).length;
+  cta.style.display = count >= 2 ? 'block' : 'none';
+}
+
+function renderNotes() {
+  const container = document.getElementById('notesContent');
+  const clues = gameState.collectedClues || [];
+  if (clues.length === 0) {
+    container.innerHTML = '<div class="notes-empty">Vous n\'avez pas encore collecté d\'indices. Lisez les Murmures du matin et explorez la Bibliothèque pour trouver des traces.</div>';
+    return;
+  }
+  // Trier par jour, puis par source (murmur avant library)
+  const sorted = [...clues].sort((a, b) => {
+    if (a.day !== b.day) return a.day - b.day;
+    if (a.source === 'murmur' && b.source !== 'murmur') return -1;
+    if (a.source !== 'murmur' && b.source === 'murmur') return 1;
+    return 0;
+  });
+
+  container.innerHTML = sorted.map(c => {
+    const sourceLabel = c.source === 'murmur' ? 'Murmure' : 'Bibliothèque';
+    const typeLabel = { couleur: 'une couleur', objet: 'un objet', lieu: 'un lieu', mot: 'un mot', habitude: 'une habitude' }[c.type] || c.type;
+    return `
+      <div class="note-card">
+        <div class="note-meta">
+          <span>JOUR ${c.day}</span>
+          <span class="note-source">${sourceLabel} — ${typeLabel}</span>
+        </div>
+        <div class="note-text">« ${c.wording.charAt(0).toUpperCase() + c.wording.slice(1)} »</div>
+      </div>
+    `;
+  }).join('');
 }
 
 function renderFiches() {
@@ -1097,17 +1574,107 @@ function renderFiches() {
   `;
 }
 
-// === BIBLIOTHÈQUE ===
+// === COULOIR — vote sur le Porteur ===
+function openCouloir() {
+  showScene('couloir');
+  renderCouloir();
+}
+
+function renderCouloir() {
+  const current = gameState.porterVote;
+  const currentEl = document.getElementById('couloirCurrent');
+  if (current) {
+    const guest = SEASON_1_GUESTS.find(g => g.id === current);
+    currentEl.style.display = 'block';
+    currentEl.textContent = `Vote actuel : ${guest.name} (${ALL_SEALS[guest.seal].name}). Vous pouvez en changer.`;
+  } else {
+    currentEl.style.display = 'none';
+  }
+
+  const opts = document.getElementById('couloirOptions');
+  opts.innerHTML = SEASON_1_GUESTS.map(g => {
+    const seal = ALL_SEALS[g.seal];
+    const selected = gameState.porterVote === g.id;
+    return `
+      <button type="button" class="couloir-option${selected ? ' selected' : ''}" onclick="setPorterVote('${g.id}')">
+        <div class="couloir-option-seal">${renderSealSVG(g.seal)}</div>
+        <div class="couloir-option-info">
+          <div class="couloir-option-name">${g.name}</div>
+          <div class="couloir-option-archetype">${seal.name.toUpperCase()}</div>
+        </div>
+        <div class="couloir-check"></div>
+      </button>
+    `;
+  }).join('');
+}
+
+function setPorterVote(guestId) {
+  if (gameState.cycleEnded) return;
+  gameState.porterVote = guestId;
+  saveState();
+  renderCouloir();
+}
 function openLibrary() {
   showScene('library');
-  // Reset hotspots à chaque entrée
-  document.querySelectorAll('.hotspot').forEach(h => h.classList.remove('found'));
+  // Restaurer l'état des hotspots déjà trouvés ce Cycle
+  ['letter', 'candle', 'book'].forEach((type, idx) => {
+    const hs = document.getElementById(`hotspot-${type}`);
+    const wasFound = gameState.collectedClues.some(c =>
+      c.source === 'library' && c.libraryIdx === idx
+    );
+    if (wasFound) {
+      hs.classList.add('found');
+    } else {
+      hs.classList.remove('found');
+    }
+  });
 }
 
 function discoverObject(type) {
+  const idx = ['letter', 'candle', 'book'].indexOf(type);
+  if (idx < 0) return;
+
+  // Récupérer l'indice prévu pour ce hotspot
+  const indiceData = gameState.cluesPlan && gameState.cluesPlan.library ? gameState.cluesPlan.library[idx] : null;
+  if (!indiceData) return;
+
+  // Marquer comme collecté
+  addCollectedClue({
+    day: gameState.currentDay,
+    source: 'library',
+    libraryIdx: idx,
+    type: indiceData.type,
+    value: indiceData.value,
+    wording: indiceData.wording
+  });
+
+  // Marquer le hotspot
   const hs = document.getElementById(`hotspot-${type}`);
   hs.classList.add('found');
-  // À enrichir au commit 2 avec des indices distillés
+
+  // Ouvrir la modal d'indice
+  showLibraryClueModal(indiceData);
+}
+
+function showLibraryClueModal(indiceData) {
+  // Phrase d'introduction selon le type d'indice
+  const intros = {
+    couleur: 'Vous remarquez ',
+    objet: 'Vous trouvez ',
+    lieu: 'Une note glissée parle d\'',
+    mot: 'Sur une page, un mot est souligné. C\'est ',
+    habitude: 'Une phrase griffonnée évoque '
+  };
+  const intro = intros[indiceData.type] || 'Vous remarquez ';
+  const fullText = intro + indiceData.wording + '.';
+
+  // Réutiliser la modal recap pour afficher l'indice
+  document.getElementById('libraryClueText').textContent = fullText;
+  document.getElementById('library-clue-modal').classList.add('active');
+}
+
+function closeLibraryClue() {
+  document.getElementById('library-clue-modal').classList.remove('active');
 }
 
 // === COMPOSE ===
@@ -1330,13 +1897,62 @@ function goToSalon() {
 // === AVANCEMENT JOUR (test) ===
 function advanceDay() {
   if (gameState.currentDay >= 7) {
-    // Cycle terminé
-    showScene('collapse');
+    // Cycle terminé, on entre dans le Collapse
+    showCollapseIntro();
     return;
   }
   gameState.currentDay++;
   saveState();
   renderSalon();
+}
+
+function showCollapseIntro() {
+  showScene('collapse');
+  document.getElementById('collapseStepDefault').style.display = 'block';
+  document.getElementById('collapseStepReveal').style.display = 'none';
+
+  // Adapter le texte selon que l'utilisateur a voté ou pas
+  const introEl = document.getElementById('collapseIntroText');
+  if (gameState.porterVote) {
+    const g = SEASON_1_GUESTS.find(x => x.id === gameState.porterVote);
+    introEl.textContent = `Vous avez accusé ${g.name}. La boîte va s'ouvrir, et vous saurez. Êtes-vous prêt ?`;
+    document.getElementById('collapseRevealBtn').textContent = 'OUVRIR LA BOÎTE';
+  } else {
+    introEl.textContent = 'Vous avez traversé sept soirées sans poser de vote. Vous saurez tout de même qui portait la Clé. Êtes-vous prêt ?';
+    document.getElementById('collapseRevealBtn').textContent = 'RÉVÉLER LA CLÉ';
+  }
+}
+
+function revealCollapse() {
+  // Marquer le Cycle comme terminé
+  gameState.cycleEnded = true;
+  saveState();
+
+  document.getElementById('collapseStepDefault').style.display = 'none';
+  document.getElementById('collapseStepReveal').style.display = 'block';
+
+  // Identifier le Porteur
+  const porter = SEASON_1_GUESTS.find(g => g.id === gameState.porterId);
+  const porterSeal = ALL_SEALS[porter.seal];
+  document.getElementById('collapseRevealSeal').innerHTML = renderSealSVG(porter.seal);
+  document.getElementById('collapseRevealName').textContent = porter.name;
+  document.getElementById('collapseRevealArchetype').textContent = porterSeal.name.toUpperCase();
+
+  // Texte de V selon le résultat
+  let label, text;
+  if (!gameState.porterVote) {
+    label = 'LE PORTEUR';
+    text = `Voici celui qui portait la Clé : ${porter.name}, sous le Sceau du ${porterSeal.name}. Vous n'avez pas voté. Le Cercle ne saura jamais ce que vous aviez deviné. Mais vous, peut-être, vous le saurez.`;
+  } else if (gameState.porterVote === gameState.porterId) {
+    label = 'JUSTE';
+    text = `Vous aviez raison. ${porter.name} portait bien la Clé, sous le Sceau du ${porterSeal.name}. Vous avez vu ce que les autres n'ont pas su voir. La Clé est à vous, ce Cycle.`;
+  } else {
+    const accused = SEASON_1_GUESTS.find(g => g.id === gameState.porterVote);
+    label = 'À CÔTÉ';
+    text = `Vous avez accusé ${accused.name}. Mais c'était ${porter.name}, sous le Sceau du ${porterSeal.name}, qui portait la Clé. Vous n'étiez pas loin. Le prochain Cycle vous attend.`;
+  }
+  document.getElementById('collapseRevealLabel').textContent = label;
+  document.getElementById('collapseRevealText').textContent = text;
 }
 
 // === RESET ===
@@ -1349,7 +1965,11 @@ function resetCycle() {
       fragments: {},
       porterId: null,
       daysData: {},
-      veiledGuestId: null
+      veiledGuestId: null,
+      cluesPlan: { murmurs: [], library: [] },
+      collectedClues: [],
+      porterVote: null,
+      cycleEnded: false
     };
     isLoaded = false;
     showScene('arrival');
