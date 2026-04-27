@@ -118,6 +118,81 @@
   #salon.day .reset-btn { color: #8C8275; }
   #salon.day .reset-btn:active { color: #4A4238; }
 
+  /* === CARTE COLLAPSE (apparaît dans le Salon) === */
+  .collapse-card { display: flex; align-items: center; padding: 22px 22px; background: linear-gradient(135deg, rgba(212,184,112,0.12) 0%, rgba(212,184,112,0.04) 100%); border: 1px solid rgba(212,184,112,0.5); border-radius: 4px; cursor: pointer; transition: all 0.4s; position: relative; overflow: hidden; margin: 0 24px 24px; box-shadow: 0 0 30px rgba(212,184,112,0.1); animation: collapsePulse 3s ease-in-out infinite; }
+  .collapse-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(212,184,112,0.15), transparent 60%); pointer-events: none; }
+  @keyframes collapsePulse { 0%, 100% { box-shadow: 0 0 30px rgba(212,184,112,0.1); } 50% { box-shadow: 0 0 50px rgba(212,184,112,0.25); } }
+  .collapse-card-icon { width: 46px; height: 46px; border-radius: 50%; background: rgba(212,184,112,0.15); border: 1px solid rgba(212,184,112,0.5); display: flex; align-items: center; justify-content: center; margin-right: 18px; flex-shrink: 0; position: relative; z-index: 1; }
+  .collapse-card-icon svg { width: 22px; height: 22px; stroke: #D4B870; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  .collapse-card-content { flex: 1; position: relative; z-index: 1; }
+  .collapse-card-title { font-family: 'Fraunces', serif; font-size: 17px; color: #EDE8DD; margin-bottom: 4px; }
+  .collapse-card-subtitle { font-family: 'Inter', sans-serif; font-size: 11px; color: #D4B870; letter-spacing: 0.25em; }
+  .collapse-card-arrow { color: #D4B870; font-size: 18px; margin-left: 12px; position: relative; z-index: 1; }
+
+  /* === SCÈNE COLLAPSE === */
+  #collapse { background: radial-gradient(ellipse at top, #1A1428 0%, #0A0612 100%); align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  #collapse::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 30%, rgba(212,184,112,0.05) 0%, transparent 70%); pointer-events: none; }
+
+  .collapse-step { padding: 60px 32px 60px; opacity: 0; transition: opacity 0.8s; pointer-events: none; position: absolute; inset: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .collapse-step.active { opacity: 1; pointer-events: auto; position: relative; }
+
+  /* Étape Intro */
+  .collapse-intro-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; text-align: center; margin-bottom: 36px; opacity: 0; animation: fadeIn 1.5s 0.5s ease forwards; }
+  .collapse-intro-title { font-family: 'Fraunces', serif; font-size: 38px; font-weight: 300; color: #EDE8DD; text-align: center; letter-spacing: 0.05em; margin-bottom: 50px; opacity: 0; animation: fadeUp 1.5s 1s ease forwards; transform: translateY(20px); }
+  .collapse-intro-text { font-family: 'Fraunces', serif; font-size: 17px; font-style: italic; color: #EDE8DD; line-height: 1.85; text-align: center; max-width: 360px; margin: 0 auto 30px; opacity: 0; animation: fadeUp 1.5s 2s ease forwards; transform: translateY(20px); }
+  .collapse-intro-sig { font-family: 'Fraunces', serif; font-size: 14px; color: #D4B870; text-align: center; letter-spacing: 0.3em; margin-bottom: 50px; opacity: 0; animation: fadeIn 1.5s 3.5s ease forwards; }
+  .collapse-intro-btn { display: block; margin: 0 auto; background: rgba(212,184,112,0.1); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 16px 40px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; opacity: 0; animation: fadeIn 1.5s 4.5s ease forwards; }
+  .collapse-intro-btn:active { background: rgba(212,184,112,0.2); color: #EDE8DD; }
+
+  /* Étape Vote */
+  .collapse-vote-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; text-align: center; margin-bottom: 16px; }
+  .collapse-vote-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 300; color: #EDE8DD; text-align: center; margin-bottom: 14px; letter-spacing: 0.02em; }
+  .collapse-vote-desc { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #A8A095; text-align: center; line-height: 1.6; margin-bottom: 36px; max-width: 320px; margin-left: auto; margin-right: auto; }
+  .vote-options { display: flex; flex-direction: column; gap: 12px; }
+  .vote-option { display: flex; align-items: center; padding: 18px 18px; background: rgba(237,232,221,0.03); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; cursor: pointer; transition: all 0.4s; }
+  .vote-option:active { background: rgba(212,184,112,0.1); border-color: rgba(212,184,112,0.5); }
+  .vote-option.selected { background: rgba(212,184,112,0.15); border-color: rgba(212,184,112,0.7); box-shadow: 0 0 20px rgba(212,184,112,0.2); }
+  .vote-option-seal { width: 50px; height: 50px; border-radius: 50%; background: rgba(212,184,112,0.08); border: 1px solid rgba(212,184,112,0.2); display: flex; align-items: center; justify-content: center; margin-right: 16px; flex-shrink: 0; overflow: hidden; }
+  .vote-option-seal img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .vote-option-seal svg { width: 30px; height: 30px; }
+  .vote-option-content { flex: 1; }
+  .vote-option-name { font-family: 'Fraunces', serif; font-size: 17px; color: #EDE8DD; margin-bottom: 4px; }
+  .vote-option-quote { font-family: 'Fraunces', serif; font-size: 12px; font-style: italic; color: #A8A095; line-height: 1.5; }
+  .vote-confirm { display: block; margin: 36px auto 0; background: rgba(212,184,112,0.1); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 16px 40px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; }
+  .vote-confirm:active { background: rgba(212,184,112,0.2); color: #EDE8DD; }
+  .vote-confirm:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* Étape Révélation */
+  .reveal-step .collapse-intro-label { animation: fadeIn 1s 0.3s ease forwards; }
+  .reveal-judgment { font-family: 'Fraunces', serif; font-size: 22px; font-style: italic; color: #EDE8DD; text-align: center; line-height: 1.6; margin-bottom: 40px; opacity: 0; animation: fadeUp 1.5s 1s ease forwards; transform: translateY(20px); }
+  .reveal-bearer { text-align: center; margin: 50px 0; opacity: 0; animation: revealBearer 2s 2.5s ease forwards; transform: scale(0.85); }
+  @keyframes revealBearer { to { opacity: 1; transform: scale(1); } }
+  .reveal-bearer-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; margin-bottom: 26px; }
+  .reveal-bearer-seal { width: 130px; height: 130px; border-radius: 50%; background: radial-gradient(circle, rgba(212,184,112,0.15) 0%, rgba(212,184,112,0.04) 100%); border: 1px solid rgba(212,184,112,0.4); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; box-shadow: 0 0 60px rgba(212,184,112,0.2); overflow: hidden; }
+  .reveal-bearer-seal img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .reveal-bearer-seal svg { width: 75px; height: 75px; }
+  .reveal-bearer-name { font-family: 'Fraunces', serif; font-size: 30px; font-weight: 300; color: #EDE8DD; margin-bottom: 8px; }
+  .reveal-bearer-seal-name { font-family: 'Inter', sans-serif; font-size: 12px; color: #D4B870; letter-spacing: 0.25em; }
+  .reveal-text { font-family: 'Fraunces', serif; font-size: 16px; font-style: italic; color: #EDE8DD; line-height: 1.8; text-align: center; max-width: 380px; margin: 30px auto; opacity: 0; animation: fadeUp 1.5s 4s ease forwards; transform: translateY(15px); }
+  .reveal-btn { display: block; margin: 36px auto 0; background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 36px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; opacity: 0; animation: fadeIn 1.5s 5s ease forwards; }
+  .reveal-btn:active { background: rgba(212,184,112,0.1); }
+
+  /* Étape Profil quantique */
+  .profile-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; text-align: center; margin-bottom: 26px; }
+  .profile-name { font-family: 'Fraunces', serif; font-size: 38px; font-weight: 300; color: #EDE8DD; text-align: center; letter-spacing: 0.02em; margin-bottom: 18px; }
+  .profile-tagline { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #D4B870; text-align: center; margin-bottom: 50px; letter-spacing: 0.05em; }
+  .profile-text { font-family: 'Fraunces', serif; font-size: 16px; font-style: italic; color: #EDE8DD; line-height: 1.85; text-align: center; max-width: 380px; margin: 0 auto 36px; }
+  .profile-stats { display: flex; justify-content: space-around; margin: 40px 0; padding: 24px 0; border-top: 1px solid rgba(212,184,112,0.15); border-bottom: 1px solid rgba(212,184,112,0.15); }
+  .profile-stat { text-align: center; }
+  .profile-stat-value { font-family: 'Fraunces', serif; font-size: 28px; color: #EDE8DD; font-weight: 300; }
+  .profile-stat-label { font-family: 'Inter', sans-serif; font-size: 9px; color: #A8A095; letter-spacing: 0.25em; margin-top: 6px; }
+  .profile-sig { font-family: 'Fraunces', serif; font-size: 13px; color: #D4B870; text-align: center; letter-spacing: 0.3em; margin: 30px 0; font-style: italic; }
+  .profile-actions { display: flex; flex-direction: column; gap: 12px; max-width: 320px; margin: 0 auto; }
+  .profile-btn-primary { background: rgba(212,184,112,0.1); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 16px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; }
+  .profile-btn-primary:active { background: rgba(212,184,112,0.2); color: #EDE8DD; }
+  .profile-btn-secondary { background: transparent; border: 1px solid rgba(237,232,221,0.2); color: #A8A095; padding: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.2em; cursor: pointer; transition: all 0.4s; }
+  .profile-btn-secondary:active { color: #EDE8DD; }
+
   /* SCÈNE 4 - MURMURE */
   #murmur { background: radial-gradient(ellipse at top, #1B2536 0%, #0A1220 100%); align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .murmur-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(237,232,221,0.08); }
@@ -319,6 +394,20 @@
     </div>
   </div>
 
+  <!-- Carte Collapse (apparaît uniquement quand débloqué) -->
+  <div id="collapseCardContainer" style="display:none;">
+    <div class="collapse-card" onclick="goToCollapse()">
+      <div class="collapse-card-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg>
+      </div>
+      <div class="collapse-card-content">
+        <div class="collapse-card-title">La Nuit du Collapse</div>
+        <div class="collapse-card-subtitle">L'HEURE EST VENUE</div>
+      </div>
+      <div class="collapse-card-arrow">→</div>
+    </div>
+  </div>
+
   <div class="invites-section">
     <p class="invites-label">LES INVITÉS</p>
     <div id="invitesList"></div>
@@ -420,6 +509,69 @@
     <p class="recap-text" id="recapText"></p>
     <p class="recap-v-sig">— V</p>
     <button class="recap-close" onclick="closeRecap()">CONTINUER</button>
+  </div>
+</div>
+
+<!-- SCÈNE COLLAPSE -->
+<div id="collapse" class="scene">
+  <!-- Étape 1 : INTRO -->
+  <div class="collapse-step" id="collapseIntro">
+    <p class="collapse-intro-label">LA NUIT DU COLLAPSE</p>
+    <h1 class="collapse-intro-title">L'Heure</h1>
+    <p class="collapse-intro-text">Le Cycle touche à sa fin. Tous les Invités sont réunis une dernière fois. L'un d'entre eux porte un Reflet — il l'ignore lui-même.</p>
+    <p class="collapse-intro-text">Saurez-vous le nommer ?</p>
+    <p class="collapse-intro-sig">— V</p>
+    <button class="collapse-intro-btn" onclick="collapseGoToVote()">PROCÉDER AU VOTE</button>
+  </div>
+
+  <!-- Étape 2 : VOTE -->
+  <div class="collapse-step" id="collapseVote">
+    <p class="collapse-vote-label">VOTRE VOIX • UN CHOIX</p>
+    <h2 class="collapse-vote-title">Qui porte le Reflet ?</h2>
+    <p class="collapse-vote-desc">Relisez ce qu'ils ont écrit. Écoutez ce qui n'y est pas. Désignez l'Invité dont la vérité vous semble la plus voilée.</p>
+    <div class="vote-options" id="voteOptions"></div>
+    <button class="vote-confirm" id="voteConfirmBtn" onclick="submitCollapseVote()" disabled>SCELLER MON VOTE</button>
+  </div>
+
+  <!-- Étape 3 : RÉVÉLATION -->
+  <div class="collapse-step reveal-step" id="collapseReveal">
+    <p class="collapse-intro-label">LE COLLAPSE</p>
+    <p class="reveal-judgment" id="revealJudgment"></p>
+    <div class="reveal-bearer">
+      <p class="reveal-bearer-label">PORTEUR DU REFLET</p>
+      <div class="reveal-bearer-seal" id="revealBearerSeal"></div>
+      <h3 class="reveal-bearer-name" id="revealBearerName"></h3>
+      <p class="reveal-bearer-seal-name" id="revealBearerSealName"></p>
+    </div>
+    <p class="reveal-text" id="revealText"></p>
+    <button class="reveal-btn" onclick="collapseGoToProfile()">DÉCOUVRIR VOTRE PROFIL</button>
+  </div>
+
+  <!-- Étape 4 : PROFIL QUANTIQUE -->
+  <div class="collapse-step" id="collapseProfile">
+    <p class="profile-label">VOTRE PROFIL QUANTIQUE</p>
+    <h2 class="profile-name" id="profileName"></h2>
+    <p class="profile-tagline" id="profileTagline"></p>
+    <p class="profile-text" id="profileText"></p>
+    <div class="profile-stats">
+      <div class="profile-stat">
+        <div class="profile-stat-value" id="statGuesses">0/5</div>
+        <div class="profile-stat-label">DEVINETTES</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-value" id="statVote">—</div>
+        <div class="profile-stat-label">COLLAPSE</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-value" id="statSeal">—</div>
+        <div class="profile-stat-label">VOTRE SCEAU</div>
+      </div>
+    </div>
+    <p class="profile-sig">— V</p>
+    <div class="profile-actions">
+      <button class="profile-btn-primary" onclick="goToSalon()">RETOURNER AU SALON</button>
+      <button class="profile-btn-secondary" onclick="resetGameFromProfile()">RECOMMENCER UN NOUVEAU CYCLE</button>
+    </div>
   </div>
 </div>
 
@@ -526,6 +678,13 @@ let allResponses = [];
 let guesses = {};
 let currentGuessId = null;
 
+// État du Collapse
+let collapseUnlocked = false;
+let bearerOfReflect = null; // Nom de l'Invité qui porte le Reflet (tiré au sort)
+let collapseVote = null;    // Nom de l'Invité que l'utilisateur a voté
+let collapseDone = false;   // Le Collapse a-t-il eu lieu
+let userProfile = null;     // Profil quantique attribué
+
 // ============================================
 // PERSISTANCE — État sauvegardé entre sessions
 // ============================================
@@ -540,6 +699,11 @@ function saveState() {
       allResponses: allResponses,
       guesses: guesses,
       discoveredObjects: Array.from(discoveredObjects),
+      collapseUnlocked: collapseUnlocked,
+      bearerOfReflect: bearerOfReflect,
+      collapseVote: collapseVote,
+      collapseDone: collapseDone,
+      userProfile: userProfile,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch (e) {
@@ -560,6 +724,11 @@ function loadState() {
     if (state.discoveredObjects) {
       state.discoveredObjects.forEach(function(id) { discoveredObjects.add(id); });
     }
+    if (state.collapseUnlocked) collapseUnlocked = state.collapseUnlocked;
+    if (state.bearerOfReflect) bearerOfReflect = state.bearerOfReflect;
+    if (state.collapseVote) collapseVote = state.collapseVote;
+    if (state.collapseDone) collapseDone = state.collapseDone;
+    if (state.userProfile) userProfile = state.userProfile;
     return !!state.userSeal;
   } catch (e) {
     return false;
@@ -576,10 +745,25 @@ function clearState() {
   allResponses = [];
   guesses = {};
   discoveredObjects.clear();
+  collapseUnlocked = false;
+  bearerOfReflect = null;
+  collapseVote = null;
+  collapseDone = false;
+  userProfile = null;
 }
 
 function resetGame() {
   if (!confirm("Êtes-vous sûr de vouloir recommencer ? Vous perdrez votre Sceau actuel et toutes vos découvertes.")) return;
+  clearState();
+  showScene('arrival');
+  setTimeout(function() {
+    const v = document.getElementById('arrivalVideo');
+    if (v) { v.currentTime = 0; v.play().catch(function(){}); }
+  }, 100);
+}
+
+function resetGameFromProfile() {
+  if (!confirm("Recommencer un nouveau Cycle effacera votre profil actuel. Êtes-vous sûr ?")) return;
   clearState();
   showScene('arrival');
   setTimeout(function() {
@@ -722,6 +906,13 @@ function showRecap() {
   }
   document.getElementById('recapText').textContent = txt;
   document.getElementById('recap-modal').classList.add('active');
+
+  // Débloquer le Collapse + tirer le Porteur du Reflet au sort
+  if (!collapseUnlocked) {
+    collapseUnlocked = true;
+    bearerOfReflect = INVITES[Math.floor(Math.random() * INVITES.length)].name;
+    saveState();
+  }
 }
 
 function closeRecap() {
@@ -802,7 +993,159 @@ function goToRitual() {
   showScene('ritual');
 }
 
-function goToSalon() { renderInvitesList(); showScene('salon'); }
+function goToSalon() {
+  renderInvitesList();
+  // Afficher la carte Collapse si débloquée
+  const cont = document.getElementById('collapseCardContainer');
+  if (collapseUnlocked && !collapseDone) {
+    cont.style.display = 'block';
+  } else {
+    cont.style.display = 'none';
+  }
+  showScene('salon');
+}
+
+// ============================================
+// LA NUIT DU COLLAPSE
+// ============================================
+
+// Profils quantiques selon les performances
+const QUANTUM_PROFILES = {
+  lucid: {
+    name: "Le Témoin Lucide",
+    tagline: "Vous voyez ce que les autres ne disent pas",
+    text: "Vous avez deviné juste, presque partout. Vous avez nommé le Porteur du Reflet sans hésiter. Vous traversez Vespera comme un lecteur qui aurait déjà lu le livre — sans bruit, sans erreur. C'est rare, et c'est précieux. Mais prenez garde : ce qui se laisse voir si facilement n'est jamais le plus profond.",
+  },
+  hesitant: {
+    name: "L'Observateur Hésitant",
+    tagline: "Vous avez vu juste, sans tout à fait y croire",
+    text: "Vous avez nommé le Porteur — mais vous avez douté souvent en chemin. Vos devinettes étaient incertaines, et pourtant votre intuition finale était bonne. C'est peut-être ainsi qu'on lit les autres : non pas en sachant, mais en écoutant ce qu'on sent sans pouvoir le dire.",
+  },
+  sincere: {
+    name: "L'Égaré Sincère",
+    tagline: "Vous avez cherché, et vous vous êtes trompé",
+    text: "Vous avez deviné juste plusieurs fois, mais le Reflet vous a échappé au moment du Collapse. Vous avez nommé une autre voix — une voix qui vous semblait plus voilée encore. Ce n'est pas une erreur, c'est une lecture. Le Porteur véritable se cache toujours là où l'on ne le cherche pas.",
+  },
+  voyager: {
+    name: "Le Voyageur du Reflet",
+    tagline: "Vous traversez Vespera sans certitude",
+    text: "Vous avez peu deviné juste, et vous n'avez pas trouvé le Porteur. Mais c'est peut-être Vespera qui vous a trouvé, vous. Ce Cycle n'était pas pour comprendre les autres — il était pour vous laisser observer ce que vous projetez sur eux. Le Reflet, parfois, c'est nous qui le portons.",
+  },
+};
+
+function goToCollapse() {
+  // Reset des steps
+  document.querySelectorAll('#collapse .collapse-step').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('collapseIntro').classList.add('active');
+  // Si déjà fait, sauter directement au profil
+  if (collapseDone && userProfile) {
+    showCollapseProfile();
+    showScene('collapse');
+    return;
+  }
+  showScene('collapse');
+}
+
+function collapseGoToVote() {
+  document.getElementById('collapseIntro').classList.remove('active');
+  document.getElementById('collapseVote').classList.add('active');
+  renderVoteOptions();
+}
+
+function renderVoteOptions() {
+  const container = document.getElementById('voteOptions');
+  let html = '';
+  INVITES.forEach(function(inv) {
+    const seal = SEALS.find(function(s){ return s.id === inv.sealId; });
+    // Récupérer la première phrase de la réponse de cet Invité
+    const fullResponse = INVITES_RESPONSES[inv.name];
+    let quote = fullResponse;
+    const firstPeriod = fullResponse.indexOf('.');
+    if (firstPeriod > 0) quote = fullResponse.substring(0, firstPeriod + 1);
+    const isSelected = (collapseVote === inv.name);
+    html += '<div class="vote-option' + (isSelected ? ' selected' : '') + '" onclick="selectVote(\'' + inv.name + '\')">';
+    html += '<div class="vote-option-seal">' + renderSealHTML(seal.id) + '</div>';
+    html += '<div class="vote-option-content">';
+    html += '<div class="vote-option-name">' + inv.name + '</div>';
+    html += '<div class="vote-option-quote">« ' + quote + ' »</div>';
+    html += '</div>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+  document.getElementById('voteConfirmBtn').disabled = !collapseVote;
+}
+
+function selectVote(invName) {
+  collapseVote = invName;
+  renderVoteOptions();
+}
+
+function submitCollapseVote() {
+  if (!collapseVote) return;
+  collapseDone = true;
+  const voteCorrect = (collapseVote === bearerOfReflect);
+
+  // Calculer le profil quantique
+  let goodGuesses = 0;
+  Object.values(guesses).forEach(function(g) { if (g.correct) goodGuesses++; });
+
+  if (voteCorrect && goodGuesses >= 4) userProfile = 'lucid';
+  else if (voteCorrect && goodGuesses < 4) userProfile = 'hesitant';
+  else if (!voteCorrect && goodGuesses >= 3) userProfile = 'sincere';
+  else userProfile = 'voyager';
+
+  saveState();
+
+  // Afficher la révélation
+  showCollapseReveal(voteCorrect);
+}
+
+function showCollapseReveal(voteCorrect) {
+  const bearerInvite = INVITES.find(function(i){ return i.name === bearerOfReflect; });
+  const bearerSeal = SEALS.find(function(s){ return s.id === bearerInvite.sealId; });
+
+  document.getElementById('revealJudgment').textContent = voteCorrect
+    ? "Vous avez vu juste."
+    : "Vous vous êtes trompé.";
+
+  document.getElementById('revealBearerSeal').innerHTML = renderSealHTML(bearerSeal.id);
+  document.getElementById('revealBearerName').textContent = bearerInvite.name;
+  document.getElementById('revealBearerSealName').textContent = bearerSeal.name;
+
+  let revealMsg;
+  if (voteCorrect) {
+    revealMsg = bearerInvite.name + " portait bien le Reflet — sans le savoir. La vérité que les autres voyaient en lui n'était pas celle qu'il portait. Vous l'aviez senti.";
+  } else {
+    const userPick = INVITES.find(function(i){ return i.name === collapseVote; });
+    revealMsg = "Vous aviez nommé " + collapseVote + ". Mais c'est " + bearerInvite.name + " qui portait le Reflet — sans le savoir lui-même. Ce que vous aviez perçu chez " + collapseVote + " était autre chose, peut-être une projection, peut-être une vérité qui n'avait pas encore de nom.";
+  }
+  document.getElementById('revealText').textContent = revealMsg;
+
+  document.getElementById('collapseVote').classList.remove('active');
+  document.getElementById('collapseReveal').classList.add('active');
+}
+
+function collapseGoToProfile() {
+  showCollapseProfile();
+}
+
+function showCollapseProfile() {
+  const profile = QUANTUM_PROFILES[userProfile];
+  document.getElementById('profileName').textContent = profile.name;
+  document.getElementById('profileTagline').textContent = profile.tagline;
+  document.getElementById('profileText').textContent = profile.text;
+
+  let goodGuesses = 0;
+  Object.values(guesses).forEach(function(g) { if (g.correct) goodGuesses++; });
+  document.getElementById('statGuesses').textContent = goodGuesses + '/5';
+
+  const voteCorrect = (collapseVote === bearerOfReflect);
+  document.getElementById('statVote').textContent = voteCorrect ? '✓' : '✗';
+  document.getElementById('statSeal').textContent = userSeal.name.replace(/^L[ea] /, '');
+
+  document.querySelectorAll('#collapse .collapse-step').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('collapseProfile').classList.add('active');
+}
 function goToArrival() { showScene('arrival'); }
 function goToMurmur() { showScene('murmur'); }
 function goToLibrary() { showScene('library'); }
