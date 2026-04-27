@@ -307,6 +307,10 @@
   .reset-btn { background: transparent; border: none; color: #5C5448; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.25em; padding: 12px 18px; cursor: pointer; text-transform: uppercase; opacity: 0.6; transition: opacity 0.4s; }
   .reset-btn:active { opacity: 1; color: #A8A095; }
   #salon.day .reset-btn { color: #8C8275; }
+  .dev-row { display: flex; gap: 12px; justify-content: center; margin-top: 12px; opacity: 0.4; }
+  .dev-btn { background: transparent; border: 1px solid rgba(212,184,112,0.2); color: #5C5448; font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.18em; padding: 6px 10px; cursor: pointer; border-radius: 2px; }
+  .dev-btn:active { opacity: 1; color: #A8A095; border-color: rgba(212,184,112,0.4); }
+  #salon.day .dev-btn { color: #8C8275; border-color: rgba(80,52,28,0.2); }
 
   /* Bouton de test "Jour suivant" */
   .test-controls { position: fixed; top: 16px; left: 16px; z-index: 200; display: flex; gap: 8px; }
@@ -649,6 +653,10 @@
 
   <div class="salon-footer">
     <button type="button" class="reset-btn" onclick="resetCycle()">Recommencer le Cycle</button>
+    <div class="dev-row">
+      <button type="button" class="dev-btn" onclick="devSkipToDay(7)">[dev] Sauter au J7</button>
+      <button type="button" class="dev-btn" onclick="devSkipToCollapse()">[dev] Voir le Collapse</button>
+    </div>
   </div>
 </div>
 
@@ -1246,20 +1254,20 @@ const MURMURS = [
 
 // === LES 7 QUESTIONS DU SOIR ===
 const QUESTIONS = [
-  // J1 — L'image
-  '"Décrivez en une phrase l\'image que les autres ont de vous. Puis, en une seconde, ce qui dans cette image n\'est pas tout à fait vrai."',
-  // J2 — Le doute
-  '"Quelle est la dernière chose dont vous avez douté chez vous ? Pas chez les autres, chez vous."',
-  // J3 — Le silence
-  '"Qu\'est-ce que vous ne dites jamais, et que pourtant vous savez ?"',
-  // J4 — Le mensonge
-  '"Quel mensonge vous êtes-vous raconté pour tenir ?"',
-  // J5 — La trahison
-  '"À qui avez-vous menti pour le protéger, et que protégiez-vous, vraiment ?"',
-  // J6 — Le pardon
-  '"Qu\'est-ce que vous n\'avez jamais pardonné, à vous-même ?"',
-  // J7 — La révélation
-  '"Si vous deviez résumer qui vous êtes vraiment, en une phrase que personne d\'autre n\'écrirait, laquelle ?"'
+  // J1 — L'image — déclencheur de lieu + objet + habitude
+  '"Décrivez en quelques lignes une scène quotidienne où vous êtes seul. Le lieu, ce que vous tenez, ce que vous y faites."',
+  // J2 — Le doute — déclencheur de lieu + couleur (lumière)
+  '"Racontez le dernier endroit où vous avez attendu sans rien faire. Comment était la lumière ? Que portiez-vous ?"',
+  // J3 — Le silence — déclencheur d'objet + habitude
+  '"Décrivez un objet auquel vous tenez sans pouvoir bien l\'expliquer. Et dans quelles circonstances vous le sortez."',
+  // J4 — Le mensonge — déclencheur du mot signature
+  '"Quel mot revient souvent dans vos phrases sans que vous le décidiez ? Qu\'est-ce qu\'il dit de vous ?"',
+  // J5 — La trahison — déclencheur d'habitude
+  '"Décrivez une habitude que vous avez et dont les autres se moquent ou s\'étonnent. D\'où elle vient ?"',
+  // J6 — Le pardon — déclencheur de couleur
+  '"Quelle est la couleur que vous portez sans le savoir, dans ce que vous choisissez ? Vêtements, intérieur, livres."',
+  // J7 — La révélation — combinaison finale lieu + objet + habitude
+  '"Pour vous résumer en une scène, choisissez : un lieu, un objet, une habitude. Décrivez-les ensemble."'
 ];
 
 // === PROFILS QUANTIQUES — révélés au Collapse ===
@@ -1302,84 +1310,84 @@ const QUANTUM_PROFILES = {
 // Chaque Invité a 7 réponses (une par jour), avec sa voix distincte
 const GUEST_RESPONSES = {
   marc: [
-    // J1 — sobre, nuancé
-    'On me voit comme un homme calme. C\'est en partie vrai. Mais ce calme me coûte un effort que personne ne soupçonne, il n\'est pas naturel, il est tenu.',
-    // J2
-    'De ma capacité à finir ce que je commence. Patiemment, j\'ai appris à ne plus rien promettre.',
-    // J3
-    'Que je vais peut-être tout quitter. Je le sais depuis longtemps. Je ne le dirai sûrement jamais. Pas avant d\'être prêt à payer le prix.',
-    // J4
-    'Que tout va bien. Je le dis à ma femme depuis dix-huit mois. Je crois qu\'elle ne me croit plus depuis dix-sept.',
-    // J5
-    'À ma femme. Pour ne pas la faire souffrir tout de suite. Mais je crois qu\'au fond, c\'est moi que je protégeais. Je n\'étais pas prêt à m\'écouter.',
-    // J6
-    'D\'avoir laissé filer la première fois où j\'ai su. Honnêtement, je m\'en veux d\'avoir attendu si longtemps. Comme si la vérité méritait moins que mon confort.',
-    // J7
-    'Un homme qui a tenu, jusqu\'à ce que tenir devienne mentir.'
+    // J1 — Décrivez une scène quotidienne où vous êtes seul. Le lieu, ce que vous tenez, ce que vous y faites.
+    'Mon atelier, après vingt-deux heures. La lumière y est ardoise, celle des soirs sans envie. Je tiens un carnet à couverture cuir, pas très épais. Ce que j\'y note, je le note patiemment. Et avant de partir, je range tout.',
+    // J2 — Le dernier endroit où vous avez attendu. Lumière. Vêtement.
+    'Le même atelier, hier. La lumière était ardoise comme toujours à cette heure. Je portais une chemise unie. J\'ai attendu que quelque chose me vienne. Rien n\'est venu. J\'ai patiemment fini par tout ranger et partir.',
+    // J3 — Un objet auquel vous tenez sans pouvoir l'expliquer. Quand le sortez-vous ?
+    'Un carnet à couverture cuir. Je l\'ai depuis longtemps. Je le sors le soir, dans mon atelier, quand le silence s\'installe. J\'y écris peu, mais patiemment. Personne ne l\'a jamais vu ouvert. C\'est tenu dans une poche, presque tout le temps.',
+    // J4 — Le mot qui revient dans vos phrases.
+    'Tenu. Je le dis sans le décider. Cela veut dire que je suis là, que je ne lâche pas. Cela veut dire aussi que je porte ce que je n\'ai pas envie de porter. Patiemment, c\'est l\'autre mot. Les deux à part égale.',
+    // J5 — Une habitude dont les autres se moquent.
+    'Je range avant de partir. Toujours. Même chez les autres. Mes amis trouvent ça maniaque. Je crois que c\'est une manière de ne pas laisser de trace. Patiemment, j\'ai fini par être ce geste. Tenu, comme le reste.',
+    // J6 — Une couleur que vous portez sans le savoir.
+    'Ardoise. Je m\'en suis rendu compte un jour en regardant ma garde-robe. Tout est dans cette gamme. Les murs de mon atelier aussi. Ce n\'est pas un choix, c\'est ce qui me reste tenu, je crois. Le gris-bleu de la pierre, ou des soirs sans bruit.',
+    // J7 — Vous résumer en un lieu, un objet, une habitude.
+    'Mon atelier silencieux. Mon carnet à couverture cuir. Et le geste de tout ranger avant de partir. Trois choses tenues, patiemment, depuis trop longtemps. C\'est tout ce que je suis.'
   ],
   theo: [
-    // J1 — brut, direct
-    'Bon. On me prend pour quelqu\'un qui choisit sa solitude. C\'est faux. Je suis seul parce que je n\'ai jamais su comment on entre dans la vie des autres. Voilà.',
-    // J2
-    'De rien. Franchement, je ne doute plus. À 2h du matin, on apprend à arrêter.',
-    // J3
-    'Que j\'aimerais qu\'on me retienne. Franchement, c\'est ridicule pour quelqu\'un comme moi. Mais à 2h du matin, dans un bar, je me dis ça parfois.',
-    // J4
-    'Bon. Franchement ? Que la solitude me convenait. Je me suis raconté ça pendant dix ans. Hier soir, en écrivant, j\'ai vu que ce n\'était pas vrai.',
-    // J5
-    'À une femme, il y a six ans. Je lui ai dit que je préférais qu\'on en reste là. Franchement, je voulais juste qu\'elle me retienne. Elle ne l\'a pas fait.',
-    // J6
-    'D\'avoir laissé partir cette fille à 2h du matin sans la rappeler. Bon. Franchement, c\'est tout ce que j\'ai à dire.',
-    // J7
-    'Un type qui n\'a jamais su demander, et qui en veut à tout le monde de ne pas avoir deviné.'
+    // J1 — Scène quotidienne où vous êtes seul.
+    'Bon. Franchement, c\'est un bar près d\'une gare. J\'y suis allé encore hier. J\'ai un vieux briquet qui me sert à rien, je le tourne dans ma main. Je commande un truc, je le bois debout, je rentre.',
+    // J2 — Dernier endroit où vous avez attendu.
+    'Le bar, comme d\'habitude. La lumière était plomb derrière la vitre. Franchement, je sais pas ce que j\'attendais. Je portais une veste sombre. J\'ai bu debout. Je suis rentré quand le serveur a empilé les chaises.',
+    // J3 — Un objet auquel vous tenez.
+    'Un vieux briquet. Bon, franchement, je fume plus depuis des années. Mais je le sors au bar, près de la gare, quand je commande quelque chose. Je le tourne dans la main, je n\'allume rien. Je le range. C\'est devenu un truc, j\'imagine.',
+    // J4 — Le mot qui revient.
+    'Franchement. Je le dis tellement qu\'on me l\'a fait remarquer plusieurs fois. Bon, ça veut dire que je sais pas faire autre chose que dire ce que je pense. Ou que je fais semblant de le savoir. Honnêtement, j\'en sais rien.',
+    // J5 — Une habitude.
+    'Je mange debout, quand je suis seul. Bon, franchement, je trouve pas ça bizarre, mais on me l\'a fait remarquer plusieurs fois. Ça vient sans doute de l\'armée. Peut-être avant aussi. Je sais plus.',
+    // J6 — Une couleur que vous portez.
+    'Plomb. Bon, franchement, je porte que ça. Le gris froid, lourd. Mes meubles, mes vestes, même la couleur de l\'eau du canal que je traverse pour aller au bar. C\'est venu sans que je le décide. Comme le reste.',
+    // J7 — Vous résumer.
+    'Le bar près de la gare. Mon vieux briquet dans la main. Manger debout. Bon. Franchement, c\'est moi en entier. Y a rien d\'autre à ajouter.'
   ],
   camille: [
-    // J1 — paradoxal, littéraire
-    'Les gens me disent souvent que je devine tout. C\'est faux : je vois moins, simplement, je parle moins. Peut-être est-ce ce silence qu\'on confond avec la sagesse.',
-    // J2
-    'De la qualité de mon silence. Je me demande peut-être s\'il vient d\'une vraie écoute, ou simplement d\'une peur de mal dire.',
-    // J3
-    'Que j\'ai souvent le sentiment de peut-être ne pas être personne. Que tout ce qu\'on me prête, je l\'ai laissé construire pour ne pas avoir à choisir.',
-    // J4
-    'Que je n\'avais besoin de personne. Peut-être est-ce le mensonge le plus civilisé qu\'on m\'ait appris à dire.',
-    // J5
-    'À ma mère. Pendant des années. Je lui ai laissé croire que je l\'écoutais. Peut-être que ce que je protégeais, c\'était mon droit de penser autre chose.',
-    // J6
-    'De n\'avoir peut-être jamais vraiment dit ce que je pensais à mon père avant qu\'il ne soit trop tard.',
-    // J7
-    'Une femme à qui l\'on prête tant qu\'elle a fini par ne plus se reconnaître dans ce qu\'on lui rendait.'
+    // J1 — Scène quotidienne.
+    'Une bibliothèque vide à dix-sept heures, peut-être. Il y a une lumière brouillard à cette heure-là, ni jour ni soir. Je tiens une lettre que je n\'ai pas ouverte. Je la déplace de poche en poche. Je commence un livre, je ne le finis pas. C\'est devenu une habitude, peut-être un refus.',
+    // J2 — Dernier endroit où vous avez attendu.
+    'Une bibliothèque, vers dix-sept heures. La lumière était brouillard, doux, peut-être un peu sale. Je portais un manteau trop chaud pour la saison. J\'avais commencé un livre, je ne l\'ai pas fini. C\'est devenu une scène que je joue souvent, sans la décider.',
+    // J3 — Un objet auquel vous tenez.
+    'Une lettre, jamais ouverte. Je la sors peut-être deux ou trois fois par an, dans la bibliothèque où je travaille. Je la regarde, je la remets dans ma poche. Un jour, je l\'ouvrirai. Ou pas. Peut-être que c\'est mieux ainsi.',
+    // J4 — Le mot qui revient.
+    'Peut-être. Tout le temps. Mes amis disent que c\'est une manière de ne rien dire. Peut-être qu\'ils ont raison. Peut-être pas. C\'est aussi une manière de laisser une porte ouverte pour ne pas avoir à choisir.',
+    // J5 — Une habitude.
+    'Je ne finis jamais les livres que je commence. Pas un seul. Mes amis libraires hallucinent. Peut-être que c\'est un refus de la fin. Peut-être que je préfère vivre dans des débuts. Peut-être que je commence trop de choses, en général.',
+    // J6 — Une couleur.
+    'Brouillard. Une couleur qui n\'en est pas vraiment une. C\'est tout ce que je choisis sans le savoir. Mes pulls, mes murs, la couverture des livres que je n\'ouvre pas. Peut-être que c\'est ça, le fond — quelque chose qui n\'arrive pas à devenir net.',
+    // J7 — Vous résumer.
+    'Une bibliothèque vide à dix-sept heures. Une lettre jamais ouverte dans la poche. Et l\'habitude de ne jamais finir le livre que je commence. C\'est peut-être ça, moi. Ou peut-être pas. Mais c\'est ce qui revient toujours.'
   ],
   ines: [
-    // J1 — cassant, lucide
-    'On dit de moi que je suis dure, exigeante, intransigeante. Le verdict est juste. Mais il manque ceci : avec moi-même je le suis bien plus, et j\'ai désappris la douceur.',
-    // J2
-    'De mon verdict sur les autres. À force de juger vite, je me demande si je vois vraiment.',
-    // J3
-    'Que j\'aimerais perdre. Pas sur tout. Sur quelque chose. Une fois. Pour voir ce qui resterait après le verdict.',
-    // J4
-    'Qu\'on n\'a pas besoin de douceur pour être aimée. Verdict : faux, depuis longtemps.',
-    // J5
-    'À une amie. Je lui ai caché un verdict la concernant que j\'avais rendu en privé. Je crois que je me protégeais surtout d\'avoir à le défendre.',
-    // J6
-    'D\'avoir rendu un verdict sur ma sœur il y a vingt ans. Elle ne le sait pas. Elle ne le saura pas. C\'est ma manière de garder cette douleur à moi.',
-    // J7
-    'Une lame qui s\'est faite à elle-même, et qui aujourd\'hui voudrait apprendre à ne plus couper.'
+    // J1 — Scène quotidienne.
+    'Une salle d\'audience, à l\'aube. La lumière est encore de la couleur d\'une encre qui n\'a pas séché. J\'écris, je relis, je rature. Je tiens un stylo plume noir, lourd, que j\'ai depuis longtemps. C\'est un verdict — pas pour les autres, pour moi. J\'ai désappris d\'écrire vite.',
+    // J2 — Dernier endroit où vous avez attendu.
+    'Au tribunal, je suis arrivée trop tôt. Personne. Une lumière encre dans le couloir. Je portais un tailleur sombre. J\'ai relu mes notes deux fois, peut-être trois. Le verdict, ce matin-là, c\'était que je n\'avais pas désappris la patience, finalement.',
+    // J3 — Un objet auquel vous tenez.
+    'Un stylo plume noir, lourd. Je l\'ai depuis l\'école d\'avocats. Je le sors le matin avant l\'audience, je remplis l\'encre moi-même. Verdict après verdict, j\'ai désappris d\'écrire avec autre chose. Quand je relis mes notes, c\'est avec lui que je rature.',
+    // J4 — Le mot qui revient.
+    'Verdict. Je l\'ai pris au tribunal et il est venu jusque dans mes conversations privées. Cela veut dire que je tranche, même quand on ne me demande rien. J\'ai désappris la nuance. C\'est un défaut que je relis dans mes propres messages.',
+    // J5 — Une habitude.
+    'Je relis mes messages deux fois avant de les envoyer. Tous. Même les SMS aux amis. C\'est venu de mon métier. Le verdict d\'un message mal écrit, c\'est aussi un verdict. Je n\'ai pas désappris cette précaution-là.',
+    // J6 — Une couleur.
+    'Encre. Le noir bleuté du stylo plume, mais aussi de tout ce que j\'achète. C\'est ce que je porte au tribunal, c\'est ce que je porte chez moi. Le verdict est noir. Et je ne l\'ai pas désappris.',
+    // J7 — Vous résumer.
+    'La salle d\'audience à l\'aube. Mon stylo plume noir. Et le geste de relire deux fois avant d\'envoyer. Trois choses qui se ressemblent. Le verdict que je rends sur moi-même, je l\'ai désappris à modérer.'
   ],
   karim: [
-    // J1 — fluide, charmeur
-    'Mes amis pensent que je sais toujours quoi dire. La vérité, c\'est que je passe ma vie à composer des réponses, et qu\'au fond je sais rarement ce que je pense vraiment.',
-    // J2
-    'De la première phrase que je viens d\'écrire. Et de la deuxième. Toujours en train de composer trois versions avant de me décider.',
-    // J3
-    'Que je ne sais pas qui je suis. Je le compose chaque matin, et chaque soir je le défais. C\'est épuisant.',
-    // J4
-    'À tous. Tout le temps. Mais je m\'en rends compte seulement ici. Je ne savais pas que cela s\'appelait mentir.',
-    // J5
-    'À ma femme, plus que je ne peux le compter. Je composais celui qu\'elle aimait. Je crois que je me protégeais d\'avoir à exister vraiment.',
-    // J6
-    'Je ne sais pas. Je me compose trois versions de la réponse. Aucune n\'est juste.',
-    // J7
-    'Un homme qui s\'est tellement bien composé qu\'il ne sait plus quel air il jouait au début.'
+    // J1 — Scène quotidienne.
+    'Mon appartement, en plein soleil, et il est vide. Le mur est gris perle, c\'est moi qui l\'ai choisi. Je ne sais plus pourquoi. Je tiens un seul gant — l\'autre s\'est perdu il y a longtemps. Je compose une phrase pour le dire à quelqu\'un, mais je recommence trois fois avant de finir.',
+    // J2 — Dernier endroit où vous avez attendu.
+    'Devant ma fenêtre, dans mon appartement. Plein soleil sur les murs gris perle. Je portais une chemise impeccable, comme toujours. Je composais quelque chose à dire à quelqu\'un, je recommençais trois fois la phrase. Je ne l\'ai jamais envoyée.',
+    // J3 — Un objet auquel vous tenez.
+    'Un seul gant. L\'autre, perdu il y a des années. Je le sors au début de chaque hiver, je le pose sur l\'entrée. Je compose mentalement la phrase qui dirait pourquoi je le garde. Je recommence trois fois la phrase, je ne la termine pas. Le gant reste.',
+    // J4 — Le mot qui revient.
+    'Composer. Je compose tout — des phrases, des silences, des soirées. C\'est devenu mon mode de fonctionnement. Quand quelqu\'un me parle, je recommence ma réponse trois fois dans ma tête avant de la dire. Je ne sais plus parler autrement.',
+    // J5 — Une habitude.
+    'Je recommence mes phrases trois fois avant de les finir. Ma sœur s\'en moque tout le temps. Ça vient de l\'envie de bien composer, j\'imagine. Je ne sais plus parler sans préparer. C\'est devenu un tic, ou pire, une manière d\'être.',
+    // J6 — Une couleur.
+    'Gris perle. C\'est ce que j\'ai choisi pour mon appartement, c\'est ce que je porte. Une couleur fade, élégante, sans rien dedans. Composée pour ne déranger personne. Je crois que ça me ressemble bien plus que je ne voudrais l\'admettre.',
+    // J7 — Vous résumer.
+    'Mon appartement vide en plein soleil. Le seul gant que je n\'ai jamais jeté. Recommencer trois fois ce que je veux dire. Tout cela compose ce que je suis, je crois. Ou ce que j\'ai composé pour passer pour quelqu\'un.'
   ]
 };
 
@@ -2562,6 +2570,61 @@ function resetCycle() {
     document.querySelector('#arrival video').currentTime = 0;
     document.querySelector('#arrival video').play();
   }
+}
+
+// === FONCTIONS DEV (test rapide de la fin du Cycle) ===
+function devSkipToDay(targetDay) {
+  // Simuler les jours précédents avec des données fictives
+  for (let day = 1; day < targetDay; day++) {
+    if (!gameState.daysData[day]) gameState.daysData[day] = {};
+    gameState.daysData[day].userResponse = '(saut de test)';
+    gameState.daysData[day].guesses = {};
+    // Simuler quelques devinettes : 2 justes, 3 fausses pour un score moyen
+    SEASON_1_GUESTS.forEach((g, i) => {
+      gameState.daysData[day].guesses[g.id] = i < 2 ? g.id : SEASON_1_GUESTS[(i + 1) % 5].id;
+    });
+    gameState.daysData[day].score = 2;
+    gameState.daysData[day].completed = true;
+    gameState.daysData[day].murmurRead = true;
+  }
+  gameState.currentDay = targetDay;
+  // Collecter les indices Murmures pour les jours sautés (pour que le Couloir apparaisse)
+  if (gameState.cluesPlan && gameState.cluesPlan.murmurs) {
+    for (let i = 1; i < Math.min(targetDay, 6); i++) {
+      const ind = gameState.cluesPlan.murmurs[i];
+      if (ind && !gameState.collectedClues.some(c => c.day === i + 1 && c.source === 'murmur')) {
+        gameState.collectedClues.push({
+          day: i + 1,
+          source: 'murmur',
+          type: ind.type,
+          value: ind.value,
+          wording: ind.wording
+        });
+      }
+    }
+  }
+  saveState();
+  enterSalon();
+}
+
+function devSkipToCollapse() {
+  // Simuler un Cycle complet
+  for (let day = 1; day <= 7; day++) {
+    if (!gameState.daysData[day]) gameState.daysData[day] = {};
+    gameState.daysData[day].userResponse = '(saut de test)';
+    gameState.daysData[day].guesses = {};
+    SEASON_1_GUESTS.forEach((g, i) => {
+      gameState.daysData[day].guesses[g.id] = i < 3 ? g.id : SEASON_1_GUESTS[(i + 1) % 5].id;
+    });
+    gameState.daysData[day].score = 3;
+    gameState.daysData[day].completed = true;
+    gameState.daysData[day].murmurRead = true;
+  }
+  gameState.currentDay = 7;
+  // Pour tester le Reflet "JUSTE" par défaut, on vote juste sur le Porteur
+  gameState.porterVote = gameState.porterId;
+  saveState();
+  showCollapseIntro();
 }
 
 // === INIT AU CHARGEMENT ===
