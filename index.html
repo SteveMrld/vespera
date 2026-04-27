@@ -74,6 +74,18 @@
   .ritual-btn { margin-top: 56px; background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 36px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; opacity: 0; animation: fadeIn 1.5s 5.5s ease forwards; transition: all 0.4s ease; }
   .ritual-btn:active { background: rgba(212,184,112,0.1); color: #EDE8DD; }
 
+  /* SCÈNE MATIN — accueil quotidien */
+  #morning { background: linear-gradient(180deg, #1F2A40 0%, #0F1A2E 100%); padding: 40px 32px; }
+  .morning-content { text-align: center; max-width: 380px; opacity: 0; animation: fadeIn 1.6s ease forwards; }
+  .morning-day-label { font-family: 'Inter', sans-serif; font-size: 11px; color: #D4B870; letter-spacing: 0.4em; margin-bottom: 36px; }
+  .morning-text { font-family: 'Fraunces', serif; font-size: 18px; font-style: italic; color: #EDE8DD; line-height: 1.85; margin-bottom: 32px; }
+  .morning-program { font-family: 'Inter', sans-serif; font-size: 12px; color: #A8A095; line-height: 2.1; letter-spacing: 0.05em; margin-bottom: 36px; padding: 18px 0; border-top: 1px solid rgba(212,184,112,0.15); border-bottom: 1px solid rgba(212,184,112,0.15); }
+  .morning-program span { display: block; padding: 2px 0; }
+  .morning-program span::before { content: '·'; margin-right: 10px; color: #D4B870; }
+  .morning-sig { font-family: 'Fraunces', serif; font-size: 14px; color: #D4B870; letter-spacing: 0.2em; margin-bottom: 44px; }
+  .morning-btn { background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 32px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; border-radius: 2px; }
+  .morning-btn:active { background: rgba(212,184,112,0.15); color: #EDE8DD; }
+
   /* SCÈNE SALON */
   #salon { background: #0F1A2E; overflow-y: auto; -webkit-overflow-scrolling: touch; align-items: stretch; justify-content: flex-start; transition: background 0.7s, color 0.7s; }
   #salon.day { background: #F5EFE6; color: #2C2823; }
@@ -563,6 +575,17 @@
   </div>
 </div>
 
+<!-- SCÈNE MATIN — accueil quotidien par V (J2 à J7) -->
+<div id="morning" class="scene">
+  <div class="morning-content">
+    <p class="morning-day-label" id="morningDayLabel"></p>
+    <p class="morning-text" id="morningText"></p>
+    <p class="morning-program" id="morningProgram"></p>
+    <p class="morning-sig">V.</p>
+    <button type="button" class="morning-btn" onclick="enterSalonFromMorning()">OUVRIR LA JOURNÉE</button>
+  </div>
+</div>
+
 <!-- SCÈNE SALON -->
 <div id="salon" class="scene">
   <div class="salon-header">
@@ -613,6 +636,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 4v3M10 7h4l-1 4h-2zM11 11v9M10 20h4"/></svg>
       </div>
       <div class="table-object-label">Bibliothèque</div>
+      <div class="table-object-badge" id="objectLibraryBadge"></div>
     </button>
 
     <button type="button" class="table-object" id="objectCouloir" onclick="openCouloir()" style="display:none;">
@@ -794,7 +818,7 @@
 
 <!-- SCÈNE COLLAPSE -->
 <div id="collapse" class="scene">
-  <div class="collapse-step" id="collapseStepDefault">
+  <div class="collapse-step active" id="collapseStepDefault">
     <p class="collapse-intro-label">LA NUIT DU COLLAPSE</p>
     <h1 class="collapse-intro-title">L'Heure</h1>
     <p class="collapse-intro-text" id="collapseIntroText">Vous avez traversé sept soirées. Le Cycle touche à sa fin. La boîte va s'ouvrir.</p>
@@ -802,7 +826,7 @@
     <button type="button" class="collapse-intro-btn" id="collapseRevealBtn" onclick="revealCollapse()">RÉVÉLER LA CLÉ</button>
   </div>
 
-  <div class="collapse-step" id="collapseStepReveal" style="display:none;">
+  <div class="collapse-step" id="collapseStepReveal">
     <p class="collapse-intro-label" id="collapseRevealLabel">LE PORTEUR</p>
     <div class="collapse-reveal-seal" id="collapseRevealSeal"></div>
     <h1 class="collapse-intro-title" id="collapseRevealName"></h1>
@@ -812,7 +836,7 @@
     <button type="button" class="collapse-intro-btn" onclick="showCollapseReflet()">CONTINUER →</button>
   </div>
 
-  <div class="collapse-step" id="collapseStepReflet" style="display:none;">
+  <div class="collapse-step" id="collapseStepReflet">
     <p class="collapse-intro-label">VOTRE REFLET</p>
     <p class="reflet-score" id="refletScore"></p>
     <div class="reflet-divider"></div>
@@ -1625,18 +1649,25 @@ function renderSalon() {
     objMurmurBadge.classList.remove('visible');
   }
 
-  // Badge sur l'objet Chambre (compteur de notes)
-  const cluesCount = (gameState.collectedClues || []).length;
+  // Badge sur l'objet Chambre : retiré (le compteur "MES NOTES (X)" suffit dans la Chambre)
   const objNotesBadge = document.getElementById('objectNotesBadge');
-  if (cluesCount > 0) {
-    objNotesBadge.textContent = cluesCount;
-    objNotesBadge.classList.add('visible');
-  } else {
-    objNotesBadge.classList.remove('visible');
+  if (objNotesBadge) objNotesBadge.classList.remove('visible');
+
+  // Badge sur l'objet Bibliothèque : si des hotspots restent à découvrir
+  const objLibraryBadge = document.getElementById('objectLibraryBadge');
+  if (objLibraryBadge) {
+    const foundCount = (gameState.collectedClues || []).filter(c => c.source === 'library').length;
+    if (foundCount < 3 && !gameState.cycleEnded) {
+      objLibraryBadge.textContent = '·';
+      objLibraryBadge.classList.add('visible');
+    } else {
+      objLibraryBadge.classList.remove('visible');
+    }
   }
 
   // Couloir : objet visible dès 2+ indices
   const objCouloir = document.getElementById('objectCouloir');
+  const cluesCount = (gameState.collectedClues || []).length;
   if (cluesCount >= 2 && !gameState.cycleEnded) {
     objCouloir.style.display = 'flex';
   } else {
@@ -1664,7 +1695,7 @@ function renderTableCenter() {
     if (dayData.completed) {
       center.classList.remove('has-action');
       content.innerHTML = `<span class="center-label">SOIRÉE TERMINÉE ✓</span><span style="font-size:12px;">Vous avez écouté toutes les voix. Demain, l'aube reviendra.</span>`;
-      hint.textContent = 'Avancez au lendemain quand vous le voulez.';
+      hint.textContent = 'Tapez JOUR SUIVANT en haut à gauche pour passer au lendemain.';
     } else if (dayData.userResponse) {
       center.classList.add('has-action');
       content.innerHTML = `<span class="center-label">LES VOIX</span><span style="font-size:12px;">Six réponses ont été scellées.</span><span class="center-cta">CONSULTER →</span>`;
@@ -1675,19 +1706,34 @@ function renderTableCenter() {
       hint.textContent = 'Tapez le centre pour répondre. Tapez un Sceau pour lire sa fiche.';
     }
   } else {
-    // MODE JOUR
+    // MODE JOUR — on guide le joueur explicitement
     center.classList.remove('has-action');
     const intros = [
-      'Le premier jour. La villa respire. Tout reste à voir.',
-      'Le second matin. Hier vous avez lu. Aujourd\'hui, regardez mieux.',
-      'Le troisième jour. Le Cercle se précise. Ou s\'opacifie.',
-      'Le quatrième matin. Vous avez peut-être déjà votre intuition.',
-      'Le cinquième jour. Quelqu\'un est voilé. Le Cercle se resserre.',
+      'Le premier jour. La villa respire.',
+      'Le second matin. Hier vous avez lu.',
+      'Le troisième jour. Le Cercle se précise.',
+      'Le quatrième matin. Vous avez votre intuition.',
+      'Le cinquième jour. Le Cercle se resserre.',
       'L\'avant-dernier matin. Lisez tout, encore une fois.',
       'Le septième matin. La boîte va bientôt s\'ouvrir.'
     ];
-    content.innerHTML = `<span class="center-label">LE JOUR</span><span style="font-size:12px;">${intros[dayIndex] || ''}</span>`;
-    hint.textContent = 'Passez en NUIT pour ouvrir la Question du soir.';
+    const intro = intros[dayIndex] || '';
+
+    // Ce qui reste à faire en mode jour
+    let toDo = [];
+    if (!dayData.murmurRead) toDo.push('le Murmure');
+    const libCount = (gameState.collectedClues || []).filter(c => c.source === 'library').length;
+    if (libCount < 3) toDo.push('la Bibliothèque');
+
+    if (toDo.length === 0) {
+      // Tout fait en mode jour, on invite à passer en nuit
+      content.innerHTML = `<span class="center-label">LE JOUR</span><span style="font-size:12px;">${intro}</span><span class="center-cta" style="color:#D4B870;">BASCULER EN NUIT POUR LA QUESTION</span>`;
+      hint.textContent = 'Tapez JOUR / NUIT en haut à droite pour ouvrir la Question du soir.';
+    } else {
+      const todoText = toDo.length === 2 ? `${toDo[0]} et ${toDo[1]}` : toDo[0];
+      content.innerHTML = `<span class="center-label">LE JOUR</span><span style="font-size:12px;">${intro}</span><span style="font-size:11px;color:#A8A095;font-style:italic;">À ouvrir : ${todoText}.</span>`;
+      hint.textContent = 'Lisez ce qui vous attend, puis basculez en NUIT.';
+    }
   }
 }
 
@@ -2302,23 +2348,75 @@ function goToSalon() {
   renderSalon();
 }
 
-// === AVANCEMENT JOUR (test) ===
+// === AVANCEMENT JOUR ===
 function advanceDay() {
   if (gameState.currentDay >= 7) {
-    // Cycle terminé, on entre dans le Collapse
+    // Fin du Cycle, on entre dans le Collapse
     showCollapseIntro();
     return;
   }
   gameState.currentDay++;
   saveState();
-  renderSalon();
+  // Au lieu d'aller direct au Salon, on passe par la scène matin où V parle
+  goToMorning(gameState.currentDay);
+}
+
+// === SCÈNE MATIN — V accueille le joueur au matin ===
+const MORNING_TEXTS = {
+  // Pas d'écran matin pour J1 (le Seuil + Ritual ont déjà cette fonction)
+  2: {
+    label: 'LE DEUXIÈME MATIN · J2',
+    text: 'Hier, vous avez écouté pour la première fois.\n\nAujourd\'hui, regardez mieux. Lisez ce que je vous ai écrit ce matin. Allez voir ce que la Bibliothèque a déposé pour vous. Et ce soir, je vous poserai la question du Doute.',
+    program: 'LIRE LE MURMURE\nVISITER LA BIBLIOTHÈQUE\nRÉPONDRE LE SOIR'
+  },
+  3: {
+    label: 'LE TROISIÈME MATIN · J3',
+    text: 'Le Cercle se précise — ou s\'opacifie. Vous commencez à entendre des choses, ou tout reste opaque.\n\nLisez mon Murmure du jour. Allez voir la Bibliothèque, une nouvelle trace y a peut-être été laissée. Ce soir, ce sera la question du Silence.',
+    program: 'LIRE LE MURMURE\nCROISER LES FICHES ET LES NOTES\nRÉPONDRE LE SOIR'
+  },
+  4: {
+    label: 'LE QUATRIÈME MATIN · J4',
+    text: 'Trois jours sont passés. Vous avez peut-être déjà votre intuition. Vous l\'avez peut-être déjà perdue.\n\nLisez mon Murmure attentivement. Si vous avez assez de notes, le Couloir s\'ouvre à vous : c\'est là que vous voterez en secret pour celui que vous pensez porter la Clé. Ce soir, je vous poserai la question du Mensonge.',
+    program: 'LIRE LE MURMURE\nVOTER AU COULOIR (SI VOUS LE SOUHAITEZ)\nRÉPONDRE LE SOIR'
+  },
+  5: {
+    label: 'LE CINQUIÈME MATIN · J5',
+    text: 'Le Cercle a parlé hier soir. L\'heure est plus dense maintenant.\n\nLisez mon Murmure. Continuez à croiser ce que vous savez. Ce soir, ce sera la question de la Trahison.',
+    program: 'LIRE LE MURMURE\nRELIRE VOS NOTES\nRÉPONDRE LE SOIR'
+  },
+  6: {
+    label: 'L\'AVANT-DERNIER MATIN · J6',
+    text: 'Demain, c\'est la Nuit du Collapse. Vous avez accumulé des notes, des intuitions, peut-être une certitude.\n\nLisez mon Murmure une dernière fois. Je ne vous parlerai plus après ce matin. Ce soir, la question du Pardon.',
+    program: 'LIRE LE DERNIER MURMURE\nCONFIRMER VOTRE VOTE AU COULOIR\nRÉPONDRE LE SOIR'
+  },
+  7: {
+    label: 'LE SEPTIÈME MATIN · J7',
+    text: 'Avant la nuit. Vous avez tout ce qu\'il vous faut. Si vous deviez voter maintenant, vous le sauriez peut-être.\n\nAllez au Couloir si ce n\'est pas fait. Ce soir, la dernière Question. Et puis la boîte s\'ouvrira.',
+    program: 'CONFIRMER VOTRE VOTE\nRÉPONDRE LA DERNIÈRE QUESTION\nLA BOÎTE S\'OUVRIRA'
+  }
+};
+
+function goToMorning(day) {
+  const data = MORNING_TEXTS[day];
+  if (!data) {
+    // Pas de scène matin pour ce jour, on va direct au Salon
+    enterSalon();
+    return;
+  }
+  document.getElementById('morningDayLabel').textContent = data.label;
+  document.getElementById('morningText').innerHTML = data.text.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+  document.getElementById('morningProgram').innerHTML = data.program.split('\n').map(line => `<span>${line}</span>`).join('');
+  showScene('morning');
+}
+
+function enterSalonFromMorning() {
+  enterSalon();
 }
 
 function showCollapseIntro() {
   showScene('collapse');
-  document.getElementById('collapseStepDefault').style.display = 'block';
-  document.getElementById('collapseStepReveal').style.display = 'none';
-  document.getElementById('collapseStepReflet').style.display = 'none';
+  document.querySelectorAll('#collapse .collapse-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('collapseStepDefault').classList.add('active');
 
   // Adapter le texte selon que l'utilisateur a voté ou pas
   const introEl = document.getElementById('collapseIntroText');
@@ -2337,9 +2435,8 @@ function revealCollapse() {
   gameState.cycleEnded = true;
   saveState();
 
-  document.getElementById('collapseStepDefault').style.display = 'none';
-  document.getElementById('collapseStepReveal').style.display = 'block';
-  document.getElementById('collapseStepReflet').style.display = 'none';
+  document.querySelectorAll('#collapse .collapse-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('collapseStepReveal').classList.add('active');
 
   // Identifier le Porteur
   const porter = SEASON_1_GUESTS.find(g => g.id === gameState.porterId);
@@ -2421,9 +2518,8 @@ function selectQuantumProfile(stats) {
 }
 
 function showCollapseReflet() {
-  document.getElementById('collapseStepDefault').style.display = 'none';
-  document.getElementById('collapseStepReveal').style.display = 'none';
-  document.getElementById('collapseStepReflet').style.display = 'block';
+  document.querySelectorAll('#collapse .collapse-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('collapseStepReflet').classList.add('active');
 
   const stats = computeCycleStats();
   const profileKey = selectQuantumProfile(stats);
