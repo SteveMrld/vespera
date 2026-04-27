@@ -308,13 +308,10 @@
       inset 0 0 6px rgba(80, 50, 20, 0.2);
   }
 
-  /* Le médaillon "Vous" est désactivé en voice-mode (on connaît notre réponse) */
+  /* Le médaillon "Vous" est non-cliquable en voice-mode (on connaît notre réponse)
+     mais il reste pleinement visible — on est toujours à table avec les autres */
   #salon.voice-mode .seat-self {
     pointer-events: none;
-  }
-  #salon.voice-mode .seat-self .seat-img {
-    opacity: 0.4;
-    filter: grayscale(0.5);
   }
 
   /* Animations feedback : halo vert (juste) ou rouge (faux) */
