@@ -485,6 +485,13 @@
   .collapse-reveal-seal img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
   .collapse-reveal-archetype { font-family: 'Inter', sans-serif; font-size: 12px; color: #D4B870; letter-spacing: 0.3em; text-align: center; margin-top: -30px; margin-bottom: 36px; }
 
+  /* === LE REFLET (étape finale du Collapse) === */
+  .reflet-score { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #A8A095; line-height: 1.7; text-align: center; margin-top: 8px; margin-bottom: 28px; max-width: 340px; }
+  .reflet-divider { width: 40px; height: 1px; background: rgba(212,184,112,0.4); margin: 0 auto 32px; }
+  .reflet-profile-title { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 300; color: #EDE8DD; text-align: center; letter-spacing: 0.04em; margin-bottom: 8px; }
+  .reflet-profile-subtitle { font-family: 'Inter', sans-serif; font-size: 12px; color: #D4B870; letter-spacing: 0.3em; text-align: center; margin-bottom: 36px; text-transform: uppercase; }
+  .reflet-text { font-family: 'Fraunces', serif; font-size: 16px; font-style: italic; color: #EDE8DD; line-height: 1.85; text-align: center; max-width: 360px; margin-bottom: 40px; }
+
   /* Animations */
   @keyframes fadeIn { to { opacity: 1; } }
   @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
@@ -801,6 +808,17 @@
     <h1 class="collapse-intro-title" id="collapseRevealName"></h1>
     <p class="collapse-reveal-archetype" id="collapseRevealArchetype"></p>
     <p class="collapse-intro-text" id="collapseRevealText"></p>
+    <p class="collapse-intro-sig">V.</p>
+    <button type="button" class="collapse-intro-btn" onclick="showCollapseReflet()">CONTINUER →</button>
+  </div>
+
+  <div class="collapse-step" id="collapseStepReflet" style="display:none;">
+    <p class="collapse-intro-label">VOTRE REFLET</p>
+    <p class="reflet-score" id="refletScore"></p>
+    <div class="reflet-divider"></div>
+    <h1 class="reflet-profile-title" id="refletProfileTitle"></h1>
+    <p class="reflet-profile-subtitle" id="refletProfileSubtitle"></p>
+    <p class="reflet-text" id="refletText"></p>
     <p class="collapse-intro-sig">V.</p>
     <button type="button" class="collapse-intro-btn" onclick="resetCycle()">RECOMMENCER UN CYCLE</button>
   </div>
@@ -1219,6 +1237,42 @@ const QUESTIONS = [
   // J7 — La révélation
   '"Si vous deviez résumer qui vous êtes vraiment, en une phrase que personne d\'autre n\'écrirait, laquelle ?"'
 ];
+
+// === PROFILS QUANTIQUES — révélés au Collapse ===
+// Chaque profil correspond à une manière d'avoir traversé le Cycle.
+// Sélectionné selon les stats du joueur (computeCycleStats).
+const QUANTUM_PROFILES = {
+  oeil: {
+    title: 'L\'Œil',
+    subtitle: 'Vous avez vu',
+    text: 'Vous avez reconnu les voix avant qu\'elles ne se nomment. Vous avez nommé la Clé avant qu\'elle ne se montre. C\'est rare. Le Cercle vous reconnaît ce soir, et il se souviendra. Mais souvenez-vous aussi de ceci : voir si bien, c\'est se faire voir. Le prochain Cycle vous attendra avec plus de masques.'
+  },
+  lecteur: {
+    title: 'Le Lecteur',
+    subtitle: 'Vous avez lu juste',
+    text: 'Vous n\'avez pas tout vu. Vous n\'aviez pas besoin. Vous avez su lire ce qui comptait, et le Cycle vous a livré son secret parce que vous saviez chercher sans forcer. C\'est une qualité qui se transporte ailleurs. Hors de Vespera, peut-être qu\'on vous parle plus que vous ne le savez.'
+  },
+  cherchant: {
+    title: 'Le Cherchant',
+    subtitle: 'Vous étiez sur la piste',
+    text: 'Vous aviez senti quelque chose. Vous saviez qu\'il y avait quelqu\'un, derrière les voix, qui pesait plus que les autres. Vous avez seulement nommé la mauvaise. Ce n\'est pas un échec : c\'est une lecture qui s\'affine. La prochaine fois, écoutez ce qui ne se dit pas. Le Porteur se cache parfois là où on cherche le moins.'
+  },
+  prudent: {
+    title: 'Le Prudent',
+    subtitle: 'Vous n\'avez pas tranché',
+    text: 'Vous n\'avez pas voulu désigner. C\'est un choix. Le Cercle ne saura jamais ce que vous aviez deviné, et c\'est peut-être ce que vous vouliez. Certains viennent ici pour observer, pas pour conclure. C\'est légitime. Mais sachez que la Clé existait, qu\'elle est passée près de vous, et que vous l\'avez laissée passer.'
+  },
+  ecoutant: {
+    title: 'L\'Écoutant',
+    subtitle: 'Vous étiez là',
+    text: 'Vous avez traversé les sept soirées. Vous n\'avez pas toujours reconnu les voix, mais vous étiez présent. Le Cercle a senti votre attention même quand vos réponses se trompaient. Cela compte plus qu\'un score. Vespera n\'est pas un examen : c\'est une présence. Et vous étiez là.'
+  },
+  passager: {
+    title: 'Le Passager',
+    subtitle: 'Vous êtes passé',
+    text: 'Vous êtes passé par Vespera. Vous n\'êtes pas resté longtemps dans chaque pièce. C\'est aussi une manière d\'être ici. Le Cycle vous a vu, sans vous retenir. Peut-être qu\'il vous reverra, peut-être pas. Cela ne dépend que de vous.'
+  }
+};
 
 // === RÉPONSES SCRIPTÉES DES 5 INVITÉS POUR LES 7 JOURS ===
 // Chaque Invité a 7 réponses (une par jour), avec sa voix distincte
@@ -2264,6 +2318,7 @@ function showCollapseIntro() {
   showScene('collapse');
   document.getElementById('collapseStepDefault').style.display = 'block';
   document.getElementById('collapseStepReveal').style.display = 'none';
+  document.getElementById('collapseStepReflet').style.display = 'none';
 
   // Adapter le texte selon que l'utilisateur a voté ou pas
   const introEl = document.getElementById('collapseIntroText');
@@ -2284,6 +2339,7 @@ function revealCollapse() {
 
   document.getElementById('collapseStepDefault').style.display = 'none';
   document.getElementById('collapseStepReveal').style.display = 'block';
+  document.getElementById('collapseStepReflet').style.display = 'none';
 
   // Identifier le Porteur
   const porter = SEASON_1_GUESTS.find(g => g.id === gameState.porterId);
@@ -2303,10 +2359,90 @@ function revealCollapse() {
   } else {
     const accused = SEASON_1_GUESTS.find(g => g.id === gameState.porterVote);
     label = 'À CÔTÉ';
-    text = `Vous avez accusé ${accused.name}. Mais c'était ${porter.name}, sous le Sceau du ${porterSeal.name}, qui portait la Clé. Vous n'étiez pas loin. Le prochain Cycle vous attend.`;
+    text = `Vous avez accusé ${accused.name}. Mais c'était ${porter.name}, sous le Sceau du ${porterSeal.name}, qui portait la Clé. Vous n'étiez pas loin.`;
   }
   document.getElementById('collapseRevealLabel').textContent = label;
   document.getElementById('collapseRevealText').textContent = text;
+}
+
+// === LE REFLET — étape finale du Collapse ===
+function computeCycleStats() {
+  let totalGuesses = 0;
+  let correctGuesses = 0;
+  let daysCompleted = 0;
+
+  for (const dayKey of Object.keys(gameState.daysData || {})) {
+    const d = gameState.daysData[dayKey];
+    if (d.completed) daysCompleted++;
+    if (d.guesses) {
+      const entries = Object.entries(d.guesses);
+      totalGuesses += entries.length;
+      // d.guesses[actualId] = guessedAsId : juste si égaux
+      correctGuesses += entries.filter(([actualId, guessedAsId]) => actualId === guessedAsId).length;
+    }
+  }
+
+  let porterVoteResult;
+  if (!gameState.porterVote) porterVoteResult = 'no_vote';
+  else if (gameState.porterVote === gameState.porterId) porterVoteResult = 'correct';
+  else porterVoteResult = 'wrong';
+
+  const guessRate = totalGuesses > 0 ? correctGuesses / totalGuesses : 0;
+
+  return {
+    totalGuesses,
+    correctGuesses,
+    daysCompleted,
+    cluesCollected: (gameState.collectedClues || []).length,
+    porterVoteResult,
+    guessRate
+  };
+}
+
+function selectQuantumProfile(stats) {
+  // Pas voté du tout = Prudent
+  if (stats.porterVoteResult === 'no_vote' && stats.daysCompleted < 7) return 'prudent';
+  if (stats.porterVoteResult === 'no_vote') return 'prudent';
+
+  // Vote juste : Œil si haut score, Lecteur sinon
+  if (stats.porterVoteResult === 'correct') {
+    if (stats.guessRate >= 0.6 && stats.correctGuesses >= 12) return 'oeil';
+    return 'lecteur';
+  }
+
+  // Vote faux : Cherchant si engagé, Passager sinon
+  if (stats.porterVoteResult === 'wrong') {
+    if (stats.correctGuesses >= 8 || stats.cluesCollected >= 5) return 'cherchant';
+    if (stats.daysCompleted === 7) return 'ecoutant';
+    return 'passager';
+  }
+
+  return 'passager';
+}
+
+function showCollapseReflet() {
+  document.getElementById('collapseStepDefault').style.display = 'none';
+  document.getElementById('collapseStepReveal').style.display = 'none';
+  document.getElementById('collapseStepReflet').style.display = 'block';
+
+  const stats = computeCycleStats();
+  const profileKey = selectQuantumProfile(stats);
+  const profile = QUANTUM_PROFILES[profileKey];
+
+  // Score sobre : nombre de voix reconnues / nombre devinées
+  const scoreEl = document.getElementById('refletScore');
+  if (stats.totalGuesses === 0) {
+    scoreEl.textContent = 'Vous n\'avez deviné aucune voix.';
+  } else if (stats.correctGuesses === stats.totalGuesses) {
+    scoreEl.textContent = `Vous avez reconnu ${stats.correctGuesses} voix sur ${stats.totalGuesses}. Toutes justes.`;
+  } else {
+    scoreEl.textContent = `Vous avez reconnu ${stats.correctGuesses} voix sur ${stats.totalGuesses} tentées.`;
+  }
+
+  // Profil quantique
+  document.getElementById('refletProfileTitle').textContent = profile.title;
+  document.getElementById('refletProfileSubtitle').textContent = profile.subtitle;
+  document.getElementById('refletText').textContent = profile.text;
 }
 
 // === RESET ===
