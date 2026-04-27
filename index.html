@@ -7,7 +7,7 @@
 <title>Vespera</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
@@ -124,116 +124,122 @@
   #salon.day .day-dot.current { background: #B87333; box-shadow: 0 0 12px rgba(184,115,51,0.6); }
 
   /* === LA TABLE === */
-  .table-container { padding: 12px 16px 24px; position: relative; }
+  .table-container { padding: 8px 12px 16px; position: relative; }
   .table-surface {
     position: relative;
     width: 100%;
-    aspect-ratio: 0.92;
+    aspect-ratio: 4 / 5;
     max-width: 380px;
+    max-height: 60vh;
     margin: 0 auto;
-    /* Vue en plongée d'une table ovale, ambiance bois sombre */
-    background:
-      radial-gradient(ellipse 78% 65% at 50% 50%, rgba(89,60,30,0.85) 0%, rgba(58,38,20,0.95) 60%, rgba(28,20,12,1) 100%),
-      transparent;
-    border-radius: 50%;
-    box-shadow:
-      inset 0 0 80px rgba(0,0,0,0.7),
-      inset 0 0 20px rgba(212,184,112,0.08),
-      0 8px 60px rgba(0,0,0,0.5);
-    transition: all 0.7s;
+    /* Image de fond : table en bois sombre avec 6 place cards ivoire */
+    background-image: url('assets/dinner-table.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 0;
+    box-shadow: 0 8px 60px rgba(0,0,0,0.5);
+    transition: all 0.7s, filter 0.7s;
+    overflow: hidden;
   }
-  /* Mode jour : lumière douce, bois clair */
+  /* Mode jour : légère altération de l'image (plus claire, moins saturée) */
   #salon.day .table-surface {
-    background:
-      radial-gradient(ellipse 78% 65% at 50% 50%, rgba(196,160,108,0.55) 0%, rgba(168,134,86,0.7) 60%, rgba(110,82,52,0.85) 100%);
-    box-shadow:
-      inset 0 0 80px rgba(80,52,28,0.5),
-      inset 0 0 20px rgba(255,235,180,0.15),
-      0 8px 50px rgba(80,52,28,0.3);
+    filter: brightness(1.15) saturate(0.85) hue-rotate(-5deg);
+    box-shadow: 0 8px 50px rgba(80,52,28,0.3);
   }
 
-  /* Cercle de bougie au centre de la table (en mode nuit uniquement) */
-  .table-surface::before {
-    content: '';
-    position: absolute;
-    inset: 22% 22% 22% 22%;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(212,184,112,0.15) 0%, rgba(212,184,112,0.04) 60%, transparent 80%);
-    transition: opacity 0.7s;
-    pointer-events: none;
-  }
-  #salon.day .table-surface::before { opacity: 0.5; background: radial-gradient(circle, rgba(255,235,180,0.2) 0%, transparent 70%); }
+  /* Pas de halo central en image — on supprime ::before */
+  .table-surface::before { content: none; }
 
-  /* Centre cliquable : Question du soir, message contemplatif */
+  /* Centre cliquable : Question du soir, message contemplatif — entre les 2 bougies */
   .table-center {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 56%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: transparent;
-    border: 1px dashed rgba(212,184,112,0.25);
+    width: 38%;
+    aspect-ratio: 1.4;
+    background: rgba(15, 12, 8, 0.55);
+    border: 1px solid rgba(212,184,112,0.35);
     color: inherit;
     cursor: pointer;
-    padding: 8% 6%;
+    padding: 10px 12px;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.4s;
+    border-radius: 2px;
+    backdrop-filter: blur(2px);
   }
-  .table-center:active { background: rgba(212,184,112,0.08); border-color: rgba(212,184,112,0.5); }
-  .table-center.has-action { border-color: rgba(212,184,112,0.55); background: rgba(212,184,112,0.08); }
-  #salon.day .table-center { border-color: rgba(80,52,28,0.3); }
+  .table-center:active { background: rgba(212,184,112,0.18); border-color: rgba(212,184,112,0.6); }
+  .table-center.has-action { border-color: rgba(212,184,112,0.6); background: rgba(15, 12, 8, 0.7); box-shadow: 0 0 20px rgba(212,184,112,0.25); }
+  #salon.day .table-center { background: rgba(248, 240, 220, 0.7); border-color: rgba(80,52,28,0.4); }
   .table-center-content {
     text-align: center;
     font-family: 'Fraunces', serif;
     font-style: italic;
-    font-size: 13px;
+    font-size: 12px;
     color: #EDE8DD;
-    line-height: 1.5;
+    line-height: 1.45;
   }
   #salon.day .table-center-content { color: #2C2823; }
-  .table-center-content .center-label { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9px; color: #D4B870; letter-spacing: 0.3em; margin-bottom: 8px; }
+  .table-center-content .center-label { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 8px; color: #D4B870; letter-spacing: 0.3em; margin-bottom: 6px; }
   #salon.day .table-center-content .center-label { color: #B87333; }
-  .table-center-content .center-cta { display: block; margin-top: 10px; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9px; color: #D4B870; letter-spacing: 0.3em; }
+  .table-center-content .center-cta { display: block; margin-top: 8px; font-family: 'Inter', sans-serif; font-style: normal; font-size: 8px; color: #D4B870; letter-spacing: 0.3em; }
   #salon.day .table-center-content .center-cta { color: #B87333; }
 
-  /* Couche des sièges (positionnement absolu) */
+  /* === COUCHE DES SIÈGES (place cards ivoire) === */
   .seats-layer { position: absolute; inset: 0; pointer-events: none; }
   .seat {
     position: absolute;
-    width: 18%; aspect-ratio: 1;
+    /* Zone tap qui couvre la place card ivoire */
+    width: 22%;
+    height: 11%;
     pointer-events: auto;
     transform: translate(-50%, -50%);
     cursor: pointer;
     background: transparent;
     border: none;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
-  .seat-img {
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    background: rgba(245,235,210,0.95);
-    border: 2px solid rgba(212,184,112,0.6);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 20px rgba(212,184,112,0.2);
-    transition: all 0.3s;
+  /* Le médaillon-Sceau qu'on avait avant n'apparaît plus visuellement
+     mais on le garde dans le DOM pour le tirage initial et le Collapse */
+  .seat-img { display: none; }
+  /* Le nom calligraphié sur la place card ivoire */
+  .seat-name {
+    font-family: 'Cormorant Garamond', 'Cormorant', 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: #5C4A38;
+    text-align: center;
+    line-height: 1.1;
+    text-transform: none;
+    /* Effet gravure subtile sur ivoire */
+    text-shadow: 0 0.5px 0 rgba(255,250,235,0.3);
+    pointer-events: none;
+    padding: 0 4px;
+    /* Contraint à la taille de la place card */
+    max-width: 100%;
     overflow: hidden;
-    display: block;
   }
-  .seat-img img, .seat-img svg { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-  .seat:active .seat-img { transform: scale(0.95); border-color: #D4B870; box-shadow: 0 2px 12px rgba(0,0,0,0.5), 0 0 30px rgba(212,184,112,0.5); }
-  .seat-name { position: absolute; left: 50%; transform: translateX(-50%); top: calc(100% + 4px); font-family: 'Inter', sans-serif; font-size: 9px; color: #EDE8DD; letter-spacing: 0.18em; white-space: nowrap; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
-  #salon.day .seat-name { color: #2C2823; text-shadow: 0 1px 2px rgba(255,255,255,0.6); }
-  .seat-self .seat-img { border-color: rgba(212,184,112,0.9); box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 25px rgba(212,184,112,0.4); }
-  .seat-veiled .seat-img { opacity: 0.35; filter: grayscale(0.8); }
-  .seat-veiled .seat-name { opacity: 0.5; }
+  .seat-self .seat-name { color: #6B4A1E; font-weight: 600; }
+  .seat-veiled .seat-name { color: #8C7560; opacity: 0.5; }
+  .seat:active .seat-name {
+    color: #B87333;
+    text-shadow: 0 0 8px rgba(212,184,112,0.4);
+  }
 
-  /* Positions des 6 sièges autour de la table (ovale vertical, 6h pour le joueur) */
-  .seat-pos-0 { top: 12%; left: 50%; }   /* 12h — haut */
-  .seat-pos-1 { top: 26%; left: 88%; }   /* 2h */
-  .seat-pos-2 { top: 70%; left: 88%; }   /* 4h */
-  .seat-pos-3 { top: 88%; left: 50%; }   /* 6h — joueur */
-  .seat-pos-4 { top: 70%; left: 12%; }   /* 8h */
-  .seat-pos-5 { top: 26%; left: 12%; }   /* 10h */
+  /* Positions des 6 cartes ivoire — calibrées sur l'image */
+  /* Layout : 3 lignes (haut/milieu/bas) × 2 colonnes (gauche/droite) */
+  .seat-pos-0 { top: 19%; left: 27%; }   /* haut-gauche */
+  .seat-pos-1 { top: 19%; left: 73%; }   /* haut-droite */
+  .seat-pos-2 { top: 47%; left: 27%; }   /* milieu-gauche */
+  .seat-pos-3 { top: 78%; left: 27%; }   /* bas-gauche — joueur */
+  .seat-pos-4 { top: 47%; left: 73%; }   /* milieu-droite */
+  .seat-pos-5 { top: 78%; left: 73%; }   /* bas-droite */
 
   .table-hint { text-align: center; padding: 18px 24px 0; font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.1em; font-style: italic; }
   #salon.day .table-hint { color: #6B6358; }
@@ -2066,9 +2072,13 @@ function onTableCenterTap() {
 
 function renderSeats() {
   const layer = document.getElementById('seatsLayer');
-  // 6 places : 5 Invités + le joueur
-  // Ordre d'affichage : haut, 2h, 4h, 6h (joueur), 8h, 10h
-  // Avec : pos 0 = marc, 1 = theo, 2 = camille, 3 = JOUEUR (en bas), 4 = ines, 5 = karim
+  // 6 places sur la nouvelle table en image (3 lignes × 2 colonnes) :
+  //   pos 0 : haut-gauche    → MARC
+  //   pos 1 : haut-droite    → THÉO
+  //   pos 2 : milieu-gauche  → CAMILLE
+  //   pos 3 : bas-gauche     → JOUEUR
+  //   pos 4 : milieu-droite  → INÈS
+  //   pos 5 : bas-droite     → KARIM
   const positions = [
     { id: 'marc', pos: 0 },
     { id: 'theo', pos: 1 },
@@ -2084,7 +2094,7 @@ function renderSeats() {
       return `
         <button type="button" class="seat seat-self seat-pos-${p.pos}" onclick="openSelfFiche()">
           <div class="seat-img">${renderSealSVG(gameState.userSeal)}</div>
-          <div class="seat-name">VOUS · ${seal.name.toUpperCase()}</div>
+          <div class="seat-name">Vous</div>
         </button>
       `;
     }
@@ -2094,7 +2104,7 @@ function renderSeats() {
     return `
       <button type="button" class="seat seat-pos-${p.pos}${veiled ? ' seat-veiled' : ''}" onclick="openGuestFiche('${guest.id}')">
         <div class="seat-img">${renderSealSVG(guest.seal)}</div>
-        <div class="seat-name">${guest.name.toUpperCase()}${veiled ? ' (voilé)' : ''}</div>
+        <div class="seat-name">${guest.name}${veiled ? ' (voilé)' : ''}</div>
       </button>
     `;
   }).join('');
