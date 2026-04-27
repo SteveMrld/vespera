@@ -669,6 +669,48 @@ const SEASON_1_GUESTS = [
 // Sceaux disponibles pour le joueur (les 7 non utilisés par les Invités)
 const PLAYER_AVAILABLE_SEALS = ['fox', 'falcon', 'serpent', 'butterfly', 'lion', 'panther', 'horse'];
 
+// === FRAGMENTS FIXES DES 5 INVITÉS ===
+// Chaque Invité a 5 fragments cohérents avec sa voix scriptée.
+// Cela permet au joueur de faire le lien entre une voix et une fiche dès J1.
+// Tous les fragments sont présents dans INDICE_WORDINGS pour générer des indices.
+const FIXED_GUEST_FRAGMENTS = {
+  marc: {   // Le Cerf — architecte sobre, retenu, dit "tenu/patiemment"
+    couleur: 'ardoise',
+    objet: 'un carnet à couverture cuir',
+    lieu: 'un atelier silencieux',
+    mot: 'tenu',
+    habitude: 'range avant de partir'
+  },
+  theo: {   // Le Loup — ex-militaire, solitude brute, dit "Bon. Franchement"
+    couleur: 'plomb',
+    objet: 'un vieux briquet',
+    lieu: 'un bar près d\'une gare',
+    mot: 'franchement',
+    habitude: 'mange debout quand il est seul'
+  },
+  camille: {   // La Chouette — éditrice en imposture, voix paradoxale, dit "peut-être"
+    couleur: 'brouillard',
+    objet: 'une lettre jamais ouverte',
+    lieu: 'une bibliothèque vide à 17h',
+    mot: 'peut-être',
+    habitude: 'ne finit jamais les livres qu\'il commence'
+  },
+  ines: {   // Le Lynx — avocate incisive, dure d'abord envers elle-même, dit "verdict/désappris"
+    couleur: 'encre',
+    objet: 'un stylo plume noir',
+    lieu: 'une salle d\'audience à l\'aube',
+    mot: 'verdict',
+    habitude: 'relit deux fois ses messages avant d\'envoyer'
+  },
+  karim: {   // Le Corbeau — consultant fluide qui sur-performe, dit "composer"
+    couleur: 'gris perle',
+    objet: 'un seul gant',
+    lieu: 'un appartement vide en plein soleil',
+    mot: 'composer',
+    habitude: 'recommence ses phrases trois fois avant de finir'
+  }
+};
+
 // === POOLS DE FRAGMENTS ===
 const FRAGMENT_POOLS = {
   couleurs: [
@@ -1191,10 +1233,13 @@ function initNewCycle() {
   // Tirer le Sceau du joueur
   gameState.userSeal = pickRandom(PLAYER_AVAILABLE_SEALS);
 
-  // Tirer les fragments pour chaque Sceau (Invités + joueur)
+  // Tirer les fragments
+  // - Pour les 5 Invités : fragments FIXES, cohérents avec leur voix scriptée
+  //   (le joueur peut ainsi faire le lien voix <-> fiche dès le J1)
+  // - Pour le joueur : fragments aléatoires (sa fiche personnelle change à chaque Cycle)
   gameState.fragments = {};
   SEASON_1_GUESTS.forEach(g => {
-    gameState.fragments[g.id] = rollFragments();
+    gameState.fragments[g.id] = { ...FIXED_GUEST_FRAGMENTS[g.id] };
   });
   gameState.fragments['user'] = rollFragments();
 
