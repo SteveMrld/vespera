@@ -17,7 +17,6 @@
     user-select: none;
     -webkit-font-smoothing: antialiased;
   }
-
   .scene {
     position: fixed; inset: 0;
     display: flex; flex-direction: column;
@@ -27,295 +26,148 @@
   }
   .scene.active { opacity: 1; pointer-events: auto; }
 
-  /* ============ SCÈNE 1 - ARRIVÉE ============ */
+  /* SCÈNE 1 - ARRIVÉE */
   #arrival { background: #000; }
-  #arrival video {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    z-index: 1;
-  }
-  #arrival .overlay {
-    position: absolute; inset: 0; z-index: 2;
-    background: linear-gradient(to bottom,
-      rgba(15,26,46,0.4) 0%,
-      rgba(15,26,46,0.1) 30%,
-      rgba(15,26,46,0.2) 60%,
-      rgba(15,26,46,0.85) 100%);
-  }
-  #arrival .content {
-    position: relative; z-index: 3; height: 100%;
-    display: flex; flex-direction: column; align-items: center;
-    justify-content: space-between;
-    padding: 80px 32px 60px;
-  }
-  .logo {
-    font-family: 'Fraunces', serif;
-    font-size: 38px; font-weight: 300;
-    letter-spacing: 0.45em; color: #EDE8DD;
-    text-indent: 0.45em;
-    opacity: 0; transform: translateY(-12px);
-    animation: fadeDown 2s 1.5s ease forwards;
-    text-shadow: 0 2px 30px rgba(0,0,0,0.5);
-  }
-  .invitation {
-    text-align: center;
-    opacity: 0; transform: translateY(20px);
-    animation: fadeUp 2s 3s ease forwards;
-  }
-  .invitation p {
-    font-family: 'Fraunces', serif;
-    font-size: 22px; font-style: italic;
-    font-weight: 300; letter-spacing: 0.02em;
-    color: #EDE8DD; line-height: 1.6;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.7);
-  }
-  .enter-btn {
-    margin-top: 40px;
-    background: rgba(15,26,46,0.3);
-    border: 1px solid rgba(212,184,112,0.5);
-    color: #D4B870;
-    padding: 14px 44px;
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.3em;
-    cursor: pointer;
-    opacity: 0;
-    animation: fadeIn 2s 5s ease forwards;
-    transition: all 0.4s ease;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-  .enter-btn:hover, .enter-btn:active {
-    background: rgba(212,184,112,0.15);
-    border-color: rgba(212,184,112,0.8);
-    color: #EDE8DD;
-  }
+  #arrival video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+  #arrival .overlay { position: absolute; inset: 0; z-index: 2; background: linear-gradient(to bottom, rgba(15,26,46,0.4) 0%, rgba(15,26,46,0.1) 30%, rgba(15,26,46,0.2) 60%, rgba(15,26,46,0.85) 100%); }
+  #arrival .content { position: relative; z-index: 3; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 80px 32px 60px; }
+  .logo { font-family: 'Fraunces', serif; font-size: 38px; font-weight: 300; letter-spacing: 0.45em; color: #EDE8DD; text-indent: 0.45em; opacity: 0; transform: translateY(-12px); animation: fadeDown 2s 1.5s ease forwards; text-shadow: 0 2px 30px rgba(0,0,0,0.5); }
+  .invitation { text-align: center; opacity: 0; transform: translateY(20px); animation: fadeUp 2s 3s ease forwards; }
+  .invitation p { font-family: 'Fraunces', serif; font-size: 22px; font-style: italic; font-weight: 300; letter-spacing: 0.02em; color: #EDE8DD; line-height: 1.6; text-shadow: 0 2px 20px rgba(0,0,0,0.7); }
+  .enter-btn { margin-top: 40px; background: rgba(15,26,46,0.3); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 44px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; opacity: 0; animation: fadeIn 2s 5s ease forwards; transition: all 0.4s ease; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .enter-btn:hover, .enter-btn:active { background: rgba(212,184,112,0.15); color: #EDE8DD; }
 
-  /* ============ SCÈNE 2 - RITUEL DU SCEAU ============ */
-  #ritual {
-    background: radial-gradient(ellipse at center, #1B2536 0%, #0A1220 100%);
-  }
-  .ritual-content {
-    text-align: center; padding: 0 32px;
-    display: flex; flex-direction: column; align-items: center;
-    max-width: 360px;
-  }
-  .v-message {
-    opacity: 0;
-    animation: fadeIn 2s 0.8s ease forwards;
-    margin-bottom: 50px;
-  }
-  .v-message p {
-    font-family: 'Fraunces', serif;
-    font-size: 18px; font-style: italic;
-    color: #EDE8DD; line-height: 1.7;
-  }
-  .v-signature {
-    font-family: 'Fraunces', serif;
-    font-size: 14px;
-    color: #D4B870;
-    margin-top: 24px;
-    letter-spacing: 0.2em;
-  }
-  .seal-container {
-    opacity: 0;
-    transform: scale(0.7) translateY(30px);
-    animation: sealReveal 2.5s 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-  .seal-circle {
-    width: 180px; height: 180px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(212,184,112,0.12) 0%, rgba(212,184,112,0.04) 100%);
-    border: 1px solid rgba(212,184,112,0.25);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto;
-    box-shadow: 0 0 60px rgba(212,184,112,0.15);
-  }
-  .seal-svg { width: 110px; height: 110px; }
-  .seal-name {
-    font-family: 'Fraunces', serif;
-    font-size: 32px; font-weight: 300;
-    color: #EDE8DD;
-    margin-top: 36px; margin-bottom: 12px;
-    letter-spacing: 0.05em;
-  }
-  .seal-desc {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    color: #A8A095;
-    font-style: italic;
-    line-height: 1.6;
-    max-width: 280px;
-  }
-  .ritual-btn {
-    margin-top: 56px;
-    background: transparent;
-    border: 1px solid rgba(212,184,112,0.5);
-    color: #D4B870;
-    padding: 14px 36px;
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.3em;
-    cursor: pointer;
-    opacity: 0;
-    animation: fadeIn 1.5s 5.5s ease forwards;
-    transition: all 0.4s ease;
-  }
-  .ritual-btn:hover, .ritual-btn:active {
-    background: rgba(212,184,112,0.1);
-    color: #EDE8DD;
-  }
+  /* SCÈNE 2 - RITUEL */
+  #ritual { background: radial-gradient(ellipse at center, #1B2536 0%, #0A1220 100%); }
+  .ritual-content { text-align: center; padding: 0 32px; display: flex; flex-direction: column; align-items: center; max-width: 360px; }
+  .v-message { opacity: 0; animation: fadeIn 2s 0.8s ease forwards; margin-bottom: 50px; }
+  .v-message p { font-family: 'Fraunces', serif; font-size: 18px; font-style: italic; color: #EDE8DD; line-height: 1.7; }
+  .v-signature { font-family: 'Fraunces', serif; font-size: 14px; color: #D4B870; margin-top: 24px; letter-spacing: 0.2em; }
+  .seal-container { opacity: 0; transform: scale(0.7) translateY(30px); animation: sealReveal 2.5s 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+  .seal-circle { width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(212,184,112,0.12) 0%, rgba(212,184,112,0.04) 100%); border: 1px solid rgba(212,184,112,0.25); display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 0 60px rgba(212,184,112,0.15); overflow: hidden; }
+  .seal-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .seal-circle svg { width: 110px; height: 110px; }
+  .seal-name { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 300; color: #EDE8DD; margin-top: 36px; margin-bottom: 12px; letter-spacing: 0.05em; }
+  .seal-desc { font-family: 'Inter', sans-serif; font-size: 13px; color: #A8A095; font-style: italic; line-height: 1.6; max-width: 280px; }
+  .ritual-btn { margin-top: 56px; background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 36px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; opacity: 0; animation: fadeIn 1.5s 5.5s ease forwards; transition: all 0.4s ease; }
+  .ritual-btn:hover, .ritual-btn:active { background: rgba(212,184,112,0.1); color: #EDE8DD; }
 
-  /* ============ SCÈNE 3 - SALON ============ */
-  #salon {
-    background: #0F1A2E;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    align-items: stretch;
-    justify-content: flex-start;
-    transition: background 0.7s ease, color 0.7s ease;
-  }
+  /* SCÈNE 3 - SALON */
+  #salon { background: #0F1A2E; overflow-y: auto; -webkit-overflow-scrolling: touch; align-items: stretch; justify-content: flex-start; transition: background 0.7s, color 0.7s; }
   #salon.day { background: #F5EFE6; color: #2C2823; }
-  .salon-header {
-    padding: 20px 24px;
-    border-bottom: 1px solid rgba(237,232,221,0.12);
-    display: flex; justify-content: space-between; align-items: center;
-    transition: border-color 0.7s;
-  }
+  .salon-header { padding: 20px 24px; border-bottom: 1px solid rgba(237,232,221,0.12); display: flex; justify-content: space-between; align-items: center; }
   #salon.day .salon-header { border-bottom-color: rgba(44,40,35,0.12); }
-  .salon-back {
-    background: transparent; border: none;
-    color: #A8A095; font-size: 12px;
-    font-family: 'Inter', sans-serif;
-    letter-spacing: 0.15em; cursor: pointer;
-  }
+  .salon-back { background: transparent; border: none; color: #A8A095; font-size: 12px; letter-spacing: 0.15em; cursor: pointer; }
   #salon.day .salon-back { color: #6B6358; }
-  .salon-title {
-    font-family: 'Fraunces', serif;
-    font-size: 18px; letter-spacing: 0.4em;
-    color: #EDE8DD; text-indent: 0.4em;
-  }
+  .salon-title { font-family: 'Fraunces', serif; font-size: 18px; letter-spacing: 0.4em; color: #EDE8DD; text-indent: 0.4em; }
   #salon.day .salon-title { color: #2C2823; }
-  .salon-mode-indicator {
-    text-align: center; padding: 24px 20px;
-    font-family: 'Inter', sans-serif;
-    font-size: 11px; color: #A8A095;
-    letter-spacing: 0.25em;
-  }
+  .salon-mode-indicator { text-align: center; padding: 24px 20px; font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.25em; }
   #salon.day .salon-mode-indicator { color: #6B6358; }
-  .salon-question-card {
-    margin: 0 24px 32px;
-    padding: 36px 28px;
-    background: rgba(237,232,221,0.04);
-    border: 1px solid rgba(237,232,221,0.12);
-    border-radius: 4px;
-    text-align: center;
-    transition: all 0.7s ease;
-  }
-  #salon.day .salon-question-card {
-    background: rgba(44,40,35,0.04);
-    border-color: rgba(44,40,35,0.12);
-  }
-  .question-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 10px; color: #A8A095;
-    letter-spacing: 0.3em; margin-bottom: 24px;
-  }
+  .salon-question-card { margin: 0 24px 20px; padding: 36px 28px; background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; text-align: center; transition: all 0.7s; }
+  #salon.day .salon-question-card { background: rgba(44,40,35,0.04); border-color: rgba(44,40,35,0.12); }
+  .question-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #A8A095; letter-spacing: 0.3em; margin-bottom: 24px; }
   #salon.day .question-label { color: #6B6358; }
-  .question-text {
-    font-family: 'Fraunces', serif;
-    font-size: 19px; font-style: italic;
-    line-height: 1.65; color: #EDE8DD;
-  }
+  .question-text { font-family: 'Fraunces', serif; font-size: 19px; font-style: italic; line-height: 1.65; color: #EDE8DD; }
   #salon.day .question-text { color: #2C2823; }
-  .question-signature {
-    font-family: 'Fraunces', serif;
-    font-size: 13px; color: #D4B870;
-    margin-top: 28px;
-    letter-spacing: 0.2em;
-  }
+  .question-signature { font-family: 'Fraunces', serif; font-size: 13px; color: #D4B870; margin-top: 28px; letter-spacing: 0.2em; }
   #salon.day .question-signature { color: #B87333; }
+
+  /* Cartes de navigation */
+  .nav-cards { display: flex; flex-direction: column; gap: 12px; padding: 0 24px 32px; }
+  .nav-card { display: flex; align-items: center; padding: 18px 20px; background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; cursor: pointer; transition: all 0.4s; position: relative; }
+  #salon.day .nav-card { background: rgba(44,40,35,0.04); border-color: rgba(44,40,35,0.12); }
+  .nav-card:active { background: rgba(212,184,112,0.06); border-color: rgba(212,184,112,0.3); }
+  .nav-card-icon { width: 42px; height: 42px; border-radius: 50%; background: rgba(212,184,112,0.1); border: 1px solid rgba(212,184,112,0.3); display: flex; align-items: center; justify-content: center; margin-right: 16px; flex-shrink: 0; }
+  #salon.day .nav-card-icon { background: rgba(184,115,51,0.1); border-color: rgba(184,115,51,0.3); }
+  .nav-card-icon svg { width: 22px; height: 22px; stroke: #D4B870; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  #salon.day .nav-card-icon svg { stroke: #B87333; }
+  .nav-card-content { flex: 1; }
+  .nav-card-title { font-family: 'Fraunces', serif; font-size: 16px; color: #EDE8DD; margin-bottom: 2px; }
+  #salon.day .nav-card-title { color: #2C2823; }
+  .nav-card-subtitle { font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.1em; }
+  #salon.day .nav-card-subtitle { color: #6B6358; }
+  .nav-card-arrow { color: #A8A095; font-size: 18px; margin-left: 12px; }
+  #salon.day .nav-card-arrow { color: #6B6358; }
+  .nav-card-badge { width: 8px; height: 8px; border-radius: 50%; background: #D4B870; margin-left: 8px; box-shadow: 0 0 8px rgba(212,184,112,0.6); }
+
+  /* Section Invités */
   .invites-section { padding: 0 24px 40px; }
-  .invites-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 10px; color: #A8A095;
-    letter-spacing: 0.3em; margin-bottom: 20px;
-  }
+  .invites-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #A8A095; letter-spacing: 0.3em; margin-bottom: 20px; }
   #salon.day .invites-label { color: #6B6358; }
-  .invite-card {
-    display: flex; align-items: center; gap: 18px;
-    padding: 16px;
-    border: 1px solid rgba(237,232,221,0.12);
-    border-radius: 4px;
-    margin-bottom: 12px;
-    transition: all 0.3s ease;
-  }
+  .invite-card { display: flex; align-items: center; gap: 18px; padding: 16px; border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; margin-bottom: 12px; }
   #salon.day .invite-card { border-color: rgba(44,40,35,0.12); }
-  .invite-card.you {
-    background: rgba(212,184,112,0.06);
-    border-color: rgba(212,184,112,0.4);
-  }
-  #salon.day .invite-card.you {
-    background: rgba(184,115,51,0.06);
-    border-color: rgba(184,115,51,0.4);
-  }
-  .invite-seal {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: rgba(212,184,112,0.08);
-    border: 1px solid rgba(212,184,112,0.2);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  #salon.day .invite-seal {
-    background: rgba(184,115,51,0.08);
-    border-color: rgba(184,115,51,0.2);
-  }
+  .invite-card.you { background: rgba(212,184,112,0.06); border-color: rgba(212,184,112,0.4); }
+  #salon.day .invite-card.you { background: rgba(184,115,51,0.06); border-color: rgba(184,115,51,0.4); }
+  .invite-seal { width: 56px; height: 56px; border-radius: 50%; background: rgba(212,184,112,0.08); border: 1px solid rgba(212,184,112,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+  #salon.day .invite-seal { background: rgba(184,115,51,0.08); border-color: rgba(184,115,51,0.2); }
   .invite-seal svg { width: 36px; height: 36px; }
-  .invite-name {
-    font-family: 'Fraunces', serif;
-    font-size: 17px; color: #EDE8DD;
-  }
+  .invite-seal img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .invite-name { font-family: 'Fraunces', serif; font-size: 17px; color: #EDE8DD; }
   #salon.day .invite-name { color: #2C2823; }
-  .invite-seal-name {
-    font-family: 'Inter', sans-serif;
-    font-size: 12px; color: #A8A095;
-    margin-top: 3px;
-  }
+  .invite-seal-name { font-family: 'Inter', sans-serif; font-size: 12px; color: #A8A095; margin-top: 3px; }
   #salon.day .invite-seal-name { color: #6B6358; }
   .invite-card.you .invite-seal-name { color: #D4B870; }
   #salon.day .invite-card.you .invite-seal-name { color: #B87333; }
-  .mode-toggle {
-    position: fixed; top: 20px; right: 20px; z-index: 100;
-    background: rgba(212,184,112,0.15);
-    border: 1px solid rgba(212,184,112,0.4);
-    color: #D4B870;
-    padding: 8px 14px;
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    border-radius: 20px;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  #salon.day .mode-toggle {
-    background: rgba(184,115,51,0.15);
-    border-color: rgba(184,115,51,0.4);
-    color: #B87333;
-  }
+
+  .mode-toggle { position: fixed; top: 20px; right: 20px; z-index: 100; background: rgba(212,184,112,0.15); border: 1px solid rgba(212,184,112,0.4); color: #D4B870; padding: 8px 14px; font-size: 10px; letter-spacing: 0.2em; border-radius: 20px; cursor: pointer; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  #salon.day .mode-toggle { background: rgba(184,115,51,0.15); border-color: rgba(184,115,51,0.4); color: #B87333; }
+
+  /* SCÈNE 4 - MURMURE */
+  #murmur { background: radial-gradient(ellipse at top, #1B2536 0%, #0A1220 100%); align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .murmur-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(237,232,221,0.08); }
+  .murmur-back { background: transparent; border: none; color: #A8A095; font-size: 12px; letter-spacing: 0.15em; cursor: pointer; }
+  .murmur-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #A8A095; letter-spacing: 0.3em; }
+  .murmur-letter { margin: 50px 32px 60px; padding: 50px 32px 40px; background: rgba(237,232,221,0.03); border: 1px solid rgba(237,232,221,0.08); border-radius: 2px; position: relative; opacity: 0; animation: fadeUp 1.5s 0.3s ease forwards; }
+  .murmur-letter::before { content: 'V'; position: absolute; top: -22px; left: 50%; transform: translateX(-50%); width: 44px; height: 44px; background: #0F1A2E; border: 1px solid rgba(212,184,112,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 20px; color: #D4B870; font-style: italic; }
+  .murmur-greeting { font-family: 'Fraunces', serif; font-size: 18px; color: #EDE8DD; margin-bottom: 24px; font-style: italic; }
+  .murmur-text { font-family: 'Fraunces', serif; font-size: 16px; line-height: 1.8; color: #EDE8DD; font-style: italic; margin-bottom: 20px; }
+  .murmur-question { font-family: 'Fraunces', serif; font-size: 17px; line-height: 1.7; color: #D4B870; font-style: italic; margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(212,184,112,0.15); }
+  .murmur-signature { font-family: 'Fraunces', serif; font-size: 14px; color: #D4B870; margin-top: 32px; text-align: right; letter-spacing: 0.2em; font-style: italic; }
+
+  /* SCÈNE 5 - BIBLIOTHÈQUE */
+  #library { background: #000; }
+  #library video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+  #library .library-overlay { position: absolute; inset: 0; z-index: 2; background: linear-gradient(to bottom, rgba(15,26,46,0.6) 0%, rgba(15,26,46,0.1) 25%, rgba(15,26,46,0.1) 70%, rgba(15,26,46,0.85) 100%); }
+  .library-header { position: absolute; top: 0; left: 0; right: 0; z-index: 4; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
+  .library-back { background: rgba(15,26,46,0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(237,232,221,0.15); color: #EDE8DD; font-size: 12px; letter-spacing: 0.15em; cursor: pointer; padding: 8px 14px; border-radius: 20px; }
+  .library-title-bar { font-family: 'Fraunces', serif; font-size: 13px; letter-spacing: 0.3em; color: #EDE8DD; text-shadow: 0 2px 12px rgba(0,0,0,0.8); text-indent: 0.3em; }
+  .library-instruction { position: absolute; top: 80px; left: 0; right: 0; z-index: 3; text-align: center; padding: 0 32px; opacity: 0; animation: fadeIn 1.5s 1s ease forwards; }
+  .library-instruction p { font-family: 'Fraunces', serif; font-size: 15px; font-style: italic; color: #EDE8DD; text-shadow: 0 2px 12px rgba(0,0,0,0.8); }
+
+  /* Hotspots */
+  .hotspot { position: absolute; z-index: 5; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; animation: fadeIn 2s 2s ease forwards; }
+  .hotspot::before { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(212,184,112,0.6); animation: pulse 2.5s ease-in-out infinite; }
+  .hotspot::after { content: ''; width: 10px; height: 10px; border-radius: 50%; background: #D4B870; box-shadow: 0 0 15px rgba(212,184,112,0.8); }
+  .hotspot.found { animation: none; opacity: 0.3; pointer-events: none; }
+  .hotspot.found::before { animation: none; border-color: rgba(212,184,112,0.2); }
+  .hotspot.found::after { background: rgba(212,184,112,0.3); box-shadow: none; }
+  #hotspot-letter { bottom: 32%; left: 30%; }
+  #hotspot-candle { bottom: 40%; left: 47%; }
+  #hotspot-book { bottom: 36%; left: 18%; }
+
+  /* Modal */
+  #discovery-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; padding: 32px; opacity: 0; pointer-events: none; transition: opacity 0.6s; }
+  #discovery-modal.active { opacity: 1; pointer-events: auto; }
+  .discovery-content { max-width: 360px; text-align: center; transform: scale(0.9); transition: transform 0.6s; }
+  #discovery-modal.active .discovery-content { transform: scale(1); }
+  .discovery-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; margin-bottom: 20px; }
+  .discovery-title { font-family: 'Fraunces', serif; font-size: 26px; color: #EDE8DD; font-weight: 300; margin-bottom: 20px; letter-spacing: 0.02em; }
+  .discovery-text { font-family: 'Fraunces', serif; font-size: 16px; font-style: italic; color: #EDE8DD; line-height: 1.7; margin-bottom: 30px; }
+  .discovery-reward { font-family: 'Inter', sans-serif; font-size: 11px; color: #D4B870; letter-spacing: 0.25em; padding-top: 20px; border-top: 1px solid rgba(212,184,112,0.2); margin-bottom: 30px; }
+  .discovery-close { background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 12px 36px; font-size: 11px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; }
+  .discovery-close:active { background: rgba(212,184,112,0.1); color: #EDE8DD; }
 
   /* Animations */
   @keyframes fadeIn { to { opacity: 1; } }
   @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeDown { to { opacity: 1; transform: translateY(0); } }
   @keyframes sealReveal { to { opacity: 1; transform: scale(1) translateY(0); } }
+  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.4); opacity: 0; } }
 </style>
 </head>
 <body>
 
-<!-- ============ SCÈNE 1 : ARRIVÉE ============ -->
+<!-- SCÈNE 1 : ARRIVÉE -->
 <div id="arrival" class="scene active">
   <video id="arrivalVideo" autoplay muted loop playsinline>
     <source src="vespera-arrival.mp4" type="video/mp4">
@@ -331,7 +183,7 @@
   </div>
 </div>
 
-<!-- ============ SCÈNE 2 : RITUEL DU SCEAU ============ -->
+<!-- SCÈNE 2 : RITUEL -->
 <div id="ritual" class="scene">
   <div class="ritual-content">
     <div class="v-message">
@@ -339,9 +191,7 @@
       <p class="v-signature">— V</p>
     </div>
     <div class="seal-container">
-      <div class="seal-circle">
-        <svg class="seal-svg" viewBox="0 0 100 100" id="userSealSvg"></svg>
-      </div>
+      <div class="seal-circle" id="userSealCircle"></div>
       <h2 class="seal-name" id="sealName"></h2>
       <p class="seal-desc" id="sealDesc"></p>
     </div>
@@ -349,7 +199,7 @@
   </div>
 </div>
 
-<!-- ============ SCÈNE 3 : SALON ============ -->
+<!-- SCÈNE 3 : SALON -->
 <div id="salon" class="scene">
   <button class="mode-toggle" onclick="toggleMode()">JOUR / NUIT</button>
   <div class="salon-header">
@@ -363,16 +213,84 @@
     <p class="question-text">"Décrivez en une phrase l'image que les autres ont de vous. Puis, en une seconde phrase, ce qui dans cette image n'est pas tout à fait vrai."</p>
     <p class="question-signature">— V</p>
   </div>
+
+  <div class="nav-cards">
+    <div class="nav-card" onclick="goToMurmur()">
+      <div class="nav-card-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 8l9 6 9-6M3 8v10a2 2 0 002 2h14a2 2 0 002-2V8M3 8l2-2h14l2 2"/></svg>
+      </div>
+      <div class="nav-card-content">
+        <div class="nav-card-title">Le Murmure du matin</div>
+        <div class="nav-card-subtitle">V VOUS A ÉCRIT</div>
+      </div>
+      <div class="nav-card-badge"></div>
+      <div class="nav-card-arrow">→</div>
+    </div>
+    <div class="nav-card" onclick="goToLibrary()">
+      <div class="nav-card-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5V5a2 2 0 012-2h13a1 1 0 011 1v14M4 19.5A2.5 2.5 0 006.5 22H20a1 1 0 001-1v-3"/><path d="M9 7h7M9 11h5"/></svg>
+      </div>
+      <div class="nav-card-content">
+        <div class="nav-card-title">La Bibliothèque</div>
+        <div class="nav-card-subtitle">UNE QUÊTE VOUS ATTEND</div>
+      </div>
+      <div class="nav-card-arrow">→</div>
+    </div>
+  </div>
+
   <div class="invites-section">
     <p class="invites-label">LES INVITÉS</p>
     <div id="invitesList"></div>
   </div>
 </div>
 
+<!-- SCÈNE 4 : MURMURE -->
+<div id="murmur" class="scene">
+  <div class="murmur-header">
+    <button class="murmur-back" onclick="goToSalon()">← RETOUR</button>
+    <div class="murmur-label">LE MURMURE • J 1</div>
+    <div style="width: 56px;"></div>
+  </div>
+  <div class="murmur-letter">
+    <p class="murmur-greeting">Bonjour.</p>
+    <p class="murmur-text">Hier soir, vous êtes entré à Vespera pour la première fois. Vous avez reçu votre Sceau. Vous avez croisé cinq autres invités, dont vous ne savez pas encore si vous les connaissiez vraiment.</p>
+    <p class="murmur-text">L'un d'entre vous, peut-être, porte un Reflet. Il l'ignore lui-même.</p>
+    <p class="murmur-question">Que souhaitez-vous découvrir, ce Cycle ?</p>
+    <p class="murmur-signature">— V</p>
+  </div>
+</div>
+
+<!-- SCÈNE 5 : BIBLIOTHÈQUE -->
+<div id="library" class="scene">
+  <video id="libraryVideo" autoplay muted loop playsinline>
+    <source src="vespera-library.mp4" type="video/mp4">
+  </video>
+  <div class="library-overlay"></div>
+  <div class="library-header">
+    <button class="library-back" onclick="goToSalon()">← RETOUR</button>
+    <div class="library-title-bar">LA BIBLIOTHÈQUE</div>
+    <div style="width: 56px;"></div>
+  </div>
+  <div class="library-instruction">
+    <p>Quelqu'un a laissé quelque chose ici. Sauriez-vous le trouver ?</p>
+  </div>
+  <div class="hotspot" id="hotspot-letter" onclick="discoverObject('letter')"></div>
+  <div class="hotspot" id="hotspot-candle" onclick="discoverObject('candle')"></div>
+  <div class="hotspot" id="hotspot-book" onclick="discoverObject('book')"></div>
+</div>
+
+<!-- Modal de découverte -->
+<div id="discovery-modal">
+  <div class="discovery-content">
+    <p class="discovery-label" id="discoveryLabel">VOUS AVEZ TROUVÉ</p>
+    <h2 class="discovery-title" id="discoveryTitle"></h2>
+    <p class="discovery-text" id="discoveryText"></p>
+    <div class="discovery-reward" id="discoveryReward"></div>
+    <button class="discovery-close" onclick="closeDiscovery()">CONTINUER</button>
+  </div>
+</div>
+
 <script>
-// ============================================
-// LOGIQUE DE JEU
-// ============================================
 const SEALS = [
   { id: 'fox', name: 'Le Renard', desc: "La ruse, l'œil qui sait sans dire." },
   { id: 'wolf', name: 'Le Loup', desc: 'La meute et la solitude, le chasseur patient.' },
@@ -388,6 +306,9 @@ const SEALS = [
   { id: 'horse', name: 'Le Cheval', desc: 'La liberté pure, qui ne ment pas.' },
 ];
 
+// Quand tu auras les 12 PNG dans seals/, ils s'afficheront automatiquement
+const SEALS_WITH_IMAGE = ['fox', 'wolf', 'owl', 'stag', 'lynx', 'falcon'];
+
 const INVITES = [
   { name: 'Marc', sealId: 'stag' },
   { name: 'Théo', sealId: 'wolf' },
@@ -397,29 +318,52 @@ const INVITES = [
 ];
 
 const SEAL_PATHS = {
-  fox: 'M50 25 L38 38 L28 55 Q33 72 50 76 Q67 72 72 55 L62 38 Z M40 48 Q42 51 45 49 M55 49 Q58 51 60 48 M50 30 L46 38 M50 30 L54 38',
-  wolf: 'M50 22 L30 40 L25 60 Q35 75 50 78 Q65 75 75 60 L70 40 Z M40 48 L43 52 M57 52 L60 48 M30 35 L25 28 M70 35 L75 28',
-  owl: 'M50 22 Q32 28 28 50 Q33 72 50 76 Q67 72 72 50 Q68 28 50 22 Z M38 42 Q42 48 46 46 M54 46 Q58 48 62 42 M48 56 L50 60 L52 56',
-  stag: 'M50 25 L40 12 M50 25 L60 12 M50 25 L34 18 M50 25 L66 18 M50 25 L30 22 M50 25 L70 22 M50 25 Q40 35 38 55 Q44 72 50 74 Q56 72 62 55 Q60 35 50 25',
-  lynx: 'M50 22 L38 28 L30 45 Q35 65 50 72 Q65 65 70 45 L62 28 Z M35 38 L40 35 M65 38 L60 35 M50 26 L48 30 M50 26 L52 30 M30 25 L34 32 M70 25 L66 32',
-  falcon: 'M50 25 L25 35 L30 50 L50 60 L70 50 L75 35 Z M45 42 L48 45 M52 45 L55 42 M50 30 L46 36 L50 38 L54 36 Z',
+  fox: 'M50 25 L38 38 L28 55 Q33 72 50 76 Q67 72 72 55 L62 38 Z',
+  wolf: 'M50 22 L30 40 L25 60 Q35 75 50 78 Q65 75 75 60 L70 40 Z',
+  owl: 'M50 22 Q32 28 28 50 Q33 72 50 76 Q67 72 72 50 Q68 28 50 22 Z',
+  stag: 'M50 25 L40 12 M50 25 L60 12 M50 25 Q40 35 38 55 Q44 72 50 74 Q56 72 62 55 Q60 35 50 25',
+  lynx: 'M50 22 L38 28 L30 45 Q35 65 50 72 Q65 65 70 45 L62 28 Z',
+  falcon: 'M50 25 L25 35 L30 50 L50 60 L70 50 L75 35 Z',
   serpent: 'M28 30 Q48 24 70 32 Q72 42 60 46 Q40 50 38 60 Q40 70 60 72 Q70 70 72 78',
-  raven: 'M50 25 L25 38 L28 55 L48 65 L72 55 L75 38 L65 28 Z M45 42 L42 46 M58 46 L62 42 M30 50 L25 60 M70 50 L75 60',
-  butterfly: 'M50 38 L25 22 Q18 38 28 56 L50 50 L72 56 Q82 38 75 22 Z M48 38 L48 72 M52 38 L52 72 M50 25 L50 32',
-  lion: 'M50 22 Q28 22 22 45 Q22 68 50 78 Q78 68 78 45 Q72 22 50 22 Z M40 48 L42 51 M58 51 L60 48 M28 30 Q24 36 26 42 M72 30 Q76 36 74 42',
-  panther: 'M50 28 Q30 35 28 55 Q35 70 50 73 Q65 70 72 55 Q70 35 50 28 Z M40 50 L43 52 M57 52 L60 50 M48 58 L52 58',
-  horse: 'M50 22 Q35 28 35 45 L35 65 Q40 72 50 72 Q60 72 65 65 L65 45 Q65 28 50 22 Z M50 22 L45 10 M50 22 L55 10 M40 30 Q35 25 30 30 M60 30 Q65 25 70 30',
+  raven: 'M50 25 L25 38 L28 55 L48 65 L72 55 L75 38 L65 28 Z',
+  butterfly: 'M50 38 L25 22 Q18 38 28 56 L50 50 L72 56 Q82 38 75 22 Z M48 38 L48 72 M52 38 L52 72',
+  lion: 'M50 22 Q28 22 22 45 Q22 68 50 78 Q78 68 78 45 Q72 22 50 22 Z',
+  panther: 'M50 28 Q30 35 28 55 Q35 70 50 73 Q65 70 72 55 Q70 35 50 28 Z',
+  horse: 'M50 22 Q35 28 35 45 L35 65 Q40 72 50 72 Q60 72 65 65 L65 45 Q65 28 50 22 Z M50 22 L45 10 M50 22 L55 10',
 };
 
-function renderSeal(sealId, color) {
-  color = color || '#D4B870';
-  return '<path d="' + SEAL_PATHS[sealId] + '" stroke="' + color + '" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9" />';
+function renderSealHTML(sealId) {
+  if (SEALS_WITH_IMAGE.includes(sealId)) {
+    return '<img src="seals/seal-' + sealId + '.png" alt="' + sealId + '">';
+  }
+  return '<svg viewBox="0 0 100 100"><path d="' + SEAL_PATHS[sealId] + '" stroke="#D4B870" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9" /></svg>';
 }
 
 let userSeal = null;
 let isDayMode = false;
+const discoveredObjects = new Set();
 
-// Détection automatique jour/nuit selon l'heure réelle
+const DISCOVERIES = {
+  letter: {
+    label: 'UNE LETTRE FROISSÉE',
+    title: 'Un message ancien',
+    text: '"L\'image que je donne n\'est pas celle que je porte." Le papier est jauni. Aucune signature, juste l\'initiale "M.".',
+    reward: '+1 LUEUR • INDICE AJOUTÉ AU JOURNAL',
+  },
+  candle: {
+    label: 'UNE BOUGIE À DEMI BRÛLÉE',
+    title: 'Une bougie',
+    text: 'Quelqu\'un a veillé ici récemment. La cire est encore tiède. Elle a brûlé exactement deux heures.',
+    reward: '+1 LUEUR',
+  },
+  book: {
+    label: 'UN LIVRE OUVERT',
+    title: 'Un livre marqué',
+    text: 'Un seul mot est souligné : *Reflet*. En marge, à l\'encre cuivre : "Ils ne se voient jamais comme nous les voyons."',
+    reward: '+1 LUEUR • FRAGMENT DE LORE',
+  },
+};
+
 function detectMode() {
   const h = new Date().getHours();
   isDayMode = (h < 20 && h >= 8);
@@ -433,7 +377,7 @@ function applyMode() {
     document.getElementById('salonModeIndicator').textContent = "EN ATTENTE DE L'HEURE • 21H";
     document.getElementById('salonQuestionCard').innerHTML =
       '<p class="question-text">Le Salon dort. Il s\'ouvrira ce soir, à l\'Heure.</p>' +
-      '<p class="question-label" style="margin-top: 20px;">EN ATTENDANT, VISITEZ LA BIBLIOTHÈQUE OU LE JARDIN</p>';
+      '<p class="question-label" style="margin-top: 20px;">EN ATTENDANT, EXPLOREZ VESPERA</p>';
   } else {
     salon.classList.remove('day');
     document.getElementById('salonModeIndicator').textContent = "L'HEURE • CYCLE DES REFLETS • J 1";
@@ -446,52 +390,58 @@ function applyMode() {
 }
 
 function renderInvitesList() {
-  const accentColor = isDayMode ? '#B87333' : '#D4B870';
   let html = '<div class="invite-card you">' +
-    '<div class="invite-seal"><svg viewBox="0 0 100 100">' + renderSeal(userSeal.id, accentColor) + '</svg></div>' +
+    '<div class="invite-seal">' + renderSealHTML(userSeal.id) + '</div>' +
     '<div><div class="invite-name">Vous</div><div class="invite-seal-name">' + userSeal.name + '</div></div>' +
     '</div>';
   INVITES.forEach(function(inv){
     const seal = SEALS.find(function(s){ return s.id === inv.sealId; });
     html += '<div class="invite-card">' +
-      '<div class="invite-seal"><svg viewBox="0 0 100 100">' + renderSeal(seal.id, accentColor) + '</svg></div>' +
+      '<div class="invite-seal">' + renderSealHTML(seal.id) + '</div>' +
       '<div><div class="invite-name">' + inv.name + '</div><div class="invite-seal-name">' + seal.name + '</div></div>' +
       '</div>';
   });
   document.getElementById('invitesList').innerHTML = html;
 }
 
-// Navigation
 function showScene(sceneId) {
   document.querySelectorAll('.scene').forEach(function(s){ s.classList.remove('active'); });
   document.getElementById(sceneId).classList.add('active');
-  if (sceneId === 'arrival') {
-    const v = document.getElementById('arrivalVideo');
-    if (v) { v.currentTime = 0; v.play().catch(function(){}); }
-  }
+  setTimeout(function() {
+    if (sceneId === 'arrival') { const v = document.getElementById('arrivalVideo'); if (v) { v.currentTime = 0; v.play().catch(function(){}); } }
+    if (sceneId === 'library') { const v = document.getElementById('libraryVideo'); if (v) { v.currentTime = 0; v.play().catch(function(){}); } }
+  }, 100);
 }
 
 function goToRitual() {
   userSeal = SEALS[Math.floor(Math.random() * SEALS.length)];
-  document.getElementById('userSealSvg').innerHTML = renderSeal(userSeal.id);
+  document.getElementById('userSealCircle').innerHTML = renderSealHTML(userSeal.id);
   document.getElementById('sealName').textContent = userSeal.name;
   document.getElementById('sealDesc').textContent = userSeal.desc;
   showScene('ritual');
 }
 
-function goToSalon() {
-  renderInvitesList();
-  showScene('salon');
-}
-
+function goToSalon() { renderInvitesList(); showScene('salon'); }
 function goToArrival() { showScene('arrival'); }
+function goToMurmur() { showScene('murmur'); }
+function goToLibrary() { showScene('library'); }
 
-function toggleMode() {
-  isDayMode = !isDayMode;
-  applyMode();
+function toggleMode() { isDayMode = !isDayMode; applyMode(); }
+
+function discoverObject(objId) {
+  if (discoveredObjects.has(objId)) return;
+  discoveredObjects.add(objId);
+  document.getElementById('hotspot-' + objId).classList.add('found');
+  const d = DISCOVERIES[objId];
+  document.getElementById('discoveryLabel').textContent = d.label;
+  document.getElementById('discoveryTitle').textContent = d.title;
+  document.getElementById('discoveryText').innerHTML = d.text.replace(/\*([^*]+)\*/g, '<em style="color:#D4B870;">$1</em>');
+  document.getElementById('discoveryReward').textContent = d.reward;
+  document.getElementById('discovery-modal').classList.add('active');
 }
 
-// Init
+function closeDiscovery() { document.getElementById('discovery-modal').classList.remove('active'); }
+
 detectMode();
 </script>
 </body>
