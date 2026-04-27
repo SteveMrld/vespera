@@ -189,8 +189,8 @@
   .seats-layer { position: absolute; inset: 0; pointer-events: none; }
   .seat {
     position: absolute;
-    /* Zone tap carrée, taille calibrée sur l'assiette en laiton de la photo */
-    width: 11%;
+    /* Zone tap calibrée pour rentrer dans l'assiette en laiton */
+    width: 10%;
     aspect-ratio: 1;
     pointer-events: auto;
     transform: translate(-50%, -50%);
@@ -246,14 +246,13 @@
     filter: grayscale(0.7);
   }
 
-  /* Positions des 6 places sur la table ronde — calibrées au pixel sur l'image */
-  /* Image carrée 1:1, places en cercle horloge */
-  .seat-pos-0 { top: 18%; left: 27%; }   /* 11h — haut-gauche, MARC */
-  .seat-pos-1 { top: 18%; left: 73%; }   /* 1h — haut-droite, THEO */
-  .seat-pos-2 { top: 51%; left: 15%; }   /* 9h — milieu-gauche, CAMILLE */
-  .seat-pos-3 { top: 82%; left: 27%; }   /* 7h — bas-gauche, JOUEUR */
-  .seat-pos-4 { top: 51%; left: 85%; }   /* 3h — milieu-droite, INES */
-  .seat-pos-5 { top: 82%; left: 73%; }   /* 5h — bas-droite, KARIM */
+  /* Positions des 6 places — centres EXACTS des assiettes en laiton sur l'image */
+  .seat-pos-0 { top: 19%; left: 32%; }   /* 11h — haut-gauche, MARC */
+  .seat-pos-1 { top: 19%; left: 68%; }   /* 1h — haut-droite, THEO */
+  .seat-pos-2 { top: 50%; left: 18%; }   /* 9h — milieu-gauche, CAMILLE */
+  .seat-pos-3 { top: 80%; left: 32%; }   /* 7h — bas-gauche, JOUEUR */
+  .seat-pos-4 { top: 50%; left: 82%; }   /* 3h — milieu-droite, INES */
+  .seat-pos-5 { top: 80%; left: 68%; }   /* 5h — bas-droite, KARIM */
 
   .table-hint { text-align: center; padding: 18px 24px 0; font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.1em; font-style: italic; }
   #salon.day .table-hint { color: #6B6358; }
