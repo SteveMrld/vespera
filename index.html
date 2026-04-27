@@ -2185,13 +2185,17 @@ function renderSalon() {
   renderSeats();
 
   // Badge sur l'objet Murmure (si pas lu aujourd'hui)
+  // Note : ces objets ont été déplacés dans le Hall en V17, plus dans le Salon.
+  // Les checks restent par sécurité au cas où le DOM les contiendrait encore.
   const dayData = gameState.daysData[gameState.currentDay] || {};
   const objMurmurBadge = document.getElementById('objectMurmurBadge');
-  if (!dayData.murmurRead) {
-    objMurmurBadge.textContent = '!';
-    objMurmurBadge.classList.add('visible');
-  } else {
-    objMurmurBadge.classList.remove('visible');
+  if (objMurmurBadge) {
+    if (!dayData.murmurRead) {
+      objMurmurBadge.textContent = '!';
+      objMurmurBadge.classList.add('visible');
+    } else {
+      objMurmurBadge.classList.remove('visible');
+    }
   }
 
   // Badge sur l'objet Chambre : retiré (le compteur "MES NOTES (X)" suffit dans la Chambre)
@@ -2212,11 +2216,13 @@ function renderSalon() {
 
   // Couloir : objet visible dès 2+ indices
   const objCouloir = document.getElementById('objectCouloir');
-  const cluesCount = (gameState.collectedClues || []).length;
-  if (cluesCount >= 2 && !gameState.cycleEnded) {
-    objCouloir.style.display = 'flex';
-  } else {
-    objCouloir.style.display = 'none';
+  if (objCouloir) {
+    const cluesCount = (gameState.collectedClues || []).length;
+    if (cluesCount >= 2 && !gameState.cycleEnded) {
+      objCouloir.style.display = 'flex';
+    } else {
+      objCouloir.style.display = 'none';
+    }
   }
 }
 
