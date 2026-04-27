@@ -163,6 +163,85 @@
   @keyframes fadeDown { to { opacity: 1; transform: translateY(0); } }
   @keyframes sealReveal { to { opacity: 1; transform: scale(1) translateY(0); } }
   @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.4); opacity: 0; } }
+
+  /* === Question Card cliquable === */
+  .salon-question-card { cursor: pointer; transition: all 0.3s ease; position: relative; }
+  .salon-question-card:active { background: rgba(212,184,112,0.06); border-color: rgba(212,184,112,0.4); }
+  .question-cta { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.3em; margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(212,184,112,0.15); }
+  #salon.day .question-cta { color: #B87333; border-top-color: rgba(184,115,51,0.15); }
+  .question-status { font-family: 'Fraunces', serif; font-size: 13px; font-style: italic; color: #A8A095; margin-top: 16px; }
+  #salon.day .question-status { color: #6B6358; }
+
+  /* === SCÈNE COMPOSE QUESTION === */
+  #compose { background: radial-gradient(ellipse at top, #1B2536 0%, #0A1220 100%); align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .compose-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(237,232,221,0.08); }
+  .compose-back { background: transparent; border: none; color: #A8A095; font-size: 12px; letter-spacing: 0.15em; cursor: pointer; }
+  .compose-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #A8A095; letter-spacing: 0.3em; }
+  .compose-question { padding: 50px 32px 30px; text-align: center; }
+  .compose-q-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.3em; margin-bottom: 24px; }
+  .compose-q-text { font-family: 'Fraunces', serif; font-size: 19px; font-style: italic; line-height: 1.65; color: #EDE8DD; margin-bottom: 14px; }
+  .compose-q-sig { font-family: 'Fraunces', serif; font-size: 13px; color: #D4B870; letter-spacing: 0.2em; }
+  .compose-form { padding: 0 32px 50px; opacity: 0; animation: fadeUp 1.2s 0.5s ease forwards; transform: translateY(20px); }
+  .compose-textarea { width: 100%; min-height: 220px; padding: 24px; background: rgba(237,232,221,0.03); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; color: #EDE8DD; font-family: 'Fraunces', serif; font-size: 16px; font-style: italic; line-height: 1.7; resize: none; outline: none; transition: border-color 0.4s; }
+  .compose-textarea:focus { border-color: rgba(212,184,112,0.4); }
+  .compose-textarea::placeholder { color: #5C5448; font-style: italic; }
+  .compose-hint { font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.05em; margin-top: 14px; line-height: 1.6; font-style: italic; }
+  .compose-actions { margin-top: 30px; display: flex; flex-direction: column; gap: 12px; }
+  .seal-btn { background: rgba(212,184,112,0.1); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 16px; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; font-family: 'Inter', sans-serif; }
+  .seal-btn:active { background: rgba(212,184,112,0.2); color: #EDE8DD; }
+  .seal-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .draft-btn { background: transparent; border: 1px solid rgba(237,232,221,0.2); color: #A8A095; padding: 14px; font-size: 11px; letter-spacing: 0.2em; cursor: pointer; transition: all 0.4s; font-family: 'Inter', sans-serif; }
+
+  /* === SCÈNE RESPONSES === */
+  #responses { background: #0F1A2E; align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .responses-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(237,232,221,0.08); }
+  .responses-intro { padding: 36px 32px 24px; text-align: center; }
+  .responses-title { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 300; color: #EDE8DD; margin-bottom: 14px; letter-spacing: 0.05em; }
+  .responses-desc { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #A8A095; line-height: 1.6; }
+  .responses-progress { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.3em; margin-top: 18px; }
+  .response-cards { padding: 0 24px 40px; display: flex; flex-direction: column; gap: 14px; }
+  .response-card { padding: 24px 22px; background: rgba(237,232,221,0.03); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; cursor: pointer; transition: all 0.4s; position: relative; }
+  .response-card:active { background: rgba(212,184,112,0.06); border-color: rgba(212,184,112,0.3); }
+  .response-card.you { background: rgba(212,184,112,0.06); border-color: rgba(212,184,112,0.3); cursor: default; }
+  .response-card.guessed-right { background: rgba(76,175,80,0.06); border-color: rgba(76,175,80,0.3); cursor: default; }
+  .response-card.guessed-wrong { background: rgba(244,67,54,0.04); border-color: rgba(244,67,54,0.2); cursor: default; }
+  .response-author { font-family: 'Inter', sans-serif; font-size: 10px; color: #A8A095; letter-spacing: 0.3em; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+  .response-card.you .response-author { color: #D4B870; }
+  .response-text { font-family: 'Fraunces', serif; font-size: 15px; font-style: italic; line-height: 1.7; color: #EDE8DD; }
+  .response-action { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.25em; margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(212,184,112,0.15); }
+  .response-result { font-family: 'Fraunces', serif; font-size: 13px; font-style: italic; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(237,232,221,0.1); }
+  .result-right { color: #8FBF93; }
+  .result-wrong { color: #C28C8C; }
+
+  /* === MODAL DEVINETTE === */
+  #guess-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.6s; }
+  #guess-modal.active { opacity: 1; pointer-events: auto; }
+  .guess-content { max-width: 380px; width: 100%; transform: scale(0.92); transition: transform 0.6s; }
+  #guess-modal.active .guess-content { transform: scale(1); }
+  .guess-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; margin-bottom: 16px; text-align: center; }
+  .guess-quote { font-family: 'Fraunces', serif; font-size: 15px; font-style: italic; color: #EDE8DD; line-height: 1.6; margin-bottom: 32px; padding: 20px; border-left: 2px solid rgba(212,184,112,0.4); background: rgba(237,232,221,0.02); }
+  .guess-question { font-family: 'Fraunces', serif; font-size: 15px; color: #EDE8DD; text-align: center; margin-bottom: 24px; }
+  .guess-options { display: flex; flex-direction: column; gap: 8px; }
+  .guess-option { display: flex; align-items: center; padding: 14px 16px; background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; cursor: pointer; transition: all 0.4s; }
+  .guess-option:active { background: rgba(212,184,112,0.1); border-color: rgba(212,184,112,0.4); }
+  .guess-option-seal { width: 36px; height: 36px; border-radius: 50%; background: rgba(212,184,112,0.08); border: 1px solid rgba(212,184,112,0.2); display: flex; align-items: center; justify-content: center; margin-right: 14px; flex-shrink: 0; overflow: hidden; }
+  .guess-option-seal img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .guess-option-seal svg { width: 22px; height: 22px; }
+  .guess-option-name { font-family: 'Fraunces', serif; font-size: 15px; color: #EDE8DD; flex: 1; }
+  .guess-option-seal-name { font-family: 'Inter', sans-serif; font-size: 10px; color: #A8A095; letter-spacing: 0.1em; }
+  .guess-cancel { margin-top: 18px; background: transparent; border: none; color: #A8A095; padding: 12px; font-size: 11px; letter-spacing: 0.2em; cursor: pointer; width: 100%; font-family: 'Inter', sans-serif; }
+
+  /* === MODAL BILAN === */
+  #recap-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; padding: 32px; opacity: 0; pointer-events: none; transition: opacity 0.6s; }
+  #recap-modal.active { opacity: 1; pointer-events: auto; }
+  .recap-content { max-width: 360px; text-align: center; }
+  .recap-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; margin-bottom: 22px; }
+  .recap-score { font-family: 'Fraunces', serif; font-size: 64px; font-weight: 300; color: #EDE8DD; line-height: 1; margin-bottom: 8px; }
+  .recap-score-total { font-family: 'Fraunces', serif; font-size: 18px; color: #A8A095; margin-bottom: 30px; }
+  .recap-text { font-family: 'Fraunces', serif; font-size: 16px; font-style: italic; color: #EDE8DD; line-height: 1.7; margin-bottom: 30px; }
+  .recap-v-sig { font-family: 'Fraunces', serif; font-size: 13px; color: #D4B870; letter-spacing: 0.2em; margin-bottom: 36px; font-style: italic; }
+  .recap-close { background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 36px; font-size: 11px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; font-family: 'Inter', sans-serif; }
+  .recap-close:active { background: rgba(212,184,112,0.1); }
 </style>
 </head>
 <body>
@@ -208,11 +287,7 @@
     <div style="width: 56px;"></div>
   </div>
   <div class="salon-mode-indicator" id="salonModeIndicator">L'HEURE • CYCLE DES REFLETS • J 1</div>
-  <div class="salon-question-card" id="salonQuestionCard">
-    <p class="question-label">QUESTION DU SOIR</p>
-    <p class="question-text">"Décrivez en une phrase l'image que les autres ont de vous. Puis, en une seconde phrase, ce qui dans cette image n'est pas tout à fait vrai."</p>
-    <p class="question-signature">— V</p>
-  </div>
+  <div class="salon-question-card" id="salonQuestionCard" onclick="onQuestionCardClick()"></div>
 
   <div class="nav-cards">
     <div class="nav-card" onclick="goToMurmur()">
@@ -277,6 +352,65 @@
   <div class="hotspot" id="hotspot-letter" onclick="discoverObject('letter')"></div>
   <div class="hotspot" id="hotspot-candle" onclick="discoverObject('candle')"></div>
   <div class="hotspot" id="hotspot-book" onclick="discoverObject('book')"></div>
+</div>
+
+<!-- SCÈNE COMPOSE QUESTION -->
+<div id="compose" class="scene">
+  <div class="compose-header">
+    <button class="compose-back" onclick="backToSalonFromCompose()">← RETOUR</button>
+    <div class="compose-label">VOTRE RÉPONSE</div>
+    <div style="width: 56px;"></div>
+  </div>
+  <div class="compose-question">
+    <p class="compose-q-label">QUESTION DU SOIR — J 1</p>
+    <p class="compose-q-text">"Décrivez en une phrase l'image que les autres ont de vous. Puis, en une seconde phrase, ce qui dans cette image n'est pas tout à fait vrai."</p>
+    <p class="compose-q-sig">— V</p>
+  </div>
+  <div class="compose-form">
+    <textarea class="compose-textarea" id="composeTextarea" placeholder="Écrivez ici, en deux phrases…" oninput="updateComposeBtn()"></textarea>
+    <p class="compose-hint">Votre réponse sera lue par les autres Invités, sans votre nom. Personne ne saura que c'est vous, sauf si quelqu'un le devine.</p>
+    <div class="compose-actions">
+      <button class="seal-btn" id="sealBtn" onclick="sealResponse()" disabled>SCELLER MA RÉPONSE</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCÈNE RESPONSES -->
+<div id="responses" class="scene">
+  <div class="responses-header">
+    <button class="compose-back" onclick="goToSalon()">← RETOUR</button>
+    <div class="compose-label">LES RÉPONSES</div>
+    <div style="width: 56px;"></div>
+  </div>
+  <div class="responses-intro">
+    <h2 class="responses-title">Les voix du soir</h2>
+    <p class="responses-desc">Six réponses ont été scellées. L'une est la vôtre. Sauriez-vous reconnaître les autres ?</p>
+    <p class="responses-progress" id="responsesProgress">0 / 5 DEVINÉS</p>
+  </div>
+  <div class="response-cards" id="responseCards"></div>
+</div>
+
+<!-- MODAL DEVINETTE -->
+<div id="guess-modal">
+  <div class="guess-content">
+    <p class="guess-label">QUI A ÉCRIT CECI ?</p>
+    <div class="guess-quote" id="guessQuote"></div>
+    <p class="guess-question">Vous pensez que c'est…</p>
+    <div class="guess-options" id="guessOptions"></div>
+    <button class="guess-cancel" onclick="closeGuess()">Annuler</button>
+  </div>
+</div>
+
+<!-- MODAL BILAN -->
+<div id="recap-modal">
+  <div class="recap-content">
+    <p class="recap-label">FIN DE SOIRÉE</p>
+    <div class="recap-score" id="recapScore">0</div>
+    <p class="recap-score-total">sur 5 réponses</p>
+    <p class="recap-text" id="recapText"></p>
+    <p class="recap-v-sig">— V</p>
+    <button class="recap-close" onclick="closeRecap()">CONTINUER</button>
+  </div>
 </div>
 
 <!-- Modal de découverte -->
@@ -364,6 +498,165 @@ const DISCOVERIES = {
   },
 };
 
+// ============================================
+// VOIX DES INVITÉS — Question du Cycle des Reflets, J1
+// ============================================
+const INVITES_RESPONSES = {
+  'Marc': "On me voit comme un homme calme, sûr de lui, presque imperturbable. Ce qui n'est pas tout à fait vrai, c'est que ce calme me coûte un effort permanent — il n'est pas naturel, il est tenu.",
+  'Théo': "On me prend pour quelqu'un de solitaire qui choisit sa solitude. Mais en vérité je suis seul parce que je n'ai jamais su comment on entre dans la vie des autres.",
+  'Camille': "Les gens me disent souvent que je devine tout, que je vois plus loin qu'eux. C'est faux : je vois moins, simplement, je parle moins.",
+  'Inès': "On dit de moi que je suis dure, exigeante, intransigeante. Ce qui ne se voit pas, c'est qu'avec moi-même je le suis bien plus, et qu'à force d'exiger, j'ai désappris la douceur.",
+  'Karim': "Mes amis pensent que je sais toujours quoi dire, que j'ai réponse à tout. La vérité, c'est que je passe ma vie à composer des réponses, et qu'au fond je sais rarement ce que je pense vraiment.",
+};
+
+// État de la Question du soir
+let userResponse = '';
+let hasSealedResponse = false;
+let allResponses = [];
+let guesses = {};
+let currentGuessId = null;
+
+function updateComposeBtn() {
+  const ta = document.getElementById('composeTextarea');
+  const btn = document.getElementById('sealBtn');
+  btn.disabled = ta.value.trim().length < 10;
+}
+
+function sealResponse() {
+  const ta = document.getElementById('composeTextarea');
+  userResponse = ta.value.trim();
+  if (userResponse.length < 10) return;
+  hasSealedResponse = true;
+
+  // Mélanger toutes les réponses (la sienne + les 5 invités)
+  allResponses = [
+    { id: 'you', author: 'Vous', text: userResponse, isYou: true },
+    ...INVITES.map(function(inv) {
+      return { id: inv.name, author: inv.name, text: INVITES_RESPONSES[inv.name], isYou: false };
+    })
+  ];
+  // Shuffle (sauf le tien qu'on garde mais à position aléatoire aussi)
+  allResponses.sort(function() { return Math.random() - 0.5; });
+
+  guesses = {};
+  goToResponses();
+}
+
+function onQuestionCardClick() {
+  if (isDayMode) return; // En mode jour, le Salon dort
+  if (!hasSealedResponse) {
+    showScene('compose');
+  } else {
+    goToResponses();
+  }
+}
+
+function backToSalonFromCompose() { showScene('salon'); }
+
+function goToResponses() {
+  renderResponses();
+  showScene('responses');
+}
+
+function renderResponses() {
+  const container = document.getElementById('responseCards');
+  let html = '';
+  allResponses.forEach(function(r, i) {
+    const isGuessed = guesses[r.id];
+    let cls = 'response-card';
+    if (r.isYou) cls += ' you';
+    else if (isGuessed) {
+      cls += isGuessed.correct ? ' guessed-right' : ' guessed-wrong';
+    }
+    let authorLabel = r.isYou ? '— VOUS' : 'INVITÉ ' + (i + 1);
+    if (isGuessed) authorLabel = '— ' + r.author.toUpperCase();
+
+    html += '<div class="' + cls + '"' + (r.isYou || isGuessed ? '' : ' onclick="openGuess(\'' + r.id + '\')"') + '>';
+    html += '<div class="response-author"><span>' + authorLabel + '</span>';
+    if (!r.isYou && !isGuessed) html += '<span style="color:#D4B870;">→</span>';
+    html += '</div>';
+    html += '<div class="response-text">' + escapeHtml(r.text) + '</div>';
+    if (!r.isYou && !isGuessed) {
+      html += '<div class="response-action">DEVINER L\'AUTEUR</div>';
+    } else if (isGuessed) {
+      html += '<div class="response-result ' + (isGuessed.correct ? 'result-right' : 'result-wrong') + '">';
+      html += isGuessed.correct ? 'Vous avez vu juste.' : 'Vous pensiez que c\'était ' + isGuessed.guessed + '.';
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+  container.innerHTML = html;
+
+  const guessedCount = Object.keys(guesses).length;
+  document.getElementById('responsesProgress').textContent = guessedCount + ' / 5 DEVINÉS';
+
+  if (guessedCount === 5) {
+    setTimeout(showRecap, 1200);
+  }
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function openGuess(responseId) {
+  currentGuessId = responseId;
+  const r = allResponses.find(function(x) { return x.id === responseId; });
+  document.getElementById('guessQuote').textContent = '« ' + r.text + ' »';
+
+  let html = '';
+  INVITES.forEach(function(inv) {
+    const seal = SEALS.find(function(s){ return s.id === inv.sealId; });
+    html += '<div class="guess-option" onclick="submitGuess(\'' + inv.name + '\')">';
+    html += '<div class="guess-option-seal">' + renderSealHTML(seal.id) + '</div>';
+    html += '<div style="flex:1;"><div class="guess-option-name">' + inv.name + '</div>';
+    html += '<div class="guess-option-seal-name">' + seal.name + '</div></div>';
+    html += '</div>';
+  });
+  document.getElementById('guessOptions').innerHTML = html;
+  document.getElementById('guess-modal').classList.add('active');
+}
+
+function closeGuess() {
+  document.getElementById('guess-modal').classList.remove('active');
+  currentGuessId = null;
+}
+
+function submitGuess(invName) {
+  const correct = (currentGuessId === invName);
+  guesses[currentGuessId] = { guessed: invName, correct: correct };
+  closeGuess();
+  setTimeout(renderResponses, 300);
+}
+
+function showRecap() {
+  let score = 0;
+  Object.values(guesses).forEach(function(g) { if (g.correct) score++; });
+  document.getElementById('recapScore').textContent = score;
+
+  let txt;
+  if (score === 5) {
+    txt = "Vous lisez les autres comme un livre ouvert. C'est rare, et c'est troublant.";
+  } else if (score >= 3) {
+    txt = "Vous voyez juste, presque toujours. Mais quelques voix vous échappent encore — c'est bien ainsi.";
+  } else if (score >= 1) {
+    txt = "Vous commencez à entendre. Les autres ne sont pas ce qu'ils paraissent — vous le saviez déjà.";
+  } else {
+    txt = "Personne ne se laisse encore deviner. Le Cycle ne fait que commencer.";
+  }
+  document.getElementById('recapText').textContent = txt;
+  document.getElementById('recap-modal').classList.add('active');
+}
+
+function closeRecap() {
+  document.getElementById('recap-modal').classList.remove('active');
+}
+
+// ============================================
+// DÉTECTION JOUR / NUIT
+// ============================================
 function detectMode() {
   const h = new Date().getHours();
   isDayMode = (h < 20 && h >= 8);
@@ -372,19 +665,29 @@ function detectMode() {
 
 function applyMode() {
   const salon = document.getElementById('salon');
+  const card = document.getElementById('salonQuestionCard');
   if (isDayMode) {
     salon.classList.add('day');
     document.getElementById('salonModeIndicator').textContent = "EN ATTENTE DE L'HEURE • 21H";
-    document.getElementById('salonQuestionCard').innerHTML =
+    card.innerHTML =
       '<p class="question-text">Le Salon dort. Il s\'ouvrira ce soir, à l\'Heure.</p>' +
       '<p class="question-label" style="margin-top: 20px;">EN ATTENDANT, EXPLOREZ VESPERA</p>';
   } else {
     salon.classList.remove('day');
     document.getElementById('salonModeIndicator').textContent = "L'HEURE • CYCLE DES REFLETS • J 1";
-    document.getElementById('salonQuestionCard').innerHTML =
-      '<p class="question-label">QUESTION DU SOIR</p>' +
-      '<p class="question-text">"Décrivez en une phrase l\'image que les autres ont de vous. Puis, en une seconde phrase, ce qui dans cette image n\'est pas tout à fait vrai."</p>' +
-      '<p class="question-signature">— V</p>';
+    if (!hasSealedResponse) {
+      card.innerHTML =
+        '<p class="question-label">QUESTION DU SOIR</p>' +
+        '<p class="question-text">"Décrivez en une phrase l\'image que les autres ont de vous. Puis, en une seconde phrase, ce qui dans cette image n\'est pas tout à fait vrai."</p>' +
+        '<p class="question-signature">— V</p>' +
+        '<p class="question-cta">RÉPONDRE →</p>';
+    } else {
+      card.innerHTML =
+        '<p class="question-label">QUESTION DU SOIR</p>' +
+        '<p class="question-text" style="opacity:0.6;">Votre réponse a été scellée.</p>' +
+        '<p class="question-status">Six réponses ont été déposées dans la nuit.</p>' +
+        '<p class="question-cta">VOIR LES RÉPONSES →</p>';
+    }
   }
   if (userSeal) renderInvitesList();
 }
