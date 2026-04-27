@@ -210,26 +210,23 @@
   .seat-name {
     font-family: 'Cormorant Garamond', 'Cormorant', 'Fraunces', serif;
     font-style: italic;
-    font-weight: 500;
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    color: #5C4A38;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: #1F1410;
     text-align: center;
     line-height: 1.1;
     text-transform: none;
-    /* Effet gravure subtile sur ivoire */
-    text-shadow: 0 0.5px 0 rgba(255,250,235,0.3);
+    /* Pas de text-shadow pour garder le noir bien franc */
     pointer-events: none;
     padding: 0 4px;
-    /* Contraint à la taille de la place card */
     max-width: 100%;
     overflow: hidden;
   }
-  .seat-self .seat-name { color: #6B4A1E; font-weight: 600; }
-  .seat-veiled .seat-name { color: #8C7560; opacity: 0.5; }
+  .seat-self .seat-name { color: #2A1A0F; font-weight: 700; }
+  .seat-veiled .seat-name { color: #6B5A45; opacity: 0.55; }
   .seat:active .seat-name {
-    color: #B87333;
-    text-shadow: 0 0 8px rgba(212,184,112,0.4);
+    color: #5A2E0F;
   }
 
   /* Positions des 6 cartes ivoire — calibrées sur l'image */
@@ -271,13 +268,13 @@
   .guest-fiche-frags .frag-row:last-child { border-bottom: none; }
   .guest-fiche-frags .frag-label { font-family: 'Inter', sans-serif; font-size: 9px; color: #A8A095; letter-spacing: 0.25em; flex-shrink: 0; }
   .guest-fiche-frags .frag-value { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #EDE8DD; text-align: right; }
-  .fiche-section { padding: 12px 0; border-bottom: 1px solid rgba(237,232,221,0.06); }
+  .fiche-section { padding: 14px 0; border-bottom: 1px solid rgba(237,232,221,0.06); }
   .fiche-section:last-child { border-bottom: none; }
-  .fiche-section-label { font-family: 'Inter', sans-serif; font-size: 9px; color: #A8A095; letter-spacing: 0.3em; margin-bottom: 6px; }
-  .fiche-section-text { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #EDE8DD; line-height: 1.55; }
-  .fiche-section-final { padding-top: 16px; margin-top: 6px; border-top: 1px solid rgba(212,184,112,0.2); }
-  .fiche-section-final .fiche-section-label { color: #D4B870; }
-  .fiche-section-final .fiche-section-text { color: #D4B870; font-size: 15px; }
+  .fiche-section-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #C5BCA8; letter-spacing: 0.3em; margin-bottom: 8px; font-weight: 500; }
+  .fiche-section-text { font-family: 'Fraunces', serif; font-size: 16px; font-style: normal; color: #F5F0E5; line-height: 1.55; font-weight: 300; }
+  .fiche-section-final { padding-top: 18px; margin-top: 8px; border-top: 1px solid rgba(212,184,112,0.3); }
+  .fiche-section-final .fiche-section-label { color: #E8C77A; }
+  .fiche-section-final .fiche-section-text { color: #E8C77A; font-size: 17px; font-style: italic; }
   .guest-fiche-meta { font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; font-style: italic; line-height: 1.5; padding-top: 8px; border-top: 1px solid rgba(237,232,221,0.08); }
 
   /* CARTE QUESTION (conservée pour compat — n'est plus affichée) */
@@ -1712,8 +1709,10 @@ function startSeuil() {
 }
 
 // === ONBOARDING — 15 QUESTIONS POUR CONSTRUIRE LE PROFIL DU JOUEUR ===
+// Toutes en choix multiples sauf la toute dernière (Q15) qui est libre,
+// pour rester rapide et mobile-friendly.
 const ONBOARDING_QUESTIONS = [
-  // BLOC 1 — D'où vous venez (5 questions, choix multiple)
+  // BLOC 1 — D'OÙ VOUS VENEZ (5 questions, choix)
   {
     block: 'D\'OÙ VOUS VENEZ',
     field: 'age',
@@ -1749,7 +1748,7 @@ const ONBOARDING_QUESTIONS = [
     type: 'choice',
     options: ['Enfant unique', 'L\'aîné', 'Au milieu', 'Le cadet']
   },
-  // BLOC 2 — Vos gestes (5 questions)
+  // BLOC 2 — VOS GESTES (5 questions, choix)
   {
     block: 'VOS GESTES',
     field: 'solitudeSpot',
@@ -1760,23 +1759,23 @@ const ONBOARDING_QUESTIONS = [
   {
     block: 'VOS GESTES',
     field: 'keptObject',
-    question: 'Un objet que vous gardez sans pouvoir bien l\'expliquer ?',
-    type: 'text',
-    placeholder: 'Une bague, une lettre, un objet d\'enfance...'
+    question: 'Un objet auquel vous tenez sans pouvoir vraiment l\'expliquer :',
+    type: 'choice',
+    options: ['Une lettre, une carte, un mot écrit', 'Un bijou ou un vêtement hérité', 'Un objet de l\'enfance', 'Un livre ou un disque', 'Une photo', 'Aucun, je ne garde pas']
   },
   {
     block: 'VOS GESTES',
-    field: 'overusedWord',
-    question: 'Le mot que vos proches disent que vous utilisez trop ?',
-    type: 'text',
-    placeholder: 'Un mot, une expression, un tic de langage...'
+    field: 'voiceStyle',
+    question: 'Quand vous parlez, on vous reconnaît à :',
+    type: 'choice',
+    options: ['Un rythme lent, posé', 'Un rythme rapide, une voix vive', 'Une expression qui revient toujours', 'Les silences entre vos phrases', 'Votre manière de digresser']
   },
   {
     block: 'VOS GESTES',
     field: 'habit',
-    question: 'Une habitude que vos proches remarquent chez vous ?',
-    type: 'text',
-    placeholder: 'Quelque chose que vous faites sans y penser...'
+    question: 'Vous avez plutôt tendance à :',
+    type: 'choice',
+    options: ['Tout ranger autour de vous', 'Laisser un peu de désordre', 'Bouger sans tenir en place', 'Rester immobile longtemps', 'Toucher des objets en parlant']
   },
   {
     block: 'VOS GESTES',
@@ -1785,18 +1784,18 @@ const ONBOARDING_QUESTIONS = [
     type: 'choice',
     options: ['Restez au lit', 'Lisez ou regardez quelque chose', 'Cuisinez', 'Sortez quand même', 'Appelez quelqu\'un que vous aimez', 'Ne supportez pas la pluie']
   },
-  // BLOC 3 — Votre intimité (5 questions)
+  // BLOC 3 — VOTRE INTIMITÉ (5 questions ; 4 choix + 1 texte final)
   {
     block: 'VOTRE INTIMITÉ',
     field: 'color',
-    question: 'La couleur que vous portez le plus, ou celle qui revient dans vos espaces ?',
-    type: 'text',
-    placeholder: 'Une couleur, ou une nuance...'
+    question: 'La gamme de couleurs qui revient dans vos espaces ?',
+    type: 'choice',
+    options: ['Sombres et froides (gris, noir, bleu)', 'Sombres et chaudes (brun, ocre, sépia)', 'Claires et neutres (blanc, ivoire, beige)', 'Vives et chaudes (rouge, orange, jaune)', 'Vives et froides (bleu vif, vert, violet)']
   },
   {
     block: 'VOTRE INTIMITÉ',
     field: 'lastCried',
-    question: 'La dernière fois que vous avez vraiment pleuré, c\'était :',
+    question: 'La dernière fois que vous avez vraiment pleuré :',
     type: 'choice',
     options: ['Cette semaine', 'Ce mois-ci', 'Cette année', 'Il y a longtemps', 'Je ne m\'en souviens plus']
   },
@@ -1805,14 +1804,14 @@ const ONBOARDING_QUESTIONS = [
     field: 'disappearance',
     question: 'Si vous deviez disparaître trois mois sans dire à personne, vous iriez :',
     type: 'choice',
-    options: ['Au bord de la mer', 'À la montagne', 'À l\'étranger, dans une ville inconnue', 'Chez quelqu\'un, en silence', 'Vous ne disparaîtriez pas']
+    options: ['Au bord de la mer', 'À la montagne', 'À l\'étranger, dans une ville inconnue', 'Chez quelqu\'un, en silence', 'Je ne disparaîtrais pas']
   },
   {
     block: 'VOTRE INTIMITÉ',
     field: 'belief',
-    question: 'Une chose à laquelle vous croyez sans pouvoir la prouver ?',
-    type: 'text',
-    placeholder: 'Une idée, une intuition, une certitude personnelle...'
+    question: 'Ce qui vous touche le plus dans ce que vous lisez, regardez ou écoutez ?',
+    type: 'choice',
+    options: ['La beauté formelle, l\'élégance', 'Une vérité dite simplement', 'L\'émotion sincère, ce qui fait pleurer', 'Le mystère, ce qui reste sans réponse', 'L\'humour, la légèreté']
   },
   {
     block: 'VOTRE INTIMITÉ',
