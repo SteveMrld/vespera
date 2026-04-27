@@ -128,11 +128,11 @@
   .table-surface {
     position: relative;
     width: 100%;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 1 / 1;
     max-width: 380px;
     max-height: 60vh;
     margin: 0 auto;
-    /* Image de fond : table en bois sombre avec 6 place cards ivoire */
+    /* Image de fond : table ronde en bois sombre, 6 places en cercle, 2 bougies écartées verticalement */
     background-image: url('assets/dinner-table.png');
     background-size: cover;
     background-position: center;
@@ -148,21 +148,21 @@
     box-shadow: 0 8px 50px rgba(80,52,28,0.3);
   }
 
-  /* Pas de halo central en image — on supprime ::before */
+  /* Pas de halo central en image */
   .table-surface::before { content: none; }
 
-  /* Centre cliquable : Question du soir, message contemplatif — entre les 2 bougies */
+  /* Centre cliquable : bien placé dans le grand espace dégagé entre les 2 bougies */
   .table-center {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 38%;
+    width: 50%;
     aspect-ratio: 1.4;
     background: rgba(15, 12, 8, 0.55);
     border: 1px solid rgba(212,184,112,0.35);
     color: inherit;
     cursor: pointer;
-    padding: 10px 12px;
+    padding: 12px 14px;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.4s;
     border-radius: 2px;
@@ -175,23 +175,23 @@
     text-align: center;
     font-family: 'Fraunces', serif;
     font-style: italic;
-    font-size: 12px;
+    font-size: 13px;
     color: #EDE8DD;
     line-height: 1.45;
   }
   #salon.day .table-center-content { color: #2C2823; }
-  .table-center-content .center-label { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 8px; color: #D4B870; letter-spacing: 0.3em; margin-bottom: 6px; }
+  .table-center-content .center-label { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9px; color: #D4B870; letter-spacing: 0.3em; margin-bottom: 6px; }
   #salon.day .table-center-content .center-label { color: #B87333; }
-  .table-center-content .center-cta { display: block; margin-top: 8px; font-family: 'Inter', sans-serif; font-style: normal; font-size: 8px; color: #D4B870; letter-spacing: 0.3em; }
+  .table-center-content .center-cta { display: block; margin-top: 8px; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9px; color: #D4B870; letter-spacing: 0.3em; }
   #salon.day .table-center-content .center-cta { color: #B87333; }
 
-  /* === COUCHE DES SIÈGES (place cards ivoire) === */
+  /* === COUCHE DES SIÈGES (place cards ivoire en cercle) === */
   .seats-layer { position: absolute; inset: 0; pointer-events: none; }
   .seat {
     position: absolute;
     /* Zone tap qui couvre la place card ivoire */
-    width: 22%;
-    height: 11%;
+    width: 18%;
+    height: 10%;
     pointer-events: auto;
     transform: translate(-50%, -50%);
     cursor: pointer;
@@ -210,33 +210,33 @@
   .seat-name {
     font-family: 'Cormorant Garamond', 'Cormorant', 'Fraunces', serif;
     font-style: italic;
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.02em;
-    color: #1F1410;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: #1A0E08;
     text-align: center;
     line-height: 1.1;
     text-transform: none;
-    /* Pas de text-shadow pour garder le noir bien franc */
+    /* Pas de text-shadow pour garder le noir bien franc sur l'ivoire */
     pointer-events: none;
     padding: 0 4px;
     max-width: 100%;
     overflow: hidden;
   }
-  .seat-self .seat-name { color: #2A1A0F; font-weight: 700; }
+  .seat-self .seat-name { color: #1A0E08; font-weight: 700; }
   .seat-veiled .seat-name { color: #6B5A45; opacity: 0.55; }
   .seat:active .seat-name {
     color: #5A2E0F;
   }
 
-  /* Positions des 6 cartes ivoire — calibrées sur l'image */
-  /* Layout : 3 lignes (haut/milieu/bas) × 2 colonnes (gauche/droite) */
-  .seat-pos-0 { top: 19%; left: 27%; }   /* haut-gauche */
-  .seat-pos-1 { top: 19%; left: 73%; }   /* haut-droite */
-  .seat-pos-2 { top: 47%; left: 27%; }   /* milieu-gauche */
-  .seat-pos-3 { top: 78%; left: 27%; }   /* bas-gauche — joueur */
-  .seat-pos-4 { top: 47%; left: 73%; }   /* milieu-droite */
-  .seat-pos-5 { top: 78%; left: 73%; }   /* bas-droite */
+  /* Positions des 6 places sur la table ronde — disposition en cercle */
+  /* L'image fait 1:1 carré, places en cercle régulier */
+  .seat-pos-0 { top: 21%; left: 32%; }   /* 11h — haut-gauche */
+  .seat-pos-1 { top: 21%; left: 68%; }   /* 1h — haut-droite */
+  .seat-pos-2 { top: 50%; left: 17%; }   /* 9h — milieu-gauche */
+  .seat-pos-3 { top: 79%; left: 32%; }   /* 7h — bas-gauche, joueur */
+  .seat-pos-4 { top: 50%; left: 83%; }   /* 3h — milieu-droite */
+  .seat-pos-5 { top: 79%; left: 68%; }   /* 5h — bas-droite */
 
   .table-hint { text-align: center; padding: 18px 24px 0; font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.1em; font-style: italic; }
   #salon.day .table-hint { color: #6B6358; }
