@@ -2720,17 +2720,17 @@ function startVoiceReveal() {
     guessedAs: guesses[g.id] || null
   }));
 
-  // Mélange déterministe par jour
-  if (!dayData.shuffleOrder) {
+  // Mélange déterministe par jour — clé dédiée au voice reveal (5 indices)
+  if (!dayData.voiceShuffle || dayData.voiceShuffle.length !== 5) {
     const shuffled = [0,1,2,3,4];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    dayData.shuffleOrder = shuffled;
+    dayData.voiceShuffle = shuffled;
     saveState();
   }
-  voicesQueue = dayData.shuffleOrder.map(i => voicesQueue[i]);
+  voicesQueue = dayData.voiceShuffle.map(i => voicesQueue[i]).filter(v => v != null);
 
   // Trouver la première voix non encore devinée
   currentVoiceIndex = voicesQueue.findIndex(v => !v.guessed);
@@ -2748,8 +2748,17 @@ function startVoiceReveal() {
 }
 
 function renderVoice() {
+  // Sécurité : filtrer les undefined avant tout calcul
+  voicesQueue = voicesQueue.filter(v => v != null);
+  if (currentVoiceIndex >= voicesQueue.length) {
+    finishVoiceReveal();
+    return;
+  }
   const voice = voicesQueue[currentVoiceIndex];
-  if (!voice) return;
+  if (!voice) {
+    finishVoiceReveal();
+    return;
+  }
 
   const guessedCount = voicesQueue.filter(v => v.guessed).length;
   const total = voicesQueue.length;
