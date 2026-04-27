@@ -129,8 +129,8 @@
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
-    max-width: 380px;
-    max-height: 60vh;
+    max-width: 560px;
+    max-height: 80vh;
     margin: 0 auto;
     /* Image de fond : table ronde en bois sombre, 6 places en cercle, 2 bougies écartées verticalement */
     background-image: url('assets/dinner-table.png');
@@ -262,14 +262,15 @@
   #salon.voice-mode .table-objects,
   #salon.voice-mode .salon-footer { display: none; }
 
-  /* Le cartouche central s'agrandit pour afficher la voix complète */
+  /* Le cartouche central s'adapte pour afficher la voix sans chevaucher les médaillons */
+  /* Médaillons haut/bas à 32%/68% — donc cartouche max 38% pour ne pas les toucher */
   .table-center.voice-active {
-    width: 58%;
-    aspect-ratio: 0.9;
-    background: rgba(8, 6, 4, 0.92);
+    width: 40%;
+    aspect-ratio: 0.78;
+    background: rgba(8, 6, 4, 0.94);
     border-color: rgba(212,184,112,0.6);
     box-shadow: 0 0 30px rgba(212,184,112,0.3), inset 0 0 20px rgba(0,0,0,0.5);
-    padding: 18px 16px;
+    padding: 16px 14px;
   }
   .table-center.voice-active .voice-text {
     display: block;
