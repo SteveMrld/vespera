@@ -513,7 +513,6 @@
 // === DÉTECTION D'ERREUR GLOBALE (debug) ===
 window.addEventListener('error', function(e) {
   console.error('[VESPERA ERROR]', e.message, 'at', e.filename + ':' + e.lineno);
-  // Afficher l'erreur visiblement en bas de l'écran pour debug mobile
   let div = document.getElementById('errorDebug');
   if (!div) {
     div = document.createElement('div');
@@ -523,6 +522,37 @@ window.addEventListener('error', function(e) {
   }
   div.innerHTML += '<div>' + e.message + ' (' + e.lineno + ')</div>';
 });
+
+// === DEBUG TACTILE (temporaire) ===
+// Affiche en temps réel ce qui est tapé pour comprendre pourquoi les taps ne déclenchent pas les onclick.
+function showTapDebug(msg) {
+  let div = document.getElementById('tapDebug');
+  if (!div) {
+    div = document.createElement('div');
+    div.id = 'tapDebug';
+    div.style.cssText = 'position:fixed;top:60px;left:8px;right:8px;background:#0a3a0a;color:#9fdc9f;padding:6px 10px;font-size:11px;z-index:9999;font-family:monospace;border-radius:4px;max-height:80px;overflow:auto;';
+    document.body.appendChild(div);
+  }
+  const time = new Date().toTimeString().slice(0,8);
+  div.innerHTML = '<div>' + time + ' — ' + msg + '</div>' + div.innerHTML.split('<div>').slice(0,4).join('<div>');
+}
+
+window.addEventListener('touchstart', function(e) {
+  const t = e.target;
+  let info = t.tagName;
+  if (t.className && typeof t.className === 'string') info += '.' + t.className.split(' ')[0];
+  if (t.id) info += '#' + t.id;
+  const closest = t.closest('[onclick]');
+  info += ' | onclick=' + (closest ? 'YES (' + closest.tagName + ')' : 'NO');
+  showTapDebug('touchstart: ' + info);
+}, { passive: true, capture: true });
+
+window.addEventListener('click', function(e) {
+  const t = e.target;
+  let info = t.tagName;
+  if (t.className && typeof t.className === 'string') info += '.' + t.className.split(' ')[0];
+  showTapDebug('click: ' + info);
+}, true);
 
 // ====================================================================
 // VESPERA — Cycle des Reflets, Saison 1 — V5 (Commit 1)
