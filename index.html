@@ -19,6 +19,14 @@
     touch-action: manipulation;
   }
   button, .nav-card, .invite-card, .response-card, .guess-option, .salon-question-card, .reset-btn, .test-btn, .salon-back, .murmur-back, .compose-back, .library-back, .hotspot { cursor: pointer; touch-action: manipulation; }
+  /* Reset des buttons natifs pour qu'ils s'intègrent visuellement */
+  button { background: none; border: none; color: inherit; font: inherit; text-align: inherit; padding: 0; margin: 0; appearance: none; -webkit-appearance: none; }
+  button.nav-card, button.invite-card, button.salon-question-card, button.guess-option, button.response-card { display: flex; width: 100%; }
+  button.salon-question-card { display: block; }
+  button.invite-card, button.guess-option { align-items: center; gap: 18px; }
+  button.guess-option { gap: 14px; }
+  button.response-card { display: block; }
+  button.hotspot { padding: 0; }
   .scene {
     position: fixed; inset: 0;
     display: flex; flex-direction: column;
@@ -326,16 +334,16 @@
   <div class="day-progress" id="dayProgress"></div>
 
   <!-- Carte Question du soir (visible en mode nuit) -->
-  <div class="salon-question-card" id="questionCard" onclick="openCompose()">
+  <button type="button" class="salon-question-card" id="questionCard" onclick="openCompose()">
     <p class="question-label">QUESTION DU SOIR</p>
     <p class="question-text" id="questionText"></p>
     <p class="question-signature">V.</p>
     <p class="question-cta" id="questionCta">RÉPONDRE →</p>
-  </div>
+  </button>
 
   <!-- Cartes navigation -->
   <div class="nav-cards">
-    <div class="nav-card" onclick="openMurmur()">
+    <button type="button" class="nav-card" onclick="openMurmur()">
       <div class="nav-card-icon">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
       </div>
@@ -345,9 +353,9 @@
       </div>
       <div class="nav-card-arrow">→</div>
       <div class="nav-card-badge" id="murmurBadge"></div>
-    </div>
+    </button>
 
-    <div class="nav-card" onclick="openChambre()">
+    <button type="button" class="nav-card" onclick="openChambre()">
       <div class="nav-card-icon">
         <svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
       </div>
@@ -356,9 +364,9 @@
         <div class="nav-card-subtitle">LES FICHES DU CERCLE</div>
       </div>
       <div class="nav-card-arrow">→</div>
-    </div>
+    </button>
 
-    <div class="nav-card" onclick="openLibrary()">
+    <button type="button" class="nav-card" onclick="openLibrary()">
       <div class="nav-card-icon">
         <svg viewBox="0 0 24 24"><path d="M4 4h6v16H4zM14 4h6v16h-6zM10 8h4M10 12h4M10 16h4"/></svg>
       </div>
@@ -367,7 +375,7 @@
         <div class="nav-card-subtitle">UNE QUÊTE DE LIEU</div>
       </div>
       <div class="nav-card-arrow">→</div>
-    </div>
+    </button>
   </div>
 
   <!-- Section Invités -->
@@ -411,9 +419,9 @@
   <div class="library-instruction">
     <p>Quelqu'un a laissé quelque chose ici. Sauriez-vous le trouver ?</p>
   </div>
-  <div class="hotspot" id="hotspot-letter" onclick="discoverObject('letter')"></div>
-  <div class="hotspot" id="hotspot-candle" onclick="discoverObject('candle')"></div>
-  <div class="hotspot" id="hotspot-book" onclick="discoverObject('book')"></div>
+  <button type="button" class="hotspot" id="hotspot-letter" onclick="discoverObject('letter')"></button>
+  <button type="button" class="hotspot" id="hotspot-candle" onclick="discoverObject('candle')"></button>
+  <button type="button" class="hotspot" id="hotspot-book" onclick="discoverObject('book')"></button>
 </div>
 
 <!-- SCÈNE COMPOSE -->
@@ -975,7 +983,7 @@ function renderInvites() {
   const list = document.getElementById('invitesList');
   list.innerHTML = '';
 
-  // Toi en premier
+  // Toi en premier (non cliquable)
   const userSeal = ALL_SEALS[gameState.userSeal];
   list.innerHTML += `
     <div class="invite-card you">
@@ -987,18 +995,18 @@ function renderInvites() {
     </div>
   `;
 
-  // Les 5 Invités
+  // Les 5 Invités (cliquables, ouvrent la Chambre)
   SEASON_1_GUESTS.forEach(g => {
     const seal = ALL_SEALS[g.seal];
     const veiled = gameState.veiledGuestId === g.id;
     list.innerHTML += `
-      <div class="invite-card" onclick="openChambre()">
+      <button type="button" class="invite-card" onclick="openChambre()">
         <div class="invite-seal">${renderSealSVG(g.seal)}</div>
         <div>
           <div class="invite-name">${g.name}${veiled ? ' (voilé)' : ''}</div>
           <div class="invite-seal-name">${seal.name.toUpperCase()}</div>
         </div>
-      </div>
+      </button>
     `;
   });
 }
@@ -1214,8 +1222,12 @@ function renderResponses() {
         actionHTML = '';
       }
 
+      const tag = guessedAs ? 'div' : 'button';
+      const onclickAttr = !guessedAs ? `onclick="openGuess('${item.id}')"` : '';
+      const typeAttr = !guessedAs ? 'type="button"' : '';
+
       container.innerHTML += `
-        <div class="response-card ${extraClass}" ${!guessedAs ? `onclick="openGuess('${item.id}')"` : ''}>
+        <${tag} ${typeAttr} class="response-card ${extraClass}" ${onclickAttr}>
           <div class="response-author">
             <span>INVITÉ ${labelNum}</span>
             ${!guessedAs ? '<span style="color:#D4B870;">→</span>' : ''}
@@ -1223,7 +1235,7 @@ function renderResponses() {
           <div class="response-text">${item.text}</div>
           ${actionHTML}
           ${resultHTML}
-        </div>
+        </${tag}>
       `;
     }
   });
@@ -1247,13 +1259,13 @@ function openGuess(guestId) {
   SEASON_1_GUESTS.forEach(g => {
     const seal = ALL_SEALS[g.seal];
     opts.innerHTML += `
-      <div class="guess-option" onclick="confirmGuess('${g.id}')">
+      <button type="button" class="guess-option" onclick="confirmGuess('${g.id}')">
         <div class="guess-option-seal">${renderSealSVG(g.seal)}</div>
         <div>
           <div class="guess-option-name">${g.name}</div>
           <div class="guess-option-seal-name">${seal.name}</div>
         </div>
-      </div>
+      </button>
     `;
   });
 
@@ -1355,10 +1367,45 @@ document.addEventListener('DOMContentLoaded', function() {
   const lib = document.querySelector('#library video');
   if (lib) lib.load();
 
-  // Si on a déjà un état, on peut sauter directement au salon
-  if (isLoaded && gameState.userSeal) {
-    // Affiche quand même l'arrivée par défaut, mais le bouton ENTRER ramène au Sceau
+  // FIX MOBILE : délégation d'événements globale pour les éléments cliquables
+  // Sur certains Chrome Android, les onclick sur <div> ne se déclenchent pas.
+  // On capture le tap au niveau du document et on exécute manuellement le handler.
+  function executeOnclick(target) {
+    if (!target) return false;
+    const el = target.closest('[onclick]');
+    if (!el) return false;
+    // Si c'est un button natif, le onclick va se déclencher tout seul
+    if (el.tagName === 'BUTTON') return false;
+    const code = el.getAttribute('onclick');
+    if (code) {
+      try {
+        // Exécuter le code onclick manuellement
+        new Function(code).call(el);
+      } catch (e) {
+        console.error('[VESPERA] onclick exec error:', e);
+      }
+      return true;
+    }
+    return false;
   }
+
+  document.addEventListener('click', function(e) {
+    executeOnclick(e.target);
+  }, false);
+
+  // Sur tactile, on utilise touchend pour fiabiliser
+  let touchStarted = false;
+  document.addEventListener('touchstart', function(e) {
+    touchStarted = true;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    if (!touchStarted) return;
+    touchStarted = false;
+    if (executeOnclick(e.target)) {
+      e.preventDefault();
+    }
+  }, false);
 });
 </script>
 </body>
