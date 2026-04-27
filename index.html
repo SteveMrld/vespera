@@ -151,33 +151,33 @@
   /* Pas de halo central en image */
   .table-surface::before { content: none; }
 
-  /* Centre cliquable : bien placé dans le grand espace dégagé entre les 2 bougies */
+  /* Centre cliquable : étroit pour ne pas chevaucher Camille (gauche) et Inès (droite) */
   .table-center {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 50%;
-    aspect-ratio: 1.4;
-    background: rgba(15, 12, 8, 0.55);
-    border: 1px solid rgba(212,184,112,0.35);
+    width: 35%;
+    aspect-ratio: 0.85;
+    background: rgba(15, 12, 8, 0.6);
+    border: 1px solid rgba(212,184,112,0.4);
     color: inherit;
     cursor: pointer;
-    padding: 12px 14px;
+    padding: 14px 12px;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.4s;
     border-radius: 2px;
     backdrop-filter: blur(2px);
   }
   .table-center:active { background: rgba(212,184,112,0.18); border-color: rgba(212,184,112,0.6); }
-  .table-center.has-action { border-color: rgba(212,184,112,0.6); background: rgba(15, 12, 8, 0.7); box-shadow: 0 0 20px rgba(212,184,112,0.25); }
-  #salon.day .table-center { background: rgba(248, 240, 220, 0.7); border-color: rgba(80,52,28,0.4); }
+  .table-center.has-action { border-color: rgba(212,184,112,0.7); background: rgba(15, 12, 8, 0.75); box-shadow: 0 0 24px rgba(212,184,112,0.3); }
+  #salon.day .table-center { background: rgba(248, 240, 220, 0.75); border-color: rgba(80,52,28,0.4); }
   .table-center-content {
     text-align: center;
     font-family: 'Fraunces', serif;
     font-style: italic;
     font-size: 13px;
     color: #EDE8DD;
-    line-height: 1.45;
+    line-height: 1.4;
   }
   #salon.day .table-center-content { color: #2C2823; }
   .table-center-content .center-label { display: block; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9px; color: #D4B870; letter-spacing: 0.3em; margin-bottom: 6px; }
@@ -229,14 +229,14 @@
     color: #5A2E0F;
   }
 
-  /* Positions des 6 places sur la table ronde — disposition en cercle */
-  /* L'image fait 1:1 carré, places en cercle régulier */
-  .seat-pos-0 { top: 21%; left: 32%; }   /* 11h — haut-gauche */
-  .seat-pos-1 { top: 21%; left: 68%; }   /* 1h — haut-droite */
-  .seat-pos-2 { top: 50%; left: 17%; }   /* 9h — milieu-gauche */
-  .seat-pos-3 { top: 79%; left: 32%; }   /* 7h — bas-gauche, joueur */
-  .seat-pos-4 { top: 50%; left: 83%; }   /* 3h — milieu-droite */
-  .seat-pos-5 { top: 79%; left: 68%; }   /* 5h — bas-droite */
+  /* Positions des 6 places sur la table ronde — calibrées au pixel sur l'image */
+  /* Image carrée 1:1, places en cercle horloge */
+  .seat-pos-0 { top: 18%; left: 27%; }   /* 11h — haut-gauche, MARC */
+  .seat-pos-1 { top: 18%; left: 73%; }   /* 1h — haut-droite, THEO */
+  .seat-pos-2 { top: 51%; left: 15%; }   /* 9h — milieu-gauche, CAMILLE */
+  .seat-pos-3 { top: 82%; left: 27%; }   /* 7h — bas-gauche, JOUEUR */
+  .seat-pos-4 { top: 51%; left: 85%; }   /* 3h — milieu-droite, INES */
+  .seat-pos-5 { top: 82%; left: 73%; }   /* 5h — bas-droite, KARIM */
 
   .table-hint { text-align: center; padding: 18px 24px 0; font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.1em; font-style: italic; }
   #salon.day .table-hint { color: #6B6358; }
