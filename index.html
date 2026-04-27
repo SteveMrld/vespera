@@ -26,7 +26,7 @@
   }
   .scene.active { opacity: 1; pointer-events: auto; }
 
-  /* SCÈNE 1 - ARRIVÉE */
+  /* SCÈNE ARRIVÉE */
   #arrival { background: #000; }
   #arrival video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
   #arrival .overlay { position: absolute; inset: 0; z-index: 2; background: linear-gradient(to bottom, rgba(15,26,46,0.4) 0%, rgba(15,26,46,0.1) 30%, rgba(15,26,46,0.2) 60%, rgba(15,26,46,0.85) 100%); }
@@ -35,9 +35,9 @@
   .invitation { text-align: center; opacity: 0; transform: translateY(20px); animation: fadeUp 2s 3s ease forwards; }
   .invitation p { font-family: 'Fraunces', serif; font-size: 22px; font-style: italic; font-weight: 300; letter-spacing: 0.02em; color: #EDE8DD; line-height: 1.6; text-shadow: 0 2px 20px rgba(0,0,0,0.7); }
   .enter-btn { margin-top: 40px; background: rgba(15,26,46,0.3); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 44px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; opacity: 0; animation: fadeIn 2s 5s ease forwards; transition: all 0.4s ease; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-  .enter-btn:hover, .enter-btn:active { background: rgba(212,184,112,0.15); color: #EDE8DD; }
+  .enter-btn:active { background: rgba(212,184,112,0.15); color: #EDE8DD; }
 
-  /* SCÈNE 2 - RITUEL */
+  /* SCÈNE RITUEL */
   #ritual { background: radial-gradient(ellipse at center, #1B2536 0%, #0A1220 100%); }
   .ritual-content { text-align: center; padding: 0 32px; display: flex; flex-direction: column; align-items: center; max-width: 360px; }
   .v-message { opacity: 0; animation: fadeIn 2s 0.8s ease forwards; margin-bottom: 50px; }
@@ -50,9 +50,9 @@
   .seal-name { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 300; color: #EDE8DD; margin-top: 36px; margin-bottom: 12px; letter-spacing: 0.05em; }
   .seal-desc { font-family: 'Inter', sans-serif; font-size: 13px; color: #A8A095; font-style: italic; line-height: 1.6; max-width: 280px; }
   .ritual-btn { margin-top: 56px; background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 36px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; opacity: 0; animation: fadeIn 1.5s 5.5s ease forwards; transition: all 0.4s ease; }
-  .ritual-btn:hover, .ritual-btn:active { background: rgba(212,184,112,0.1); color: #EDE8DD; }
+  .ritual-btn:active { background: rgba(212,184,112,0.1); color: #EDE8DD; }
 
-  /* SCÈNE 3 - SALON */
+  /* SCÈNE SALON */
   #salon { background: #0F1A2E; overflow-y: auto; -webkit-overflow-scrolling: touch; align-items: stretch; justify-content: flex-start; transition: background 0.7s, color 0.7s; }
   #salon.day { background: #F5EFE6; color: #2C2823; }
   .salon-header { padding: 20px 24px; border-bottom: 1px solid rgba(237,232,221,0.12); display: flex; justify-content: space-between; align-items: center; }
@@ -61,18 +61,30 @@
   #salon.day .salon-back { color: #6B6358; }
   .salon-title { font-family: 'Fraunces', serif; font-size: 18px; letter-spacing: 0.4em; color: #EDE8DD; text-indent: 0.4em; }
   #salon.day .salon-title { color: #2C2823; }
-  .salon-mode-indicator { text-align: center; padding: 24px 20px; font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.25em; }
+  .salon-mode-indicator { text-align: center; padding: 24px 20px 12px; font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.25em; }
   #salon.day .salon-mode-indicator { color: #6B6358; }
-  .salon-question-card { margin: 0 24px 20px; padding: 36px 28px; background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; text-align: center; transition: all 0.7s; }
+  .day-progress { display: flex; justify-content: center; gap: 8px; padding: 0 24px 24px; }
+  .day-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(237,232,221,0.15); transition: all 0.4s; }
+  .day-dot.completed { background: rgba(212,184,112,0.6); }
+  .day-dot.current { background: #D4B870; box-shadow: 0 0 12px rgba(212,184,112,0.6); transform: scale(1.3); }
+  #salon.day .day-dot { background: rgba(44,40,35,0.15); }
+  #salon.day .day-dot.completed { background: rgba(184,115,51,0.6); }
+  #salon.day .day-dot.current { background: #B87333; box-shadow: 0 0 12px rgba(184,115,51,0.6); }
+  .salon-question-card { margin: 0 24px 20px; padding: 36px 28px; background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; text-align: center; transition: all 0.7s; cursor: pointer; }
   #salon.day .salon-question-card { background: rgba(44,40,35,0.04); border-color: rgba(44,40,35,0.12); }
+  .salon-question-card:active { background: rgba(212,184,112,0.06); border-color: rgba(212,184,112,0.4); }
   .question-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #A8A095; letter-spacing: 0.3em; margin-bottom: 24px; }
   #salon.day .question-label { color: #6B6358; }
   .question-text { font-family: 'Fraunces', serif; font-size: 19px; font-style: italic; line-height: 1.65; color: #EDE8DD; }
   #salon.day .question-text { color: #2C2823; }
   .question-signature { font-family: 'Fraunces', serif; font-size: 13px; color: #D4B870; margin-top: 28px; letter-spacing: 0.2em; }
   #salon.day .question-signature { color: #B87333; }
+  .question-cta { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.3em; margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(212,184,112,0.15); }
+  #salon.day .question-cta { color: #B87333; border-top-color: rgba(184,115,51,0.15); }
+  .question-status { font-family: 'Fraunces', serif; font-size: 13px; font-style: italic; color: #A8A095; margin-top: 16px; }
+  #salon.day .question-status { color: #6B6358; }
 
-  /* Cartes de navigation */
+  /* Cartes navigation */
   .nav-cards { display: flex; flex-direction: column; gap: 12px; padding: 0 24px 32px; }
   .nav-card { display: flex; align-items: center; padding: 18px 20px; background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; cursor: pointer; transition: all 0.4s; position: relative; }
   #salon.day .nav-card { background: rgba(44,40,35,0.04); border-color: rgba(44,40,35,0.12); }
@@ -94,14 +106,15 @@
   .invites-section { padding: 0 24px 40px; }
   .invites-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #A8A095; letter-spacing: 0.3em; margin-bottom: 20px; }
   #salon.day .invites-label { color: #6B6358; }
-  .invite-card { display: flex; align-items: center; gap: 18px; padding: 16px; border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; margin-bottom: 12px; }
+  .invite-card { display: flex; align-items: center; gap: 18px; padding: 16px; border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s; }
   #salon.day .invite-card { border-color: rgba(44,40,35,0.12); }
-  .invite-card.you { background: rgba(212,184,112,0.06); border-color: rgba(212,184,112,0.4); }
+  .invite-card:not(.you):active { background: rgba(212,184,112,0.04); border-color: rgba(212,184,112,0.3); }
+  .invite-card.you { background: rgba(212,184,112,0.06); border-color: rgba(212,184,112,0.4); cursor: default; }
   #salon.day .invite-card.you { background: rgba(184,115,51,0.06); border-color: rgba(184,115,51,0.4); }
   .invite-seal { width: 56px; height: 56px; border-radius: 50%; background: rgba(212,184,112,0.08); border: 1px solid rgba(212,184,112,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
   #salon.day .invite-seal { background: rgba(184,115,51,0.08); border-color: rgba(184,115,51,0.2); }
-  .invite-seal svg { width: 36px; height: 36px; }
   .invite-seal img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .invite-seal svg { width: 36px; height: 36px; }
   .invite-name { font-family: 'Fraunces', serif; font-size: 17px; color: #EDE8DD; }
   #salon.day .invite-name { color: #2C2823; }
   .invite-seal-name { font-family: 'Inter', sans-serif; font-size: 12px; color: #A8A095; margin-top: 3px; }
@@ -109,91 +122,17 @@
   .invite-card.you .invite-seal-name { color: #D4B870; }
   #salon.day .invite-card.you .invite-seal-name { color: #B87333; }
 
-  .mode-toggle { position: fixed; top: 20px; right: 20px; z-index: 100; background: rgba(212,184,112,0.15); border: 1px solid rgba(212,184,112,0.4); color: #D4B870; padding: 8px 14px; font-size: 10px; letter-spacing: 0.2em; border-radius: 20px; cursor: pointer; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-  #salon.day .mode-toggle { background: rgba(184,115,51,0.15); border-color: rgba(184,115,51,0.4); color: #B87333; }
-
   .salon-footer { padding: 0 24px 40px; text-align: center; }
   .reset-btn { background: transparent; border: none; color: #5C5448; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.25em; padding: 12px 18px; cursor: pointer; text-transform: uppercase; opacity: 0.6; transition: opacity 0.4s; }
   .reset-btn:active { opacity: 1; color: #A8A095; }
   #salon.day .reset-btn { color: #8C8275; }
-  #salon.day .reset-btn:active { color: #4A4238; }
 
-  /* === CARTE COLLAPSE (apparaît dans le Salon) === */
-  .collapse-card { display: flex; align-items: center; padding: 22px 22px; background: linear-gradient(135deg, rgba(212,184,112,0.12) 0%, rgba(212,184,112,0.04) 100%); border: 1px solid rgba(212,184,112,0.5); border-radius: 4px; cursor: pointer; transition: all 0.4s; position: relative; overflow: hidden; margin: 0 24px 24px; box-shadow: 0 0 30px rgba(212,184,112,0.1); animation: collapsePulse 3s ease-in-out infinite; }
-  .collapse-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(212,184,112,0.15), transparent 60%); pointer-events: none; }
-  @keyframes collapsePulse { 0%, 100% { box-shadow: 0 0 30px rgba(212,184,112,0.1); } 50% { box-shadow: 0 0 50px rgba(212,184,112,0.25); } }
-  .collapse-card-icon { width: 46px; height: 46px; border-radius: 50%; background: rgba(212,184,112,0.15); border: 1px solid rgba(212,184,112,0.5); display: flex; align-items: center; justify-content: center; margin-right: 18px; flex-shrink: 0; position: relative; z-index: 1; }
-  .collapse-card-icon svg { width: 22px; height: 22px; stroke: #D4B870; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-  .collapse-card-content { flex: 1; position: relative; z-index: 1; }
-  .collapse-card-title { font-family: 'Fraunces', serif; font-size: 17px; color: #EDE8DD; margin-bottom: 4px; }
-  .collapse-card-subtitle { font-family: 'Inter', sans-serif; font-size: 11px; color: #D4B870; letter-spacing: 0.25em; }
-  .collapse-card-arrow { color: #D4B870; font-size: 18px; margin-left: 12px; position: relative; z-index: 1; }
+  /* Bouton de test "Jour suivant" */
+  .test-controls { position: fixed; top: 16px; left: 16px; z-index: 200; display: flex; gap: 8px; }
+  .test-btn { background: rgba(212,184,112,0.15); border: 1px solid rgba(212,184,112,0.4); color: #D4B870; padding: 6px 10px; font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.15em; border-radius: 16px; cursor: pointer; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  #salon.day .test-btn { background: rgba(184,115,51,0.15); border-color: rgba(184,115,51,0.4); color: #B87333; }
 
-  /* === SCÈNE COLLAPSE === */
-  #collapse { background: radial-gradient(ellipse at top, #1A1428 0%, #0A0612 100%); align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-  #collapse::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 30%, rgba(212,184,112,0.05) 0%, transparent 70%); pointer-events: none; }
-
-  .collapse-step { padding: 60px 32px 60px; opacity: 0; transition: opacity 0.8s; pointer-events: none; position: absolute; inset: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-  .collapse-step.active { opacity: 1; pointer-events: auto; position: relative; }
-
-  /* Étape Intro */
-  .collapse-intro-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; text-align: center; margin-bottom: 36px; opacity: 0; animation: fadeIn 1.5s 0.5s ease forwards; }
-  .collapse-intro-title { font-family: 'Fraunces', serif; font-size: 38px; font-weight: 300; color: #EDE8DD; text-align: center; letter-spacing: 0.05em; margin-bottom: 50px; opacity: 0; animation: fadeUp 1.5s 1s ease forwards; transform: translateY(20px); }
-  .collapse-intro-text { font-family: 'Fraunces', serif; font-size: 17px; font-style: italic; color: #EDE8DD; line-height: 1.85; text-align: center; max-width: 360px; margin: 0 auto 30px; opacity: 0; animation: fadeUp 1.5s 2s ease forwards; transform: translateY(20px); }
-  .collapse-intro-sig { font-family: 'Fraunces', serif; font-size: 14px; color: #D4B870; text-align: center; letter-spacing: 0.3em; margin-bottom: 50px; opacity: 0; animation: fadeIn 1.5s 3.5s ease forwards; }
-  .collapse-intro-btn { display: block; margin: 0 auto; background: rgba(212,184,112,0.1); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 16px 40px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; opacity: 0; animation: fadeIn 1.5s 4.5s ease forwards; }
-  .collapse-intro-btn:active { background: rgba(212,184,112,0.2); color: #EDE8DD; }
-
-  /* Étape Vote */
-  .collapse-vote-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; text-align: center; margin-bottom: 16px; }
-  .collapse-vote-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 300; color: #EDE8DD; text-align: center; margin-bottom: 14px; letter-spacing: 0.02em; }
-  .collapse-vote-desc { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #A8A095; text-align: center; line-height: 1.6; margin-bottom: 36px; max-width: 320px; margin-left: auto; margin-right: auto; }
-  .vote-options { display: flex; flex-direction: column; gap: 12px; }
-  .vote-option { display: flex; align-items: center; padding: 18px 18px; background: rgba(237,232,221,0.03); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; cursor: pointer; transition: all 0.4s; }
-  .vote-option:active { background: rgba(212,184,112,0.1); border-color: rgba(212,184,112,0.5); }
-  .vote-option.selected { background: rgba(212,184,112,0.15); border-color: rgba(212,184,112,0.7); box-shadow: 0 0 20px rgba(212,184,112,0.2); }
-  .vote-option-seal { width: 50px; height: 50px; border-radius: 50%; background: rgba(212,184,112,0.08); border: 1px solid rgba(212,184,112,0.2); display: flex; align-items: center; justify-content: center; margin-right: 16px; flex-shrink: 0; overflow: hidden; }
-  .vote-option-seal img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-  .vote-option-seal svg { width: 30px; height: 30px; }
-  .vote-option-content { flex: 1; }
-  .vote-option-name { font-family: 'Fraunces', serif; font-size: 17px; color: #EDE8DD; margin-bottom: 4px; }
-  .vote-option-quote { font-family: 'Fraunces', serif; font-size: 12px; font-style: italic; color: #A8A095; line-height: 1.5; }
-  .vote-confirm { display: block; margin: 36px auto 0; background: rgba(212,184,112,0.1); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 16px 40px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; }
-  .vote-confirm:active { background: rgba(212,184,112,0.2); color: #EDE8DD; }
-  .vote-confirm:disabled { opacity: 0.3; cursor: not-allowed; }
-
-  /* Étape Révélation */
-  .reveal-step .collapse-intro-label { animation: fadeIn 1s 0.3s ease forwards; }
-  .reveal-judgment { font-family: 'Fraunces', serif; font-size: 22px; font-style: italic; color: #EDE8DD; text-align: center; line-height: 1.6; margin-bottom: 40px; opacity: 0; animation: fadeUp 1.5s 1s ease forwards; transform: translateY(20px); }
-  .reveal-bearer { text-align: center; margin: 50px 0; opacity: 0; animation: revealBearer 2s 2.5s ease forwards; transform: scale(0.85); }
-  @keyframes revealBearer { to { opacity: 1; transform: scale(1); } }
-  .reveal-bearer-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; margin-bottom: 26px; }
-  .reveal-bearer-seal { width: 130px; height: 130px; border-radius: 50%; background: radial-gradient(circle, rgba(212,184,112,0.15) 0%, rgba(212,184,112,0.04) 100%); border: 1px solid rgba(212,184,112,0.4); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; box-shadow: 0 0 60px rgba(212,184,112,0.2); overflow: hidden; }
-  .reveal-bearer-seal img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-  .reveal-bearer-seal svg { width: 75px; height: 75px; }
-  .reveal-bearer-name { font-family: 'Fraunces', serif; font-size: 30px; font-weight: 300; color: #EDE8DD; margin-bottom: 8px; }
-  .reveal-bearer-seal-name { font-family: 'Inter', sans-serif; font-size: 12px; color: #D4B870; letter-spacing: 0.25em; }
-  .reveal-text { font-family: 'Fraunces', serif; font-size: 16px; font-style: italic; color: #EDE8DD; line-height: 1.8; text-align: center; max-width: 380px; margin: 30px auto; opacity: 0; animation: fadeUp 1.5s 4s ease forwards; transform: translateY(15px); }
-  .reveal-btn { display: block; margin: 36px auto 0; background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 36px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; opacity: 0; animation: fadeIn 1.5s 5s ease forwards; }
-  .reveal-btn:active { background: rgba(212,184,112,0.1); }
-
-  /* Étape Profil quantique */
-  .profile-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; text-align: center; margin-bottom: 26px; }
-  .profile-name { font-family: 'Fraunces', serif; font-size: 38px; font-weight: 300; color: #EDE8DD; text-align: center; letter-spacing: 0.02em; margin-bottom: 18px; }
-  .profile-tagline { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #D4B870; text-align: center; margin-bottom: 50px; letter-spacing: 0.05em; }
-  .profile-text { font-family: 'Fraunces', serif; font-size: 16px; font-style: italic; color: #EDE8DD; line-height: 1.85; text-align: center; max-width: 380px; margin: 0 auto 36px; }
-  .profile-stats { display: flex; justify-content: space-around; margin: 40px 0; padding: 24px 0; border-top: 1px solid rgba(212,184,112,0.15); border-bottom: 1px solid rgba(212,184,112,0.15); }
-  .profile-stat { text-align: center; }
-  .profile-stat-value { font-family: 'Fraunces', serif; font-size: 28px; color: #EDE8DD; font-weight: 300; }
-  .profile-stat-label { font-family: 'Inter', sans-serif; font-size: 9px; color: #A8A095; letter-spacing: 0.25em; margin-top: 6px; }
-  .profile-sig { font-family: 'Fraunces', serif; font-size: 13px; color: #D4B870; text-align: center; letter-spacing: 0.3em; margin: 30px 0; font-style: italic; }
-  .profile-actions { display: flex; flex-direction: column; gap: 12px; max-width: 320px; margin: 0 auto; }
-  .profile-btn-primary { background: rgba(212,184,112,0.1); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 16px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; }
-  .profile-btn-primary:active { background: rgba(212,184,112,0.2); color: #EDE8DD; }
-  .profile-btn-secondary { background: transparent; border: 1px solid rgba(237,232,221,0.2); color: #A8A095; padding: 14px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.2em; cursor: pointer; transition: all 0.4s; }
-  .profile-btn-secondary:active { color: #EDE8DD; }
-
-  /* SCÈNE 4 - MURMURE */
+  /* SCÈNE MURMURE */
   #murmur { background: radial-gradient(ellipse at top, #1B2536 0%, #0A1220 100%); align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .murmur-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(237,232,221,0.08); }
   .murmur-back { background: transparent; border: none; color: #A8A095; font-size: 12px; letter-spacing: 0.15em; cursor: pointer; }
@@ -202,10 +141,11 @@
   .murmur-letter::before { content: 'V'; position: absolute; top: -22px; left: 50%; transform: translateX(-50%); width: 44px; height: 44px; background: #0F1A2E; border: 1px solid rgba(212,184,112,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 20px; color: #D4B870; font-style: italic; }
   .murmur-greeting { font-family: 'Fraunces', serif; font-size: 18px; color: #EDE8DD; margin-bottom: 24px; font-style: italic; }
   .murmur-text { font-family: 'Fraunces', serif; font-size: 16px; line-height: 1.8; color: #EDE8DD; font-style: italic; margin-bottom: 20px; }
-  .murmur-question { font-family: 'Fraunces', serif; font-size: 17px; line-height: 1.7; color: #D4B870; font-style: italic; margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(212,184,112,0.15); }
+  .murmur-indice { font-family: 'Fraunces', serif; font-size: 16px; line-height: 1.8; color: #D4B870; font-style: italic; margin: 28px 0; padding: 20px 0; border-top: 1px solid rgba(212,184,112,0.15); border-bottom: 1px solid rgba(212,184,112,0.15); }
+  .murmur-question { font-family: 'Fraunces', serif; font-size: 17px; line-height: 1.7; color: #EDE8DD; font-style: italic; margin-top: 28px; }
   .murmur-signature { font-family: 'Fraunces', serif; font-size: 14px; color: #D4B870; margin-top: 32px; text-align: right; letter-spacing: 0.2em; font-style: italic; }
 
-  /* SCÈNE 5 - BIBLIOTHÈQUE */
+  /* SCÈNE BIBLIOTHÈQUE */
   #library { background: #000; }
   #library video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
   #library .library-overlay { position: absolute; inset: 0; z-index: 2; background: linear-gradient(to bottom, rgba(15,26,46,0.6) 0%, rgba(15,26,46,0.1) 25%, rgba(15,26,46,0.1) 70%, rgba(15,26,46,0.85) 100%); }
@@ -214,8 +154,6 @@
   .library-title-bar { font-family: 'Fraunces', serif; font-size: 13px; letter-spacing: 0.3em; color: #EDE8DD; text-shadow: 0 2px 12px rgba(0,0,0,0.8); text-indent: 0.3em; }
   .library-instruction { position: absolute; top: 80px; left: 0; right: 0; z-index: 3; text-align: center; padding: 0 32px; opacity: 0; animation: fadeIn 1.5s 1s ease forwards; }
   .library-instruction p { font-family: 'Fraunces', serif; font-size: 15px; font-style: italic; color: #EDE8DD; text-shadow: 0 2px 12px rgba(0,0,0,0.8); }
-
-  /* Hotspots */
   .hotspot { position: absolute; z-index: 5; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; animation: fadeIn 2s 2s ease forwards; }
   .hotspot::before { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(212,184,112,0.6); animation: pulse 2.5s ease-in-out infinite; }
   .hotspot::after { content: ''; width: 10px; height: 10px; border-radius: 50%; background: #D4B870; box-shadow: 0 0 15px rgba(212,184,112,0.8); }
@@ -226,34 +164,7 @@
   #hotspot-candle { bottom: 40%; left: 47%; }
   #hotspot-book { bottom: 36%; left: 18%; }
 
-  /* Modal */
-  #discovery-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; padding: 32px; opacity: 0; pointer-events: none; transition: opacity 0.6s; }
-  #discovery-modal.active { opacity: 1; pointer-events: auto; }
-  .discovery-content { max-width: 360px; text-align: center; transform: scale(0.9); transition: transform 0.6s; }
-  #discovery-modal.active .discovery-content { transform: scale(1); }
-  .discovery-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; margin-bottom: 20px; }
-  .discovery-title { font-family: 'Fraunces', serif; font-size: 26px; color: #EDE8DD; font-weight: 300; margin-bottom: 20px; letter-spacing: 0.02em; }
-  .discovery-text { font-family: 'Fraunces', serif; font-size: 16px; font-style: italic; color: #EDE8DD; line-height: 1.7; margin-bottom: 30px; }
-  .discovery-reward { font-family: 'Inter', sans-serif; font-size: 11px; color: #D4B870; letter-spacing: 0.25em; padding-top: 20px; border-top: 1px solid rgba(212,184,112,0.2); margin-bottom: 30px; }
-  .discovery-close { background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 12px 36px; font-size: 11px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; }
-  .discovery-close:active { background: rgba(212,184,112,0.1); color: #EDE8DD; }
-
-  /* Animations */
-  @keyframes fadeIn { to { opacity: 1; } }
-  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-  @keyframes fadeDown { to { opacity: 1; transform: translateY(0); } }
-  @keyframes sealReveal { to { opacity: 1; transform: scale(1) translateY(0); } }
-  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.4); opacity: 0; } }
-
-  /* === Question Card cliquable === */
-  .salon-question-card { cursor: pointer; transition: all 0.3s ease; position: relative; }
-  .salon-question-card:active { background: rgba(212,184,112,0.06); border-color: rgba(212,184,112,0.4); }
-  .question-cta { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.3em; margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(212,184,112,0.15); }
-  #salon.day .question-cta { color: #B87333; border-top-color: rgba(184,115,51,0.15); }
-  .question-status { font-family: 'Fraunces', serif; font-size: 13px; font-style: italic; color: #A8A095; margin-top: 16px; }
-  #salon.day .question-status { color: #6B6358; }
-
-  /* === SCÈNE COMPOSE QUESTION === */
+  /* SCÈNE COMPOSE */
   #compose { background: radial-gradient(ellipse at top, #1B2536 0%, #0A1220 100%); align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .compose-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(237,232,221,0.08); }
   .compose-back { background: transparent; border: none; color: #A8A095; font-size: 12px; letter-spacing: 0.15em; cursor: pointer; }
@@ -271,9 +182,8 @@
   .seal-btn { background: rgba(212,184,112,0.1); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 16px; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; font-family: 'Inter', sans-serif; }
   .seal-btn:active { background: rgba(212,184,112,0.2); color: #EDE8DD; }
   .seal-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .draft-btn { background: transparent; border: 1px solid rgba(237,232,221,0.2); color: #A8A095; padding: 14px; font-size: 11px; letter-spacing: 0.2em; cursor: pointer; transition: all 0.4s; font-family: 'Inter', sans-serif; }
 
-  /* === SCÈNE RESPONSES === */
+  /* SCÈNE RESPONSES */
   #responses { background: #0F1A2E; align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .responses-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(237,232,221,0.08); }
   .responses-intro { padding: 36px 32px 24px; text-align: center; }
@@ -294,7 +204,29 @@
   .result-right { color: #8FBF93; }
   .result-wrong { color: #C28C8C; }
 
-  /* === MODAL DEVINETTE === */
+  /* SCÈNE CHAMBRE — fiches publiques des Sceaux */
+  #chambre { background: #0F1A2E; align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .chambre-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(237,232,221,0.08); }
+  .chambre-intro { padding: 36px 32px 28px; text-align: center; }
+  .chambre-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 300; color: #EDE8DD; margin-bottom: 14px; letter-spacing: 0.03em; }
+  .chambre-desc { font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #A8A095; line-height: 1.6; max-width: 320px; margin: 0 auto; }
+  .fiche-cards { padding: 0 24px 40px; display: flex; flex-direction: column; gap: 16px; }
+  .fiche-card { padding: 24px 22px 22px; background: rgba(237,232,221,0.03); border: 1px solid rgba(237,232,221,0.12); border-radius: 6px; }
+  .fiche-card.hidden-self { background: rgba(212,184,112,0.04); border-color: rgba(212,184,112,0.25); border-style: dashed; }
+  .fiche-header { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid rgba(237,232,221,0.08); }
+  .fiche-seal { width: 60px; height: 60px; border-radius: 50%; background: rgba(212,184,112,0.08); border: 1px solid rgba(212,184,112,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+  .fiche-seal img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .fiche-seal svg { width: 38px; height: 38px; }
+  .fiche-titles { flex: 1; }
+  .fiche-name { font-family: 'Fraunces', serif; font-size: 18px; color: #EDE8DD; }
+  .fiche-archetype { font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.2em; margin-top: 3px; text-transform: uppercase; }
+  .fiche-fragments { display: flex; flex-direction: column; gap: 10px; }
+  .fragment-row { display: flex; align-items: baseline; gap: 12px; }
+  .fragment-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #A8A095; letter-spacing: 0.2em; text-transform: uppercase; min-width: 80px; flex-shrink: 0; }
+  .fragment-value { font-family: 'Fraunces', serif; font-size: 14px; color: #EDE8DD; font-style: italic; line-height: 1.4; }
+  .fiche-self-message { padding: 20px; text-align: center; font-family: 'Fraunces', serif; font-size: 14px; font-style: italic; color: #A8A095; line-height: 1.6; }
+
+  /* MODAL DEVINETTE */
   #guess-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.6s; }
   #guess-modal.active { opacity: 1; pointer-events: auto; }
   .guess-content { max-width: 380px; width: 100%; transform: scale(0.92); transition: transform 0.6s; }
@@ -312,7 +244,7 @@
   .guess-option-seal-name { font-family: 'Inter', sans-serif; font-size: 10px; color: #A8A095; letter-spacing: 0.1em; }
   .guess-cancel { margin-top: 18px; background: transparent; border: none; color: #A8A095; padding: 12px; font-size: 11px; letter-spacing: 0.2em; cursor: pointer; width: 100%; font-family: 'Inter', sans-serif; }
 
-  /* === MODAL BILAN === */
+  /* MODAL BILAN */
   #recap-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; padding: 32px; opacity: 0; pointer-events: none; transition: opacity 0.6s; }
   #recap-modal.active { opacity: 1; pointer-events: auto; }
   .recap-content { max-width: 360px; text-align: center; }
@@ -323,120 +255,149 @@
   .recap-v-sig { font-family: 'Fraunces', serif; font-size: 13px; color: #D4B870; letter-spacing: 0.2em; margin-bottom: 36px; font-style: italic; }
   .recap-close { background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 36px; font-size: 11px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; font-family: 'Inter', sans-serif; }
   .recap-close:active { background: rgba(212,184,112,0.1); }
+
+  /* SCÈNE COLLAPSE (gardée pour V4 compatibilité, sera étoffée au commit suivant) */
+  #collapse { background: radial-gradient(ellipse at top, #1A1428 0%, #0A0612 100%); align-items: stretch; justify-content: flex-start; overflow-y: auto; }
+  .collapse-step { padding: 60px 32px; opacity: 0; transition: opacity 0.8s; pointer-events: none; position: absolute; inset: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .collapse-step.active { opacity: 1; pointer-events: auto; position: relative; }
+  .collapse-intro-label { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.4em; text-align: center; margin-bottom: 36px; opacity: 0; animation: fadeIn 1.5s 0.5s ease forwards; }
+  .collapse-intro-title { font-family: 'Fraunces', serif; font-size: 38px; font-weight: 300; color: #EDE8DD; text-align: center; letter-spacing: 0.05em; margin-bottom: 50px; opacity: 0; animation: fadeUp 1.5s 1s ease forwards; transform: translateY(20px); }
+  .collapse-intro-text { font-family: 'Fraunces', serif; font-size: 17px; font-style: italic; color: #EDE8DD; line-height: 1.85; text-align: center; max-width: 360px; margin: 0 auto 30px; opacity: 0; animation: fadeUp 1.5s 2s ease forwards; transform: translateY(20px); }
+  .collapse-intro-sig { font-family: 'Fraunces', serif; font-size: 14px; color: #D4B870; text-align: center; letter-spacing: 0.3em; margin-bottom: 50px; opacity: 0; animation: fadeIn 1.5s 3.5s ease forwards; }
+  .collapse-intro-btn { display: block; margin: 0 auto; background: rgba(212,184,112,0.1); border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 16px 40px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; opacity: 0; animation: fadeIn 1.5s 4.5s ease forwards; }
+  .collapse-intro-btn:active { background: rgba(212,184,112,0.2); color: #EDE8DD; }
+
+  /* Animations */
+  @keyframes fadeIn { to { opacity: 1; } }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeDown { to { opacity: 1; transform: translateY(0); } }
+  @keyframes sealReveal { to { opacity: 1; transform: scale(1) translateY(0); } }
+  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.4); opacity: 0; } }
 </style>
 </head>
 <body>
 
-<!-- SCÈNE 1 : ARRIVÉE -->
+<!-- Bouton de test "Jour suivant" (visible en mode salon uniquement) -->
+<div class="test-controls" id="testControls" style="display: none;">
+  <button class="test-btn" onclick="advanceDay()">JOUR SUIVANT →</button>
+</div>
+
+<!-- SCÈNE ARRIVÉE -->
 <div id="arrival" class="scene active">
-  <video id="arrivalVideo" autoplay muted loop playsinline>
+  <video autoplay muted playsinline preload="auto">
     <source src="vespera-arrival.mp4" type="video/mp4">
   </video>
   <div class="overlay"></div>
   <div class="content">
     <h1 class="logo">VESPERA</h1>
-    <div></div>
     <div class="invitation">
       <p>Vous êtes attendu.</p>
-      <button class="enter-btn" onclick="goToRitual()">ENTRER</button>
+      <button class="enter-btn" onclick="startRitual()">ENTRER</button>
     </div>
   </div>
 </div>
 
-<!-- SCÈNE 2 : RITUEL -->
+<!-- SCÈNE RITUEL -->
 <div id="ritual" class="scene">
   <div class="ritual-content">
     <div class="v-message">
-      <p>Vous portez désormais le Sceau qui vous suivra ce Cycle. Il vous représente, et il vous masque.</p>
-      <p class="v-signature">— V</p>
+      <p>Le Cercle attend de vous reconnaître.<br>Recevez votre Sceau.</p>
+      <p class="v-signature">V.</p>
     </div>
     <div class="seal-container">
       <div class="seal-circle" id="userSealCircle"></div>
-      <h2 class="seal-name" id="sealName"></h2>
-      <p class="seal-desc" id="sealDesc"></p>
+      <h2 class="seal-name" id="userSealName">Le Faucon</h2>
+      <p class="seal-desc" id="userSealDesc">Œil vif, vue longue. Vous êtes celui qui voit avant les autres.</p>
     </div>
-    <button class="ritual-btn" onclick="goToSalon()">REJOINDRE LE SALON</button>
+    <button class="ritual-btn" onclick="enterSalon()">ENTRER DANS LE CERCLE</button>
   </div>
 </div>
 
-<!-- SCÈNE 3 : SALON -->
+<!-- SCÈNE SALON -->
 <div id="salon" class="scene">
-  <button class="mode-toggle" onclick="toggleMode()">JOUR / NUIT</button>
   <div class="salon-header">
-    <button class="salon-back" onclick="goToArrival()">← RETOUR</button>
+    <button class="salon-back" onclick="backToArrival()">← SORTIR</button>
     <div class="salon-title">VESPERA</div>
-    <div style="width: 56px;"></div>
+    <button class="salon-back" onclick="toggleDayNight()">JOUR / NUIT</button>
   </div>
   <div class="salon-mode-indicator" id="salonModeIndicator">L'HEURE • CYCLE DES REFLETS • J 1</div>
-  <div class="salon-question-card" id="salonQuestionCard" onclick="onQuestionCardClick()"></div>
+  <div class="day-progress" id="dayProgress"></div>
 
+  <!-- Carte Question du soir (visible en mode nuit) -->
+  <div class="salon-question-card" id="questionCard" onclick="openCompose()">
+    <p class="question-label">QUESTION DU SOIR</p>
+    <p class="question-text" id="questionText"></p>
+    <p class="question-signature">V.</p>
+    <p class="question-cta" id="questionCta">RÉPONDRE →</p>
+  </div>
+
+  <!-- Cartes navigation -->
   <div class="nav-cards">
-    <div class="nav-card" onclick="goToMurmur()">
+    <div class="nav-card" onclick="openMurmur()">
       <div class="nav-card-icon">
-        <svg viewBox="0 0 24 24"><path d="M3 8l9 6 9-6M3 8v10a2 2 0 002 2h14a2 2 0 002-2V8M3 8l2-2h14l2 2"/></svg>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
       </div>
       <div class="nav-card-content">
         <div class="nav-card-title">Le Murmure du matin</div>
-        <div class="nav-card-subtitle">V VOUS A ÉCRIT</div>
+        <div class="nav-card-subtitle" id="murmurSubtitle">UNE LETTRE VOUS ATTEND</div>
       </div>
-      <div class="nav-card-badge"></div>
+      <div class="nav-card-arrow">→</div>
+      <div class="nav-card-badge" id="murmurBadge"></div>
+    </div>
+
+    <div class="nav-card" onclick="openChambre()">
+      <div class="nav-card-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+      </div>
+      <div class="nav-card-content">
+        <div class="nav-card-title">La Chambre</div>
+        <div class="nav-card-subtitle">LES FICHES DU CERCLE</div>
+      </div>
       <div class="nav-card-arrow">→</div>
     </div>
-    <div class="nav-card" onclick="goToLibrary()">
+
+    <div class="nav-card" onclick="openLibrary()">
       <div class="nav-card-icon">
-        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5V5a2 2 0 012-2h13a1 1 0 011 1v14M4 19.5A2.5 2.5 0 006.5 22H20a1 1 0 001-1v-3"/><path d="M9 7h7M9 11h5"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M4 4h6v16H4zM14 4h6v16h-6zM10 8h4M10 12h4M10 16h4"/></svg>
       </div>
       <div class="nav-card-content">
         <div class="nav-card-title">La Bibliothèque</div>
-        <div class="nav-card-subtitle">UNE QUÊTE VOUS ATTEND</div>
+        <div class="nav-card-subtitle">UNE QUÊTE DE LIEU</div>
       </div>
       <div class="nav-card-arrow">→</div>
     </div>
   </div>
 
-  <!-- Carte Collapse (apparaît uniquement quand débloqué) -->
-  <div id="collapseCardContainer" style="display:none;">
-    <div class="collapse-card" onclick="goToCollapse()">
-      <div class="collapse-card-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg>
-      </div>
-      <div class="collapse-card-content">
-        <div class="collapse-card-title">La Nuit du Collapse</div>
-        <div class="collapse-card-subtitle">L'HEURE EST VENUE</div>
-      </div>
-      <div class="collapse-card-arrow">→</div>
-    </div>
-  </div>
-
+  <!-- Section Invités -->
   <div class="invites-section">
-    <p class="invites-label">LES INVITÉS</p>
+    <p class="invites-label">LE CERCLE CE SOIR</p>
     <div id="invitesList"></div>
   </div>
 
   <div class="salon-footer">
-    <button class="reset-btn" onclick="resetGame()">Recommencer le Cycle</button>
+    <button class="reset-btn" onclick="resetCycle()">Recommencer le Cycle</button>
   </div>
 </div>
 
-<!-- SCÈNE 4 : MURMURE -->
+<!-- SCÈNE MURMURE -->
 <div id="murmur" class="scene">
   <div class="murmur-header">
     <button class="murmur-back" onclick="goToSalon()">← RETOUR</button>
-    <div class="murmur-label">LE MURMURE • J 1</div>
+    <div class="murmur-label" id="murmurDayLabel">LE MURMURE • J 1</div>
     <div style="width: 56px;"></div>
   </div>
   <div class="murmur-letter">
-    <p class="murmur-greeting">Bonjour.</p>
-    <p class="murmur-text">Hier soir, vous êtes entré à Vespera pour la première fois. Vous avez reçu votre Sceau. Vous avez croisé cinq autres invités, dont vous ne savez pas encore si vous les connaissiez vraiment.</p>
-    <p class="murmur-text">L'un d'entre vous, peut-être, porte un Reflet. Il l'ignore lui-même.</p>
-    <p class="murmur-question">Que souhaitez-vous découvrir, ce Cycle ?</p>
-    <p class="murmur-signature">— V</p>
+    <p class="murmur-greeting" id="murmurGreeting">Bonjour.</p>
+    <p class="murmur-text" id="murmurText"></p>
+    <p class="murmur-indice" id="murmurIndice" style="display: none;"></p>
+    <p class="murmur-question" id="murmurAmorce"></p>
+    <p class="murmur-signature">V.</p>
   </div>
 </div>
 
-<!-- SCÈNE 5 : BIBLIOTHÈQUE -->
+<!-- SCÈNE BIBLIOTHÈQUE -->
 <div id="library" class="scene">
-  <video id="libraryVideo" autoplay muted loop playsinline>
+  <video autoplay muted loop playsinline preload="auto">
     <source src="vespera-library.mp4" type="video/mp4">
   </video>
   <div class="library-overlay"></div>
@@ -453,7 +414,7 @@
   <div class="hotspot" id="hotspot-book" onclick="discoverObject('book')"></div>
 </div>
 
-<!-- SCÈNE COMPOSE QUESTION -->
+<!-- SCÈNE COMPOSE -->
 <div id="compose" class="scene">
   <div class="compose-header">
     <button class="compose-back" onclick="backToSalonFromCompose()">← RETOUR</button>
@@ -461,12 +422,12 @@
     <div style="width: 56px;"></div>
   </div>
   <div class="compose-question">
-    <p class="compose-q-label">QUESTION DU SOIR — J 1</p>
-    <p class="compose-q-text">"Décrivez en une phrase l'image que les autres ont de vous. Puis, en une seconde phrase, ce qui dans cette image n'est pas tout à fait vrai."</p>
-    <p class="compose-q-sig">— V</p>
+    <p class="compose-q-label" id="composeDayLabel">QUESTION DU SOIR • J 1</p>
+    <p class="compose-q-text" id="composeQuestionText"></p>
+    <p class="compose-q-sig">V.</p>
   </div>
   <div class="compose-form">
-    <textarea class="compose-textarea" id="composeTextarea" placeholder="Écrivez ici, en deux phrases…" oninput="updateComposeBtn()"></textarea>
+    <textarea class="compose-textarea" id="composeTextarea" placeholder="Écrivez ici, en deux phrases..." oninput="updateComposeBtn()"></textarea>
     <p class="compose-hint">Votre réponse sera lue par les autres Invités, sans votre nom. Personne ne saura que c'est vous, sauf si quelqu'un le devine.</p>
     <div class="compose-actions">
       <button class="seal-btn" id="sealBtn" onclick="sealResponse()" disabled>SCELLER MA RÉPONSE</button>
@@ -489,12 +450,26 @@
   <div class="response-cards" id="responseCards"></div>
 </div>
 
+<!-- SCÈNE CHAMBRE -->
+<div id="chambre" class="scene">
+  <div class="chambre-header">
+    <button class="murmur-back" onclick="goToSalon()">← RETOUR</button>
+    <div class="murmur-label">LA CHAMBRE</div>
+    <div style="width: 56px;"></div>
+  </div>
+  <div class="chambre-intro">
+    <h2 class="chambre-title">Les fiches du Cercle</h2>
+    <p class="chambre-desc">Voici ce que les autres Invités laissent paraître d'eux. Votre fiche, vous, ne s'écrira qu'à la fin du Cycle.</p>
+  </div>
+  <div class="fiche-cards" id="ficheCards"></div>
+</div>
+
 <!-- MODAL DEVINETTE -->
 <div id="guess-modal">
   <div class="guess-content">
     <p class="guess-label">QUI A ÉCRIT CECI ?</p>
     <div class="guess-quote" id="guessQuote"></div>
-    <p class="guess-question">Vous pensez que c'est…</p>
+    <p class="guess-question">Vous pensez que c'est...</p>
     <div class="guess-options" id="guessOptions"></div>
     <button class="guess-cancel" onclick="closeGuess()">Annuler</button>
   </div>
@@ -507,683 +482,868 @@
     <div class="recap-score" id="recapScore">0</div>
     <p class="recap-score-total">sur 5 réponses</p>
     <p class="recap-text" id="recapText"></p>
-    <p class="recap-v-sig">— V</p>
+    <p class="recap-v-sig">V.</p>
     <button class="recap-close" onclick="closeRecap()">CONTINUER</button>
   </div>
 </div>
 
-<!-- SCÈNE COLLAPSE -->
+<!-- SCÈNE COLLAPSE (placeholder, sera étoffée au commit suivant) -->
 <div id="collapse" class="scene">
-  <!-- Étape 1 : INTRO -->
-  <div class="collapse-step" id="collapseIntro">
+  <div class="collapse-step active">
     <p class="collapse-intro-label">LA NUIT DU COLLAPSE</p>
     <h1 class="collapse-intro-title">L'Heure</h1>
-    <p class="collapse-intro-text">Le Cycle touche à sa fin. Tous les Invités sont réunis une dernière fois. L'un d'entre eux porte un Reflet — il l'ignore lui-même.</p>
-    <p class="collapse-intro-text">Saurez-vous le nommer ?</p>
-    <p class="collapse-intro-sig">— V</p>
-    <button class="collapse-intro-btn" onclick="collapseGoToVote()">PROCÉDER AU VOTE</button>
-  </div>
-
-  <!-- Étape 2 : VOTE -->
-  <div class="collapse-step" id="collapseVote">
-    <p class="collapse-vote-label">VOTRE VOIX • UN CHOIX</p>
-    <h2 class="collapse-vote-title">Qui porte le Reflet ?</h2>
-    <p class="collapse-vote-desc">Relisez ce qu'ils ont écrit. Écoutez ce qui n'y est pas. Désignez l'Invité dont la vérité vous semble la plus voilée.</p>
-    <div class="vote-options" id="voteOptions"></div>
-    <button class="vote-confirm" id="voteConfirmBtn" onclick="submitCollapseVote()" disabled>SCELLER MON VOTE</button>
-  </div>
-
-  <!-- Étape 3 : RÉVÉLATION -->
-  <div class="collapse-step reveal-step" id="collapseReveal">
-    <p class="collapse-intro-label">LE COLLAPSE</p>
-    <p class="reveal-judgment" id="revealJudgment"></p>
-    <div class="reveal-bearer">
-      <p class="reveal-bearer-label">PORTEUR DU REFLET</p>
-      <div class="reveal-bearer-seal" id="revealBearerSeal"></div>
-      <h3 class="reveal-bearer-name" id="revealBearerName"></h3>
-      <p class="reveal-bearer-seal-name" id="revealBearerSealName"></p>
-    </div>
-    <p class="reveal-text" id="revealText"></p>
-    <button class="reveal-btn" onclick="collapseGoToProfile()">DÉCOUVRIR VOTRE PROFIL</button>
-  </div>
-
-  <!-- Étape 4 : PROFIL QUANTIQUE -->
-  <div class="collapse-step" id="collapseProfile">
-    <p class="profile-label">VOTRE PROFIL QUANTIQUE</p>
-    <h2 class="profile-name" id="profileName"></h2>
-    <p class="profile-tagline" id="profileTagline"></p>
-    <p class="profile-text" id="profileText"></p>
-    <div class="profile-stats">
-      <div class="profile-stat">
-        <div class="profile-stat-value" id="statGuesses">0/5</div>
-        <div class="profile-stat-label">DEVINETTES</div>
-      </div>
-      <div class="profile-stat">
-        <div class="profile-stat-value" id="statVote">—</div>
-        <div class="profile-stat-label">COLLAPSE</div>
-      </div>
-      <div class="profile-stat">
-        <div class="profile-stat-value" id="statSeal">—</div>
-        <div class="profile-stat-label">VOTRE SCEAU</div>
-      </div>
-    </div>
-    <p class="profile-sig">— V</p>
-    <div class="profile-actions">
-      <button class="profile-btn-primary" onclick="goToSalon()">RETOURNER AU SALON</button>
-      <button class="profile-btn-secondary" onclick="resetGameFromProfile()">RECOMMENCER UN NOUVEAU CYCLE</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal de découverte -->
-<div id="discovery-modal">
-  <div class="discovery-content">
-    <p class="discovery-label" id="discoveryLabel">VOUS AVEZ TROUVÉ</p>
-    <h2 class="discovery-title" id="discoveryTitle"></h2>
-    <p class="discovery-text" id="discoveryText"></p>
-    <div class="discovery-reward" id="discoveryReward"></div>
-    <button class="discovery-close" onclick="closeDiscovery()">CONTINUER</button>
+    <p class="collapse-intro-text">Vous avez traversé sept soirées. Le Cycle touche à sa fin. Bientôt, la boîte s'ouvrira.</p>
+    <p class="collapse-intro-text" style="font-size: 14px; color: #A8A095;">Le Collapse complet sera disponible à la prochaine version.</p>
+    <p class="collapse-intro-sig">V.</p>
+    <button class="collapse-intro-btn" onclick="resetCycle()">RECOMMENCER LE CYCLE</button>
   </div>
 </div>
 
 <script>
-const SEALS = [
-  { id: 'fox', name: 'Le Renard', desc: "La ruse, l'œil qui sait sans dire." },
-  { id: 'wolf', name: 'Le Loup', desc: 'La meute et la solitude, le chasseur patient.' },
-  { id: 'owl', name: 'La Chouette', desc: 'La sagesse nocturne, la gardienne.' },
-  { id: 'stag', name: 'Le Cerf', desc: 'La dignité tranquille du témoin silencieux.' },
-  { id: 'lynx', name: 'Le Lynx', desc: "L'œil qui transperce les masques." },
-  { id: 'falcon', name: 'Le Faucon', desc: "La hauteur qui voit l'ensemble." },
-  { id: 'serpent', name: 'Le Serpent', desc: "La mue, jamais le même qu'hier." },
-  { id: 'raven', name: 'Le Corbeau', desc: 'La mémoire, le messager des mondes.' },
-  { id: 'butterfly', name: 'Le Papillon', desc: 'La métamorphose, la fragilité élégante.' },
-  { id: 'lion', name: 'Le Lion', desc: 'La souveraineté solitaire, indéchiffrable.' },
-  { id: 'panther', name: 'La Panthère', desc: 'La grâce silencieuse, la puissance retenue.' },
-  { id: 'horse', name: 'Le Cheval', desc: 'La liberté pure, qui ne ment pas.' },
-];
+// ====================================================================
+// VESPERA — Cycle des Reflets, Saison 1 — V5 (Commit 1)
+// ====================================================================
 
-// Quand tu auras les 12 PNG dans seals/, ils s'afficheront automatiquement
-const SEALS_WITH_IMAGE = ['fox', 'wolf', 'owl', 'stag', 'lynx', 'falcon', 'serpent', 'raven', 'butterfly', 'lion', 'panther', 'horse'];
-
-const INVITES = [
-  { name: 'Marc', sealId: 'stag' },
-  { name: 'Théo', sealId: 'wolf' },
-  { name: 'Camille', sealId: 'owl' },
-  { name: 'Inès', sealId: 'lynx' },
-  { name: 'Karim', sealId: 'raven' },
-];
-
-const SEAL_PATHS = {
-  fox: 'M50 25 L38 38 L28 55 Q33 72 50 76 Q67 72 72 55 L62 38 Z',
-  wolf: 'M50 22 L30 40 L25 60 Q35 75 50 78 Q65 75 75 60 L70 40 Z',
-  owl: 'M50 22 Q32 28 28 50 Q33 72 50 76 Q67 72 72 50 Q68 28 50 22 Z',
-  stag: 'M50 25 L40 12 M50 25 L60 12 M50 25 Q40 35 38 55 Q44 72 50 74 Q56 72 62 55 Q60 35 50 25',
-  lynx: 'M50 22 L38 28 L30 45 Q35 65 50 72 Q65 65 70 45 L62 28 Z',
-  falcon: 'M50 25 L25 35 L30 50 L50 60 L70 50 L75 35 Z',
-  serpent: 'M28 30 Q48 24 70 32 Q72 42 60 46 Q40 50 38 60 Q40 70 60 72 Q70 70 72 78',
-  raven: 'M50 25 L25 38 L28 55 L48 65 L72 55 L75 38 L65 28 Z',
-  butterfly: 'M50 38 L25 22 Q18 38 28 56 L50 50 L72 56 Q82 38 75 22 Z M48 38 L48 72 M52 38 L52 72',
-  lion: 'M50 22 Q28 22 22 45 Q22 68 50 78 Q78 68 78 45 Q72 22 50 22 Z',
-  panther: 'M50 28 Q30 35 28 55 Q35 70 50 73 Q65 70 72 55 Q70 35 50 28 Z',
-  horse: 'M50 22 Q35 28 35 45 L35 65 Q40 72 50 72 Q60 72 65 65 L65 45 Q65 28 50 22 Z M50 22 L45 10 M50 22 L55 10',
+// === LES 12 SCEAUX (bestiaire complet) ===
+const ALL_SEALS = {
+  fox:      { name: 'Le Renard',   img: 'seals/seal-fox.png',      desc: 'Esprit vif, regard de côté. Vous voyez ce que d\'autres ne soupçonnent pas.' },
+  wolf:     { name: 'Le Loup',     img: 'seals/seal-wolf.png',     desc: 'Solitaire et fidèle. Vous tenez ce que vous avez choisi.' },
+  owl:      { name: 'La Chouette', img: 'seals/seal-owl.png',      desc: 'Sagesse silencieuse. Vous écoutez plus que vous ne parlez.' },
+  stag:     { name: 'Le Cerf',     img: 'seals/seal-stag.png',     desc: 'Posture droite, force calme. Vous portez sans vous plaindre.' },
+  lynx:     { name: 'Le Lynx',     img: 'seals/seal-lynx.png',     desc: 'Précision féline. Vous voyez les détails qui trahissent.' },
+  falcon:   { name: 'Le Faucon',   img: 'seals/seal-falcon.png',   desc: 'Œil vif, vue longue. Vous êtes celui qui voit avant les autres.' },
+  serpent:  { name: 'Le Serpent',  img: 'seals/seal-serpent.png',  desc: 'Patience et mue. Vous vous renouvelez en silence.' },
+  raven:    { name: 'Le Corbeau',  img: 'seals/seal-raven.png',    desc: 'Mémoire longue, intelligence vive. Vous gardez ce qui se dit.' },
+  butterfly:{ name: 'Le Papillon', img: 'seals/seal-butterfly.png',desc: 'Métamorphose et fragilité. Vous changez sans bruit.' },
+  lion:     { name: 'Le Lion',     img: 'seals/seal-lion.png',     desc: 'Présence souveraine. Vous attirez les regards sans les chercher.' },
+  panther:  { name: 'La Panthère', img: 'seals/seal-panther.png',  desc: 'Force masquée. Vous attendez le bon moment.' },
+  horse:    { name: 'Le Cheval',   img: 'seals/seal-horse.png',    desc: 'Liberté ancienne. Vous traversez sans vous attacher.' }
 };
 
-function renderSealHTML(sealId) {
-  if (SEALS_WITH_IMAGE.includes(sealId)) {
-    return '<img src="seals/seal-' + sealId + '.png" alt="' + sealId + '">';
+// === LES 5 INVITÉS DE LA SAISON 1 ===
+// Chaque Invité porte un Sceau fixe et a une voix scriptée
+const SEASON_1_GUESTS = [
+  { id: 'marc',    name: 'Marc',    seal: 'stag',   archetype: 'Le Cerf' },
+  { id: 'theo',    name: 'Théo',    seal: 'wolf',   archetype: 'Le Loup' },
+  { id: 'camille', name: 'Camille', seal: 'owl',    archetype: 'La Chouette' },
+  { id: 'ines',    name: 'Inès',    seal: 'lynx',   archetype: 'Le Lynx' },
+  { id: 'karim',   name: 'Karim',   seal: 'raven',  archetype: 'Le Corbeau' }
+];
+
+// Sceaux disponibles pour le joueur (les 7 non utilisés par les Invités)
+const PLAYER_AVAILABLE_SEALS = ['fox', 'falcon', 'serpent', 'butterfly', 'lion', 'panther', 'horse'];
+
+// === POOLS DE FRAGMENTS ===
+const FRAGMENT_POOLS = {
+  couleurs: [
+    'ardoise', 'bleu marine', 'bordeaux', 'brouillard', 'café fumé', 'céladon',
+    'cendre', 'cire d\'abeille', 'cuivre éteint', 'émeraude pâle', 'encre', 'fauve',
+    'fer rouillé', 'froment', 'gris perle', 'ivoire jauni', 'lichen', 'lie de vin',
+    'mauve sombre', 'mousse humide', 'nuit étoilée', 'ocre brûlé', 'paille', 'parchemin',
+    'pétrole', 'plomb', 'prune', 'rose poussiéreux', 'rouge brique', 'sable mouillé',
+    'sang séché', 'sauge', 'terre cuite', 'vert sombre', 'zinc'
+  ],
+  objets: [
+    'une bague qu\'il ne porte plus', 'une boîte d\'allumettes vide',
+    'une carte d\'embarquement déchirée', 'une carte postale jamais envoyée',
+    'un carnet à couverture cuir', 'une chaîne fine sans pendentif',
+    'une clé sans serrure', 'un coquillage poli par la main', 'un crayon mâché',
+    'un disque vinyle rayé', 'un foulard en soie ancien', 'une horloge arrêtée',
+    'une lampe à abat-jour', 'une lettre jamais ouverte', 'un livre annoté en marge',
+    'un médaillon vide', 'une montre ancienne', 'un mouchoir brodé',
+    'un paquet de cigarettes presque plein', 'une page de roman pliée en quatre',
+    'une pierre plate ramassée à un endroit précis', 'un pinceau sec',
+    'une plume d\'oiseau noire', 'un rasoir mécanique', 'un ruban de tissu',
+    'un sablier', 'un seul gant', 'un stylo plume noir', 'une tasse ébréchée',
+    'un trousseau de clés trop lourd', 'un vieux briquet', 'un volet fermé',
+    'une enveloppe sans adresse', 'une bougie à demi consumée', 'un cahier d\'écolier'
+  ],
+  lieux: [
+    'la mer en hiver', 'une bibliothèque vide à 17h', 'une salle d\'audience à l\'aube',
+    'un train de nuit', 'un bar près d\'une gare', 'un parc où on ne va pas',
+    'une église en semaine', 'un appartement vide en plein soleil', 'une cuisine la nuit',
+    'un quai désert', 'un cinéma à la dernière séance', 'un escalier qui ne mène nulle part',
+    'une chambre d\'hôtel inconnue', 'un jardin abandonné', 'une route qu\'on prend toujours',
+    'une cabine téléphonique', 'un cimetière au printemps', 'un grenier',
+    'une cave qu\'on a peur d\'ouvrir', 'un balcon donnant sur rien', 'une plage hors saison',
+    'un café qui ferme', 'un atelier silencieux', 'un musée à la fermeture',
+    'une cour d\'immeuble haussmannien', 'une forêt après la pluie', 'un pont au crépuscule',
+    'une station-service la nuit', 'une maison de famille qu\'on n\'habite plus',
+    'un couloir d\'hôpital', 'une cabane au fond d\'un jardin', 'une terrasse abandonnée',
+    'une boutique qui n\'existe plus', 'une chambre d\'enfance qu\'on a refaite'
+  ],
+  mots: [
+    'tenu', 'patiemment', 'franchement', 'peut-être', 'verdict', 'composer',
+    'honnêtement', 'désappris', 'simplement', 'au fond', 'presque', 'à force',
+    'néanmoins', 'justement', 'droit', 'retenu', 'tenace', 'parfois',
+    'forcément', 'sans doute', 'vraiment', 'exactement', 'somme toute', 'pourtant',
+    'délibérément', 'malgré tout', 'en somme', 'tranquillement', 'enfin',
+    'en réalité', 'cependant', 'à vrai dire', 'visiblement', 'en vérité'
+  ],
+  habitudes: [
+    'range avant de partir', 'ne dort pas avant 2h du matin',
+    'reformule les questions avant d\'y répondre', 'marche en comptant ses pas',
+    'recommence ses phrases trois fois avant de finir', 'efface ce qu\'il vient d\'écrire',
+    'arrive toujours dix minutes en avance', 'laisse traîner ses tasses',
+    'ferme les yeux pour répondre', 'soupire avant de dire oui',
+    'répète à voix basse ce qu\'il vient de lire', 'compte les jours en début de mois',
+    'plie ses billets avant de les ranger', 'relit deux fois ses messages avant d\'envoyer',
+    'ne finit jamais les livres qu\'il commence', 'note tout sur des bouts de papier',
+    'murmure parfois sans s\'en rendre compte', 'évite les miroirs après 23h',
+    'sourit quand il est gêné', 'parle aux objets qu\'il pose',
+    'attend toujours que l\'autre raccroche', 'pose une question quand on lui en pose une',
+    'tourne autour de la table avant de s\'asseoir', 'retient son souffle dans les ascenseurs',
+    'mange debout quand il est seul', 'ne parle jamais le matin avant le café',
+    'relit les mêmes pages d\'un livre qu\'il aime', 'arrive dans une pièce sans savoir pourquoi',
+    'ne jette jamais les billets de cinéma', 'boit toujours dans la même tasse',
+    'compte les marches en montant', 'cache ses photos d\'enfance',
+    'se lave les mains plus souvent qu\'il ne faut', 'note la météo de chaque jour'
+  ]
+};
+
+// === LES 7 MURMURES DU MATIN ===
+const MURMURS = [
+  // J1
+  {
+    greeting: 'Bonjour.',
+    text: 'Hier soir, vous êtes entré à Vespera pour la première fois. Vous avez reçu votre Sceau. Vous avez croisé cinq autres invités, dont vous ne savez pas encore si vous les connaissiez vraiment.\n\nL\'un d\'entre vous, peut-être, porte un Reflet. Il l\'ignore lui-même.',
+    indice: null,
+    amorce: 'Que souhaitez-vous découvrir, ce Cycle ?'
+  },
+  // J2
+  {
+    greeting: 'Le matin se lève.',
+    text: 'Hier soir, six voix se sont élevées. Vous les avez lues. Vous avez peut-être commencé à reconnaître un timbre ici, une hésitation là. Ou peut-être que tout vous est encore opaque. C\'est normal.\n\nOn ne lit pas les autres en un soir. On apprend à les sentir.',
+    indice: null,
+    amorce: 'Aujourd\'hui, je vous proposerai une question difficile : celle du doute. Pas chez les autres. Chez vous.'
+  },
+  // J3
+  {
+    greeting: 'Encore un matin.',
+    text: 'Hier, vous avez douté. Peut-être avez-vous écrit quelque chose que vous n\'avez confié à personne. Ce qui se dit ici reste ici. C\'est la seule promesse que je peux vous faire.\n\nMais ce qui se dit ici se voit aussi. Une voix qui hésite, c\'est une voix qui pèse. Et qui pèse, parfois, parce qu\'elle porte.',
+    indice: null,
+    amorce: 'Ce soir, je vous demanderai ce que vous ne dites jamais, et que pourtant vous savez.'
+  },
+  // J4
+  {
+    greeting: 'Le quatrième matin.',
+    text: 'Trois jours sont passés. Le Cercle s\'est mis en place. Vous avez peut-être une idée. Vous l\'avez peut-être déjà perdue.\n\nCette nuit sera différente. Cette nuit, je vous demanderai de désigner.',
+    indice: null,
+    amorce: 'Avant le vote de ce soir, lisez bien. Relisez. Écoutez ce qui n\'est pas dit.'
+  },
+  // J5
+  {
+    greeting: 'Le matin après le voile.',
+    text: 'Hier soir, le Cercle a parlé. L\'un des Sceaux est désormais voilé. Il observe sans participer. Sa voix vous manquera, ou non.\n\nMais sachez ceci : un voilé n\'est pas un coupable. Il est seulement celui sur qui le Cercle a posé son doute. Le Cercle se trompe parfois. Il se trompe souvent.',
+    indice: null,
+    amorce: 'Ce soir, je vous demanderai à qui vous avez menti. Pour le protéger.'
+  },
+  // J6
+  {
+    greeting: 'Avant-dernier matin.',
+    text: 'Demain, c\'est la Nuit du Collapse. Vous avez accumulé des indices, des intuitions, peut-être une certitude. Demain, vous devrez voter.\n\nAvant cela, je vous laisse une dernière piste. Je ne dirai plus rien après ce matin. Le silence est aussi un indice.',
+    indice: null,
+    amorce: 'Lisez tout. Ce soir, ce sera la dernière Question avant le Collapse.'
+  },
+  // J7
+  {
+    greeting: 'C\'est aujourd\'hui.',
+    text: 'Vous avez passé six soirées avec le Cercle. Vous avez écrit ce que vous n\'aviez peut-être jamais écrit ailleurs. Vous avez lu des voix que vous ne connaissiez pas. Ou que vous connaissiez peut-être trop bien.\n\nCe soir, à l\'Heure, la boîte s\'ouvrira. Vous voterez pour celui que vous pensez porter la Clé. Une seule voix. Irréversible.',
+    indice: null,
+    amorce: 'Avant cela, asseyez-vous. Relisez votre Chambre. Doutez une dernière fois. Tranchez.'
   }
-  return '<svg viewBox="0 0 100 100"><path d="' + SEAL_PATHS[sealId] + '" stroke="#D4B870" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9" /></svg>';
+];
+
+// === LES 7 QUESTIONS DU SOIR ===
+const QUESTIONS = [
+  // J1 — L'image
+  '"Décrivez en une phrase l\'image que les autres ont de vous. Puis, en une seconde, ce qui dans cette image n\'est pas tout à fait vrai."',
+  // J2 — Le doute
+  '"Quelle est la dernière chose dont vous avez douté chez vous ? Pas chez les autres, chez vous."',
+  // J3 — Le silence
+  '"Qu\'est-ce que vous ne dites jamais, et que pourtant vous savez ?"',
+  // J4 — Le mensonge
+  '"Quel mensonge vous êtes-vous raconté pour tenir ?"',
+  // J5 — La trahison
+  '"À qui avez-vous menti pour le protéger, et que protégiez-vous, vraiment ?"',
+  // J6 — Le pardon
+  '"Qu\'est-ce que vous n\'avez jamais pardonné, à vous-même ?"',
+  // J7 — La révélation
+  '"Si vous deviez résumer qui vous êtes vraiment, en une phrase que personne d\'autre n\'écrirait, laquelle ?"'
+];
+
+// === RÉPONSES SCRIPTÉES DES 5 INVITÉS POUR LES 7 JOURS ===
+// Chaque Invité a 7 réponses (une par jour), avec sa voix distincte
+const GUEST_RESPONSES = {
+  marc: [
+    // J1 — sobre, nuancé
+    'On me voit comme un homme calme. C\'est en partie vrai. Mais ce calme me coûte un effort que personne ne soupçonne, il n\'est pas naturel, il est tenu.',
+    // J2
+    'De ma capacité à finir ce que je commence. Patiemment, j\'ai appris à ne plus rien promettre.',
+    // J3
+    'Que je vais peut-être tout quitter. Je le sais depuis longtemps. Je ne le dirai sûrement jamais. Pas avant d\'être prêt à payer le prix.',
+    // J4
+    'Que tout va bien. Je le dis à ma femme depuis dix-huit mois. Je crois qu\'elle ne me croit plus depuis dix-sept.',
+    // J5
+    'À ma femme. Pour ne pas la faire souffrir tout de suite. Mais je crois qu\'au fond, c\'est moi que je protégeais. Je n\'étais pas prêt à m\'écouter.',
+    // J6
+    'D\'avoir laissé filer la première fois où j\'ai su. Honnêtement, je m\'en veux d\'avoir attendu si longtemps. Comme si la vérité méritait moins que mon confort.',
+    // J7
+    'Un homme qui a tenu, jusqu\'à ce que tenir devienne mentir.'
+  ],
+  theo: [
+    // J1 — brut, direct
+    'Bon. On me prend pour quelqu\'un qui choisit sa solitude. C\'est faux. Je suis seul parce que je n\'ai jamais su comment on entre dans la vie des autres. Voilà.',
+    // J2
+    'De rien. Franchement, je ne doute plus. À 2h du matin, on apprend à arrêter.',
+    // J3
+    'Que j\'aimerais qu\'on me retienne. Franchement, c\'est ridicule pour quelqu\'un comme moi. Mais à 2h du matin, dans un bar, je me dis ça parfois.',
+    // J4
+    'Bon. Franchement ? Que la solitude me convenait. Je me suis raconté ça pendant dix ans. Hier soir, en écrivant, j\'ai vu que ce n\'était pas vrai.',
+    // J5
+    'À une femme, il y a six ans. Je lui ai dit que je préférais qu\'on en reste là. Franchement, je voulais juste qu\'elle me retienne. Elle ne l\'a pas fait.',
+    // J6
+    'D\'avoir laissé partir cette fille à 2h du matin sans la rappeler. Bon. Franchement, c\'est tout ce que j\'ai à dire.',
+    // J7
+    'Un type qui n\'a jamais su demander, et qui en veut à tout le monde de ne pas avoir deviné.'
+  ],
+  camille: [
+    // J1 — paradoxal, littéraire
+    'Les gens me disent souvent que je devine tout. C\'est faux : je vois moins, simplement, je parle moins. Peut-être est-ce ce silence qu\'on confond avec la sagesse.',
+    // J2
+    'De la qualité de mon silence. Je me demande peut-être s\'il vient d\'une vraie écoute, ou simplement d\'une peur de mal dire.',
+    // J3
+    'Que j\'ai souvent le sentiment de peut-être ne pas être personne. Que tout ce qu\'on me prête, je l\'ai laissé construire pour ne pas avoir à choisir.',
+    // J4
+    'Que je n\'avais besoin de personne. Peut-être est-ce le mensonge le plus civilisé qu\'on m\'ait appris à dire.',
+    // J5
+    'À ma mère. Pendant des années. Je lui ai laissé croire que je l\'écoutais. Peut-être que ce que je protégeais, c\'était mon droit de penser autre chose.',
+    // J6
+    'De n\'avoir peut-être jamais vraiment dit ce que je pensais à mon père avant qu\'il ne soit trop tard.',
+    // J7
+    'Une femme à qui l\'on prête tant qu\'elle a fini par ne plus se reconnaître dans ce qu\'on lui rendait.'
+  ],
+  ines: [
+    // J1 — cassant, lucide
+    'On dit de moi que je suis dure, exigeante, intransigeante. Le verdict est juste. Mais il manque ceci : avec moi-même je le suis bien plus, et j\'ai désappris la douceur.',
+    // J2
+    'De mon verdict sur les autres. À force de juger vite, je me demande si je vois vraiment.',
+    // J3
+    'Que j\'aimerais perdre. Pas sur tout. Sur quelque chose. Une fois. Pour voir ce qui resterait après le verdict.',
+    // J4
+    'Qu\'on n\'a pas besoin de douceur pour être aimée. Verdict : faux, depuis longtemps.',
+    // J5
+    'À une amie. Je lui ai caché un verdict la concernant que j\'avais rendu en privé. Je crois que je me protégeais surtout d\'avoir à le défendre.',
+    // J6
+    'D\'avoir rendu un verdict sur ma sœur il y a vingt ans. Elle ne le sait pas. Elle ne le saura pas. C\'est ma manière de garder cette douleur à moi.',
+    // J7
+    'Une lame qui s\'est faite à elle-même, et qui aujourd\'hui voudrait apprendre à ne plus couper.'
+  ],
+  karim: [
+    // J1 — fluide, charmeur
+    'Mes amis pensent que je sais toujours quoi dire. La vérité, c\'est que je passe ma vie à composer des réponses, et qu\'au fond je sais rarement ce que je pense vraiment.',
+    // J2
+    'De la première phrase que je viens d\'écrire. Et de la deuxième. Toujours en train de composer trois versions avant de me décider.',
+    // J3
+    'Que je ne sais pas qui je suis. Je le compose chaque matin, et chaque soir je le défais. C\'est épuisant.',
+    // J4
+    'À tous. Tout le temps. Mais je m\'en rends compte seulement ici. Je ne savais pas que cela s\'appelait mentir.',
+    // J5
+    'À ma femme, plus que je ne peux le compter. Je composais celui qu\'elle aimait. Je crois que je me protégeais d\'avoir à exister vraiment.',
+    // J6
+    'Je ne sais pas. Je me compose trois versions de la réponse. Aucune n\'est juste.',
+    // J7
+    'Un homme qui s\'est tellement bien composé qu\'il ne sait plus quel air il jouait au début.'
+  ]
+};
+
+// === ÉTAT DU JEU ===
+let gameState = {
+  userSeal: null,
+  currentDay: 1,            // de 1 à 7
+  fragments: {},            // fragments tirés pour chaque Sceau {marc: {couleur:..., ...}, ...}
+  porterId: null,           // ID de l'Invité qui porte la Clé (tiré au début)
+  // Persistance par jour
+  daysData: {
+    // 1: { userResponse: '...', guesses: {marc: 'theo', ...}, score: 2, completed: true, foundObjects: [...] },
+  },
+  // Sceau voilé (J4+)
+  veiledGuestId: null
+};
+
+let isDayMode = false;
+let pendingGuessId = null;
+let isLoaded = false;
+
+// === FONCTIONS UTILITAIRES ===
+function pickRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
-let userSeal = null;
-let isDayMode = false;
-const discoveredObjects = new Set();
+function pickRandomDifferent(arr, used) {
+  const available = arr.filter(x => !used.includes(x));
+  return available.length > 0 ? pickRandom(available) : pickRandom(arr);
+}
 
-const DISCOVERIES = {
-  letter: {
-    label: 'UNE LETTRE FROISSÉE',
-    title: 'Un message ancien',
-    text: '"L\'image que je donne n\'est pas celle que je porte." Le papier est jauni. Aucune signature, juste l\'initiale "M.".',
-    reward: '+1 LUEUR • INDICE AJOUTÉ AU JOURNAL',
-  },
-  candle: {
-    label: 'UNE BOUGIE À DEMI BRÛLÉE',
-    title: 'Une bougie',
-    text: 'Quelqu\'un a veillé ici récemment. La cire est encore tiède. Elle a brûlé exactement deux heures.',
-    reward: '+1 LUEUR',
-  },
-  book: {
-    label: 'UN LIVRE OUVERT',
-    title: 'Un livre marqué',
-    text: 'Un seul mot est souligné : *Reflet*. En marge, à l\'encre cuivre : "Ils ne se voient jamais comme nous les voyons."',
-    reward: '+1 LUEUR • FRAGMENT DE LORE',
-  },
-};
+// Tire 5 fragments aléatoires pour un Sceau
+function rollFragments() {
+  return {
+    couleur: pickRandom(FRAGMENT_POOLS.couleurs),
+    objet: pickRandom(FRAGMENT_POOLS.objets),
+    lieu: pickRandom(FRAGMENT_POOLS.lieux),
+    mot: pickRandom(FRAGMENT_POOLS.mots),
+    habitude: pickRandom(FRAGMENT_POOLS.habitudes)
+  };
+}
 
-// ============================================
-// VOIX DES INVITÉS — Question du Cycle des Reflets, J1
-// ============================================
-const INVITES_RESPONSES = {
-  'Marc': "On me voit comme un homme calme, sûr de lui, presque imperturbable. Ce qui n'est pas tout à fait vrai, c'est que ce calme me coûte un effort permanent — il n'est pas naturel, il est tenu.",
-  'Théo': "On me prend pour quelqu'un de solitaire qui choisit sa solitude. Mais en vérité je suis seul parce que je n'ai jamais su comment on entre dans la vie des autres.",
-  'Camille': "Les gens me disent souvent que je devine tout, que je vois plus loin qu'eux. C'est faux : je vois moins, simplement, je parle moins.",
-  'Inès': "On dit de moi que je suis dure, exigeante, intransigeante. Ce qui ne se voit pas, c'est qu'avec moi-même je le suis bien plus, et qu'à force d'exiger, j'ai désappris la douceur.",
-  'Karim': "Mes amis pensent que je sais toujours quoi dire, que j'ai réponse à tout. La vérité, c'est que je passe ma vie à composer des réponses, et qu'au fond je sais rarement ce que je pense vraiment.",
-};
+// === RENDU SVG GÉNÉRIQUE (fallback si l'image ne charge pas) ===
+function renderSealSVG(sealKey) {
+  const seal = ALL_SEALS[sealKey];
+  if (!seal) return '';
+  return `<img src="${seal.img}" alt="${seal.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<svg viewBox=\\'0 0 100 100\\'><circle cx=\\'50\\' cy=\\'50\\' r=\\'30\\' fill=\\'none\\' stroke=\\'%23D4B870\\' stroke-width=\\'1.5\\'/></svg>'">`;
+}
 
-// État de la Question du soir
-let userResponse = '';
-let hasSealedResponse = false;
-let allResponses = [];
-let guesses = {};
-let currentGuessId = null;
+// === MODE JOUR / NUIT ===
+function checkDayMode() {
+  const hour = new Date().getHours();
+  isDayMode = hour >= 8 && hour < 20;
+  applyDayMode();
+}
 
-// État du Collapse
-let collapseUnlocked = false;
-let bearerOfReflect = null; // Nom de l'Invité qui porte le Reflet (tiré au sort)
-let collapseVote = null;    // Nom de l'Invité que l'utilisateur a voté
-let collapseDone = false;   // Le Collapse a-t-il eu lieu
-let userProfile = null;     // Profil quantique attribué
+function toggleDayMode() {
+  isDayMode = !isDayMode;
+  applyDayMode();
+}
 
-// ============================================
-// PERSISTANCE — État sauvegardé entre sessions
-// ============================================
-const STORAGE_KEY = 'vespera_state_v1';
+function toggleDayNight() {
+  toggleDayMode();
+}
 
+function applyDayMode() {
+  const salon = document.getElementById('salon');
+  const indicator = document.getElementById('salonModeIndicator');
+  const questionCard = document.getElementById('questionCard');
+  if (isDayMode) {
+    salon.classList.add('day');
+    indicator.textContent = `LE JOUR • LA VILLA RESPIRE • J ${gameState.currentDay}`;
+    questionCard.style.display = 'none';
+  } else {
+    salon.classList.remove('day');
+    indicator.textContent = `L'HEURE • CYCLE DES REFLETS • J ${gameState.currentDay}`;
+    questionCard.style.display = 'block';
+  }
+}
+
+// === SAUVEGARDE / CHARGEMENT ===
 function saveState() {
   try {
-    const state = {
-      userSeal: userSeal,
-      userResponse: userResponse,
-      hasSealedResponse: hasSealedResponse,
-      allResponses: allResponses,
-      guesses: guesses,
-      discoveredObjects: Array.from(discoveredObjects),
-      collapseUnlocked: collapseUnlocked,
-      bearerOfReflect: bearerOfReflect,
-      collapseVote: collapseVote,
-      collapseDone: collapseDone,
-      userProfile: userProfile,
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch (e) {
-    // Mode privé ou stockage indisponible : pas grave, on continue sans persistance
-  }
+    localStorage.setItem('vespera_v5', JSON.stringify(gameState));
+  } catch (e) { console.warn('Sauvegarde impossible', e); }
 }
 
 function loadState() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return false;
-    const state = JSON.parse(raw);
-    if (state.userSeal) userSeal = state.userSeal;
-    if (state.userResponse) userResponse = state.userResponse;
-    if (state.hasSealedResponse) hasSealedResponse = state.hasSealedResponse;
-    if (state.allResponses && state.allResponses.length) allResponses = state.allResponses;
-    if (state.guesses) guesses = state.guesses;
-    if (state.discoveredObjects) {
-      state.discoveredObjects.forEach(function(id) { discoveredObjects.add(id); });
+    const saved = localStorage.getItem('vespera_v5');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      gameState = Object.assign(gameState, parsed);
+      isLoaded = true;
+      return true;
     }
-    if (state.collapseUnlocked) collapseUnlocked = state.collapseUnlocked;
-    if (state.bearerOfReflect) bearerOfReflect = state.bearerOfReflect;
-    if (state.collapseVote) collapseVote = state.collapseVote;
-    if (state.collapseDone) collapseDone = state.collapseDone;
-    if (state.userProfile) userProfile = state.userProfile;
-    return !!state.userSeal;
-  } catch (e) {
-    return false;
+  } catch (e) { console.warn('Chargement impossible', e); }
+  return false;
+}
+
+// === INITIALISATION DU CYCLE ===
+function initNewCycle() {
+  // Tirer le Sceau du joueur
+  gameState.userSeal = pickRandom(PLAYER_AVAILABLE_SEALS);
+
+  // Tirer les fragments pour chaque Sceau (Invités + joueur)
+  gameState.fragments = {};
+  SEASON_1_GUESTS.forEach(g => {
+    gameState.fragments[g.id] = rollFragments();
+  });
+  gameState.fragments['user'] = rollFragments();
+
+  // Tirer le Porteur de la Clé (un des 5 Invités)
+  gameState.porterId = pickRandom(SEASON_1_GUESTS.map(g => g.id));
+
+  gameState.currentDay = 1;
+  gameState.daysData = {};
+  gameState.veiledGuestId = null;
+
+  saveState();
+}
+
+// === NAVIGATION ENTRE SCÈNES ===
+function showScene(id) {
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  const testControls = document.getElementById('testControls');
+  if (id === 'salon') {
+    testControls.style.display = 'flex';
+  } else {
+    testControls.style.display = 'none';
   }
 }
 
-function clearState() {
-  try {
-    localStorage.removeItem(STORAGE_KEY);
-  } catch (e) {}
-  userSeal = null;
-  userResponse = '';
-  hasSealedResponse = false;
-  allResponses = [];
-  guesses = {};
-  discoveredObjects.clear();
-  collapseUnlocked = false;
-  bearerOfReflect = null;
-  collapseVote = null;
-  collapseDone = false;
-  userProfile = null;
+function startRitual() {
+  if (!isLoaded || !gameState.userSeal) {
+    initNewCycle();
+  }
+  renderUserSeal();
+  showScene('ritual');
 }
 
-function resetGame() {
-  if (!confirm("Êtes-vous sûr de vouloir recommencer ? Vous perdrez votre Sceau actuel et toutes vos découvertes.")) return;
-  clearState();
-  showScene('arrival');
-  setTimeout(function() {
-    const v = document.getElementById('arrivalVideo');
-    if (v) { v.currentTime = 0; v.play().catch(function(){}); }
-  }, 100);
+function renderUserSeal() {
+  const seal = ALL_SEALS[gameState.userSeal];
+  const circle = document.getElementById('userSealCircle');
+  circle.innerHTML = renderSealSVG(gameState.userSeal);
+  document.getElementById('userSealName').textContent = seal.name;
+  document.getElementById('userSealDesc').textContent = seal.desc;
 }
 
-function resetGameFromProfile() {
-  if (!confirm("Recommencer un nouveau Cycle effacera votre profil actuel. Êtes-vous sûr ?")) return;
-  clearState();
+function enterSalon() {
+  showScene('salon');
+  checkDayMode();
+  renderSalon();
+}
+
+function backToArrival() {
   showScene('arrival');
-  setTimeout(function() {
-    const v = document.getElementById('arrivalVideo');
-    if (v) { v.currentTime = 0; v.play().catch(function(){}); }
-  }, 100);
+}
+
+function renderSalon() {
+  // Indicateur jour
+  applyDayMode();
+
+  // Progression des jours
+  const dayProgress = document.getElementById('dayProgress');
+  dayProgress.innerHTML = '';
+  for (let i = 1; i <= 7; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'day-dot';
+    if (i < gameState.currentDay) dot.classList.add('completed');
+    if (i === gameState.currentDay) dot.classList.add('current');
+    dayProgress.appendChild(dot);
+  }
+
+  // Question du soir
+  const dayIndex = gameState.currentDay - 1;
+  const dayData = gameState.daysData[gameState.currentDay] || {};
+  document.getElementById('questionText').textContent = QUESTIONS[dayIndex];
+
+  if (dayData.completed) {
+    document.getElementById('questionCta').textContent = 'SOIRÉE TERMINÉE ✓';
+  } else if (dayData.userResponse) {
+    document.getElementById('questionCta').textContent = 'CONSULTER LES RÉPONSES →';
+  } else {
+    document.getElementById('questionCta').textContent = 'RÉPONDRE →';
+  }
+
+  // Murmure badge (rouge si pas lu aujourd'hui)
+  const murmurBadge = document.getElementById('murmurBadge');
+  if (!dayData.murmurRead) {
+    murmurBadge.style.display = 'block';
+  } else {
+    murmurBadge.style.display = 'none';
+  }
+
+  // Sceau du joueur en haut + Invités
+  renderInvites();
+}
+
+function renderInvites() {
+  const list = document.getElementById('invitesList');
+  list.innerHTML = '';
+
+  // Toi en premier
+  const userSeal = ALL_SEALS[gameState.userSeal];
+  list.innerHTML += `
+    <div class="invite-card you">
+      <div class="invite-seal">${renderSealSVG(gameState.userSeal)}</div>
+      <div>
+        <div class="invite-name">Vous</div>
+        <div class="invite-seal-name">${userSeal.name.toUpperCase()}</div>
+      </div>
+    </div>
+  `;
+
+  // Les 5 Invités
+  SEASON_1_GUESTS.forEach(g => {
+    const seal = ALL_SEALS[g.seal];
+    const veiled = gameState.veiledGuestId === g.id;
+    list.innerHTML += `
+      <div class="invite-card" onclick="openChambre()">
+        <div class="invite-seal">${renderSealSVG(g.seal)}</div>
+        <div>
+          <div class="invite-name">${g.name}${veiled ? ' (voilé)' : ''}</div>
+          <div class="invite-seal-name">${seal.name.toUpperCase()}</div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+// === MURMURE ===
+function openMurmur() {
+  showScene('murmur');
+  const dayIndex = gameState.currentDay - 1;
+  const m = MURMURS[dayIndex];
+  document.getElementById('murmurDayLabel').textContent = `LE MURMURE • J ${gameState.currentDay}`;
+  document.getElementById('murmurGreeting').textContent = m.greeting;
+  document.getElementById('murmurText').innerHTML = m.text.replace(/\n\n/g, '<br><br>');
+  document.getElementById('murmurAmorce').textContent = m.amorce;
+
+  // Marquer comme lu
+  if (!gameState.daysData[gameState.currentDay]) {
+    gameState.daysData[gameState.currentDay] = {};
+  }
+  gameState.daysData[gameState.currentDay].murmurRead = true;
+  saveState();
+}
+
+// === CHAMBRE — fiches publiques ===
+function openChambre() {
+  showScene('chambre');
+  renderFiches();
+}
+
+function renderFiches() {
+  const container = document.getElementById('ficheCards');
+  container.innerHTML = '';
+
+  // Fiche de chaque Invité
+  SEASON_1_GUESTS.forEach(g => {
+    const seal = ALL_SEALS[g.seal];
+    const f = gameState.fragments[g.id];
+    if (!f) return;
+
+    container.innerHTML += `
+      <div class="fiche-card">
+        <div class="fiche-header">
+          <div class="fiche-seal">${renderSealSVG(g.seal)}</div>
+          <div class="fiche-titles">
+            <div class="fiche-name">${g.name}</div>
+            <div class="fiche-archetype">${seal.name}</div>
+          </div>
+        </div>
+        <div class="fiche-fragments">
+          <div class="fragment-row">
+            <div class="fragment-label">Couleur</div>
+            <div class="fragment-value">${f.couleur}</div>
+          </div>
+          <div class="fragment-row">
+            <div class="fragment-label">Objet</div>
+            <div class="fragment-value">${f.objet}</div>
+          </div>
+          <div class="fragment-row">
+            <div class="fragment-label">Lieu</div>
+            <div class="fragment-value">${f.lieu}</div>
+          </div>
+          <div class="fragment-row">
+            <div class="fragment-label">Mot</div>
+            <div class="fragment-value">${f.mot}</div>
+          </div>
+          <div class="fragment-row">
+            <div class="fragment-label">Habitude</div>
+            <div class="fragment-value">${f.habitude}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  // Ta propre fiche, cachée
+  const userSeal = ALL_SEALS[gameState.userSeal];
+  container.innerHTML += `
+    <div class="fiche-card hidden-self">
+      <div class="fiche-header">
+        <div class="fiche-seal">${renderSealSVG(gameState.userSeal)}</div>
+        <div class="fiche-titles">
+          <div class="fiche-name">Vous</div>
+          <div class="fiche-archetype">${userSeal.name}</div>
+        </div>
+      </div>
+      <div class="fiche-self-message">
+        Votre fiche s'écrit en silence pendant le Cycle. Elle vous sera révélée à la Nuit du Collapse.
+      </div>
+    </div>
+  `;
+}
+
+// === BIBLIOTHÈQUE ===
+function openLibrary() {
+  showScene('library');
+  // Reset hotspots à chaque entrée
+  document.querySelectorAll('.hotspot').forEach(h => h.classList.remove('found'));
+}
+
+function discoverObject(type) {
+  const hs = document.getElementById(`hotspot-${type}`);
+  hs.classList.add('found');
+  // À enrichir au commit 2 avec des indices distillés
+}
+
+// === COMPOSE ===
+function openCompose() {
+  const dayData = gameState.daysData[gameState.currentDay] || {};
+  if (dayData.userResponse) {
+    // Déjà répondu, on va voir les réponses
+    openResponses();
+    return;
+  }
+  showScene('compose');
+  const dayIndex = gameState.currentDay - 1;
+  document.getElementById('composeDayLabel').textContent = `QUESTION DU SOIR • J ${gameState.currentDay}`;
+  document.getElementById('composeQuestionText').textContent = QUESTIONS[dayIndex];
+  document.getElementById('composeTextarea').value = '';
+  updateComposeBtn();
+}
+
+function backToSalonFromCompose() {
+  goToSalon();
 }
 
 function updateComposeBtn() {
-  const ta = document.getElementById('composeTextarea');
-  const btn = document.getElementById('sealBtn');
-  btn.disabled = ta.value.trim().length < 10;
+  const txt = document.getElementById('composeTextarea').value.trim();
+  document.getElementById('sealBtn').disabled = txt.length < 10;
 }
 
 function sealResponse() {
-  const ta = document.getElementById('composeTextarea');
-  userResponse = ta.value.trim();
-  if (userResponse.length < 10) return;
-  hasSealedResponse = true;
-
-  // Mélanger toutes les réponses (la sienne + les 5 invités)
-  allResponses = [
-    { id: 'you', author: 'Vous', text: userResponse, isYou: true },
-    ...INVITES.map(function(inv) {
-      return { id: inv.name, author: inv.name, text: INVITES_RESPONSES[inv.name], isYou: false };
-    })
-  ];
-  // Shuffle (sauf le tien qu'on garde mais à position aléatoire aussi)
-  allResponses.sort(function() { return Math.random() - 0.5; });
-
-  guesses = {};
-  saveState();
-  goToResponses();
-}
-
-function onQuestionCardClick() {
-  if (isDayMode) return; // En mode jour, le Salon dort
-  if (!hasSealedResponse) {
-    showScene('compose');
-  } else {
-    goToResponses();
+  const txt = document.getElementById('composeTextarea').value.trim();
+  if (!gameState.daysData[gameState.currentDay]) {
+    gameState.daysData[gameState.currentDay] = {};
   }
+  gameState.daysData[gameState.currentDay].userResponse = txt;
+  gameState.daysData[gameState.currentDay].guesses = {};
+  saveState();
+  openResponses();
 }
 
-function backToSalonFromCompose() { showScene('salon'); }
-
-function goToResponses() {
-  renderResponses();
+// === RESPONSES ===
+function openResponses() {
   showScene('responses');
+  renderResponses();
 }
 
 function renderResponses() {
-  const container = document.getElementById('responseCards');
-  let html = '';
-  allResponses.forEach(function(r, i) {
-    const isGuessed = guesses[r.id];
-    let cls = 'response-card';
-    if (r.isYou) cls += ' you';
-    else if (isGuessed) {
-      cls += isGuessed.correct ? ' guessed-right' : ' guessed-wrong';
-    }
-    let authorLabel = r.isYou ? '— VOUS' : 'INVITÉ ' + (i + 1);
-    if (isGuessed) authorLabel = '— ' + r.author.toUpperCase();
+  const dayIndex = gameState.currentDay - 1;
+  const dayData = gameState.daysData[gameState.currentDay] || {};
+  const guesses = dayData.guesses || {};
 
-    html += '<div class="' + cls + '"' + (r.isYou || isGuessed ? '' : ' onclick="openGuess(\'' + r.id + '\')"') + '>';
-    html += '<div class="response-author"><span>' + authorLabel + '</span>';
-    if (!r.isYou && !isGuessed) html += '<span style="color:#D4B870;">→</span>';
-    html += '</div>';
-    html += '<div class="response-text">' + escapeHtml(r.text) + '</div>';
-    if (!r.isYou && !isGuessed) {
-      html += '<div class="response-action">DEVINER L\'AUTEUR</div>';
-    } else if (isGuessed) {
-      html += '<div class="response-result ' + (isGuessed.correct ? 'result-right' : 'result-wrong') + '">';
-      html += isGuessed.correct ? 'Vous avez vu juste.' : 'Vous pensiez que c\'était ' + isGuessed.guessed + '.';
-      html += '</div>';
-    }
-    html += '</div>';
+  // Mélanger l'ordre des réponses pour cacher l'identité
+  const items = [];
+  SEASON_1_GUESTS.forEach(g => {
+    items.push({
+      type: 'guest',
+      id: g.id,
+      text: GUEST_RESPONSES[g.id][dayIndex],
+      guessedAs: guesses[g.id] || null
+    });
   });
-  container.innerHTML = html;
+  items.push({
+    type: 'user',
+    id: 'user',
+    text: dayData.userResponse,
+    guessedAs: null
+  });
 
-  const guessedCount = Object.keys(guesses).length;
-  document.getElementById('responsesProgress').textContent = guessedCount + ' / 5 DEVINÉS';
+  // Mélange déterministe par jour (stocké dans daysData pour cohérence)
+  if (!dayData.shuffleOrder) {
+    const shuffled = [...items].map((_, i) => i);
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    gameState.daysData[gameState.currentDay].shuffleOrder = shuffled;
+    saveState();
+  }
+  const ordered = dayData.shuffleOrder.map(i => items[i]);
 
-  if (guessedCount === 5) {
-    setTimeout(showRecap, 1200);
+  // Progression
+  const totalGuessed = Object.keys(guesses).length;
+  document.getElementById('responsesProgress').textContent = `${totalGuessed} / 5 DEVINÉS`;
+
+  // Cartes
+  const container = document.getElementById('responseCards');
+  container.innerHTML = '';
+  ordered.forEach((item, idx) => {
+    if (item.type === 'user') {
+      container.innerHTML += `
+        <div class="response-card you">
+          <div class="response-author">VOUS</div>
+          <div class="response-text">${item.text}</div>
+        </div>
+      `;
+    } else {
+      const labelNum = idx + 1;
+      const guessedAs = item.guessedAs;
+      let extraClass = '';
+      let resultHTML = '';
+      let actionHTML = '<div class="response-action">DEVINER L\'AUTEUR</div>';
+
+      if (guessedAs) {
+        const correct = guessedAs === item.id;
+        extraClass = correct ? 'guessed-right' : 'guessed-wrong';
+        const guestGuessedAs = SEASON_1_GUESTS.find(g => g.id === guessedAs);
+        const realGuest = SEASON_1_GUESTS.find(g => g.id === item.id);
+        if (correct) {
+          resultHTML = `<div class="response-result result-right">Vous avez deviné juste : c'était ${realGuest.name}.</div>`;
+        } else {
+          resultHTML = `<div class="response-result result-wrong">Vous pensiez ${guestGuessedAs.name}. C'était ${realGuest.name}.</div>`;
+        }
+        actionHTML = '';
+      }
+
+      container.innerHTML += `
+        <div class="response-card ${extraClass}" ${!guessedAs ? `onclick="openGuess('${item.id}')"` : ''}>
+          <div class="response-author">
+            <span>INVITÉ ${labelNum}</span>
+            ${!guessedAs ? '<span style="color:#D4B870;">→</span>' : ''}
+          </div>
+          <div class="response-text">${item.text}</div>
+          ${actionHTML}
+          ${resultHTML}
+        </div>
+      `;
+    }
+  });
+
+  // Si tous devinés, afficher recap
+  if (totalGuessed >= 5 && !dayData.completed) {
+    setTimeout(() => showRecap(), 800);
   }
 }
 
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
+// === GUESS MODAL ===
+function openGuess(guestId) {
+  pendingGuessId = guestId;
+  const dayIndex = gameState.currentDay - 1;
+  const text = GUEST_RESPONSES[guestId][dayIndex];
 
-function openGuess(responseId) {
-  currentGuessId = responseId;
-  const r = allResponses.find(function(x) { return x.id === responseId; });
-  document.getElementById('guessQuote').textContent = '« ' + r.text + ' »';
+  document.getElementById('guessQuote').textContent = '« ' + text + ' »';
 
-  let html = '';
-  INVITES.forEach(function(inv) {
-    const seal = SEALS.find(function(s){ return s.id === inv.sealId; });
-    html += '<div class="guess-option" onclick="submitGuess(\'' + inv.name + '\')">';
-    html += '<div class="guess-option-seal">' + renderSealHTML(seal.id) + '</div>';
-    html += '<div style="flex:1;"><div class="guess-option-name">' + inv.name + '</div>';
-    html += '<div class="guess-option-seal-name">' + seal.name + '</div></div>';
-    html += '</div>';
+  const opts = document.getElementById('guessOptions');
+  opts.innerHTML = '';
+  SEASON_1_GUESTS.forEach(g => {
+    const seal = ALL_SEALS[g.seal];
+    opts.innerHTML += `
+      <div class="guess-option" onclick="confirmGuess('${g.id}')">
+        <div class="guess-option-seal">${renderSealSVG(g.seal)}</div>
+        <div>
+          <div class="guess-option-name">${g.name}</div>
+          <div class="guess-option-seal-name">${seal.name}</div>
+        </div>
+      </div>
+    `;
   });
-  document.getElementById('guessOptions').innerHTML = html;
+
   document.getElementById('guess-modal').classList.add('active');
 }
 
 function closeGuess() {
   document.getElementById('guess-modal').classList.remove('active');
-  currentGuessId = null;
+  pendingGuessId = null;
 }
 
-function submitGuess(invName) {
-  const correct = (currentGuessId === invName);
-  guesses[currentGuessId] = { guessed: invName, correct: correct };
+function confirmGuess(guessedAsId) {
+  if (!pendingGuessId) return;
+  if (!gameState.daysData[gameState.currentDay].guesses) {
+    gameState.daysData[gameState.currentDay].guesses = {};
+  }
+  gameState.daysData[gameState.currentDay].guesses[pendingGuessId] = guessedAsId;
   saveState();
   closeGuess();
-  setTimeout(renderResponses, 300);
+  renderResponses();
 }
 
+// === RECAP ===
 function showRecap() {
+  const dayData = gameState.daysData[gameState.currentDay];
+  const guesses = dayData.guesses || {};
   let score = 0;
-  Object.values(guesses).forEach(function(g) { if (g.correct) score++; });
+  for (const [actualId, guessedId] of Object.entries(guesses)) {
+    if (actualId === guessedId) score++;
+  }
+  dayData.score = score;
+  dayData.completed = true;
+  saveState();
+
   document.getElementById('recapScore').textContent = score;
 
-  let txt;
+  let recapText;
   if (score === 5) {
-    txt = "Vous lisez les autres comme un livre ouvert. C'est rare, et c'est troublant.";
+    recapText = 'Vous voyez ce que les autres cachent. Pas un mot ne vous a échappé. Mais soyez prudent : voir si bien, c\'est aussi se faire voir.';
   } else if (score >= 3) {
-    txt = "Vous voyez juste, presque toujours. Mais quelques voix vous échappent encore — c'est bien ainsi.";
+    recapText = 'Vous commencez à entendre. Les autres ne sont pas ce qu\'ils paraissent, vous le saviez déjà.';
   } else if (score >= 1) {
-    txt = "Vous commencez à entendre. Les autres ne sont pas ce qu'ils paraissent — vous le saviez déjà.";
+    recapText = 'Le Cercle reste opaque. C\'est normal. Demain, vous lirez autrement.';
   } else {
-    txt = "Personne ne se laisse encore deviner. Le Cycle ne fait que commencer.";
+    recapText = 'Vous ne les avez pas reconnus. Peut-être ne se laissent-ils pas reconnaître. Peut-être vous-même êtes-vous un Cercle pour les autres.';
   }
-  document.getElementById('recapText').textContent = txt;
-  document.getElementById('recap-modal').classList.add('active');
+  document.getElementById('recapText').textContent = recapText;
 
-  // Débloquer le Collapse + tirer le Porteur du Reflet au sort
-  if (!collapseUnlocked) {
-    collapseUnlocked = true;
-    bearerOfReflect = INVITES[Math.floor(Math.random() * INVITES.length)].name;
-    saveState();
-  }
+  document.getElementById('recap-modal').classList.add('active');
 }
 
 function closeRecap() {
   document.getElementById('recap-modal').classList.remove('active');
+  goToSalon();
 }
 
-// ============================================
-// DÉTECTION JOUR / NUIT
-// ============================================
-function detectMode() {
-  const h = new Date().getHours();
-  isDayMode = (h < 20 && h >= 8);
-  applyMode();
-}
-
-function applyMode() {
-  const salon = document.getElementById('salon');
-  const card = document.getElementById('salonQuestionCard');
-  if (isDayMode) {
-    salon.classList.add('day');
-    document.getElementById('salonModeIndicator').textContent = "EN ATTENTE DE L'HEURE • 21H";
-    card.innerHTML =
-      '<p class="question-text">Le Salon dort. Il s\'ouvrira ce soir, à l\'Heure.</p>' +
-      '<p class="question-label" style="margin-top: 20px;">EN ATTENDANT, EXPLOREZ VESPERA</p>';
-  } else {
-    salon.classList.remove('day');
-    document.getElementById('salonModeIndicator').textContent = "L'HEURE • CYCLE DES REFLETS • J 1";
-    if (!hasSealedResponse) {
-      card.innerHTML =
-        '<p class="question-label">QUESTION DU SOIR</p>' +
-        '<p class="question-text">"Décrivez en une phrase l\'image que les autres ont de vous. Puis, en une seconde phrase, ce qui dans cette image n\'est pas tout à fait vrai."</p>' +
-        '<p class="question-signature">— V</p>' +
-        '<p class="question-cta">RÉPONDRE →</p>';
-    } else {
-      card.innerHTML =
-        '<p class="question-label">QUESTION DU SOIR</p>' +
-        '<p class="question-text" style="opacity:0.6;">Votre réponse a été scellée.</p>' +
-        '<p class="question-status">Six réponses ont été déposées dans la nuit.</p>' +
-        '<p class="question-cta">VOIR LES RÉPONSES →</p>';
-    }
-  }
-  if (userSeal) renderInvitesList();
-}
-
-function renderInvitesList() {
-  let html = '<div class="invite-card you">' +
-    '<div class="invite-seal">' + renderSealHTML(userSeal.id) + '</div>' +
-    '<div><div class="invite-name">Vous</div><div class="invite-seal-name">' + userSeal.name + '</div></div>' +
-    '</div>';
-  INVITES.forEach(function(inv){
-    const seal = SEALS.find(function(s){ return s.id === inv.sealId; });
-    html += '<div class="invite-card">' +
-      '<div class="invite-seal">' + renderSealHTML(seal.id) + '</div>' +
-      '<div><div class="invite-name">' + inv.name + '</div><div class="invite-seal-name">' + seal.name + '</div></div>' +
-      '</div>';
-  });
-  document.getElementById('invitesList').innerHTML = html;
-}
-
-function showScene(sceneId) {
-  document.querySelectorAll('.scene').forEach(function(s){ s.classList.remove('active'); });
-  document.getElementById(sceneId).classList.add('active');
-  setTimeout(function() {
-    if (sceneId === 'arrival') { const v = document.getElementById('arrivalVideo'); if (v) { v.currentTime = 0; v.play().catch(function(){}); } }
-    if (sceneId === 'library') { const v = document.getElementById('libraryVideo'); if (v) { v.currentTime = 0; v.play().catch(function(){}); } }
-  }, 100);
-}
-
-function goToRitual() {
-  // Exclure les Sceaux déjà pris par les Invités fictifs
-  const takenSeals = INVITES.map(function(inv){ return inv.sealId; });
-  const availableSeals = SEALS.filter(function(s){ return takenSeals.indexOf(s.id) === -1; });
-  userSeal = availableSeals[Math.floor(Math.random() * availableSeals.length)];
-  saveState();
-  document.getElementById('userSealCircle').innerHTML = renderSealHTML(userSeal.id);
-  document.getElementById('sealName').textContent = userSeal.name;
-  document.getElementById('sealDesc').textContent = userSeal.desc;
-  showScene('ritual');
-}
-
+// === NAVIGATION ===
 function goToSalon() {
-  renderInvitesList();
-  // Afficher la carte Collapse si débloquée
-  const cont = document.getElementById('collapseCardContainer');
-  if (collapseUnlocked && !collapseDone) {
-    cont.style.display = 'block';
-  } else {
-    cont.style.display = 'none';
-  }
   showScene('salon');
+  renderSalon();
 }
 
-// ============================================
-// LA NUIT DU COLLAPSE
-// ============================================
-
-// Profils quantiques selon les performances
-const QUANTUM_PROFILES = {
-  lucid: {
-    name: "Le Témoin Lucide",
-    tagline: "Vous voyez ce que les autres ne disent pas",
-    text: "Vous avez deviné juste, presque partout. Vous avez nommé le Porteur du Reflet sans hésiter. Vous traversez Vespera comme un lecteur qui aurait déjà lu le livre — sans bruit, sans erreur. C'est rare, et c'est précieux. Mais prenez garde : ce qui se laisse voir si facilement n'est jamais le plus profond.",
-  },
-  hesitant: {
-    name: "L'Observateur Hésitant",
-    tagline: "Vous avez vu juste, sans tout à fait y croire",
-    text: "Vous avez nommé le Porteur — mais vous avez douté souvent en chemin. Vos devinettes étaient incertaines, et pourtant votre intuition finale était bonne. C'est peut-être ainsi qu'on lit les autres : non pas en sachant, mais en écoutant ce qu'on sent sans pouvoir le dire.",
-  },
-  sincere: {
-    name: "L'Égaré Sincère",
-    tagline: "Vous avez cherché, et vous vous êtes trompé",
-    text: "Vous avez deviné juste plusieurs fois, mais le Reflet vous a échappé au moment du Collapse. Vous avez nommé une autre voix — une voix qui vous semblait plus voilée encore. Ce n'est pas une erreur, c'est une lecture. Le Porteur véritable se cache toujours là où l'on ne le cherche pas.",
-  },
-  voyager: {
-    name: "Le Voyageur du Reflet",
-    tagline: "Vous traversez Vespera sans certitude",
-    text: "Vous avez peu deviné juste, et vous n'avez pas trouvé le Porteur. Mais c'est peut-être Vespera qui vous a trouvé, vous. Ce Cycle n'était pas pour comprendre les autres — il était pour vous laisser observer ce que vous projetez sur eux. Le Reflet, parfois, c'est nous qui le portons.",
-  },
-};
-
-function goToCollapse() {
-  // Reset des steps
-  document.querySelectorAll('#collapse .collapse-step').forEach(function(s){ s.classList.remove('active'); });
-  document.getElementById('collapseIntro').classList.add('active');
-  // Si déjà fait, sauter directement au profil
-  if (collapseDone && userProfile) {
-    showCollapseProfile();
+// === AVANCEMENT JOUR (test) ===
+function advanceDay() {
+  if (gameState.currentDay >= 7) {
+    // Cycle terminé
     showScene('collapse');
     return;
   }
-  showScene('collapse');
-}
-
-function collapseGoToVote() {
-  document.getElementById('collapseIntro').classList.remove('active');
-  document.getElementById('collapseVote').classList.add('active');
-  renderVoteOptions();
-}
-
-function renderVoteOptions() {
-  const container = document.getElementById('voteOptions');
-  let html = '';
-  INVITES.forEach(function(inv) {
-    const seal = SEALS.find(function(s){ return s.id === inv.sealId; });
-    // Récupérer la première phrase de la réponse de cet Invité
-    const fullResponse = INVITES_RESPONSES[inv.name];
-    let quote = fullResponse;
-    const firstPeriod = fullResponse.indexOf('.');
-    if (firstPeriod > 0) quote = fullResponse.substring(0, firstPeriod + 1);
-    const isSelected = (collapseVote === inv.name);
-    html += '<div class="vote-option' + (isSelected ? ' selected' : '') + '" onclick="selectVote(\'' + inv.name + '\')">';
-    html += '<div class="vote-option-seal">' + renderSealHTML(seal.id) + '</div>';
-    html += '<div class="vote-option-content">';
-    html += '<div class="vote-option-name">' + inv.name + '</div>';
-    html += '<div class="vote-option-quote">« ' + quote + ' »</div>';
-    html += '</div>';
-    html += '</div>';
-  });
-  container.innerHTML = html;
-  document.getElementById('voteConfirmBtn').disabled = !collapseVote;
-}
-
-function selectVote(invName) {
-  collapseVote = invName;
-  renderVoteOptions();
-}
-
-function submitCollapseVote() {
-  if (!collapseVote) return;
-  collapseDone = true;
-  const voteCorrect = (collapseVote === bearerOfReflect);
-
-  // Calculer le profil quantique
-  let goodGuesses = 0;
-  Object.values(guesses).forEach(function(g) { if (g.correct) goodGuesses++; });
-
-  if (voteCorrect && goodGuesses >= 4) userProfile = 'lucid';
-  else if (voteCorrect && goodGuesses < 4) userProfile = 'hesitant';
-  else if (!voteCorrect && goodGuesses >= 3) userProfile = 'sincere';
-  else userProfile = 'voyager';
-
+  gameState.currentDay++;
   saveState();
-
-  // Afficher la révélation
-  showCollapseReveal(voteCorrect);
+  renderSalon();
 }
 
-function showCollapseReveal(voteCorrect) {
-  const bearerInvite = INVITES.find(function(i){ return i.name === bearerOfReflect; });
-  const bearerSeal = SEALS.find(function(s){ return s.id === bearerInvite.sealId; });
-
-  document.getElementById('revealJudgment').textContent = voteCorrect
-    ? "Vous avez vu juste."
-    : "Vous vous êtes trompé.";
-
-  document.getElementById('revealBearerSeal').innerHTML = renderSealHTML(bearerSeal.id);
-  document.getElementById('revealBearerName').textContent = bearerInvite.name;
-  document.getElementById('revealBearerSealName').textContent = bearerSeal.name;
-
-  let revealMsg;
-  if (voteCorrect) {
-    revealMsg = bearerInvite.name + " portait bien le Reflet — sans le savoir. La vérité que les autres voyaient en lui n'était pas celle qu'il portait. Vous l'aviez senti.";
-  } else {
-    const userPick = INVITES.find(function(i){ return i.name === collapseVote; });
-    revealMsg = "Vous aviez nommé " + collapseVote + ". Mais c'est " + bearerInvite.name + " qui portait le Reflet — sans le savoir lui-même. Ce que vous aviez perçu chez " + collapseVote + " était autre chose, peut-être une projection, peut-être une vérité qui n'avait pas encore de nom.";
-  }
-  document.getElementById('revealText').textContent = revealMsg;
-
-  document.getElementById('collapseVote').classList.remove('active');
-  document.getElementById('collapseReveal').classList.add('active');
-}
-
-function collapseGoToProfile() {
-  showCollapseProfile();
-}
-
-function showCollapseProfile() {
-  const profile = QUANTUM_PROFILES[userProfile];
-  document.getElementById('profileName').textContent = profile.name;
-  document.getElementById('profileTagline').textContent = profile.tagline;
-  document.getElementById('profileText').textContent = profile.text;
-
-  let goodGuesses = 0;
-  Object.values(guesses).forEach(function(g) { if (g.correct) goodGuesses++; });
-  document.getElementById('statGuesses').textContent = goodGuesses + '/5';
-
-  const voteCorrect = (collapseVote === bearerOfReflect);
-  document.getElementById('statVote').textContent = voteCorrect ? '✓' : '✗';
-  document.getElementById('statSeal').textContent = userSeal.name.replace(/^L[ea] /, '');
-
-  document.querySelectorAll('#collapse .collapse-step').forEach(function(s){ s.classList.remove('active'); });
-  document.getElementById('collapseProfile').classList.add('active');
-}
-function goToArrival() { showScene('arrival'); }
-function goToMurmur() { showScene('murmur'); }
-function goToLibrary() { showScene('library'); }
-
-function toggleMode() { isDayMode = !isDayMode; applyMode(); }
-
-function discoverObject(objId) {
-  if (discoveredObjects.has(objId)) return;
-  discoveredObjects.add(objId);
-  saveState();
-  document.getElementById('hotspot-' + objId).classList.add('found');
-  const d = DISCOVERIES[objId];
-  document.getElementById('discoveryLabel').textContent = d.label;
-  document.getElementById('discoveryTitle').textContent = d.title;
-  document.getElementById('discoveryText').innerHTML = d.text.replace(/\*([^*]+)\*/g, '<em style="color:#D4B870;">$1</em>');
-  document.getElementById('discoveryReward').textContent = d.reward;
-  document.getElementById('discovery-modal').classList.add('active');
-}
-
-function closeDiscovery() { document.getElementById('discovery-modal').classList.remove('active'); }
-
-// ============================================
-// INITIALISATION
-// ============================================
-function init() {
-  const hadState = loadState();
-  detectMode();
-
-  // Si l'utilisateur avait déjà un Sceau, on l'amène directement au Salon
-  // (sinon on reste sur la scène d'Arrivée par défaut)
-  if (hadState && userSeal) {
-    setTimeout(function() {
-      goToSalon();
-    }, 200);
+// === RESET ===
+function resetCycle() {
+  if (confirm('Recommencer un nouveau Cycle ? Toute votre progression sera perdue.')) {
+    localStorage.removeItem('vespera_v5');
+    gameState = {
+      userSeal: null,
+      currentDay: 1,
+      fragments: {},
+      porterId: null,
+      daysData: {},
+      veiledGuestId: null
+    };
+    isLoaded = false;
+    showScene('arrival');
+    document.querySelector('#arrival video').currentTime = 0;
+    document.querySelector('#arrival video').play();
   }
 }
 
-init();
+// === INIT AU CHARGEMENT ===
+document.addEventListener('DOMContentLoaded', function() {
+  loadState();
+
+  // Précharger la vidéo bibliothèque
+  const lib = document.querySelector('#library video');
+  if (lib) lib.load();
+
+  // Si on a déjà un état, on peut sauter directement au salon
+  if (isLoaded && gameState.userSeal) {
+    // Affiche quand même l'arrivée par défaut, mais le bouton ENTRER ramène au Sceau
+  }
+});
 </script>
 </body>
 </html>
