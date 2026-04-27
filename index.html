@@ -29,12 +29,12 @@
   button.hotspot { padding: 0; }
   .scene {
     position: fixed; inset: 0;
-    display: flex; flex-direction: column;
+    display: none;
+    flex-direction: column;
     align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none;
-    transition: opacity 1.2s ease;
   }
-  .scene.active { opacity: 1; pointer-events: auto; }
+  .scene.active { display: flex; animation: sceneFadeIn 0.6s ease; }
+  @keyframes sceneFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
   /* SCÈNE ARRIVÉE */
   #arrival { background: #000; }
@@ -499,18 +499,18 @@
 
 <!-- SCÈNE COLLAPSE (placeholder, sera étoffée au commit suivant) -->
 <div id="collapse" class="scene">
-  <div class="collapse-step active">
+  <div class="collapse-step" id="collapseStepDefault">
     <p class="collapse-intro-label">LA NUIT DU COLLAPSE</p>
     <h1 class="collapse-intro-title">L'Heure</h1>
     <p class="collapse-intro-text">Vous avez traversé sept soirées. Le Cycle touche à sa fin. Bientôt, la boîte s'ouvrira.</p>
     <p class="collapse-intro-text" style="font-size: 14px; color: #A8A095;">Le Collapse complet sera disponible à la prochaine version.</p>
     <p class="collapse-intro-sig">V.</p>
-    <button class="collapse-intro-btn" onclick="resetCycle()">RECOMMENCER LE CYCLE</button>
+    <button type="button" class="collapse-intro-btn" onclick="resetCycle()">RECOMMENCER LE CYCLE</button>
   </div>
 </div>
 
 <script>
-// === DÉTECTION D'ERREUR GLOBALE (debug) ===
+// === DÉTECTION D'ERREUR GLOBALE ===
 window.addEventListener('error', function(e) {
   console.error('[VESPERA ERROR]', e.message, 'at', e.filename + ':' + e.lineno);
   let div = document.getElementById('errorDebug');
@@ -522,37 +522,6 @@ window.addEventListener('error', function(e) {
   }
   div.innerHTML += '<div>' + e.message + ' (' + e.lineno + ')</div>';
 });
-
-// === DEBUG TACTILE (temporaire) ===
-// Affiche en temps réel ce qui est tapé pour comprendre pourquoi les taps ne déclenchent pas les onclick.
-function showTapDebug(msg) {
-  let div = document.getElementById('tapDebug');
-  if (!div) {
-    div = document.createElement('div');
-    div.id = 'tapDebug';
-    div.style.cssText = 'position:fixed;top:60px;left:8px;right:8px;background:#0a3a0a;color:#9fdc9f;padding:6px 10px;font-size:11px;z-index:9999;font-family:monospace;border-radius:4px;max-height:80px;overflow:auto;';
-    document.body.appendChild(div);
-  }
-  const time = new Date().toTimeString().slice(0,8);
-  div.innerHTML = '<div>' + time + ' — ' + msg + '</div>' + div.innerHTML.split('<div>').slice(0,4).join('<div>');
-}
-
-window.addEventListener('touchstart', function(e) {
-  const t = e.target;
-  let info = t.tagName;
-  if (t.className && typeof t.className === 'string') info += '.' + t.className.split(' ')[0];
-  if (t.id) info += '#' + t.id;
-  const closest = t.closest('[onclick]');
-  info += ' | onclick=' + (closest ? 'YES (' + closest.tagName + ')' : 'NO');
-  showTapDebug('touchstart: ' + info);
-}, { passive: true, capture: true });
-
-window.addEventListener('click', function(e) {
-  const t = e.target;
-  let info = t.tagName;
-  if (t.className && typeof t.className === 'string') info += '.' + t.className.split(' ')[0];
-  showTapDebug('click: ' + info);
-}, true);
 
 // ====================================================================
 // VESPERA — Cycle des Reflets, Saison 1 — V5 (Commit 1)
