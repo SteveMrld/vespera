@@ -203,7 +203,7 @@
     height: 100%;
     filter:
       drop-shadow(0 12px 32px rgba(0,0,0,0.7))
-      drop-shadow(0 0 32px rgba(212,184,112,0.25));
+      drop-shadow(0 0 36px rgba(120, 30, 40, 0.3));
     animation: sealFloat 5s ease-in-out infinite;
     transition: opacity 0.8s ease;
   }
@@ -212,16 +212,18 @@
     50%      { transform: translateY(-3px) scale(1.012); }
   }
 
-  /* Les gravures dorées qui se dessinent (stroke-dashoffset animé) */
+  /* Les gravures dorees qui se dessinent (stroke-dashoffset anime).
+     Or chaud antique pour s'accorder au bordeaux de la cire. */
   .ritual-seal-line {
     fill: none;
-    stroke: #F5DC96;
+    stroke: #E8B962;
     stroke-width: 1.4;
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: var(--len, 600);
     stroke-dashoffset: var(--len, 600);
-    filter: drop-shadow(0 0 3px rgba(245,220,150,0.7));
+    filter: drop-shadow(0 0 2px rgba(232, 185, 98, 0.6))
+            drop-shadow(0 0 1px rgba(80, 30, 10, 0.5));
     transition: opacity 0.8s ease;
   }
   .ritual-seal-svg.drawing .ritual-seal-line {
@@ -231,11 +233,11 @@
     to { stroke-dashoffset: 0; }
   }
 
-  /* Petits points cardinaux (apparaissent en fade, pas en stroke-draw) */
+  /* Points (apparaissent en fade, pas en stroke-draw) */
   .ritual-seal-dot {
-    fill: #F5DC96;
+    fill: #E8B962;
     opacity: 0;
-    filter: drop-shadow(0 0 4px rgba(245,220,150,0.8));
+    filter: drop-shadow(0 0 3px rgba(232, 185, 98, 0.7));
   }
   .ritual-seal-svg.drawing .ritual-seal-dot {
     animation: dotFadeIn 0.4s var(--del, 0s) ease forwards;
@@ -1740,75 +1742,102 @@
       <div class="ritual-seal-container">
         <svg class="ritual-seal-svg" id="ritualSealSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
-            <!-- Cire : noir profond avec reflets cuivre, comme de l'obsidienne polie -->
-            <radialGradient id="sealWaxGradient" cx="0.32" cy="0.28" r="0.95">
-              <stop offset="0%"   stop-color="#5A4226" />
-              <stop offset="22%"  stop-color="#3A2818" />
-              <stop offset="55%"  stop-color="#1A0F08" />
-              <stop offset="85%"  stop-color="#0A0604" />
-              <stop offset="100%" stop-color="#050200" />
+            <!-- Cire bordeaux : profond, vivant, avec coeur lumineux -->
+            <radialGradient id="sealWaxGradient" cx="0.42" cy="0.36" r="0.85">
+              <stop offset="0%"   stop-color="#A03242" />
+              <stop offset="28%"  stop-color="#7A1F2C" />
+              <stop offset="60%"  stop-color="#4D101A" />
+              <stop offset="88%"  stop-color="#2A080F" />
+              <stop offset="100%" stop-color="#1A0408" />
             </radialGradient>
-            <!-- Highlight subtil en haut à gauche pour effet 3D -->
-            <radialGradient id="sealHighlight" cx="0.3" cy="0.22" r="0.45">
-              <stop offset="0%"   stop-color="rgba(255, 230, 170, 0.35)" />
-              <stop offset="50%"  stop-color="rgba(255, 220, 150, 0.08)" />
+            <!-- Highlight haut-gauche : la lumiere qui frappe la cire -->
+            <radialGradient id="sealHighlight" cx="0.32" cy="0.24" r="0.42">
+              <stop offset="0%"   stop-color="rgba(255, 200, 180, 0.55)" />
+              <stop offset="40%"  stop-color="rgba(220, 130, 110, 0.18)" />
               <stop offset="100%" stop-color="rgba(0, 0, 0, 0)" />
             </radialGradient>
-            <!-- Ombre intérieure en bas à droite pour la profondeur -->
-            <radialGradient id="sealShadow" cx="0.75" cy="0.8" r="0.6">
-              <stop offset="0%"   stop-color="rgba(0, 0, 0, 0.55)" />
-              <stop offset="60%"  stop-color="rgba(0, 0, 0, 0.15)" />
+            <!-- Ombre bas-droite : profondeur du sceau -->
+            <radialGradient id="sealShadow" cx="0.78" cy="0.82" r="0.65">
+              <stop offset="0%"   stop-color="rgba(0, 0, 0, 0.6)" />
+              <stop offset="55%"  stop-color="rgba(20, 5, 10, 0.25)" />
               <stop offset="100%" stop-color="rgba(0, 0, 0, 0)" />
             </radialGradient>
-            <!-- Cartouche interne qui accueille le V (or sombre subtil) -->
-            <radialGradient id="sealCenterGold" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0%"   stop-color="rgba(212, 184, 112, 0.18)" />
-              <stop offset="100%" stop-color="rgba(212, 184, 112, 0)" />
+            <!-- Texture granuleuse subtile (effet cire pressee) -->
+            <filter id="sealNoise" x="0" y="0" width="100%" height="100%">
+              <feTurbulence type="fractalNoise" baseFrequency="2.8" numOctaves="2" seed="3" />
+              <feColorMatrix values="0 0 0 0 0.08
+                                     0 0 0 0 0.04
+                                     0 0 0 0 0.06
+                                     0 0 0 0.18 0" />
+              <feComposite in="SourceGraphic" in2="result" operator="in" />
+            </filter>
+            <!-- Glow doux autour du V grave -->
+            <radialGradient id="sealCenterGlow" cx="0.5" cy="0.52" r="0.32">
+              <stop offset="0%"   stop-color="rgba(255, 220, 180, 0.18)" />
+              <stop offset="100%" stop-color="rgba(255, 220, 180, 0)" />
             </radialGradient>
           </defs>
 
-          <!-- Disque principal de cire -->
-          <circle cx="100" cy="100" r="88"
-                  fill="url(#sealWaxGradient)"
-                  stroke="rgba(212,184,112,0.5)" stroke-width="1.2" />
+          <!-- Forme principale de la cire : pas un cercle parfait, un disque
+               legerement irregulier comme une vraie cire pressee -->
+          <path d="M 100 12
+                   C 138 12, 178 36, 184 78
+                   C 192 110, 178 156, 138 180
+                   C 110 192, 76 188, 48 168
+                   C 18 144, 8 100, 22 64
+                   C 38 30, 70 12, 100 12 Z"
+                fill="url(#sealWaxGradient)"
+                stroke="#2A080F" stroke-width="0.8" />
+          <!-- Texture granuleuse par-dessus -->
+          <path d="M 100 12
+                   C 138 12, 178 36, 184 78
+                   C 192 110, 178 156, 138 180
+                   C 110 192, 76 188, 48 168
+                   C 18 144, 8 100, 22 64
+                   C 38 30, 70 12, 100 12 Z"
+                fill="url(#sealWaxGradient)"
+                filter="url(#sealNoise)"
+                opacity="0.45" />
           <!-- Highlight 3D haut-gauche -->
-          <circle cx="100" cy="100" r="88" fill="url(#sealHighlight)" />
+          <path d="M 100 12
+                   C 138 12, 178 36, 184 78
+                   C 192 110, 178 156, 138 180
+                   C 110 192, 76 188, 48 168
+                   C 18 144, 8 100, 22 64
+                   C 38 30, 70 12, 100 12 Z"
+                fill="url(#sealHighlight)" />
           <!-- Ombre 3D bas-droite -->
-          <circle cx="100" cy="100" r="88" fill="url(#sealShadow)" />
-          <!-- Halo doré central subtil derrière le V -->
-          <circle cx="100" cy="102" r="38" fill="url(#sealCenterGold)" />
+          <path d="M 100 12
+                   C 138 12, 178 36, 184 78
+                   C 192 110, 178 156, 138 180
+                   C 110 192, 76 188, 48 168
+                   C 18 144, 8 100, 22 64
+                   C 38 30, 70 12, 100 12 Z"
+                fill="url(#sealShadow)" />
+          <!-- Glow central derriere le V -->
+          <circle cx="100" cy="105" r="40" fill="url(#sealCenterGlow)" />
 
-          <!-- Gravures dorées par-dessus la cire (se dessinent au trait) -->
+          <!-- Gravures dorees par-dessus la cire (se dessinent au trait).
+               On enleve les 8 points cardinaux qui faisaient blason kitsch.
+               On garde un seul anneau interieur subtil + le V grave. -->
           <g class="ritual-seal-engravings">
-            <!-- Anneau extérieur (perimeter ~515) -->
-            <circle class="ritual-seal-line" cx="100" cy="100" r="82"
-                    style="--len:515; --dur:0.9s; --del:0.2s;" />
-            <!-- Anneau intérieur (perimeter ~427) -->
-            <circle class="ritual-seal-line" cx="100" cy="100" r="68"
-                    style="--len:428; --dur:0.7s; --del:0.9s;" />
+            <!-- Anneau interieur subtil (perimeter ~440) -->
+            <circle class="ritual-seal-line" cx="100" cy="100" r="70"
+                    style="--len:440; --dur:1.2s; --del:0.3s;"
+                    stroke-width="0.8" stroke-opacity="0.7" />
 
-            <!-- 8 points cardinaux (fade in) -->
-            <circle class="ritual-seal-dot" cx="100" cy="25"  r="2.4" style="--del:1.4s;" />
-            <circle class="ritual-seal-dot" cx="153" cy="47"  r="2.4" style="--del:1.5s;" />
-            <circle class="ritual-seal-dot" cx="175" cy="100" r="2.4" style="--del:1.6s;" />
-            <circle class="ritual-seal-dot" cx="153" cy="153" r="2.4" style="--del:1.7s;" />
-            <circle class="ritual-seal-dot" cx="100" cy="175" r="2.4" style="--del:1.8s;" />
-            <circle class="ritual-seal-dot" cx="47"  cy="153" r="2.4" style="--del:1.9s;" />
-            <circle class="ritual-seal-dot" cx="25"  cy="100" r="2.4" style="--del:2.0s;" />
-            <circle class="ritual-seal-dot" cx="47"  cy="47"  r="2.4" style="--del:2.1s;" />
-
-            <!-- Monogramme V central (chevron stylisé, plus large et plus visible) -->
+            <!-- Le V grave - lignes plus epaisses, comme presse profond -->
             <path class="ritual-seal-line"
-                  d="M 74 74 L 100 128 L 126 74"
-                  style="--len:140; --dur:1s; --del:2.2s;"
-                  stroke-width="2.6" />
+                  d="M 70 70 L 100 134 L 130 70"
+                  style="--len:160; --dur:1.3s; --del:1.4s;"
+                  stroke-width="3.2" />
             <!-- Trait sous le V -->
             <path class="ritual-seal-line"
-                  d="M 80 138 L 120 138"
-                  style="--len:40; --dur:0.4s; --del:3s;"
-                  stroke-width="1.4" />
-            <!-- Petit point final sous le V (signature V.) -->
-            <circle class="ritual-seal-dot" cx="100" cy="150" r="1.8" style="--del:3.3s;" />
+                  d="M 78 144 L 122 144"
+                  style="--len:44; --dur:0.5s; --del:2.5s;"
+                  stroke-width="1.6" />
+            <!-- Point final sous le V (la signature V.) -->
+            <circle class="ritual-seal-dot" cx="100" cy="156" r="2.2" style="--del:2.9s;" />
           </g>
         </svg>
       </div>
