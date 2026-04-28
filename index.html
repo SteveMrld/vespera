@@ -78,19 +78,294 @@
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
   /* SCÈNE RITUEL */
-  #ritual { background: radial-gradient(ellipse at center, #1B2536 0%, #0A1220 100%); }
-  .ritual-content { text-align: center; padding: 0 32px; display: flex; flex-direction: column; align-items: center; max-width: 360px; }
-  .v-message { opacity: 0; animation: fadeIn 2s 0.8s ease forwards; margin-bottom: 50px; }
-  .v-message p { font-family: 'Fraunces', serif; font-size: 18px;  color: #EDE8DD; line-height: 1.7; }
-  .v-signature { font-family: 'Fraunces', serif; font-size: 14px; color: #D4B870; margin-top: 24px; letter-spacing: 0.2em; }
-  .seal-container { opacity: 0; transform: scale(0.7) translateY(30px); animation: sealReveal 2.5s 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-  .seal-circle { width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(212,184,112,0.12) 0%, rgba(212,184,112,0.04) 100%); border: 1px solid rgba(212,184,112,0.25); display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 0 60px rgba(212,184,112,0.15); overflow: hidden; }
-  .seal-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-  .seal-circle svg { width: 110px; height: 110px; }
-  .seal-name { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 300; color: #EDE8DD; margin-top: 36px; margin-bottom: 12px; letter-spacing: 0.05em; }
-  .seal-desc { font-family: 'Inter', sans-serif; font-size: 13px; color: #A8A095;  line-height: 1.6; max-width: 280px; }
-  .ritual-btn { margin-top: 56px; background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 36px; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.3em; cursor: pointer; opacity: 0; animation: fadeIn 1.5s 5.5s ease forwards; transition: all 0.4s ease; }
-  .ritual-btn:active { background: rgba(212,184,112,0.1); color: #EDE8DD; }
+  #ritual { background: radial-gradient(ellipse at center, #1B2536 0%, #0A1220 100%); padding: 0; overflow: hidden; }
+  .ritual-stage {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 40px 32px;
+    box-sizing: border-box;
+  }
+
+  /* Chaque acte est invisible par défaut, devient visible quand .active */
+  .ritual-act {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 380px;
+    padding: 0 24px;
+    box-sizing: border-box;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .ritual-act.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .ritual-text-block {
+    margin-bottom: 50px;
+  }
+  .ritual-v-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #D4B870;
+    letter-spacing: 0.4em;
+    margin-bottom: 28px;
+  }
+  .ritual-text {
+    font-family: 'Fraunces', serif;
+    font-size: 21px;
+    font-weight: 300;
+    color: #EDE8DD;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    margin-bottom: 16px;
+  }
+  .ritual-text-soft {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: #A8A095;
+    letter-spacing: 0.06em;
+    line-height: 1.7;
+    margin-top: 8px;
+  }
+
+  .ritual-btn-act {
+    margin-top: 0;
+    background: transparent;
+    border: 1px solid rgba(212,184,112,0.5);
+    color: #D4B870;
+    padding: 14px 36px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    opacity: 0;
+    animation: fadeIn 1.5s 1.6s ease forwards;
+  }
+  .ritual-btn-act:active {
+    background: rgba(212,184,112,0.15);
+    color: #FFE9B0;
+    border-color: #F5DC96;
+  }
+
+  /* === ACTE 2 : LA BOURSE === */
+  .ritual-pouch-container {
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 40px;
+    position: relative;
+    perspective: 1000px;
+  }
+  .ritual-pouch {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+    animation: pouchFloat 3.5s ease-in-out infinite;
+  }
+  @keyframes pouchFloat {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-6px) rotate(2deg); }
+  }
+
+  /* Le corps de la bourse — forme arrondie en velours sombre */
+  .ritual-pouch-body {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 170px;
+    background: radial-gradient(ellipse at 50% 35%, #3A2418 0%, #1F1208 60%, #120804 100%);
+    border-radius: 45% 45% 50% 50% / 30% 30% 70% 70%;
+    box-shadow:
+      inset -10px -20px 40px rgba(0,0,0,0.6),
+      inset 10px 5px 30px rgba(80,50,30,0.3),
+      0 20px 50px rgba(0,0,0,0.5);
+  }
+
+  /* Le cordon doré qui ferme/ouvre la bourse */
+  .ritual-pouch-cord {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 25px;
+    border: 2.5px solid #D4B870;
+    border-bottom: none;
+    border-radius: 50% 50% 0 0;
+    transition: all 1.2s cubic-bezier(0.6, 0, 0.4, 1);
+    box-shadow: 0 0 12px rgba(212,184,112,0.5);
+  }
+  .ritual-pouch.opening .ritual-pouch-cord {
+    width: 130px;
+    height: 8px;
+    top: 40px;
+    border-radius: 4px;
+    border-bottom: 2.5px solid #D4B870;
+    opacity: 0.5;
+  }
+
+  /* Halo doré qui sort de la bourse quand elle s'ouvre */
+  .ritual-pouch-glow {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.3);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,220,150,0.95) 0%, rgba(212,184,112,0.6) 30%, transparent 70%);
+    opacity: 0;
+    transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .ritual-pouch.opening .ritual-pouch-glow {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+
+  /* Bouton "PLONGER LA MAIN" qui pulse */
+  #ritualPlungeBtn {
+    animation: pulseBtn 2s ease-in-out infinite, fadeIn 1.5s 1.6s ease forwards;
+  }
+  @keyframes pulseBtn {
+    0%, 100% { box-shadow: 0 0 0 rgba(212,184,112,0); }
+    50% { box-shadow: 0 0 20px rgba(212,184,112,0.4); }
+  }
+
+  /* === ACTE 3 : LA RÉVÉLATION DU MÉDAILLON === */
+  .ritual-medallion-container {
+    width: 240px;
+    height: 240px;
+    margin: 0 auto 40px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ritual-medallion {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,220,150,0.18) 0%, rgba(212,184,112,0.08) 60%, transparent 100%);
+    border: 2px solid rgba(212,184,112,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transform: scale(0.4);
+    opacity: 0;
+    filter: blur(8px);
+    transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+      0 0 60px rgba(245,220,150,0.4),
+      inset 0 0 30px rgba(212,184,112,0.2);
+  }
+  .ritual-medallion.emerging {
+    transform: scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+  .ritual-medallion-halo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,220,150,0.4) 0%, transparent 70%);
+    opacity: 0;
+    animation: haloPulse 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes haloPulse {
+    0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.15); }
+  }
+  .ritual-medallion-inner {
+    width: 130px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  .ritual-medallion-inner svg {
+    width: 100%;
+    height: 100%;
+  }
+  .ritual-seal-name {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: #FFE9B0;
+    margin-top: 24px;
+    margin-bottom: 10px;
+    letter-spacing: 0.06em;
+    opacity: 0;
+    transition: opacity 1.2s 0.5s ease;
+  }
+  .ritual-seal-name.visible { opacity: 1; }
+  .ritual-seal-vertu {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #A8A095;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    line-height: 1.5;
+    opacity: 0;
+    transition: opacity 1.2s 1s ease;
+  }
+  .ritual-seal-vertu.visible { opacity: 1; }
+  #ritualRevealBtn {
+    animation: fadeIn 1.5s 2.2s ease forwards;
+  }
+
+  /* === ACTE 4 : L'ACCEPTATION === */
+  .ritual-medallion-final {
+    transform: scale(1);
+    opacity: 1;
+    filter: blur(0);
+    width: 180px;
+    height: 180px;
+    box-shadow:
+      0 0 80px rgba(245,220,150,0.6),
+      inset 0 0 40px rgba(212,184,112,0.3);
+  }
+  .ritual-medallion-final .ritual-medallion-inner {
+    width: 120px;
+    height: 120px;
+  }
+  .ritual-btn-accept {
+    background: rgba(212,184,112,0.1);
+    border: 1px solid #D4B870;
+    color: #FFE9B0;
+    padding: 16px 32px;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+  }
+  .ritual-btn-accept:active {
+    background: #D4B870;
+    color: #0F1A2E;
+  }
 
   /* SCÈNE MATIN — accueil quotidien */
   #morning { background: linear-gradient(180deg, #1F2A40 0%, #0F1A2E 100%); padding: 40px 32px; }
@@ -982,17 +1257,65 @@
 
 <!-- SCÈNE RITUEL -->
 <div id="ritual" class="scene">
-  <div class="ritual-content">
-    <div class="v-message">
-      <p>Le Cercle attend de vous reconnaître.<br>Recevez votre Sceau.</p>
-      <p class="v-signature">V.</p>
+  <div class="ritual-stage">
+
+    <!-- ACTE 1 : Le seuil — V demande de tendre la main -->
+    <div class="ritual-act ritual-act-1 active" id="ritualAct1">
+      <div class="ritual-text-block">
+        <p class="ritual-v-label">V.</p>
+        <p class="ritual-text">Vous avez répondu.<br>Maintenant, la villa va vous nommer.</p>
+        <p class="ritual-text-soft">Tendez la main.</p>
+      </div>
+      <button class="ritual-btn-act" onclick="ritualGoToAct2()">TENDRE LA MAIN →</button>
     </div>
-    <div class="seal-container">
-      <div class="seal-circle" id="userSealCircle"></div>
-      <h2 class="seal-name" id="userSealName">Le Faucon</h2>
-      <p class="seal-desc" id="userSealDesc">Œil vif, vue longue. Vous êtes celui qui voit avant les autres.</p>
+
+    <!-- ACTE 2 : La bourse — le joueur plonge la main -->
+    <div class="ritual-act ritual-act-2" id="ritualAct2">
+      <div class="ritual-pouch-container">
+        <div class="ritual-pouch" id="ritualPouch">
+          <div class="ritual-pouch-glow"></div>
+          <div class="ritual-pouch-body"></div>
+          <div class="ritual-pouch-cord" id="ritualPouchCord"></div>
+        </div>
+      </div>
+      <div class="ritual-text-block">
+        <p class="ritual-text-soft" id="ritualPouchHint">Choisissez. Sans regarder.<br>Laissez votre main décider.</p>
+      </div>
+      <button class="ritual-btn-act" onclick="ritualPlungeHand()" id="ritualPlungeBtn">PLONGER LA MAIN</button>
     </div>
-    <button class="ritual-btn" onclick="enterHall()">ENTRER DANS LE CERCLE</button>
+
+    <!-- ACTE 3 : La révélation — le médaillon émerge -->
+    <div class="ritual-act ritual-act-3" id="ritualAct3">
+      <div class="ritual-medallion-container">
+        <div class="ritual-medallion" id="ritualMedallion">
+          <div class="ritual-medallion-halo"></div>
+          <div class="ritual-medallion-inner" id="ritualMedallionInner"></div>
+        </div>
+      </div>
+      <div class="ritual-text-block">
+        <p class="ritual-v-label">V.</p>
+        <p class="ritual-text" id="ritualSealReveal">Voici qui vous êtes ce soir.</p>
+        <p class="ritual-seal-name" id="ritualSealName"></p>
+        <p class="ritual-seal-vertu" id="ritualSealVertu"></p>
+      </div>
+      <button class="ritual-btn-act" onclick="ritualGoToAct4()" id="ritualRevealBtn" style="display:none;">CONTINUER →</button>
+    </div>
+
+    <!-- ACTE 4 : L'acceptation — le joueur dit "Je suis..." -->
+    <div class="ritual-act ritual-act-4" id="ritualAct4">
+      <div class="ritual-medallion-container">
+        <div class="ritual-medallion ritual-medallion-final" id="ritualMedallionFinal">
+          <div class="ritual-medallion-halo"></div>
+          <div class="ritual-medallion-inner" id="ritualMedallionInnerFinal"></div>
+        </div>
+      </div>
+      <div class="ritual-text-block">
+        <p class="ritual-v-label">V.</p>
+        <p class="ritual-text" id="ritualAcceptText">Acceptez ce nom.</p>
+      </div>
+      <button class="ritual-btn-act ritual-btn-accept" onclick="ritualAccept()" id="ritualAcceptBtn"></button>
+    </div>
+
   </div>
 </div>
 
@@ -2306,16 +2629,123 @@ function startRitual() {
   if (!isLoaded || !gameState.userSeal) {
     initNewCycle();
   }
-  renderUserSeal();
+  // Démarrer en acte 1 (V parle, demande de tendre la main)
+  showRitualAct(1);
   showScene('ritual');
 }
 
-function renderUserSeal() {
+// Affiche un acte du rituel et cache les autres
+function showRitualAct(actNumber) {
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById('ritualAct' + i);
+    if (el) el.classList.toggle('active', i === actNumber);
+  }
+}
+
+// ACTE 1 → ACTE 2 : V demande de plonger la main
+function ritualGoToAct2() {
+  showRitualAct(2);
+}
+
+// ACTE 2 : Le joueur plonge la main dans la bourse
+function ritualPlungeHand() {
+  // Animer la bourse qui s'ouvre
+  const pouch = document.getElementById('ritualPouch');
+  if (pouch) pouch.classList.add('opening');
+
+  // Cacher le bouton et changer le texte
+  const btn = document.getElementById('ritualPlungeBtn');
+  if (btn) btn.style.opacity = '0';
+  const hint = document.getElementById('ritualPouchHint');
+  if (hint) hint.innerHTML = 'Quelque chose s\'éveille...';
+
+  // Vibration tactile (si supportée)
+  if (navigator.vibrate) navigator.vibrate([50, 80, 100]);
+
+  // Après 1.6s, transition vers acte 3
+  setTimeout(() => {
+    showRitualAct(3);
+    ritualRevealMedallion();
+  }, 1600);
+}
+
+// ACTE 3 : Le médaillon émerge de la bourse, flou puis net
+function ritualRevealMedallion() {
   const seal = ALL_SEALS[gameState.userSeal];
+  if (!seal) return;
+
+  // Insérer le SVG dans le médaillon
+  const inner = document.getElementById('ritualMedallionInner');
+  if (inner) inner.innerHTML = renderSealSVG(gameState.userSeal);
+
+  const medallion = document.getElementById('ritualMedallion');
+
+  // Petit délai puis animer l'émergence (flou → net)
+  setTimeout(() => {
+    if (medallion) medallion.classList.add('emerging');
+
+    // Le nom apparaît après 1.5s
+    setTimeout(() => {
+      const nameEl = document.getElementById('ritualSealName');
+      if (nameEl) {
+        nameEl.textContent = seal.name;
+        nameEl.classList.add('visible');
+      }
+    }, 1500);
+
+    // La vertu apparaît après 2.5s
+    setTimeout(() => {
+      const vertuEl = document.getElementById('ritualSealVertu');
+      if (vertuEl) {
+        vertuEl.textContent = seal.desc || '';
+        vertuEl.classList.add('visible');
+      }
+    }, 2500);
+  }, 200);
+}
+
+// ACTE 3 → ACTE 4 : Le joueur tape "Continuer"
+function ritualGoToAct4() {
+  const seal = ALL_SEALS[gameState.userSeal];
+  if (!seal) return;
+
+  // Préparer l'acte 4 avec le nom dynamique
+  const innerFinal = document.getElementById('ritualMedallionInnerFinal');
+  if (innerFinal) innerFinal.innerHTML = renderSealSVG(gameState.userSeal);
+
+  const acceptText = document.getElementById('ritualAcceptText');
+  if (acceptText) acceptText.innerHTML = `Vous serez ${seal.name.toLowerCase()}.<br>Acceptez ce nom.`;
+
+  const acceptBtn = document.getElementById('ritualAcceptBtn');
+  if (acceptBtn) acceptBtn.textContent = `JE SUIS ${seal.name.toUpperCase()}`;
+
+  showRitualAct(4);
+}
+
+// ACTE 4 : Le joueur accepte son Sceau
+function ritualAccept() {
+  // Vibration tactile de confirmation
+  if (navigator.vibrate) navigator.vibrate([30, 50, 30, 50, 100]);
+
+  // Petit fade out puis on entre dans le Hall
+  const stage = document.querySelector('.ritual-stage');
+  if (stage) stage.style.opacity = '0';
+  setTimeout(() => {
+    if (stage) stage.style.opacity = '1';
+    enterHall();
+  }, 700);
+}
+
+function renderUserSeal() {
+  // Fonction conservée pour compatibilité (pourrait être appelée ailleurs)
+  const seal = ALL_SEALS[gameState.userSeal];
+  if (!seal) return;
   const circle = document.getElementById('userSealCircle');
-  circle.innerHTML = renderSealSVG(gameState.userSeal);
-  document.getElementById('userSealName').textContent = seal.name;
-  document.getElementById('userSealDesc').textContent = seal.desc;
+  if (circle) circle.innerHTML = renderSealSVG(gameState.userSeal);
+  const nameEl = document.getElementById('userSealName');
+  if (nameEl) nameEl.textContent = seal.name;
+  const descEl = document.getElementById('userSealDesc');
+  if (descEl) descEl.textContent = seal.desc;
 }
 
 function enterSalon() {
