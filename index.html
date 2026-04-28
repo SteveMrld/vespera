@@ -3878,9 +3878,12 @@ function renderTableCenter() {
 
   if (isNight) {
     if (dayData.completed) {
-      center.classList.remove('has-action');
-      content.innerHTML = `<span class="center-label">SOIRÉE TERMINÉE ✓</span><span style="font-size:12px;">Vous avez écouté toutes les voix. Demain, l'aube reviendra.</span>`;
-      hint.textContent = 'Tapez JOUR SUIVANT en haut à gauche pour passer au lendemain.';
+      // Soiree terminee : on guide le joueur vers la villa pour qu'il explore
+      // ce que V a depose, plutot que de le laisser sur un dead-end.
+      center.classList.add('has-action');
+      center.onclick = () => goToHall();
+      content.innerHTML = `<span class="center-label">SOIRÉE TERMINÉE ✓</span><span style="font-size:12px;">La table se vide. La villa, elle, garde encore des choses pour vous cette nuit.</span><span class="center-cta">CONTINUER L'EXPLORATION →</span>`;
+      hint.textContent = 'Retournez au Hall pour visiter les pièces. Demain à l\'aube, V reviendra.';
     } else if (dayData.userResponse) {
       center.classList.add('has-action');
       content.innerHTML = `<span class="center-label">LES VOIX</span><span style="font-size:12px;">Six réponses ont été scellées.</span><span class="center-cta">CONSULTER →</span>`;
@@ -3927,7 +3930,11 @@ function onTableCenterTap() {
   const isNight = !document.getElementById('salon').classList.contains('day');
   if (!isNight) return;
   const dayData = gameState.daysData[gameState.currentDay] || {};
-  if (dayData.completed) return;
+  if (dayData.completed) {
+    // Soiree finie : on retourne au Hall pour explorer la villa la nuit.
+    goToHall();
+    return;
+  }
   if (dayData.userResponse) {
     openResponses();
   } else {
