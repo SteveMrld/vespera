@@ -5251,13 +5251,23 @@ function renderHall() {
     msg = 'Avant le premier dîner, faites le tour. La villa parle, écoutez-la.<br><br>Allez voir ce que j\'ai laissé pour vous dans les pièces. Quand vous serez prêt, venez à la table.';
     cta = 'JE PRENDS MES REPÈRES';
     ctaAction = 'startTutoStep1Confirm()';
-  } else if (day === 1 && gameState.tutoStep === 2 && !dayData.hallEntered2) {
-    // APRES LE 1ER DINER — V acte que les regles sont comprises
+  } else if (day === 1 && gameState.tutoStep === 2) {
+    // APRES LE 1ER DINER — V acte que les regles sont comprises.
+    // Cartouche persistant tant que le joueur est en tutoStep 2.
     showMessage = true;
     label = 'V';
     msg = 'Vous savez maintenant ce qui vous attend.<br><br>La villa est à vous. Lisez ses pièces, écoutez ce qu\'elles disent. À demain, à table.';
     cta = 'EXPLORER';
     ctaAction = 'startTutoStep2()';
+  } else if (day === 1 && gameState.tutoStep === 3) {
+    // FIN DU JOUR 1 — toute la soiree faite, V guide vers le J2.
+    // Sans ce cartouche, le joueur se retrouvait sans aucune indication
+    // sur quoi faire ensuite.
+    showMessage = true;
+    label = 'V';
+    msg = 'Vous avez vécu votre premier soir à Vespera. La villa garde encore des choses pour vous cette nuit.<br><br>Quand vous êtes prêt, passez au deuxième jour : un nouveau Murmure vous attend à l\'aube.';
+    cta = 'PASSER AU J2';
+    ctaAction = 'advanceDay()';
   } else if (day >= 2 && day <= 7 && SEASON_1_CONTENT[day]) {
     // J2-J7 — Murmure du matin (lu depuis SEASON_1_CONTENT)
     // Le cartouche reste accessible chaque fois que le joueur revient
