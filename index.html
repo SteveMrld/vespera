@@ -915,20 +915,23 @@
     filter: grayscale(0.7);
   }
 
-  /* Positions des 6 places en HEXAGONE — centres EXACTS des assiettes sur l'image.
-     Disposition horaire : 12h / 2h / 4h / 6h / 8h / 10h.
+  /* Positions des 6 places en HEXAGONE — coordonnées MESURÉES AU PIXEL
+     sur l'image dinner-table.png (1254x1254). Centres des serviettes blanches.
+     L'hexagone est asymétrique à cause de la perspective 3D : les assiettes
+     du fond (haut) sont plus écartées que celles du premier plan (bas).
+
      pos 0 = 12h (haut centre)    → MARC, face au joueur
      pos 1 = 2h  (haut-droite)    → THEO
      pos 2 = 10h (haut-gauche)    → CAMILLE
      pos 3 = 6h  (bas centre)     → JOUEUR
      pos 4 = 4h  (bas-droite)     → INES
      pos 5 = 8h  (bas-gauche)     → KARIM */
-  .seat-pos-0 { top: 16%; left: 50%; }   /* 12h — MARC */
-  .seat-pos-1 { top: 38%; left: 81%; }   /* 2h  — THEO */
-  .seat-pos-2 { top: 38%; left: 23%; }   /* 10h — CAMILLE */
-  .seat-pos-3 { top: 88%; left: 52%; }   /* 6h  — JOUEUR */
-  .seat-pos-4 { top: 75.5%; left: 81%; } /* 4h  — INES */
-  .seat-pos-5 { top: 75.5%; left: 23%; } /* 8h  — KARIM */
+  .seat-pos-0 { top: 14.8%; left: 50.1%; }   /* 12h — MARC */
+  .seat-pos-1 { top: 38.4%; left: 83.2%; }   /* 2h  — THEO */
+  .seat-pos-2 { top: 39.0%; left: 16.0%; }   /* 10h — CAMILLE */
+  .seat-pos-3 { top: 85.5%; left: 50.3%; }   /* 6h  — JOUEUR */
+  .seat-pos-4 { top: 73.9%; left: 74.3%; }   /* 4h  — INES */
+  .seat-pos-5 { top: 74.1%; left: 25.1%; }   /* 8h  — KARIM */
 
   /* === MODE VOIX DU SOIR === */
   /* Quand on est en voice-mode, on cache tout sauf la table + médaillons */
