@@ -1429,21 +1429,7 @@
   #pool { background: #0F1A2E; align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .pool-hero { background-image: url('assets/pool.png'); }
   .pool-content { padding: 36px 32px 60px; text-align: center; }
-  .pool-coming {
-    margin-top: 32px;
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    color: rgba(212, 184, 112, 0.7);
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    line-height: 1.8;
-    padding: 18px 0;
-    border-top: 1px solid rgba(212, 184, 112, 0.15);
-    border-bottom: 1px solid rgba(212, 184, 112, 0.15);
-    max-width: 320px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  .pool-entries { margin-top: 28px; text-align: left; }
   .chambre-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 300; color: #EDE8DD; margin-bottom: 14px; letter-spacing: 0.03em; }
   .chambre-desc { font-family: 'Fraunces', serif; font-size: 14px;  color: #A8A095; line-height: 1.6; max-width: 320px; margin: 0 auto; }
   .fiche-cards { padding: 0 24px 40px; display: flex; flex-direction: column; gap: 18px; }
@@ -2175,8 +2161,8 @@
   </div>
 
   <div class="pool-content">
-    <p class="chambre-desc">L'eau réfléchit ce que vous taisez. Revenez ici quand vous aurez besoin de respirer entre deux Murmures.</p>
-    <p class="pool-coming">Le contenu de cette pièce s'écrira dans les prochains Cycles.</p>
+    <p class="chambre-desc">L'eau réfléchit ce que vous taisez. V a laissé des traces ici cette nuit.</p>
+    <div class="pool-entries fiche-cards" id="poolEntries"></div>
   </div>
 </div>
 
@@ -5203,6 +5189,32 @@ function goToRoom(roomId) {
 // === LA PISCINE ===
 function openPool() {
   showScene('pool');
+  renderPoolEntries();
+}
+
+// Rendu cumulatif des indices Piscine du J1 jusqu'au jour courant
+function renderPoolEntries() {
+  const container = document.getElementById('poolEntries');
+  if (!container) return;
+  const day = gameState.currentDay || 1;
+  const entries = getCumulativeRoomContent('pool', day).reverse();
+
+  if (entries.length === 0) {
+    container.innerHTML = '<div class="notes-empty">V n\'a encore rien laissé au bord de la piscine.</div>';
+    return;
+  }
+
+  container.innerHTML = entries.map(e => `
+    <div class="chambre-entry">
+      <div class="chambre-entry-meta">
+        <span class="chambre-entry-day">JOUR ${e.day}</span>
+        <span class="chambre-entry-theme">${e.theme}</span>
+      </div>
+      <h3 class="chambre-entry-title">${e.title}</h3>
+      <div class="chambre-entry-body">${formatNarrativeBody(e.body)}</div>
+      ${e.observation ? `<div class="chambre-entry-obs"><span class="obs-label">V observe</span>${e.observation}</div>` : ''}
+    </div>
+  `).join('');
 }
 
 function showHallLockedMessage(roomName, msg) {
