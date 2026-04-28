@@ -4231,8 +4231,11 @@ function renderHall() {
     msg = 'Vous êtes le sixième. Les autres sont déjà là, quelque part dans la villa.<br><br>Vous les rencontrerez ce soir, à table. D\'ici là, prenez vos repères.<br><br>Cette villa est à vous pour sept jours.';
     cta = 'COMMENCER';
     ctaAction = 'startTutoStep1()';
-  } else if (day === 1 && gameState.tutoStep === 1 && !dayData.hallEntered) {
-    // ÉTAPE 1 — V désigne la salle à manger
+  } else if (day === 1 && gameState.tutoStep === 1) {
+    // ÉTAPE 1 — V désigne la salle à manger.
+    // On affiche le cartouche TANT QUE le joueur n'est pas passé en tutoStep 2
+    // (i.e. tant qu'il n'a pas fait son premier diner). Comme ça, s'il revient
+    // au Hall sans aller a table, le guide reste visible.
     showMessage = true;
     label = 'V';
     msg = 'Allez à la salle à manger. Les autres vous attendent pour le premier dîner.';
