@@ -188,6 +188,50 @@
   .hall-message-content .hall-msg-sig { display: block; margin-top: 10px; font-family: 'Fraunces', serif; font-style: italic; font-size: 11px; color: #D4B870; }
   .hall-message-content .hall-msg-cta { display: block; margin-top: 10px; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9px; color: #D4B870; letter-spacing: 0.3em; cursor: pointer; }
 
+  /* === TUTORIEL PROGRESSIF === */
+
+  /* Étape 1 : seul le hotspot Salle à manger (escaliers) est visible */
+  .hall-image.tuto-step-1 .hall-hotspot { opacity: 0; pointer-events: none; }
+  .hall-image.tuto-step-1 .hall-hot-stairs {
+    opacity: 1;
+    pointer-events: auto;
+    animation: tutoHighlight 1.5s ease-in-out infinite;
+  }
+  @keyframes tutoHighlight {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  /* Cascade : les hotspots apparaissent un par un */
+  .hall-image:not(.cascade-reveal):not(.tuto-step-1) .hall-hotspot {
+    opacity: 1;
+  }
+
+  .hall-image.cascade-reveal .hall-hotspot {
+    opacity: 0;
+    animation: cascadeIn 0.8s ease-out forwards;
+  }
+  .hall-image.cascade-reveal .hall-hot-mirror   { animation-delay: 0.0s; }
+  .hall-image.cascade-reveal .hall-hot-console  { animation-delay: 0.25s; }
+  .hall-image.cascade-reveal .hall-hot-stairs   { animation-delay: 0.5s; }
+  .hall-image.cascade-reveal .hall-hot-bench    { animation-delay: 0.75s; }
+  .hall-image.cascade-reveal .hall-hot-door     { animation-delay: 1.0s; }
+
+  @keyframes cascadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    60% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
   /* HOTSPOTS — point lumineux + cartouche élégant avec nom de pièce */
   .hall-hotspot {
     position: absolute;
@@ -3267,6 +3311,12 @@ function showRecap() {
   }
   dayData.score = score;
   dayData.completed = true;
+
+  // TUTO : si on vient de finir le 1er dîner (J1) et qu'on est en tutoStep 1, passer à 2
+  // pour que V libère la villa au prochain retour au Hall
+  if (gameState.currentDay === 1 && gameState.tutoStep === 1) {
+    gameState.tutoStep = 2;
+  }
   saveState();
 
   document.getElementById('recapScore').textContent = score;
@@ -3318,68 +3368,122 @@ function renderHall() {
   document.getElementById('hall').classList.toggle('day', !isNight);
   document.getElementById('hall').classList.toggle('night', isNight);
 
-  // Construire le message d'accueil de V selon le jour
+  // === ONBOARDING PROGRESSIF ===
+  // tutoStep 0 = pas commencé, n'a pas vu V
+  // tutoStep 1 = a vu V (cartouche d'accueil), seul le hotspot Salle à manger est visible
+  // tutoStep 2 = a fait le 1er dîner, tous les hotspots libérés (avec cascade au 1er affichage)
+  // tutoStep 3 = libre (J2+ ou après plusieurs visites au Hall)
+  if (typeof gameState.tutoStep === 'undefined') gameState.tutoStep = 0;
+
   const dayData = gameState.daysData[day] || {};
   const messageEl = document.getElementById('hallMessage');
   const contentEl = document.getElementById('hallMessageContent');
+  const imageEl = document.querySelector('#hall .hall-image');
+
+  // Reset les classes de tutoriel
+  imageEl.classList.remove('tuto-step-1', 'tuto-step-2', 'cascade-reveal');
 
   let label = 'V.';
   let msg = '';
-  let cta = 'ENTRER →';
+  let cta = '';
+  let ctaAction = 'enterHallProper()';
   let showMessage = false;
 
-  if (day === 1 && !dayData.hallEntered) {
-    // PREMIER PASSAGE — V t'accueille vraiment dans la villa
+  if (day === 1 && gameState.tutoStep === 0) {
+    // PREMIER PASSAGE — V t'accueille et te dit de commencer
     showMessage = true;
     label = 'V';
     msg = 'Vous êtes le sixième. Les autres sont déjà là, quelque part dans la villa.<br><br>Vous les rencontrerez ce soir, à table. D\'ici là, prenez vos repères.<br><br>Cette villa est à vous pour sept jours.';
+    cta = 'COMMENCER';
+    ctaAction = 'startTutoStep1()';
+  } else if (day === 1 && gameState.tutoStep === 1 && !dayData.hallEntered) {
+    // ÉTAPE 1 — V désigne la salle à manger
+    showMessage = true;
+    label = 'V';
+    msg = 'Allez à la <em>salle à manger</em>. Les autres vous attendent pour le premier dîner.';
+    cta = 'JE Y VAIS';
+    ctaAction = 'startTutoStep1Confirm()';
+  } else if (day === 1 && gameState.tutoStep === 2 && !dayData.hallEntered2) {
+    // ÉTAPE 2 — Après le 1er dîner, V libère le reste
+    showMessage = true;
+    label = 'V';
+    msg = 'Bien. La villa est à vous maintenant. Explorez ses pièces, écoutez ce qu\'elles ont à vous dire.';
+    cta = 'EXPLORER';
+    ctaAction = 'startTutoStep2()';
   } else if (day >= 2 && day <= 7 && !dayData.hallEntered && typeof MORNING_TEXTS !== 'undefined' && MORNING_TEXTS[day-1]) {
-    // RETOUR LE MATIN — V donne le Murmure du jour
+    // J2-J7 — Murmure du matin
     showMessage = true;
     label = `MURMURE · J${day}`;
     const morning = MORNING_TEXTS[day-1];
     msg = (morning.text || '').replace(/\n\n/g, '<br><br>');
+    cta = 'ENTRER';
+    ctaAction = 'enterHallProper()';
+  }
+
+  // Appliquer l'état des hotspots selon le tutoStep
+  if (gameState.tutoStep === 1) {
+    // Seule la salle à manger est visible
+    imageEl.classList.add('tuto-step-1');
   }
 
   if (showMessage) {
     contentEl.innerHTML = `
       <span class="hall-msg-label">${label}</span>
       <span class="hall-msg-text">${msg}</span>
-      <span class="hall-msg-cta" onclick="enterHallProper()">${cta}</span>
+      <span class="hall-msg-cta" onclick="${ctaAction}">${cta} →</span>
     `;
     messageEl.classList.remove('hidden');
   } else {
-    // Déjà entré ce jour-là, on cache le cartouche directement
     messageEl.classList.add('hidden');
   }
 }
 
-// Appelé quand le joueur tape ENTRER après le Murmure de V
+// Étape 1 du tuto : V te désigne la salle à manger
+function startTutoStep1() {
+  gameState.tutoStep = 1;
+  saveState();
+  renderHall(); // Re-render pour afficher le message d'étape 1
+}
+
+// Confirmation étape 1 : on cache le cartouche et seul le hotspot Salle à manger est visible
+function startTutoStep1Confirm() {
+  if (!gameState.daysData[gameState.currentDay]) gameState.daysData[gameState.currentDay] = {};
+  gameState.daysData[gameState.currentDay].hallEntered = true;
+  saveState();
+  document.getElementById('hallMessage').classList.add('hidden');
+  // La classe tuto-step-1 sur .hall-image fait que seul .hall-hot-stairs est visible
+}
+
+// Étape 2 du tuto : après le 1er dîner, V libère toutes les pièces avec cascade
+function startTutoStep2() {
+  gameState.tutoStep = 3; // direct à 3, c'est fini
+  if (!gameState.daysData[gameState.currentDay]) gameState.daysData[gameState.currentDay] = {};
+  gameState.daysData[gameState.currentDay].hallEntered2 = true;
+  saveState();
+  document.getElementById('hallMessage').classList.add('hidden');
+  // Lancer la cascade
+  setTimeout(() => triggerCascadeReveal(), 300);
+}
+
+// Appelé quand le joueur tape ENTRER (J2+) — cascade des hotspots
 function enterHallProper() {
-  // Marquer que V a été entendu pour ce jour
   if (!gameState.daysData[gameState.currentDay]) gameState.daysData[gameState.currentDay] = {};
   gameState.daysData[gameState.currentDay].hallEntered = true;
   gameState.daysData[gameState.currentDay].murmurRead = true;
   saveState();
-
-  // Cacher le cartouche
   document.getElementById('hallMessage').classList.add('hidden');
-
-  // Révéler brièvement les passages (3 pulsations)
-  setTimeout(() => revealHallHotspots(), 400);
+  setTimeout(() => triggerCascadeReveal(), 300);
 }
 
-// Anime brièvement les hotspots (3 pulsations dorées) pour montrer où sont les passages
-function revealHallHotspots() {
+// Anime l'apparition des hotspots un par un (cascade)
+function triggerCascadeReveal() {
   const img = document.querySelector('#hall .hall-image');
   if (!img) return;
-  // Retirer la classe puis la rajouter pour relancer l'animation
-  img.classList.remove('revealing');
-  // Force reflow
-  void img.offsetWidth;
-  img.classList.add('revealing');
-  // Retirer la classe après l'animation pour permettre de la relancer
-  setTimeout(() => img.classList.remove('revealing'), 2500);
+  img.classList.remove('cascade-reveal');
+  void img.offsetWidth; // force reflow
+  img.classList.add('cascade-reveal');
+  // La classe persiste pour l'apparition initiale, retiree apres pour ne pas reanimer
+  setTimeout(() => img.classList.remove('cascade-reveal'), 2500);
 }
 
 function dismissHallMessage() {
@@ -3433,6 +3537,8 @@ function advanceDay() {
     return;
   }
   gameState.currentDay++;
+  // À partir du J2, le tutoriel est terminé (au cas où il serait encore actif)
+  if (gameState.currentDay >= 2) gameState.tutoStep = 3;
   saveState();
   // Au lieu d'aller direct au Salon, on passe par la scène matin où V parle
   goToMorning(gameState.currentDay);
@@ -3636,7 +3742,8 @@ function resetCycle() {
       cluesPlan: { murmurs: [], library: [] },
       collectedClues: [],
       porterVote: null,
-      cycleEnded: false
+      cycleEnded: false,
+      tutoStep: 0
     };
     isLoaded = false;
     showScene('arrival');
