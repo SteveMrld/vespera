@@ -166,46 +166,50 @@
   /* ============================================================
      ACTE 2 : LE SCEAU DE CIRE
      Une illustration au trait doré qui se dessine ligne par ligne,
-     puis se brise en deux quand le joueur le presse, révélant
-     le médaillon du Sceau qui en émerge.
+     puis s'embrase et se dissout dans un flash de lumière.
      ============================================================ */
   .ritual-seal-container {
-    width: 220px;
-    height: 220px;
+    width: 240px;
+    height: 240px;
     flex: 0 0 auto;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+  /* Aura dorée qui pulse autour du sceau */
+  .ritual-seal-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 130%;
+    height: 130%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,220,150,0.18) 0%, rgba(212,184,112,0.08) 40%, transparent 70%);
+    transform: translate(-50%, -50%);
+    animation: sealAura 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @keyframes sealAura {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50%      { opacity: 0.85; transform: translate(-50%, -50%) scale(1.08); }
+  }
   .ritual-seal-svg {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 100%;
     filter:
-      drop-shadow(0 8px 24px rgba(0,0,0,0.55))
-      drop-shadow(0 0 24px rgba(212,184,112,0.18));
+      drop-shadow(0 12px 32px rgba(0,0,0,0.7))
+      drop-shadow(0 0 32px rgba(212,184,112,0.25));
     animation: sealFloat 5s ease-in-out infinite;
     transition: opacity 0.8s ease;
   }
   @keyframes sealFloat {
     0%, 100% { transform: translateY(0) scale(1); }
-    50%      { transform: translateY(-4px) scale(1.012); }
-  }
-
-  /* La cire (deux moitiés qui se sépareront plus tard) */
-  .ritual-seal-half {
-    transform-origin: 100px 100px;
-    transition:
-      transform 1.1s cubic-bezier(0.55, 0, 0.35, 1),
-      opacity 1.2s ease;
-  }
-  .ritual-seal-svg.breaking .ritual-seal-half-left {
-    transform: translateX(-110px) rotate(-12deg);
-    opacity: 0;
-  }
-  .ritual-seal-svg.breaking .ritual-seal-half-right {
-    transform: translateX(110px) rotate(12deg);
-    opacity: 0;
+    50%      { transform: translateY(-3px) scale(1.012); }
   }
 
   /* Les gravures dorées qui se dessinent (stroke-dashoffset animé) */
@@ -217,8 +221,8 @@
     stroke-linejoin: round;
     stroke-dasharray: var(--len, 600);
     stroke-dashoffset: var(--len, 600);
-    filter: drop-shadow(0 0 2px rgba(245,220,150,0.55));
-    transition: opacity 1s ease;
+    filter: drop-shadow(0 0 3px rgba(245,220,150,0.7));
+    transition: opacity 0.8s ease;
   }
   .ritual-seal-svg.drawing .ritual-seal-line {
     animation: drawSealLine var(--dur, 0.8s) var(--del, 0s) cubic-bezier(0.4, 0, 0.2, 1) forwards;
@@ -226,16 +230,12 @@
   @keyframes drawSealLine {
     to { stroke-dashoffset: 0; }
   }
-  .ritual-seal-svg.breaking .ritual-seal-engravings {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
 
   /* Petits points cardinaux (apparaissent en fade, pas en stroke-draw) */
   .ritual-seal-dot {
     fill: #F5DC96;
     opacity: 0;
-    filter: drop-shadow(0 0 3px rgba(245,220,150,0.7));
+    filter: drop-shadow(0 0 4px rgba(245,220,150,0.8));
   }
   .ritual-seal-svg.drawing .ritual-seal-dot {
     animation: dotFadeIn 0.4s var(--del, 0s) ease forwards;
@@ -244,16 +244,68 @@
     to { opacity: 1; }
   }
 
-  /* Flash qui jaillit au moment de la brisure */
-  .ritual-seal-flash {
-    transform-origin: 100px 100px;
-    transform: scale(0.3);
-    opacity: 0;
-    transition: opacity 0.5s ease, transform 1.4s cubic-bezier(0.2, 0.8, 0.4, 1);
+  /* === EMBRASEMENT ET DISSOLUTION ===
+     Au tap "BRISER LE SCEAU", le sceau monte en intensité (brightness,
+     saturate, glow), puis se dissout en grandissant pendant qu'un flash
+     plein-écran prend le relais. Pas de séparation horizontale moche. */
+  .ritual-seal-svg.dissolving {
+    animation: sealDissolve 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
-  .ritual-seal-svg.breaking .ritual-seal-flash {
-    opacity: 1;
-    transform: scale(3);
+  @keyframes sealDissolve {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+      filter:
+        drop-shadow(0 12px 32px rgba(0,0,0,0.7))
+        drop-shadow(0 0 32px rgba(212,184,112,0.25));
+    }
+    35% {
+      opacity: 1;
+      transform: scale(1.1);
+      filter:
+        drop-shadow(0 0 60px rgba(245,220,150,0.95))
+        drop-shadow(0 0 120px rgba(245,220,150,0.7))
+        brightness(1.6) saturate(1.4);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.7);
+      filter:
+        drop-shadow(0 0 100px rgba(245,220,150,1))
+        brightness(2.5) saturate(1.5);
+    }
+  }
+  .ritual-seal-svg.dissolving .ritual-seal-line,
+  .ritual-seal-svg.dissolving .ritual-seal-dot {
+    animation: lineGlow 0.8s ease-out forwards;
+  }
+  @keyframes lineGlow {
+    0%   { filter: drop-shadow(0 0 3px rgba(245,220,150,0.7)); }
+    100% { filter: drop-shadow(0 0 12px rgba(255,240,200,1)) brightness(1.8); }
+  }
+
+  /* Flash plein-écran qui jaillit du sceau */
+  .ritual-flash {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center,
+      rgba(255, 245, 215, 1) 0%,
+      rgba(245, 220, 150, 0.92) 25%,
+      rgba(212, 184, 112, 0.55) 55%,
+      rgba(15, 26, 46, 0) 90%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+    mix-blend-mode: screen;
+  }
+  .ritual-flash.flashing {
+    animation: ritualFlash 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  @keyframes ritualFlash {
+    0%   { opacity: 0; transform: scale(0.4); }
+    25%  { opacity: 1; transform: scale(1); }
+    55%  { opacity: 0.85; transform: scale(1.15); }
+    100% { opacity: 0; transform: scale(1.3); }
   }
 
   /* Le hint et le bouton n'apparaissent qu'une fois le sceau dessiné */
@@ -278,13 +330,14 @@
   }
 
   /* ============================================================
-     ACTE 3 + 4 : LE MÉDAILLON STYLE PLACE CARD
-     Reprise EXACTE du style des assiettes du dîner :
-     disque ivoire, bordure brune, ombre gravée, anneau intérieur.
+     ACTE 3 : LA RÉVÉLATION DU MÉDAILLON (acte unique fusionné)
+     Style EXACT des place cards du dîner : disque ivoire, bordure
+     brune, anneau intérieur décoratif, ombre gravée. Le médaillon
+     émerge depuis la lumière résiduelle du flash.
      ============================================================ */
   .ritual-medallion-container {
-    width: 200px;
-    height: 200px;
+    width: 220px;
+    height: 220px;
     flex: 0 0 auto;
     position: relative;
     display: flex;
@@ -294,16 +347,16 @@
   }
   .ritual-medallion {
     position: relative;
-    width: 180px;
-    height: 180px;
+    width: 190px;
+    height: 190px;
     border-radius: 50%;
     background: rgba(245, 235, 210, 0.97);
     border: 1.5px solid rgba(120, 80, 40, 0.7);
     box-shadow:
-      0 6px 18px rgba(0, 0, 0, 0.55),
-      0 0 0 2px rgba(245, 235, 210, 0.14),
-      inset 0 0 8px rgba(80, 50, 20, 0.22),
-      0 0 60px rgba(245, 220, 150, 0.18);
+      0 8px 28px rgba(0, 0, 0, 0.6),
+      0 0 0 2px rgba(245, 235, 210, 0.18),
+      inset 0 0 10px rgba(80, 50, 20, 0.25),
+      0 0 100px rgba(245, 220, 150, 0.45);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -317,7 +370,7 @@
   .ritual-medallion::before {
     content: '';
     position: absolute;
-    top: 6px; left: 6px; right: 6px; bottom: 6px;
+    top: 7px; left: 7px; right: 7px; bottom: 7px;
     border-radius: 50%;
     border: 0.5px solid rgba(120, 80, 40, 0.4);
     pointer-events: none;
@@ -332,18 +385,18 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 130%;
-    height: 130%;
+    width: 140%;
+    height: 140%;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(245,220,150,0.32) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(245,220,150,0.38) 0%, transparent 60%);
     opacity: 0;
     animation: haloPulse 3.2s ease-in-out infinite;
     pointer-events: none;
     z-index: -1;
   }
   @keyframes haloPulse {
-    0%, 100% { opacity: 0.35; transform: translate(-50%, -50%) scale(1); }
-    50%      { opacity: 0.7;  transform: translate(-50%, -50%) scale(1.12); }
+    0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+    50%      { opacity: 0.8; transform: translate(-50%, -50%) scale(1.12); }
   }
   /* L'animal à l'intérieur, sur fond ivoire */
   .ritual-medallion-inner {
@@ -367,7 +420,7 @@
   }
   .ritual-seal-name {
     font-family: 'Fraunces', serif;
-    font-size: 30px;
+    font-size: 32px;
     font-weight: 300;
     color: #FFE9B0;
     margin: 18px 0 8px;
@@ -390,19 +443,7 @@
   }
   .ritual-seal-vertu.visible { opacity: 1; }
 
-  /* === ACTE 4 : ACCEPTATION === */
-  .ritual-medallion-final {
-    transform: scale(1);
-    opacity: 1;
-    filter: blur(0);
-    width: 160px;
-    height: 160px;
-    box-shadow:
-      0 6px 22px rgba(0, 0, 0, 0.6),
-      0 0 0 2px rgba(245, 235, 210, 0.18),
-      inset 0 0 10px rgba(80, 50, 20, 0.25),
-      0 0 80px rgba(245, 220, 150, 0.4);
-  }
+  /* Bouton final "JE SUIS [X]" — n'apparaît qu'à la toute fin */
   .ritual-btn-accept {
     background: rgba(212,184,112,0.12);
     border: 1px solid #D4B870;
@@ -410,6 +451,14 @@
     padding: 16px 32px;
     font-size: 12px;
     letter-spacing: 0.25em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.9s ease;
+  }
+  .ritual-btn-accept.visible {
+    opacity: 1;
+    pointer-events: auto;
+    animation: pulseBtn 2.4s ease-in-out infinite 1.5s;
   }
   .ritual-btn-accept:active {
     background: #D4B870;
@@ -1310,6 +1359,9 @@
 
 <!-- SCÈNE RITUEL -->
 <div id="ritual" class="scene">
+  <!-- Flash plein-écran qui jaillit du sceau au moment de la brisure -->
+  <div class="ritual-flash" id="ritualFlash"></div>
+
   <div class="ritual-stage">
 
     <!-- ACTE 1 : Le seuil — V demande de tendre la main -->
@@ -1322,68 +1374,81 @@
       <button class="ritual-btn-act" onclick="ritualGoToAct2()">TENDRE LA MAIN →</button>
     </div>
 
-    <!-- ACTE 2 : LE SCEAU DE CIRE — il se dessine, puis se brise -->
+    <!-- ACTE 2 : LE SCEAU DE CIRE — il se dessine, puis s'embrase -->
     <div class="ritual-act ritual-act-2" id="ritualAct2">
       <div class="ritual-seal-container">
         <svg class="ritual-seal-svg" id="ritualSealSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
-            <radialGradient id="sealWaxGradient" cx="0.4" cy="0.35" r="0.85">
-              <stop offset="0%"  stop-color="#3E2814" />
-              <stop offset="55%" stop-color="#1F1208" />
-              <stop offset="100%" stop-color="#0A0604" />
+            <!-- Cire : noir profond avec reflets cuivre, comme de l'obsidienne polie -->
+            <radialGradient id="sealWaxGradient" cx="0.32" cy="0.28" r="0.95">
+              <stop offset="0%"   stop-color="#5A4226" />
+              <stop offset="22%"  stop-color="#3A2818" />
+              <stop offset="55%"  stop-color="#1A0F08" />
+              <stop offset="85%"  stop-color="#0A0604" />
+              <stop offset="100%" stop-color="#050200" />
             </radialGradient>
-            <radialGradient id="sealFlashGradient" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0%"  stop-color="#FFE9B0" stop-opacity="0.95" />
-              <stop offset="35%" stop-color="#F5DC96" stop-opacity="0.55" />
-              <stop offset="100%" stop-color="#D4B870" stop-opacity="0" />
+            <!-- Highlight subtil en haut à gauche pour effet 3D -->
+            <radialGradient id="sealHighlight" cx="0.3" cy="0.22" r="0.45">
+              <stop offset="0%"   stop-color="rgba(255, 230, 170, 0.35)" />
+              <stop offset="50%"  stop-color="rgba(255, 220, 150, 0.08)" />
+              <stop offset="100%" stop-color="rgba(0, 0, 0, 0)" />
+            </radialGradient>
+            <!-- Ombre intérieure en bas à droite pour la profondeur -->
+            <radialGradient id="sealShadow" cx="0.75" cy="0.8" r="0.6">
+              <stop offset="0%"   stop-color="rgba(0, 0, 0, 0.55)" />
+              <stop offset="60%"  stop-color="rgba(0, 0, 0, 0.15)" />
+              <stop offset="100%" stop-color="rgba(0, 0, 0, 0)" />
+            </radialGradient>
+            <!-- Cartouche interne qui accueille le V (or sombre subtil) -->
+            <radialGradient id="sealCenterGold" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0%"   stop-color="rgba(212, 184, 112, 0.18)" />
+              <stop offset="100%" stop-color="rgba(212, 184, 112, 0)" />
             </radialGradient>
           </defs>
 
-          <!-- Cire : deux moitiés qui se sépareront -->
-          <path class="ritual-seal-half ritual-seal-half-left"
-                d="M 100 12 A 88 88 0 0 0 100 188 L 100 12 Z"
-                fill="url(#sealWaxGradient)"
-                stroke="rgba(212,184,112,0.4)" stroke-width="1.2" />
-          <path class="ritual-seal-half ritual-seal-half-right"
-                d="M 100 12 A 88 88 0 0 1 100 188 L 100 12 Z"
-                fill="url(#sealWaxGradient)"
-                stroke="rgba(212,184,112,0.4)" stroke-width="1.2" />
+          <!-- Disque principal de cire -->
+          <circle cx="100" cy="100" r="88"
+                  fill="url(#sealWaxGradient)"
+                  stroke="rgba(212,184,112,0.5)" stroke-width="1.2" />
+          <!-- Highlight 3D haut-gauche -->
+          <circle cx="100" cy="100" r="88" fill="url(#sealHighlight)" />
+          <!-- Ombre 3D bas-droite -->
+          <circle cx="100" cy="100" r="88" fill="url(#sealShadow)" />
+          <!-- Halo doré central subtil derrière le V -->
+          <circle cx="100" cy="102" r="38" fill="url(#sealCenterGold)" />
 
           <!-- Gravures dorées par-dessus la cire (se dessinent au trait) -->
           <g class="ritual-seal-engravings">
-            <!-- Anneau extérieur (perimeter ~518) -->
+            <!-- Anneau extérieur (perimeter ~515) -->
             <circle class="ritual-seal-line" cx="100" cy="100" r="82"
-                    style="--len:518; --dur:0.9s; --del:0.2s;" />
+                    style="--len:515; --dur:0.9s; --del:0.2s;" />
             <!-- Anneau intérieur (perimeter ~427) -->
             <circle class="ritual-seal-line" cx="100" cy="100" r="68"
                     style="--len:428; --dur:0.7s; --del:0.9s;" />
 
-            <!-- 8 points cardinaux (fade in, pas de stroke draw) -->
-            <circle class="ritual-seal-dot" cx="100" cy="25"  r="2.2" style="--del:1.4s;" />
-            <circle class="ritual-seal-dot" cx="153" cy="47"  r="2.2" style="--del:1.5s;" />
-            <circle class="ritual-seal-dot" cx="175" cy="100" r="2.2" style="--del:1.6s;" />
-            <circle class="ritual-seal-dot" cx="153" cy="153" r="2.2" style="--del:1.7s;" />
-            <circle class="ritual-seal-dot" cx="100" cy="175" r="2.2" style="--del:1.8s;" />
-            <circle class="ritual-seal-dot" cx="47"  cy="153" r="2.2" style="--del:1.9s;" />
-            <circle class="ritual-seal-dot" cx="25"  cy="100" r="2.2" style="--del:2.0s;" />
-            <circle class="ritual-seal-dot" cx="47"  cy="47"  r="2.2" style="--del:2.1s;" />
+            <!-- 8 points cardinaux (fade in) -->
+            <circle class="ritual-seal-dot" cx="100" cy="25"  r="2.4" style="--del:1.4s;" />
+            <circle class="ritual-seal-dot" cx="153" cy="47"  r="2.4" style="--del:1.5s;" />
+            <circle class="ritual-seal-dot" cx="175" cy="100" r="2.4" style="--del:1.6s;" />
+            <circle class="ritual-seal-dot" cx="153" cy="153" r="2.4" style="--del:1.7s;" />
+            <circle class="ritual-seal-dot" cx="100" cy="175" r="2.4" style="--del:1.8s;" />
+            <circle class="ritual-seal-dot" cx="47"  cy="153" r="2.4" style="--del:1.9s;" />
+            <circle class="ritual-seal-dot" cx="25"  cy="100" r="2.4" style="--del:2.0s;" />
+            <circle class="ritual-seal-dot" cx="47"  cy="47"  r="2.4" style="--del:2.1s;" />
 
-            <!-- Monogramme V central (chevron stylisé) -->
+            <!-- Monogramme V central (chevron stylisé, plus large et plus visible) -->
             <path class="ritual-seal-line"
-                  d="M 78 76 L 100 124 L 122 76"
-                  style="--len:120; --dur:0.9s; --del:2.2s;"
-                  stroke-width="2" />
+                  d="M 74 74 L 100 128 L 126 74"
+                  style="--len:140; --dur:1s; --del:2.2s;"
+                  stroke-width="2.6" />
             <!-- Trait sous le V -->
             <path class="ritual-seal-line"
-                  d="M 82 134 L 118 134"
-                  style="--len:36; --dur:0.4s; --del:2.9s;"
-                  stroke-width="1.2" />
+                  d="M 80 138 L 120 138"
+                  style="--len:40; --dur:0.4s; --del:3s;"
+                  stroke-width="1.4" />
             <!-- Petit point final sous le V (signature V.) -->
-            <circle class="ritual-seal-dot" cx="100" cy="146" r="1.6" style="--del:3.2s;" />
+            <circle class="ritual-seal-dot" cx="100" cy="150" r="1.8" style="--del:3.3s;" />
           </g>
-
-          <!-- Flash doré qui jaillit au moment de la brisure -->
-          <circle class="ritual-seal-flash" cx="100" cy="100" r="55" fill="url(#sealFlashGradient)" />
         </svg>
       </div>
       <div class="ritual-text-block">
@@ -1392,7 +1457,7 @@
       <button class="ritual-btn-act" onclick="ritualBreakSeal()" id="ritualBreakBtn">BRISER LE SCEAU</button>
     </div>
 
-    <!-- ACTE 3 : La révélation — le médaillon émerge -->
+    <!-- ACTE 3 : LA RÉVÉLATION (acte unique fusionné — médaillon + nom + bouton final) -->
     <div class="ritual-act ritual-act-3" id="ritualAct3">
       <div class="ritual-medallion-container">
         <div class="ritual-medallion-halo"></div>
@@ -1402,24 +1467,9 @@
       </div>
       <div class="ritual-text-block">
         <p class="ritual-v-label">V.</p>
-        <p class="ritual-text" id="ritualSealReveal">Voici qui vous êtes ce soir.</p>
+        <p class="ritual-text">Voici qui vous êtes ce soir.</p>
         <p class="ritual-seal-name" id="ritualSealName"></p>
         <p class="ritual-seal-vertu" id="ritualSealVertu"></p>
-      </div>
-      <button class="ritual-btn-act" onclick="ritualGoToAct4()" id="ritualRevealBtn">CONTINUER →</button>
-    </div>
-
-    <!-- ACTE 4 : L'acceptation — le joueur dit "Je suis..." -->
-    <div class="ritual-act ritual-act-4" id="ritualAct4">
-      <div class="ritual-medallion-container">
-        <div class="ritual-medallion-halo"></div>
-        <div class="ritual-medallion ritual-medallion-final" id="ritualMedallionFinal">
-          <div class="ritual-medallion-inner" id="ritualMedallionInnerFinal"></div>
-        </div>
-      </div>
-      <div class="ritual-text-block">
-        <p class="ritual-v-label">V.</p>
-        <p class="ritual-text" id="ritualAcceptText">Acceptez ce nom.</p>
       </div>
       <button class="ritual-btn-act ritual-btn-accept" onclick="ritualAccept()" id="ritualAcceptBtn"></button>
     </div>
@@ -2742,9 +2792,9 @@ function startRitual() {
   showScene('ritual');
 }
 
-// Affiche un acte du rituel et cache les autres
+// Affiche un acte du rituel et cache les autres (3 actes désormais : seuil → sceau → révélation)
 function showRitualAct(actNumber) {
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 3; i++) {
     const el = document.getElementById('ritualAct' + i);
     if (el) el.classList.toggle('active', i === actNumber);
   }
@@ -2763,7 +2813,7 @@ function ritualGoToAct2() {
     const svg = document.getElementById('ritualSealSvg');
     if (svg) {
       // Reset complet (au cas où on rejoue le rituel)
-      svg.classList.remove('drawing', 'breaking');
+      svg.classList.remove('drawing', 'dissolving');
       // Force reflow pour relancer les animations CSS depuis zéro
       void svg.offsetWidth;
       svg.classList.add('drawing');
@@ -2776,33 +2826,55 @@ function ritualGoToAct2() {
   }, 600);
 }
 
-// ACTE 2 : Le joueur brise le sceau
+// ACTE 2 : Le joueur brise le sceau. Le sceau s'embrase et se dissout
+// dans un flash plein-écran. Plus de séparation horizontale moche.
 function ritualBreakSeal() {
   const svg = document.getElementById('ritualSealSvg');
   if (!svg) return;
+
   // Empêche les double-clics
   const btn = document.getElementById('ritualBreakBtn');
-  if (btn) btn.style.pointerEvents = 'none';
+  if (btn) {
+    btn.style.pointerEvents = 'none';
+    btn.style.opacity = '0';
+  }
 
-  // Vibration de la rupture
-  if (navigator.vibrate) navigator.vibrate([30, 60, 120]);
+  // Vibration de la rupture (deux temps : pression + brisure)
+  if (navigator.vibrate) navigator.vibrate([20, 40, 80, 60, 30]);
 
-  // Anime la cassure : flash + les deux moitiés s'écartent + gravures s'estompent
-  svg.classList.remove('drawing');
-  svg.classList.add('breaking');
-
-  // Texte d'attente
+  // Le hint disparaît
   const hint = document.getElementById('ritualSealHint');
   if (hint) hint.style.opacity = '0';
 
-  // Après 1.4s, on bascule sur l'acte 3 (révélation du médaillon)
+  // Le sceau s'embrase puis se dissout
+  svg.classList.remove('drawing');
+  svg.classList.add('dissolving');
+
+  // Flash plein-écran (légèrement décalé pour synchro avec le pic d'embrasement)
+  setTimeout(() => {
+    const flash = document.getElementById('ritualFlash');
+    if (flash) {
+      flash.classList.remove('flashing');
+      void flash.offsetWidth; // reflow pour relancer l'anim
+      flash.classList.add('flashing');
+    }
+  }, 180);
+
+  // Bascule vers l'acte de révélation au pic du flash
   setTimeout(() => {
     showRitualAct(3);
     ritualRevealMedallion();
-  }, 1400);
+  }, 850);
+
+  // Nettoyage du flash après animation
+  setTimeout(() => {
+    const flash = document.getElementById('ritualFlash');
+    if (flash) flash.classList.remove('flashing');
+  }, 1900);
 }
 
-// ACTE 3 : Le médaillon émerge de la bourse, flou puis net
+// ACTE 3 (fusionné) : Le médaillon émerge depuis la lumière résiduelle.
+// Affiche : médaillon → nom → vertu → bouton "JE SUIS [X]" en cascade.
 function ritualRevealMedallion() {
   const seal = ALL_SEALS[gameState.userSeal];
   if (!seal) return;
@@ -2813,7 +2885,6 @@ function ritualRevealMedallion() {
 
   const medallion = document.getElementById('ritualMedallion');
 
-  // Petit délai puis animer l'émergence (flou → net)
   setTimeout(() => {
     if (medallion) medallion.classList.add('emerging');
 
@@ -2834,28 +2905,19 @@ function ritualRevealMedallion() {
         vertuEl.classList.add('visible');
       }
     }, 2500);
+
+    // Le bouton "JE SUIS [X]" devient visible et tappable après 3.4s
+    setTimeout(() => {
+      const acceptBtn = document.getElementById('ritualAcceptBtn');
+      if (acceptBtn) {
+        acceptBtn.textContent = `JE SUIS ${seal.name.toUpperCase()}`;
+        acceptBtn.classList.add('visible');
+      }
+    }, 3400);
   }, 200);
 }
 
-// ACTE 3 → ACTE 4 : Le joueur tape "Continuer"
-function ritualGoToAct4() {
-  const seal = ALL_SEALS[gameState.userSeal];
-  if (!seal) return;
-
-  // Préparer l'acte 4 avec le nom dynamique
-  const innerFinal = document.getElementById('ritualMedallionInnerFinal');
-  if (innerFinal) innerFinal.innerHTML = renderSealSVG(gameState.userSeal);
-
-  const acceptText = document.getElementById('ritualAcceptText');
-  if (acceptText) acceptText.innerHTML = `Vous serez ${seal.name.toLowerCase()}.<br>Acceptez ce nom.`;
-
-  const acceptBtn = document.getElementById('ritualAcceptBtn');
-  if (acceptBtn) acceptBtn.textContent = `JE SUIS ${seal.name.toUpperCase()}`;
-
-  showRitualAct(4);
-}
-
-// ACTE 4 : Le joueur accepte son Sceau
+// ACTE 3 : Le joueur accepte son Sceau et entre dans le Hall
 function ritualAccept() {
   // Vibration tactile de confirmation
   if (navigator.vibrate) navigator.vibrate([30, 50, 30, 50, 100]);
