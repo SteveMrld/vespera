@@ -591,6 +591,85 @@
   /* SCÈNE SALON */
   #salon { background: #0F1A2E; overflow-y: auto; -webkit-overflow-scrolling: touch; align-items: stretch; justify-content: flex-start; transition: background 0.7s, color 0.7s; }
 
+  /* SCENE ONBOARDING DU JEU - explique les regles apres le rituel */
+  #gameOnboarding {
+    background: radial-gradient(ellipse at center, #14182A 0%, #0A0E1C 70%, #050810 100%);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+  }
+  .game-onb-card {
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .game-onb-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .game-onb-step {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    color: rgba(212, 184, 112, 0.65);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 38px;
+  }
+  .game-onb-text {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 400;
+    color: #EDE8DD;
+    line-height: 1.65;
+    letter-spacing: 0.005em;
+    margin-bottom: 36px;
+  }
+  .game-onb-text strong {
+    font-weight: 500;
+    color: #F5DC96;
+  }
+  .game-onb-sig {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    color: #D4B870;
+    letter-spacing: 0.25em;
+    margin-bottom: 60px;
+  }
+  .game-onb-hint {
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px;
+    color: rgba(168, 160, 149, 0.6);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    animation: fadeInOut 2.4s ease-in-out infinite;
+  }
+  /* Variante pour la derniere carte : on remplace 'Toucher pour continuer'
+     par un vrai bouton CTA */
+  .game-onb-card.last .game-onb-hint { display: none; }
+  .game-onb-card.last .game-onb-cta {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 14px 36px;
+    background: transparent;
+    border: 1px solid rgba(212, 184, 112, 0.5);
+    color: #D4B870;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .game-onb-card.last .game-onb-cta:active {
+    background: rgba(212, 184, 112, 0.15);
+    color: #FFE9B0;
+  }
+
   /* SCENE SALON INTRO - plan d'etablissement avant la table */
   #salonIntro {
     background: #050810;
@@ -2018,6 +2097,17 @@
       <button class="ritual-btn-act ritual-btn-accept" onclick="ritualAccept()" id="ritualAcceptBtn"></button>
     </div>
 
+  </div>
+</div>
+
+<!-- SCENE ONBOARDING DU JEU - explique les regles juste apres le rituel.
+     Cinq cartes successives en fade. Le joueur tape pour avancer. -->
+<div id="gameOnboarding" class="scene" onclick="advanceGameOnboarding()">
+  <div class="game-onb-card" id="gameOnbCard">
+    <div class="game-onb-step" id="gameOnbStep">1 / 5</div>
+    <div class="game-onb-text" id="gameOnbText"></div>
+    <div class="game-onb-sig" id="gameOnbSig">V.</div>
+    <div class="game-onb-hint" id="gameOnbHint">Toucher pour continuer</div>
   </div>
 </div>
 
@@ -4003,13 +4093,96 @@ function ritualAccept() {
   // Vibration tactile de confirmation
   if (navigator.vibrate) navigator.vibrate([30, 50, 30, 50, 100]);
 
-  // Petit fade out puis on entre dans le Hall
+  // Petit fade out puis on enchaine sur l'onboarding du jeu
+  // (sauf si deja vu dans une session precedente, auquel cas on saute
+  // directement au Hall pour ne pas se taper l'onboarding 3 fois).
   const stage = document.querySelector('.ritual-stage');
   if (stage) stage.style.opacity = '0';
   setTimeout(() => {
     if (stage) stage.style.opacity = '1';
-    enterHall();
+    if (localStorage.getItem('vespera_game_onboarding_done') === '1') {
+      enterHall();
+    } else {
+      startGameOnboarding();
+    }
   }, 700);
+}
+
+// === ONBOARDING DU JEU ===
+// Cinq cartes pour expliquer les regles a V juste apres le rituel.
+// Le joueur tape pour avancer ; sur la derniere carte, un CTA explicite
+// l'envoie au Hall.
+const GAME_ONBOARDING_CARDS = [
+  {
+    text: 'Pendant <strong>sept soirées</strong>, je serai votre hôtesse.<br><br>Cette villa est à vous le temps d\'un Cycle.'
+  },
+  {
+    text: 'Vous êtes <strong>six</strong> ici. Cinq autres dorment quelque part dans la villa. Vous êtes le sixième.<br><br>Vous les rencontrerez ce soir, à table.'
+  },
+  {
+    text: 'L\'un des cinq autres porte une <strong>Clé</strong>. Une vérité qu\'il garde sans la dire, parfois sans tout à fait se l\'avouer à lui-même.<br><br>Votre tâche est de la trouver, avant la dernière nuit.'
+  },
+  {
+    text: 'Chaque <strong>matin</strong>, un Murmure vous attendra dans le Hall.<br>Chaque <strong>soir</strong>, une question vous sera posée à table.<br><br>La villa parle aussi. Lisez ses pièces, elles laissent des traces.'
+  },
+  {
+    text: 'Au <strong>septième soir</strong>, vous nommerez celui que vous croyez porter la Clé.<br><br>Si vous trouvez juste, ce qu\'il portait depuis longtemps cessera de peser seul.',
+    isLast: true
+  }
+];
+
+let gameOnboardingIndex = 0;
+
+function startGameOnboarding() {
+  gameOnboardingIndex = 0;
+  showScene('gameOnboarding');
+  renderGameOnboardingCard();
+}
+
+function renderGameOnboardingCard() {
+  const card = document.getElementById('gameOnbCard');
+  const stepEl = document.getElementById('gameOnbStep');
+  const textEl = document.getElementById('gameOnbText');
+  const hintEl = document.getElementById('gameOnbHint');
+  const data = GAME_ONBOARDING_CARDS[gameOnboardingIndex];
+  const total = GAME_ONBOARDING_CARDS.length;
+
+  // Fade out
+  card.classList.remove('visible', 'last');
+
+  setTimeout(() => {
+    stepEl.textContent = `${gameOnboardingIndex + 1} / ${total}`;
+    textEl.innerHTML = data.text;
+
+    if (data.isLast) {
+      card.classList.add('last');
+      hintEl.outerHTML = '<button class="game-onb-cta" id="gameOnbHint" onclick="finishGameOnboarding(event)">ENTRER DANS LA VILLA</button>';
+    } else {
+      // S'assurer que le hint normal est en place
+      if (hintEl.tagName !== 'DIV') {
+        hintEl.outerHTML = '<div class="game-onb-hint" id="gameOnbHint">Toucher pour continuer</div>';
+      }
+    }
+
+    card.classList.add('visible');
+  }, 350);
+}
+
+function advanceGameOnboarding() {
+  // Avance a la carte suivante. Sur la derniere carte, le tap n'avance pas
+  // (le bouton CTA explicite est utilise pour finir).
+  const data = GAME_ONBOARDING_CARDS[gameOnboardingIndex];
+  if (data.isLast) return;
+  if (gameOnboardingIndex < GAME_ONBOARDING_CARDS.length - 1) {
+    gameOnboardingIndex++;
+    renderGameOnboardingCard();
+  }
+}
+
+function finishGameOnboarding(ev) {
+  if (ev) ev.stopPropagation();
+  localStorage.setItem('vespera_game_onboarding_done', '1');
+  enterHall();
 }
 
 function renderUserSeal() {
@@ -5260,13 +5433,13 @@ function renderHall() {
     cta = 'EXPLORER';
     ctaAction = 'startTutoStep2()';
   } else if (day === 1 && gameState.tutoStep === 3) {
-    // FIN DU JOUR 1 — toute la soiree faite, V guide vers le J2.
-    // Sans ce cartouche, le joueur se retrouvait sans aucune indication
-    // sur quoi faire ensuite.
+    // FIN DE LA PHASE GUIDEE DU J1 - le joueur a deja vu le tutoriel
+    // mais on ne suppose pas qu'il a forcement mange. Le cartouche est
+    // un repere pour qu'il sache qu'il peut avancer quand il veut.
     showMessage = true;
     label = 'V';
-    msg = 'Vous avez vécu votre premier soir à Vespera. La villa garde encore des choses pour vous cette nuit.<br><br>Quand vous êtes prêt, passez au deuxième jour : un nouveau Murmure vous attend à l\'aube.';
-    cta = 'PASSER AU J2';
+    msg = 'Vous avez fait le tour. La villa est ouverte. Restez le temps que vous voulez ce soir.<br><br>Quand vous serez prêt, le deuxième jour vous attend.';
+    cta = 'PASSER AU JOUR 2';
     ctaAction = 'advanceDay()';
   } else if (day >= 2 && day <= 7 && SEASON_1_CONTENT[day]) {
     // J2-J7 — Murmure du matin (lu depuis SEASON_1_CONTENT)
