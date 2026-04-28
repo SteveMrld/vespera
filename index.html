@@ -381,6 +381,19 @@
     opacity: 1;
     filter: blur(0);
   }
+  /* Effet "verrouillage" quand la roue s'arrête sur l'animal du joueur */
+  .ritual-medallion.locked {
+    animation: medallionLockIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes medallionLockIn {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.08); box-shadow:
+            0 6px 20px rgba(0, 0, 0, 0.6),
+            0 0 0 2px rgba(245, 220, 150, 0.4),
+            inset 0 0 10px rgba(80, 50, 20, 0.25),
+            0 0 90px rgba(245, 220, 150, 0.55); }
+    100% { transform: scale(1); }
+  }
   .ritual-medallion-halo {
     position: absolute;
     top: 50%;
@@ -2991,48 +3004,123 @@ function ritualBreakSeal() {
   }, 1900);
 }
 
-// ACTE 3 (fusionné) : Le médaillon émerge depuis la lumière résiduelle.
-// Affiche : médaillon → nom → vertu → bouton "JE SUIS [X]" en cascade.
+// ACTE 3 (fusionné) : la villa nomme le joueur en faisant défiler les
+// 12 Sceaux comme une roue qui ralentit, jusqu'à s'arrêter sur l'animal
+// du joueur. On voit donc qu'on aurait pu être autre chose. C'est ce qui
+// donne du sens au "la villa va vous nommer" — la villa choisit pour vous.
 function ritualRevealMedallion() {
   const seal = ALL_SEALS[gameState.userSeal];
   if (!seal) return;
 
-  // Insérer le SVG dans le médaillon
   const inner = document.getElementById('ritualMedallionInner');
-  if (inner) inner.innerHTML = renderSealSVG(gameState.userSeal);
-
   const medallion = document.getElementById('ritualMedallion');
 
-  setTimeout(() => {
-    if (medallion) medallion.classList.add('emerging');
-
-    // Le nom apparaît après 1.5s
+  // Pré-charger les 12 images pour que la roue tourne sans flicker
+  preloadAllSeals(() => {
     setTimeout(() => {
-      const nameEl = document.getElementById('ritualSealName');
-      if (nameEl) {
-        nameEl.textContent = seal.name;
-        nameEl.classList.add('visible');
-      }
-    }, 1500);
+      // Émergence du médaillon (flou → net)
+      if (medallion) medallion.classList.add('emerging');
 
-    // La vertu apparaît après 2.5s
-    setTimeout(() => {
-      const vertuEl = document.getElementById('ritualSealVertu');
-      if (vertuEl) {
-        vertuEl.textContent = seal.desc || '';
-        vertuEl.classList.add('visible');
-      }
-    }, 2500);
+      // Petit temps mort dramatique avant que la roue ne s'élance
+      setTimeout(() => {
+        spinSealWheel(gameState.userSeal, inner, () => {
+          // La roue s'est arrêtée sur l'animal du joueur.
+          if (navigator.vibrate) navigator.vibrate([20, 30, 50]);
+          if (medallion) medallion.classList.add('locked');
 
-    // Le bouton "JE SUIS [X]" devient visible et tappable après 3.4s
-    setTimeout(() => {
-      const acceptBtn = document.getElementById('ritualAcceptBtn');
-      if (acceptBtn) {
-        acceptBtn.textContent = `JE SUIS ${seal.name.toUpperCase()}`;
-        acceptBtn.classList.add('visible');
+          // Le nom apparaît avec un peu de respiration
+          setTimeout(() => {
+            const nameEl = document.getElementById('ritualSealName');
+            if (nameEl) {
+              nameEl.textContent = seal.name;
+              nameEl.classList.add('visible');
+            }
+          }, 450);
+
+          // Puis la vertu
+          setTimeout(() => {
+            const vertuEl = document.getElementById('ritualSealVertu');
+            if (vertuEl) {
+              vertuEl.textContent = seal.desc || '';
+              vertuEl.classList.add('visible');
+            }
+          }, 1250);
+
+          // Enfin le bouton d'acceptation
+          setTimeout(() => {
+            const acceptBtn = document.getElementById('ritualAcceptBtn');
+            if (acceptBtn) {
+              acceptBtn.textContent = `JE SUIS ${seal.name.toUpperCase()}`;
+              acceptBtn.classList.add('visible');
+            }
+          }, 2150);
+        });
+      }, 600);
+    }, 200);
+  });
+}
+
+// Pré-charge les 12 sceaux pour que la roue tourne sans saccade.
+// Sécurité : si une image met plus de 1.5s, on continue quand même.
+function preloadAllSeals(callback) {
+  const keys = Object.keys(ALL_SEALS);
+  let loaded = 0;
+  let done = false;
+  const safety = setTimeout(() => {
+    if (!done) { done = true; if (callback) callback(); }
+  }, 1500);
+  keys.forEach(key => {
+    const img = new Image();
+    img.onload = img.onerror = () => {
+      loaded++;
+      if (loaded === keys.length && !done) {
+        done = true;
+        clearTimeout(safety);
+        if (callback) callback();
       }
-    }, 3400);
-  }, 200);
+    };
+    img.src = ALL_SEALS[key].img;
+  });
+}
+
+// Roue des 12 Sceaux : défile rapidement puis ralentit jusqu'à s'arrêter
+// sur la cible. Effet machine à sous mais cérémonial.
+function spinSealWheel(targetKey, container, onComplete) {
+  if (!container) { if (onComplete) onComplete(); return; }
+
+  const allKeys = Object.keys(ALL_SEALS);
+  // Ordre aléatoire pour ne jamais avoir la même séquence
+  const shuffled = [...allKeys].sort(() => Math.random() - 0.5);
+
+  // Séquence : 2 cycles rapides + queue qui ralentit + cible en final
+  const sequence = [];
+  for (let i = 0; i < 2; i++) sequence.push(...shuffled);
+  const tail = shuffled.filter(k => k !== targetKey);
+  sequence.push(...tail.slice(-6), targetKey);
+
+  let step = 0;
+  function tick() {
+    if (step >= sequence.length) {
+      if (onComplete) onComplete();
+      return;
+    }
+    const key = sequence[step];
+    container.innerHTML = renderSealSVG(key);
+
+    // Délai croissant sur les 7 derniers pas (ralentissement progressif)
+    const remaining = sequence.length - step - 1;
+    let delay;
+    if (remaining > 7) {
+      delay = 50; // cycle rapide, presque flou
+    } else {
+      // 90, 130, 190, 280, 410, 600, 880 ms
+      delay = Math.round(90 * Math.pow(1.46, 7 - remaining));
+    }
+
+    step++;
+    setTimeout(tick, delay);
+  }
+  tick();
 }
 
 // ACTE 3 : Le joueur accepte son Sceau et entre dans le Hall
@@ -4144,8 +4232,8 @@ function renderHall() {
     // ÉTAPE 1 — V désigne la salle à manger
     showMessage = true;
     label = 'V';
-    msg = 'Allez à la <strong>salle à manger</strong>. Les autres vous attendent pour le premier dîner.';
-    cta = 'JE Y VAIS';
+    msg = 'Allez à la salle à manger. Les autres vous attendent pour le premier dîner.';
+    cta = "J'Y VAIS";
     ctaAction = 'startTutoStep1Confirm()';
   } else if (day === 1 && gameState.tutoStep === 2 && !dayData.hallEntered2) {
     // ÉTAPE 2 — Après le 1er dîner, V libère le reste
