@@ -843,8 +843,10 @@
   .seats-layer { position: absolute; inset: 0; pointer-events: none; }
   .seat {
     position: absolute;
-    /* Zone tap calibrée pour rentrer dans l'assiette en laiton */
-    width: 10%;
+    /* Zone tap calibrée pour rentrer dans l'assiette + couvrir la serviette blanche.
+       L'assiette fait ~18% de large, la serviette ~7%. On cible 12% pour couvrir
+       entièrement la serviette tout en restant dans le bord de l'assiette. */
+    width: 12%;
     aspect-ratio: 1;
     pointer-events: auto;
     transform: translate(-50%, -50%);
@@ -900,13 +902,20 @@
     filter: grayscale(0.7);
   }
 
-  /* Positions des 6 places — centres EXACTS des assiettes en laiton sur l'image */
-  .seat-pos-0 { top: 19%; left: 32%; }   /* 11h — haut-gauche, MARC */
-  .seat-pos-1 { top: 19%; left: 68%; }   /* 1h — haut-droite, THEO */
-  .seat-pos-2 { top: 50%; left: 18%; }   /* 9h — milieu-gauche, CAMILLE */
-  .seat-pos-3 { top: 80%; left: 32%; }   /* 7h — bas-gauche, JOUEUR */
-  .seat-pos-4 { top: 50%; left: 82%; }   /* 3h — milieu-droite, INES */
-  .seat-pos-5 { top: 80%; left: 68%; }   /* 5h — bas-droite, KARIM */
+  /* Positions des 6 places en HEXAGONE — centres EXACTS des assiettes sur l'image.
+     Disposition horaire : 12h / 2h / 4h / 6h / 8h / 10h.
+     pos 0 = 12h (haut centre)    → MARC, face au joueur
+     pos 1 = 2h  (haut-droite)    → THEO
+     pos 2 = 10h (haut-gauche)    → CAMILLE
+     pos 3 = 6h  (bas centre)     → JOUEUR
+     pos 4 = 4h  (bas-droite)     → INES
+     pos 5 = 8h  (bas-gauche)     → KARIM */
+  .seat-pos-0 { top: 16%; left: 50%; }   /* 12h — MARC */
+  .seat-pos-1 { top: 38%; left: 81%; }   /* 2h  — THEO */
+  .seat-pos-2 { top: 38%; left: 23%; }   /* 10h — CAMILLE */
+  .seat-pos-3 { top: 88%; left: 52%; }   /* 6h  — JOUEUR */
+  .seat-pos-4 { top: 75.5%; left: 81%; } /* 4h  — INES */
+  .seat-pos-5 { top: 75.5%; left: 23%; } /* 8h  — KARIM */
 
   /* === MODE VOIX DU SOIR === */
   /* Quand on est en voice-mode, on cache tout sauf la table + médaillons */
@@ -1175,7 +1184,90 @@
   /* SCÈNE CHAMBRE — fiches publiques des Sceaux */
   #chambre { background: #0F1A2E; align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .chambre-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(237,232,221,0.08); }
-  .chambre-intro { padding: 36px 32px 28px; text-align: center; }
+
+  /* HERO de la chambre — l'image de la pièce comme entrée immersive.
+     On rentre dans la chambre, puis on accède aux fiches en dessous. */
+  .chambre-hero {
+    position: relative;
+    width: 100%;
+    height: 38vh;
+    min-height: 240px;
+    max-height: 360px;
+    background-image: url('assets/bedroom.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .chambre-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(15, 26, 46, 0.45) 0%,
+      rgba(15, 26, 46, 0.15) 35%,
+      rgba(15, 26, 46, 0.55) 75%,
+      rgba(15, 26, 46, 0.98) 100%
+    );
+    pointer-events: none;
+  }
+  .chambre-hero-label {
+    position: absolute;
+    bottom: 28px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 2;
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: #EDE8DD;
+    letter-spacing: 0.18em;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.85), 0 1px 3px rgba(0, 0, 0, 1);
+    opacity: 0;
+    animation: fadeUp 1.4s 0.2s ease forwards;
+    transform: translateY(12px);
+  }
+  .chambre-hero-sublabel {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 2;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: rgba(212, 184, 112, 0.85);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
+    opacity: 0;
+    animation: fadeIn 1.6s 0.8s ease forwards;
+  }
+
+  .chambre-intro { padding: 28px 32px 24px; text-align: center; }
+
+  /* SCÈNE PISCINE — meme pattern hero que la chambre */
+  #pool { background: #0F1A2E; align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .pool-hero { background-image: url('assets/pool.png'); }
+  .pool-content { padding: 36px 32px 60px; text-align: center; }
+  .pool-coming {
+    margin-top: 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: rgba(212, 184, 112, 0.7);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    line-height: 1.8;
+    padding: 18px 0;
+    border-top: 1px solid rgba(212, 184, 112, 0.15);
+    border-bottom: 1px solid rgba(212, 184, 112, 0.15);
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .chambre-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 300; color: #EDE8DD; margin-bottom: 14px; letter-spacing: 0.03em; }
   .chambre-desc { font-family: 'Fraunces', serif; font-size: 14px;  color: #A8A095; line-height: 1.6; max-width: 320px; margin: 0 auto; }
   .fiche-cards { padding: 0 24px 40px; display: flex; flex-direction: column; gap: 16px; }
@@ -1514,8 +1606,8 @@
       <button type="button" class="hall-hotspot hall-hot-console" onclick="goToRoom('library')" aria-label="Bibliothèque">
         <span class="hall-hotspot-label">Bibliothèque</span>
       </button>
-      <button type="button" class="hall-hotspot hall-hot-door locked" onclick="goToRoom('garden')" aria-label="Jardin">
-        <span class="hall-hotspot-label">Jardin</span>
+      <button type="button" class="hall-hotspot hall-hot-door" onclick="goToRoom('pool')" aria-label="Piscine">
+        <span class="hall-hotspot-label">Piscine</span>
       </button>
       <button type="button" class="hall-hotspot hall-hot-stairs" onclick="goToRoom('salon')" aria-label="Salle à manger">
         <span class="hall-hotspot-label">Salle à manger</span>
@@ -1667,8 +1759,14 @@
     <div class="murmur-label">LA CHAMBRE</div>
     <div style="width: 56px;"></div>
   </div>
+
+  <!-- HERO immersif : on rentre dans la chambre -->
+  <div class="chambre-hero">
+    <div class="chambre-hero-label">La Chambre</div>
+    <div class="chambre-hero-sublabel">Le cercle de l'introspection</div>
+  </div>
+
   <div class="chambre-intro">
-    <h2 class="chambre-title">Les fiches du Cercle</h2>
     <p class="chambre-desc">Voici ce que les autres Invités laissent paraître d'eux. Votre fiche, vous, ne s'écrira qu'à la fin du Cycle.</p>
   </div>
 
@@ -1690,6 +1788,26 @@
   <div class="chambre-footer" id="chambreCouloirCTA" style="display:none;">
     <button type="button" class="couloir-btn" onclick="openCouloir()">ALLER AU COULOIR →</button>
     <p class="couloir-hint">Vous y voterez en secret pour celui que vous pensez porter la Clé.</p>
+  </div>
+</div>
+
+<!-- SCÈNE PISCINE — pièce extérieure contemplative -->
+<div id="pool" class="scene">
+  <div class="chambre-header">
+    <button type="button" class="murmur-back" onclick="goToHall()">← RETOUR</button>
+    <div class="murmur-label">LA PISCINE</div>
+    <div style="width: 56px;"></div>
+  </div>
+
+  <!-- HERO immersif : on rentre dans l'extérieur -->
+  <div class="chambre-hero pool-hero">
+    <div class="chambre-hero-label">La Piscine</div>
+    <div class="chambre-hero-sublabel">Le souffle de la nuit</div>
+  </div>
+
+  <div class="pool-content">
+    <p class="chambre-desc">L'eau réfléchit ce que vous taisez. Revenez ici quand vous aurez besoin de respirer entre deux Murmures.</p>
+    <p class="pool-coming">Le contenu de cette pièce s'écrira dans les prochains Cycles.</p>
   </div>
 </div>
 
@@ -4138,10 +4256,14 @@ function goToRoom(roomId) {
       showHallLockedMessage('Le Jardin', 'Cette pièce dort encore. Patience — elle s\'ouvrira en son temps.');
       break;
     case 'pool':
-      // Phase 2 — pas encore implémenté
-      showHallLockedMessage('La Piscine', 'Cette pièce dort encore. Patience — elle s\'ouvrira en son temps.');
+      openPool();
       break;
   }
+}
+
+// === LA PISCINE ===
+function openPool() {
+  showScene('pool');
 }
 
 function showHallLockedMessage(roomName, msg) {
