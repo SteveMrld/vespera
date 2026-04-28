@@ -590,6 +590,88 @@
 
   /* SCÈNE SALON */
   #salon { background: #0F1A2E; overflow-y: auto; -webkit-overflow-scrolling: touch; align-items: stretch; justify-content: flex-start; transition: background 0.7s, color 0.7s; }
+
+  /* SCENE SALON INTRO - plan d'etablissement avant la table */
+  #salonIntro {
+    background: #050810;
+    cursor: pointer;
+  }
+  .salon-intro-image {
+    position: absolute;
+    inset: 0;
+    background-image: url('assets/dining-room.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transform: scale(1.04);
+    animation: salonIntroImageIn 5.5s ease-out forwards;
+  }
+  @keyframes salonIntroImageIn {
+    0%   { opacity: 0; transform: scale(1.06); }
+    18%  { opacity: 1; transform: scale(1.04); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .salon-intro-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(8, 10, 18, 0.55) 0%,
+      rgba(8, 10, 18, 0.20) 30%,
+      rgba(8, 10, 18, 0.30) 70%,
+      rgba(8, 10, 18, 0.92) 100%
+    );
+    pointer-events: none;
+  }
+  .salon-intro-titles {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 32px 56px;
+    text-align: center;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .salon-intro-sublabel {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: rgba(212, 184, 112, 0.85);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0;
+    animation: fadeIn 1.2s 1.0s ease forwards;
+  }
+  .salon-intro-title {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: #EDE8DD;
+    letter-spacing: 0.04em;
+    margin: 0 0 28px;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.85), 0 1px 4px rgba(0, 0, 0, 1);
+    opacity: 0;
+    transform: translateY(14px);
+    animation: salonIntroTitleIn 1.6s 1.4s ease forwards;
+  }
+  @keyframes salonIntroTitleIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .salon-intro-hint {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: rgba(168, 160, 149, 0.7);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeInOut 2.4s 2.6s ease forwards infinite;
+  }
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50%      { opacity: 0.7; }
+  }
   #salon.day { background: #F5EFE6; color: #2C2823; }
   .salon-header { padding: 20px 24px; border-bottom: 1px solid rgba(237,232,221,0.12); display: flex; justify-content: space-between; align-items: center; }
   #salon.day .salon-header { border-bottom-color: rgba(44,40,35,0.12); }
@@ -1279,7 +1361,16 @@
 
   /* SCÈNE BIBLIOTHÈQUE */
   #library { background: #000; }
-  #library video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+  /* Image de fond fixe de la Bibliotheque (remplace l'ancienne video) */
+  #library .library-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: url('assets/library.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
   #library .library-overlay { position: absolute; inset: 0; z-index: 2; background: linear-gradient(to bottom, rgba(15,26,46,0.6) 0%, rgba(15,26,46,0.1) 25%, rgba(15,26,46,0.1) 70%, rgba(15,26,46,0.85) 100%); }
   .library-header { position: absolute; top: 0; left: 0; right: 0; z-index: 4; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
   .library-back { background: rgba(15,26,46,0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(237,232,221,0.15); color: #EDE8DD; font-size: 12px; letter-spacing: 0.15em; cursor: pointer; padding: 8px 14px; border-radius: 20px; }
@@ -1292,12 +1383,13 @@
   .hotspot.found { animation: none; opacity: 0.3; pointer-events: none; }
   .hotspot.found::before { animation: none; border-color: rgba(212,184,112,0.2); }
   .hotspot.found::after { background: rgba(212,184,112,0.3); box-shadow: none; }
-  #hotspot-library-daily { bottom: 38%; left: 50%; transform: translateX(-50%); width: 60px; height: 60px; }
-  /* Trois objets de la Bibliotheque, repartis sur la console.
-     Chacun a son propre indice. */
-  #library-obj-0 { bottom: 38%; left: 22%; width: 56px; height: 56px; }
-  #library-obj-1 { bottom: 42%; left: 50%; transform: translateX(-50%); width: 56px; height: 56px; }
-  #library-obj-2 { bottom: 36%; left: 78%; width: 56px; height: 56px; }
+  /* Hotspots de la Bibliotheque, positionnes autour du bureau au fond.
+     Avec la nouvelle image library.png le bureau est plus loin et plus
+     compact, donc les 3 hotspots se concentrent sur cette zone. */
+  #hotspot-library-daily { bottom: 48%; left: 50%; transform: translateX(-50%); width: 60px; height: 60px; }
+  #library-obj-0 { bottom: 44%; left: 36%; width: 56px; height: 56px; }
+  #library-obj-1 { bottom: 52%; left: 50%; transform: translateX(-50%); width: 56px; height: 56px; }
+  #library-obj-2 { bottom: 44%; left: 64%; width: 56px; height: 56px; }
   /* Label discret affichant le nom de l'objet sous le hotspot */
   .hotspot-label {
     position: absolute;
@@ -2019,6 +2111,19 @@
   </div>
 </div>
 
+<!-- SCÈNE SALON INTRO — plan d'etablissement de la salle a manger
+     vue depuis la porte. S'affiche brievement avant de transitionner
+     vers la vue plongeante de la table (#salon). -->
+<div id="salonIntro" class="scene" onclick="dismissSalonIntro()">
+  <div class="salon-intro-image"></div>
+  <div class="salon-intro-overlay"></div>
+  <div class="salon-intro-titles">
+    <div class="salon-intro-sublabel">LA VILLA · SALLE À MANGER</div>
+    <h1 class="salon-intro-title">L'heure du dîner</h1>
+    <div class="salon-intro-hint">Toucher pour entrer</div>
+  </div>
+</div>
+
 <!-- SCÈNE SALON -->
 <div id="salon" class="scene">
   <div class="salon-header">
@@ -2100,9 +2205,7 @@
 
 <!-- SCÈNE BIBLIOTHÈQUE -->
 <div id="library" class="scene">
-  <video autoplay muted loop playsinline preload="auto">
-    <source src="vespera-library.mp4" type="video/mp4">
-  </video>
+  <div class="library-bg"></div>
   <div class="library-overlay"></div>
   <div class="library-header">
     <button class="library-back" onclick="goToHall()">← RETOUR</button>
@@ -5268,7 +5371,9 @@ function goToRoom(roomId) {
 
   switch (roomId) {
     case 'salon':
-      goToSalon();
+      // Plan d'etablissement avant la table : on entre par #salonIntro
+      // qui se dissout vers #salon apres 4 secondes (ou au tap).
+      goToSalonIntro();
       break;
     case 'chambre':
       openChambre();
@@ -5287,6 +5392,31 @@ function goToRoom(roomId) {
       openPool();
       break;
   }
+}
+
+// Plan d'etablissement de la salle a manger
+let salonIntroTimeout = null;
+function goToSalonIntro() {
+  // Si on est deja en mode voix (re-entree apres reponse) ou si la
+  // soiree est terminee, on saute l'intro et on va direct a la table.
+  const dayData = gameState.daysData[gameState.currentDay] || {};
+  if (voiceMode || dayData.completed || dayData.userResponse) {
+    goToSalon();
+    return;
+  }
+  showScene('salonIntro');
+  if (salonIntroTimeout) clearTimeout(salonIntroTimeout);
+  salonIntroTimeout = setTimeout(() => {
+    dismissSalonIntro();
+  }, 4000);
+}
+
+function dismissSalonIntro() {
+  if (salonIntroTimeout) {
+    clearTimeout(salonIntroTimeout);
+    salonIntroTimeout = null;
+  }
+  goToSalon();
 }
 
 // === LA PISCINE ===
@@ -5612,10 +5742,6 @@ function devSkipToCollapse() {
 // === INIT AU CHARGEMENT ===
 document.addEventListener('DOMContentLoaded', function() {
   loadState();
-
-  // Précharger la vidéo bibliothèque
-  const lib = document.querySelector('#library video');
-  if (lib) lib.load();
 
   // FIX MOBILE : délégation d'événements globale pour les éléments cliquables
   // Sur certains Chrome Android, les onclick sur <div> ne se déclenchent pas.
