@@ -642,43 +642,47 @@
     animation-duration: 4.5s;
   }
 
-  /* Cartouche du nom de la pièce — plaque élégante sous le point */
+  /* Cartouche du nom de la pièce — typographie pure, pas de pavé.
+     Le texte flotte sous le point lumineux avec une ombre noire profonde
+     pour rester lisible sur n'importe quel fond, sans alourdir la scène. */
   .hall-hotspot-label {
     position: absolute;
-    top: calc(50% + 22px);
+    top: calc(50% + 18px);
     left: 50%;
     transform: translateX(-50%) translateY(0);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     font-style: normal;
-    font-size: 12px;
-    font-weight: 500;
-    color: #FFFFFF;
-    letter-spacing: 0.18em;
+    font-size: 10px;
+    font-weight: 400;
+    color: rgba(245, 220, 150, 0.92);
+    letter-spacing: 0.32em;
     text-transform: uppercase;
     white-space: nowrap;
     pointer-events: none;
-    background: rgba(8, 6, 4, 0.88);
-    padding: 7px 14px;
-    border: 1px solid rgba(245, 220, 150, 0.5);
-    border-radius: 2px;
-    backdrop-filter: blur(3px);
-    text-shadow: 0 1px 3px rgba(0,0,0,1);
-    box-shadow: 0 2px 14px rgba(0,0,0,0.6);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.95),
+      0 2px 8px rgba(0, 0, 0, 0.85),
+      0 0 14px rgba(0, 0, 0, 0.7);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     animation: labelFloat 4s ease-in-out infinite;
   }
 
   @keyframes labelFloat {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-2px); }
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.85; }
+    50%      { transform: translateX(-50%) translateY(-1px); opacity: 1; }
   }
 
   .hall-hotspot.locked .hall-hotspot-label {
-    color: rgba(255, 255, 255, 0.85);
-    border-color: rgba(168, 160, 149, 0.4);
+    color: rgba(220, 210, 195, 0.7);
+    font-size: 9px;
+    letter-spacing: 0.36em;
   }
 
-  /* Au tap : tout grandit, le cartouche devient solide */
+  /* Au tap : le texte s'éclaircit et se rapproche du blanc pur */
   .hall-hotspot:active::before {
     width: 22px;
     height: 22px;
@@ -704,11 +708,11 @@
     }
   }
   .hall-hotspot:active .hall-hotspot-label {
-    background: rgba(245, 220, 150, 0.98);
-    color: #1A0F08;
-    border-color: #F5DC96;
-    font-size: 13px;
-    text-shadow: none;
+    color: #FFFFFF;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 1),
+      0 0 12px rgba(245, 220, 150, 0.7),
+      0 0 24px rgba(245, 220, 150, 0.4);
     animation: none;
   }
 
@@ -1461,7 +1465,7 @@
         <span class="hall-hotspot-label">Bibliothèque</span>
       </button>
       <button type="button" class="hall-hotspot hall-hot-door locked" onclick="goToRoom('garden')" aria-label="Jardin">
-        <span class="hall-hotspot-label">Jardin · Bientôt</span>
+        <span class="hall-hotspot-label">Jardin</span>
       </button>
       <button type="button" class="hall-hotspot hall-hot-stairs" onclick="goToRoom('salon')" aria-label="Salle à manger">
         <span class="hall-hotspot-label">Salle à manger</span>
