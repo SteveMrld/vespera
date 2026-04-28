@@ -1293,6 +1293,26 @@
   .hotspot.found::before { animation: none; border-color: rgba(212,184,112,0.2); }
   .hotspot.found::after { background: rgba(212,184,112,0.3); box-shadow: none; }
   #hotspot-library-daily { bottom: 38%; left: 50%; transform: translateX(-50%); width: 60px; height: 60px; }
+  /* Trois objets de la Bibliotheque, repartis sur la console.
+     Chacun a son propre indice. */
+  #library-obj-0 { bottom: 38%; left: 22%; width: 56px; height: 56px; }
+  #library-obj-1 { bottom: 42%; left: 50%; transform: translateX(-50%); width: 56px; height: 56px; }
+  #library-obj-2 { bottom: 36%; left: 78%; width: 56px; height: 56px; }
+  /* Label discret affichant le nom de l'objet sous le hotspot */
+  .hotspot-label {
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    color: rgba(212, 184, 112, 0.85);
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+  }
   #hotspot-letter { bottom: 32%; left: 30%; }
   #hotspot-candle { bottom: 40%; left: 47%; }
   #hotspot-book { bottom: 36%; left: 18%; }
@@ -2049,6 +2069,19 @@
   <div class="library-instruction">
     <p id="libraryInstructionText">Quelqu'un a laissé quelque chose sur la console.</p>
   </div>
+  <!-- Mode jour multi-objets : 3 zones a examiner. Chaque hotspot est un
+       indice distinct du contenu library du jour. Visible uniquement
+       quand SEASON_1_CONTENT[day].library a une cle 'objects'. -->
+  <button type="button" class="hotspot library-obj" id="library-obj-0" onclick="openLibraryObject(0)" style="display:none;">
+    <span class="hotspot-label" id="library-obj-0-label"></span>
+  </button>
+  <button type="button" class="hotspot library-obj" id="library-obj-1" onclick="openLibraryObject(1)" style="display:none;">
+    <span class="hotspot-label" id="library-obj-1-label"></span>
+  </button>
+  <button type="button" class="hotspot library-obj" id="library-obj-2" onclick="openLibraryObject(2)" style="display:none;">
+    <span class="hotspot-label" id="library-obj-2-label"></span>
+  </button>
+  <!-- Mode jour simple : un seul hotspot central (J2 - J7 actuellement) -->
   <button type="button" class="hotspot" id="hotspot-library-daily" onclick="openLibraryDaily()"></button>
 </div>
 
@@ -2748,13 +2781,33 @@ Aujourd'hui, je vous demande de regarder. Pas d'écouter, pas d'interroger. De r
 
 La villa a recueilli des choses cette nuit. Lisez-les.`,
     library: {
-      title: `Un livre laissé ouvert`,
-      body: `Un livre laissé ouvert sur la console. Le marque-page est une photo d'identité fanée, coupée aux ciseaux — on n'en voit qu'un sourcil, une mèche.
-
-Le chapitre s'appelle "Sur l'art de paraître intact". Une phrase est soulignée :
+      title: `Quelqu'un est venu cette nuit`,
+      intro: `La console n'est pas comme on l'a laissée hier soir. Quelqu'un est passé. Plusieurs choses traînent.`,
+      objects: [
+        {
+          id: 'book',
+          label: 'Le livre',
+          title: `Le livre, ouvert`,
+          body: `Un livre laissé ouvert sur la console. Le chapitre s'appelle "Sur l'art de paraître intact". Une phrase est soulignée au crayon :
 
 « Ce que nous donnons à voir n'est jamais l'image que nous avons de nous. C'est l'image que nous voulons qu'on doute. »`,
-      observation: `Le crayon est gras, court, taillé au couteau.`
+          observation: `Le livre n'est pas a la villa. Quelqu'un l'a apporte avec lui.`
+        },
+        {
+          id: 'bookmark',
+          label: 'Le marque-page',
+          title: `Le marque-page`,
+          body: `Une photo d'identité fanée, glissée entre les pages du livre. Coupée aux ciseaux : on n'en voit qu'un sourcil, une mèche de cheveux. Le reste a été retiré au ciseau, en un seul trait.`,
+          observation: `Une photo qu'on garde mais qu'on ne veut pas voir en entier.`
+        },
+        {
+          id: 'pencil',
+          label: 'Le crayon',
+          title: `Le crayon`,
+          body: `Posé en travers du livre. Gras, court, taillé au couteau et non au taille-crayon. Pas un objet de la villa.`,
+          observation: `Quelqu'un qui taille ses crayons lui-même. Un geste qui se perd.`
+        }
+      ]
     },
     chambre: {
       title: `Première fiche du Cercle`,
@@ -4422,16 +4475,69 @@ function setPorterVote(guestId) {
 }
 function openLibrary() {
   showScene('library');
-  // Met a jour l'instruction selon le jour
+  // Met a jour l'instruction et bascule entre mode mono-hotspot et
+  // mode multi-objets selon le contenu du jour.
   const day = gameState.currentDay || 1;
   const content = getDayContent(day);
   const instr = document.getElementById('libraryInstructionText');
-  if (instr && content && content.library) {
-    instr.textContent = `${content.library.title}.`;
+  const singleHs = document.getElementById('hotspot-library-daily');
+  const objHs = [
+    document.getElementById('library-obj-0'),
+    document.getElementById('library-obj-1'),
+    document.getElementById('library-obj-2')
+  ];
+
+  if (!content || !content.library) {
+    if (instr) instr.textContent = '';
+    if (singleHs) singleHs.style.display = 'none';
+    objHs.forEach(h => { if (h) h.style.display = 'none'; });
+    return;
+  }
+
+  const lib = content.library;
+  const hasObjects = Array.isArray(lib.objects) && lib.objects.length > 0;
+
+  if (hasObjects) {
+    // Mode multi-objets : on cache le hotspot central et on affiche
+    // un hotspot par objet, jusqu'a 3.
+    if (instr) instr.textContent = lib.intro || lib.title || '';
+    if (singleHs) singleHs.style.display = 'none';
+    objHs.forEach((h, i) => {
+      if (!h) return;
+      const obj = lib.objects[i];
+      if (obj) {
+        h.style.display = '';
+        const labelEl = document.getElementById(`library-obj-${i}-label`);
+        if (labelEl) labelEl.textContent = obj.label || '';
+      } else {
+        h.style.display = 'none';
+      }
+    });
+  } else {
+    // Mode mono-hotspot : un seul indice central pour le jour.
+    if (instr) instr.textContent = `${lib.title}.`;
+    if (singleHs) singleHs.style.display = '';
+    objHs.forEach(h => { if (h) h.style.display = 'none'; });
   }
 }
 
-// Ouvre l'objet du jour dans la modale
+// Ouvre un objet specifique (mode multi-objets)
+function openLibraryObject(idx) {
+  const day = gameState.currentDay || 1;
+  const content = getDayContent(day);
+  if (!content || !content.library || !content.library.objects) return;
+  const obj = content.library.objects[idx];
+  if (!obj) return;
+
+  document.getElementById('libraryClueLabel').textContent =
+    `JOUR ${day} · ${content.theme}`;
+  document.getElementById('libraryClueTitle').textContent = obj.title || obj.label || '';
+  document.getElementById('libraryClueText').innerHTML = formatNarrativeBody(obj.body || '');
+  document.getElementById('libraryClueObs').textContent = obj.observation || '';
+  document.getElementById('library-clue-modal').classList.add('active');
+}
+
+// Ouvre l'objet du jour dans la modale (mode mono-hotspot, J2-J7)
 function openLibraryDaily() {
   const day = gameState.currentDay || 1;
   const content = getDayContent(day);
