@@ -188,54 +188,48 @@
   .hall-message-content .hall-msg-sig { display: block; margin-top: 10px; font-family: 'Fraunces', serif; font-style: italic; font-size: 11px; color: #D4B870; }
   .hall-message-content .hall-msg-cta { display: block; margin-top: 10px; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9px; color: #D4B870; letter-spacing: 0.3em; cursor: pointer; }
 
-  /* HOTSPOTS invisibles sur l'image — calibrés sur les éléments du hall */
+  /* HOTSPOTS — invisibles par défaut, révélés brièvement après le Murmure */
   .hall-hotspot {
     position: absolute;
     background: transparent;
-    border: 1.5px solid rgba(212, 184, 112, 0.18);
+    border: 1.5px solid transparent;
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.5s;
     padding: 0;
     overflow: visible;
     z-index: 3;
-    box-shadow:
-      0 0 12px rgba(212, 184, 112, 0.15),
-      inset 0 0 12px rgba(212, 184, 112, 0.06);
-    animation: hotspotPulse 3.5s ease-in-out infinite;
   }
-  .hall-hotspot:active,
-  .hall-hotspot:hover {
-    background: rgba(212, 184, 112, 0.15);
+  .hall-hotspot:active {
+    background: rgba(212, 184, 112, 0.18);
     border-color: rgba(212, 184, 112, 0.7);
-    box-shadow: 0 0 28px rgba(212, 184, 112, 0.5);
-    animation: none;
+    box-shadow: 0 0 30px rgba(212, 184, 112, 0.5);
   }
-  @keyframes hotspotPulse {
-    0%, 100% {
-      border-color: rgba(212, 184, 112, 0.18);
-      box-shadow:
-        0 0 12px rgba(212, 184, 112, 0.15),
-        inset 0 0 12px rgba(212, 184, 112, 0.06);
-    }
-    50% {
-      border-color: rgba(212, 184, 112, 0.45);
-      box-shadow:
-        0 0 22px rgba(212, 184, 112, 0.32),
-        inset 0 0 18px rgba(212, 184, 112, 0.12);
-    }
+
+  /* Révélation : 3 pulsations dorées puis disparition */
+  .hall-image.revealing .hall-hotspot {
+    animation: hotspotReveal 2.4s ease-in-out 1;
   }
-  .hall-hotspot.locked {
-    border-color: rgba(168, 160, 149, 0.18);
-    box-shadow: 0 0 8px rgba(168, 160, 149, 0.1);
-    animation: none;
-    opacity: 0.65;
+  .hall-image.revealing .hall-hotspot.locked {
+    animation: hotspotRevealLocked 2.4s ease-in-out 1;
   }
-  .hall-hotspot.locked:active {
-    background: rgba(168, 160, 149, 0.08);
-    border-color: rgba(168, 160, 149, 0.35);
-    box-shadow: 0 0 16px rgba(168, 160, 149, 0.2);
+  @keyframes hotspotReveal {
+    0% { border-color: transparent; box-shadow: none; }
+    20% { border-color: rgba(212,184,112,0.8); box-shadow: 0 0 24px rgba(212,184,112,0.5); }
+    40% { border-color: rgba(212,184,112,0.3); box-shadow: 0 0 8px rgba(212,184,112,0.15); }
+    60% { border-color: rgba(212,184,112,0.8); box-shadow: 0 0 24px rgba(212,184,112,0.5); }
+    80% { border-color: rgba(212,184,112,0.3); box-shadow: 0 0 8px rgba(212,184,112,0.15); }
+    100% { border-color: transparent; box-shadow: none; }
   }
+  @keyframes hotspotRevealLocked {
+    0% { border-color: transparent; box-shadow: none; }
+    20% { border-color: rgba(168,160,149,0.55); box-shadow: 0 0 16px rgba(168,160,149,0.3); }
+    40% { border-color: rgba(168,160,149,0.2); box-shadow: 0 0 6px rgba(168,160,149,0.1); }
+    60% { border-color: rgba(168,160,149,0.55); box-shadow: 0 0 16px rgba(168,160,149,0.3); }
+    80% { border-color: rgba(168,160,149,0.2); box-shadow: 0 0 6px rgba(168,160,149,0.1); }
+    100% { border-color: transparent; box-shadow: none; }
+  }
+
   .hall-hotspot-label {
     position: absolute;
     bottom: -22px;
@@ -252,26 +246,30 @@
     pointer-events: none;
     text-shadow: 0 1px 4px rgba(0,0,0,0.9);
   }
-  .hall-hotspot:active .hall-hotspot-label,
-  .hall-hotspot:hover .hall-hotspot-label { opacity: 1; }
+  .hall-hotspot:active .hall-hotspot-label { opacity: 1; }
 
-  /* Hint permanent en bas du Hall : indication discrète */
+  /* Hint discret cliquable en bas — permet de re-révéler les zones si on les a oubliées */
   .hall-hint {
     position: absolute;
     left: 50%;
-    bottom: 2.5%;
+    bottom: 3%;
     transform: translateX(-50%);
     font-family: 'Inter', sans-serif;
     font-size: 9px;
-    color: rgba(212, 184, 112, 0.65);
+    color: rgba(212, 184, 112, 0.55);
     letter-spacing: 0.3em;
     text-transform: uppercase;
     text-shadow: 0 1px 4px rgba(0,0,0,0.9);
-    pointer-events: none;
     z-index: 2;
     text-align: center;
     white-space: nowrap;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px 10px;
+    transition: color 0.3s;
   }
+  .hall-hint:active { color: rgba(212, 184, 112, 0.9); }
 
   /* Positions des hotspots sur l'image du hall — calibrées sur l'image réelle hall.png */
   .hall-hot-mirror   { top: 19%; left: 9%;  width: 18%; height: 36%; }   /* Miroir rond gauche → Chambre */
@@ -925,8 +923,8 @@
         <span class="hall-hotspot-label">Couloir</span>
       </button>
 
-      <!-- Hint permanent en bas, dans l'image -->
-      <div class="hall-hint">Tapez les zones lumineuses pour explorer</div>
+      <!-- Hint cliquable : permet de re-révéler les zones quand on les a oubliées -->
+      <button type="button" class="hall-hint" onclick="revealHallHotspots()">Montrer les passages</button>
     </div>
   </div>
 
@@ -3245,47 +3243,72 @@ function renderHall() {
   document.getElementById('hall').classList.toggle('day', !isNight);
   document.getElementById('hall').classList.toggle('night', isNight);
 
-  // Le Murmure du jour s'affiche en cartouche flottant (Option A)
+  // Construire le message d'accueil de V selon le jour
   const dayData = gameState.daysData[day] || {};
   const messageEl = document.getElementById('hallMessage');
   const contentEl = document.getElementById('hallMessageContent');
 
-  // Décider si on affiche un cartouche
-  let showMessage = false;
   let label = 'V.';
   let msg = '';
+  let cta = 'ENTRER →';
+  let showMessage = false;
 
-  if (day === 1 && !dayData.murmurRead) {
-    // J1 — message d'accueil
+  if (day === 1 && !dayData.hallEntered) {
+    // PREMIER PASSAGE — V t'accueille vraiment dans la villa
     showMessage = true;
     label = 'V';
-    msg = 'Vous voici dans la villa. Cinq autres viendront, à mesure que la lumière baisse. Pour ce premier soir : <em>regardez l\'image que les autres ont de vous</em>. C\'est par là qu\'on commence.';
-  } else if (day >= 2 && day <= 7 && !dayData.murmurRead && typeof MORNING_TEXTS !== 'undefined' && MORNING_TEXTS[day-1]) {
-    // Jours 2-7 — Murmure du matin si pas encore lu
+    msg = 'Vous êtes le sixième. Les autres sont déjà là, quelque part dans la villa.<br><br>Vous les rencontrerez ce soir, à table. D\'ici là, prenez vos repères.<br><br>Cette villa est à vous pour sept jours.';
+  } else if (day >= 2 && day <= 7 && !dayData.hallEntered && typeof MORNING_TEXTS !== 'undefined' && MORNING_TEXTS[day-1]) {
+    // RETOUR LE MATIN — V donne le Murmure du jour
     showMessage = true;
     label = `MURMURE · J${day}`;
-    msg = MORNING_TEXTS[day-1].text || '';
+    const morning = MORNING_TEXTS[day-1];
+    msg = (morning.text || '').replace(/\n\n/g, '<br><br>');
   }
 
   if (showMessage) {
     contentEl.innerHTML = `
       <span class="hall-msg-label">${label}</span>
       <span class="hall-msg-text">${msg}</span>
-      <span class="hall-msg-cta" onclick="dismissHallMessage()">EXPLORER →</span>
+      <span class="hall-msg-cta" onclick="enterHallProper()">${cta}</span>
     `;
     messageEl.classList.remove('hidden');
   } else {
-    // Pas de message à afficher : on cache le cartouche pour libérer les hotspots
+    // Déjà entré ce jour-là, on cache le cartouche directement
     messageEl.classList.add('hidden');
   }
 }
 
-function dismissHallMessage() {
-  document.getElementById('hallMessage').classList.add('hidden');
-  // Marquer le Murmure comme lu
+// Appelé quand le joueur tape ENTRER après le Murmure de V
+function enterHallProper() {
+  // Marquer que V a été entendu pour ce jour
   if (!gameState.daysData[gameState.currentDay]) gameState.daysData[gameState.currentDay] = {};
+  gameState.daysData[gameState.currentDay].hallEntered = true;
   gameState.daysData[gameState.currentDay].murmurRead = true;
   saveState();
+
+  // Cacher le cartouche
+  document.getElementById('hallMessage').classList.add('hidden');
+
+  // Révéler brièvement les passages (3 pulsations)
+  setTimeout(() => revealHallHotspots(), 400);
+}
+
+// Anime brièvement les hotspots (3 pulsations dorées) pour montrer où sont les passages
+function revealHallHotspots() {
+  const img = document.querySelector('#hall .hall-image');
+  if (!img) return;
+  // Retirer la classe puis la rajouter pour relancer l'animation
+  img.classList.remove('revealing');
+  // Force reflow
+  void img.offsetWidth;
+  img.classList.add('revealing');
+  // Retirer la classe après l'animation pour permettre de la relancer
+  setTimeout(() => img.classList.remove('revealing'), 2500);
+}
+
+function dismissHallMessage() {
+  document.getElementById('hallMessage').classList.add('hidden');
 }
 
 function goToRoom(roomId) {
