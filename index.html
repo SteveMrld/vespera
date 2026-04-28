@@ -2676,8 +2676,10 @@ const MURMURS = [
 
 // === LES 7 QUESTIONS DU SOIR ===
 const QUESTIONS = [
-  // J1 — L'image
-  '"Décrivez en une phrase l\'image que les autres ont de vous. Puis, en une seconde, ce qui dans cette image n\'est pas tout à fait vrai."',
+  // J1 — Question d'accueil (le joueur ne connait personne encore, on ne
+  // peut pas lui demander de l'introspection sur l'image qu'on a de lui).
+  // Sera utilisee pour permettre aux Invites de se presenter brievement.
+  '"Pourquoi êtes-vous venu à Vespera ? Une seule phrase. Honnête."',
   // J2 — Le doute
   '"Quelle est la dernière chose dont vous avez douté chez vous ? Pas chez les autres, chez vous."',
   // J3 — Le silence
@@ -4941,15 +4943,16 @@ function renderHall() {
     msg = 'Vous êtes le sixième. Les autres sont déjà là, quelque part dans la villa.<br><br>Vous les rencontrerez ce soir, à table. D\'ici là, prenez vos repères.<br><br>Cette villa est à vous pour sept jours.';
     cta = 'COMMENCER';
     ctaAction = 'startTutoStep1()';
-  } else if (day === 1 && gameState.tutoStep === 1) {
-    // ÉTAPE 1 — V désigne la salle à manger.
-    // On affiche le cartouche TANT QUE le joueur n'est pas passé en tutoStep 2
-    // (i.e. tant qu'il n'a pas fait son premier diner). Comme ça, s'il revient
-    // au Hall sans aller a table, le guide reste visible.
+  } else if (day === 1 && gameState.tutoStep === 1 && !dayData.hallEntered) {
+    // ETAPE 1 — V invite a explorer la villa avant le premier diner.
+    // Comme tous les hotspots sont accessibles des le J1, le joueur peut
+    // visiter Chambre, Bibliotheque, Couloir, Piscine librement. Quand il
+    // sera pret, il ira a table de lui-meme. Le cartouche se ferme une fois
+    // valide pour ne pas reapparaitre a chaque retour au Hall.
     showMessage = true;
     label = 'V';
-    msg = 'Allez à la salle à manger. Les autres vous attendent pour le premier dîner.';
-    cta = "J'Y VAIS";
+    msg = 'Avant le premier dîner, faites le tour. La villa parle, écoutez-la.<br><br>Allez voir ce que j\'ai laissé pour vous dans les pièces. Quand vous serez prêt, venez à la table.';
+    cta = 'JE PRENDS MES REPÈRES';
     ctaAction = 'startTutoStep1Confirm()';
   } else if (day === 1 && gameState.tutoStep === 2 && !dayData.hallEntered2) {
     // APRES LE 1ER DINER — V acte que les regles sont comprises
@@ -4990,13 +4993,14 @@ function startTutoStep1() {
   renderHall(); // Re-render pour afficher le message d'étape 1
 }
 
-// Confirmation étape 1 : on cache le cartouche et seul le hotspot Salle à manger est visible
+// Confirmation etape 1 : le joueur a lu le guide d'exploration. On cache
+// le cartouche et il peut visiter les pieces librement (les hotspots sont
+// deja accessibles depuis le V23b).
 function startTutoStep1Confirm() {
   if (!gameState.daysData[gameState.currentDay]) gameState.daysData[gameState.currentDay] = {};
   gameState.daysData[gameState.currentDay].hallEntered = true;
   saveState();
   document.getElementById('hallMessage').classList.add('hidden');
-  // La classe tuto-step-1 sur .hall-image fait que seul .hall-hot-stairs est visible
 }
 
 // Étape 2 du tuto : après le 1er dîner, V libère toutes les pièces avec cascade
