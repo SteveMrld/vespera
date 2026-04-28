@@ -478,6 +478,97 @@
     color: #0F1A2E;
   }
 
+  /* PROLOGUE DU 1ER DÎNER — V explique les règles au joueur.
+     Overlay plein écran qui couvre la scène salon. */
+  .salon-intro {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    box-sizing: border-box;
+    pointer-events: auto;
+    transition: opacity 0.7s ease;
+  }
+  .salon-intro.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .salon-intro-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 12, 24, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .salon-intro-panel {
+    position: relative;
+    z-index: 1;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+    padding: 8px 0;
+  }
+  .salon-intro-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #D4B870;
+    letter-spacing: 0.4em;
+    margin: 0 0 32px;
+  }
+  .salon-intro-text {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 300;
+    color: #EDE8DD;
+    line-height: 1.65;
+    letter-spacing: 0.01em;
+    margin: 0 0 36px;
+    min-height: 130px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .salon-intro-text.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .salon-intro-progress {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 0 32px;
+  }
+  .salon-intro-progress .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(212, 184, 112, 0.25);
+    transition: background 0.5s ease;
+  }
+  .salon-intro-progress .dot.done   { background: rgba(212, 184, 112, 0.55); }
+  .salon-intro-progress .dot.active { background: #F5DC96; box-shadow: 0 0 8px rgba(245, 220, 150, 0.6); }
+  .salon-intro-btn {
+    background: transparent;
+    border: 1px solid rgba(212, 184, 112, 0.5);
+    color: #D4B870;
+    padding: 14px 36px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.4s ease;
+  }
+  .salon-intro-btn:active {
+    background: rgba(212, 184, 112, 0.15);
+    color: #FFE9B0;
+    border-color: #F5DC96;
+  }
+
   /* SCÈNE MATIN — accueil quotidien */
   #morning { background: linear-gradient(180deg, #1F2A40 0%, #0F1A2E 100%); padding: 40px 32px; }
   .morning-content { text-align: center; max-width: 380px; opacity: 0; animation: fadeIn 1.6s ease forwards; }
@@ -1681,6 +1772,18 @@
     <div class="dev-row">
       <button type="button" class="dev-btn" onclick="devSkipToDay(7)">[dev] Sauter au J7</button>
       <button type="button" class="dev-btn" onclick="devSkipToCollapse()">[dev] Voir le Collapse</button>
+    </div>
+  </div>
+
+  <!-- PROLOGUE DU 1ER DÎNER : V explique les règles du jeu au joueur.
+       Ne s'affiche qu'une seule fois, au tout premier passage à la table. -->
+  <div id="salonIntro" class="salon-intro hidden">
+    <div class="salon-intro-backdrop"></div>
+    <div class="salon-intro-panel">
+      <p class="salon-intro-label">V.</p>
+      <p class="salon-intro-text" id="salonIntroText"></p>
+      <div class="salon-intro-progress" id="salonIntroProgress"></div>
+      <button type="button" class="salon-intro-btn" id="salonIntroBtn" onclick="advanceDinnerIntro()">CONTINUER →</button>
     </div>
   </div>
 </div>
@@ -3258,7 +3361,7 @@ function renderTableCenter() {
       hint.textContent = 'Tapez le centre pour lire les voix du soir.';
     } else {
       center.classList.add('has-action');
-      content.innerHTML = `<span class="center-label">QUESTION DU SOIR</span><span>"${QUESTIONS[dayIndex]}"</span><span class="center-cta">RÉPONDRE →</span>`;
+      content.innerHTML = `<span class="center-label">QUESTION DU SOIR</span><span>${QUESTIONS[dayIndex]}</span><span class="center-cta">RÉPONDRE →</span>`;
       hint.textContent = 'Tapez le centre pour répondre. Tapez un Sceau pour lire sa fiche.';
     }
   } else {
@@ -4180,6 +4283,76 @@ function closeRecap() {
 function goToSalon() {
   showScene('salon');
   renderSalon();
+  // Premier dîner : V explique les règles avant la première Question
+  maybeShowFirstDinnerIntro();
+}
+
+// === PROLOGUE DU 1ER DÎNER ===
+// V accueille le joueur à table et expose les règles du jeu :
+// les six Sceaux, la Clé, le rituel des Questions et l'accusation finale.
+// Ne se déclenche qu'une seule fois (gameState.firstDinnerIntroDone).
+const DINNER_INTRO_BEATS = [
+  "Bienvenue à la première table.<br><br>Vous êtes six. Six Sceaux autour de ce bois. Le vôtre, vous le portez. Voici les autres.",
+  "L'un de vous porte la Clé.<br><br>Une vérité qu'il garde. Une faille qu'il dissimule. Vous ne savez pas qui — pas encore.",
+  "Chaque soir, je vous poserai une Question.<br><br>Vous y répondrez en silence, sans donner votre nom. Le lendemain, à table, vous écouterez les six réponses et tenterez de deviner qui a dit quoi.",
+  "Au septième soir, vous direz qui vous pensez être le Porteur de la Clé.<br><br>Si vous trouvez juste, ce qu'il cachait devient vôtre. Sinon, c'est lui qui repart avec votre vérité.",
+  "Voici la première Question.<br><br>Lisez-la. Prenez le temps qu'il faut. Puis répondez."
+];
+
+let _dinnerIntroStep = 0;
+
+function maybeShowFirstDinnerIntro() {
+  if (gameState.firstDinnerIntroDone) return;
+  if (gameState.currentDay !== 1) return;
+  // On laisse le salon s'afficher d'abord, puis l'overlay se pose dessus
+  setTimeout(() => {
+    _dinnerIntroStep = 0;
+    showDinnerIntroBeat(0);
+    const overlay = document.getElementById('salonIntro');
+    if (overlay) overlay.classList.remove('hidden');
+  }, 350);
+}
+
+function showDinnerIntroBeat(idx) {
+  const total = DINNER_INTRO_BEATS.length;
+  const textEl = document.getElementById('salonIntroText');
+  const btnEl  = document.getElementById('salonIntroBtn');
+  const progressEl = document.getElementById('salonIntroProgress');
+  if (!textEl || !btnEl || !progressEl) return;
+
+  // Fade out, swap, fade in
+  textEl.classList.remove('visible');
+  setTimeout(() => {
+    textEl.innerHTML = DINNER_INTRO_BEATS[idx] || '';
+    textEl.classList.add('visible');
+  }, 250);
+
+  // Progress dots
+  progressEl.innerHTML = DINNER_INTRO_BEATS.map((_, i) => {
+    let cls = 'dot';
+    if (i < idx) cls += ' done';
+    else if (i === idx) cls += ' active';
+    return `<span class="${cls}"></span>`;
+  }).join('');
+
+  // Bouton final
+  btnEl.textContent = (idx === total - 1) ? "C'EST À MOI" : 'CONTINUER →';
+}
+
+function advanceDinnerIntro() {
+  _dinnerIntroStep++;
+  if (_dinnerIntroStep >= DINNER_INTRO_BEATS.length) {
+    closeFirstDinnerIntro();
+    return;
+  }
+  showDinnerIntroBeat(_dinnerIntroStep);
+}
+
+function closeFirstDinnerIntro() {
+  gameState.firstDinnerIntroDone = true;
+  saveState();
+  const overlay = document.getElementById('salonIntro');
+  if (overlay) overlay.classList.add('hidden');
 }
 
 // === HALL — hub central de la villa ===
