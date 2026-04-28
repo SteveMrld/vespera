@@ -188,6 +188,13 @@
      gloss. Une cire pressee posee sur le fond sombre, avec sa propre
      ombre portee. Les gravures or antique se tracent au trait.
      ============================================================ */
+  /* ============================================================
+     ACTE 2 : LE SCEAU DE CIRE — formation cinematique
+     Le sceau ne se contente plus d'apparaitre. Il se FORME : une
+     lueur chaude monte, une cire molten s'etale, le V est presse
+     dans la cire, puis la cire refroidit vers son oxblood mat
+     final. Pas une simple animation de tracé : un rituel.
+     ============================================================ */
   .ritual-seal-container {
     width: 200px;
     height: 200px;
@@ -197,14 +204,161 @@
     align-items: center;
     justify-content: center;
   }
+
+  /* Halo chaud qui pulse autour avant et pendant la formation,
+     comme la chaleur de la cire fondue. */
+  .ritual-seal-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 220%;
+    height: 220%;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 140, 90, 0.25) 0%,
+      rgba(180, 60, 50, 0.12) 30%,
+      rgba(80, 20, 30, 0.06) 55%,
+      transparent 75%);
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ritual-seal-svg.drawing ~ .ritual-seal-container::before,
+  .ritual-seal-container.heat::before {
+    animation: sealHeatHalo 8s ease-out forwards;
+  }
+  @keyframes sealHeatHalo {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+    18%  { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+    50%  { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0.25; transform: translate(-50%, -50%) scale(0.95); }
+  }
+
+  /* La goutte de cire qui tombe avant que le sceau se forme.
+     Petit ovale rouge sombre qui translate du haut vers le centre,
+     puis s'etale en eclaboussure. */
+  .ritual-wax-drop {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 14px;
+    height: 22px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background: radial-gradient(
+      ellipse at 35% 30%,
+      #C03840 0%,
+      #7A1E28 50%,
+      #2A0810 100%);
+    transform: translate(-50%, -130%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+    box-shadow:
+      0 0 12px rgba(180, 60, 50, 0.6),
+      0 0 24px rgba(255, 100, 80, 0.3);
+  }
+  .ritual-seal-container.dropping .ritual-wax-drop {
+    animation: waxDrop 1.2s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+  }
+  @keyframes waxDrop {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -130%) scaleY(0.6);
+    }
+    18% {
+      opacity: 1;
+      transform: translate(-50%, -130%) scaleY(0.6);
+    }
+    65% {
+      opacity: 1;
+      transform: translate(-50%, 22%) scaleY(1.6) scaleX(0.8);
+    }
+    78% {
+      opacity: 1;
+      transform: translate(-50%, 32%) scaleY(0.4) scaleX(2.4);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, 32%) scaleY(0.2) scaleX(3.5);
+    }
+  }
+
   .ritual-seal-svg {
     position: relative;
     z-index: 1;
     width: 100%;
     height: 100%;
-    transition: opacity 0.8s ease;
+    opacity: 0;
+    transform: scale(0.4);
+    transform-origin: center center;
   }
-  /* Plus d'aura ni d'animation flottante : le sceau est pose, calme. */
+  /* Formation de la cire : le SVG entier scale up depuis 0,
+     avec filter qui demarre molten chaud et refroidit. */
+  .ritual-seal-svg.forming {
+    animation: sealForm 3s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+  }
+  @keyframes sealForm {
+    0% {
+      opacity: 0;
+      transform: scale(0.05);
+      filter:
+        brightness(2.8) saturate(2) hue-rotate(-20deg)
+        drop-shadow(0 0 30px rgba(255, 100, 60, 0.9));
+    }
+    20% {
+      opacity: 0.95;
+      transform: scale(0.9);
+      filter:
+        brightness(2.2) saturate(1.7) hue-rotate(-12deg)
+        drop-shadow(0 0 24px rgba(255, 130, 80, 0.85));
+    }
+    40% {
+      opacity: 1;
+      transform: scale(1.05);
+      filter:
+        brightness(1.7) saturate(1.4) hue-rotate(-6deg)
+        drop-shadow(0 0 18px rgba(220, 100, 70, 0.7));
+    }
+    60% {
+      opacity: 1;
+      transform: scale(0.98);
+      filter:
+        brightness(1.3) saturate(1.2) hue-rotate(-2deg)
+        drop-shadow(0 0 12px rgba(180, 80, 60, 0.5));
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+      filter:
+        brightness(1) saturate(1) hue-rotate(0deg)
+        drop-shadow(0 8px 18px rgba(0, 0, 0, 0.6));
+    }
+  }
+
+  /* Etat final calme apres formation - tres legere respiration */
+  .ritual-seal-svg.formed {
+    opacity: 1;
+    transform: scale(1);
+    filter:
+      brightness(1) saturate(1)
+      drop-shadow(0 8px 18px rgba(0, 0, 0, 0.6));
+    animation: sealBreathe 6s ease-in-out infinite;
+  }
+  @keyframes sealBreathe {
+    0%, 100% {
+      filter:
+        brightness(1) saturate(1)
+        drop-shadow(0 8px 18px rgba(0, 0, 0, 0.6));
+    }
+    50% {
+      filter:
+        brightness(1.06) saturate(1.05)
+        drop-shadow(0 8px 22px rgba(120, 30, 30, 0.4));
+    }
+  }
 
   /* Les gravures or antique sourd qui se dessinent.
      Couleur volontairement mate et chaude pour s'harmoniser avec
@@ -220,7 +374,7 @@
     filter: drop-shadow(0 0 1px rgba(60, 20, 10, 0.7));
     transition: opacity 0.8s ease;
   }
-  .ritual-seal-svg.drawing .ritual-seal-line {
+  .ritual-seal-svg.engraving .ritual-seal-line {
     animation: drawSealLine var(--dur, 0.8s) var(--del, 0s) cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   @keyframes drawSealLine {
@@ -233,11 +387,36 @@
     opacity: 0;
     filter: drop-shadow(0 0 1px rgba(60, 20, 10, 0.7));
   }
-  .ritual-seal-svg.drawing .ritual-seal-dot {
+  .ritual-seal-svg.engraving .ritual-seal-dot {
     animation: dotFadeIn 0.4s var(--del, 0s) ease forwards;
   }
   @keyframes dotFadeIn {
     to { opacity: 1; }
+  }
+
+  /* Flash bref de pression quand le V est completement grave dans
+     la cire. Effet d'impact du sceau qui s'imprime. */
+  .ritual-press-flash {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 230, 180, 0.7) 0%, rgba(255, 200, 150, 0.3) 40%, transparent 70%);
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 3;
+    mix-blend-mode: screen;
+  }
+  .ritual-seal-container.pressed .ritual-press-flash {
+    animation: pressFlash 0.6s ease-out forwards;
+  }
+  @keyframes pressFlash {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+    20%  { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
   }
 
   /* Sur ecran court (paysage tablette), on retrecit le sceau pour
@@ -251,44 +430,95 @@
     .ritual-act { gap: 12px; padding: 16px 20px 20px; }
   }
 
-  /* === EMBRASEMENT ET DISSOLUTION ===
-     Au tap "BRISER LE SCEAU", le sceau monte en intensité (brightness,
-     saturate, glow), puis se dissout en grandissant pendant qu'un flash
-     plein-écran prend le relais. Pas de séparation horizontale moche. */
+  /* === BRISURE DU SCEAU ===
+     Quand on tape BRISER, le sceau se fissure, monte en intensite,
+     puis vole en eclats qui partent vers l'exterieur. Plus de simple
+     fade : un vrai eclatement avant le flash plein-ecran. */
   .ritual-seal-svg.dissolving {
-    animation: sealDissolve 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: sealShatter 1.2s cubic-bezier(0.4, 0, 0.6, 1) forwards;
   }
-  @keyframes sealDissolve {
+  @keyframes sealShatter {
     0% {
       opacity: 1;
-      transform: scale(1);
+      transform: scale(1) rotate(0deg);
       filter:
-        drop-shadow(0 12px 32px rgba(0,0,0,0.7))
-        drop-shadow(0 0 32px rgba(212,184,112,0.25));
+        brightness(1) saturate(1)
+        drop-shadow(0 8px 18px rgba(0, 0, 0, 0.6));
     }
-    35% {
+    25% {
       opacity: 1;
-      transform: scale(1.1);
+      transform: scale(1.08) rotate(-0.5deg);
       filter:
-        drop-shadow(0 0 60px rgba(245,220,150,0.95))
-        drop-shadow(0 0 120px rgba(245,220,150,0.7))
-        brightness(1.6) saturate(1.4);
+        brightness(2) saturate(1.5)
+        drop-shadow(0 0 50px rgba(255, 200, 150, 0.95))
+        drop-shadow(0 0 100px rgba(255, 180, 130, 0.6));
+    }
+    55% {
+      opacity: 0.85;
+      transform: scale(1.25) rotate(2deg);
+      filter:
+        brightness(2.6) saturate(1.7)
+        drop-shadow(0 0 80px rgba(255, 230, 200, 1))
+        drop-shadow(0 0 160px rgba(255, 210, 170, 0.7));
     }
     100% {
       opacity: 0;
-      transform: scale(1.7);
+      transform: scale(1.8) rotate(8deg);
       filter:
-        drop-shadow(0 0 100px rgba(245,220,150,1))
-        brightness(2.5) saturate(1.5);
+        brightness(3) saturate(2)
+        drop-shadow(0 0 120px rgba(255, 240, 220, 1));
     }
   }
   .ritual-seal-svg.dissolving .ritual-seal-line,
   .ritual-seal-svg.dissolving .ritual-seal-dot {
-    animation: lineGlow 0.8s ease-out forwards;
+    animation: lineGlow 0.9s ease-out forwards;
   }
   @keyframes lineGlow {
     0%   { filter: drop-shadow(0 0 3px rgba(245,220,150,0.7)); }
-    100% { filter: drop-shadow(0 0 12px rgba(255,240,200,1)) brightness(1.8); }
+    100% { filter: drop-shadow(0 0 16px rgba(255,240,200,1)) brightness(2); }
+  }
+
+  /* Eclats de cire qui partent en eventail au moment de la brisure.
+     Six fragments triangulaires qui font animation translate + rotate
+     + fade. Visibles uniquement pendant la brisure. */
+  .ritual-shards {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .ritual-shard {
+    position: absolute;
+    width: 14px;
+    height: 26px;
+    background: linear-gradient(180deg, #4A1822 0%, #2E0A12 70%, #160508 100%);
+    border-radius: 30% 30% 50% 50% / 40% 40% 60% 60%;
+    left: -7px;
+    top: -13px;
+    opacity: 0;
+    box-shadow:
+      0 0 6px rgba(60, 20, 30, 0.4),
+      inset 1px 1px 2px rgba(180, 80, 90, 0.25);
+  }
+  .ritual-seal-container.shattering .ritual-shard {
+    animation: shardFly 1.4s cubic-bezier(0.3, 0.7, 0.4, 1) forwards;
+  }
+  @keyframes shardFly {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0) rotate(var(--shard-rot, 0deg)) scale(0.3);
+    }
+    15% {
+      opacity: 1;
+      transform: translate(calc(var(--shard-dx, 60px) * 0.2), calc(var(--shard-dy, -60px) * 0.2)) rotate(var(--shard-rot, 0deg)) scale(0.9);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--shard-dx, 60px), var(--shard-dy, -60px)) rotate(calc(var(--shard-rot, 0deg) + 180deg)) scale(0.4);
+    }
   }
 
   /* Flash plein-écran qui jaillit du sceau */
@@ -1949,9 +2179,12 @@
       <button class="ritual-btn-act" onclick="ritualGoToAct2()">TENDRE LA MAIN →</button>
     </div>
 
-    <!-- ACTE 2 : LE SCEAU DE CIRE — il se dessine, puis s'embrase -->
+    <!-- ACTE 2 : LE SCEAU DE CIRE — il se forme puis vole en eclats -->
     <div class="ritual-act ritual-act-2" id="ritualAct2">
-      <div class="ritual-seal-container">
+      <div class="ritual-seal-container" id="ritualSealContainer">
+        <!-- Goutte de cire qui tombe et splatch (avant le SVG) -->
+        <div class="ritual-wax-drop"></div>
+        <!-- Le sceau lui-meme, en SVG -->
         <svg class="ritual-seal-svg" id="ritualSealSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <!-- Cire matte, sombre, sourde - oxblood profond, pas de rouge vif -->
@@ -2073,6 +2306,19 @@
             <circle class="ritual-seal-dot" cx="100" cy="151" r="1.5" style="--del:3.4s;" />
           </g>
         </svg>
+        <!-- Flash de pression quand le V est completement grave -->
+        <div class="ritual-press-flash"></div>
+        <!-- Eclats qui partent en eventail au moment de la brisure -->
+        <div class="ritual-shards" id="ritualShards">
+          <div class="ritual-shard" style="--shard-dx: -85px; --shard-dy: -55px; --shard-rot: -35deg;"></div>
+          <div class="ritual-shard" style="--shard-dx: 0px;   --shard-dy: -100px; --shard-rot: 0deg;"></div>
+          <div class="ritual-shard" style="--shard-dx: 85px;  --shard-dy: -55px; --shard-rot: 35deg;"></div>
+          <div class="ritual-shard" style="--shard-dx: 100px; --shard-dy: 30px;  --shard-rot: 80deg;"></div>
+          <div class="ritual-shard" style="--shard-dx: 30px;  --shard-dy: 95px;  --shard-rot: 145deg;"></div>
+          <div class="ritual-shard" style="--shard-dx: -60px; --shard-dy: 80px;  --shard-rot: -150deg;"></div>
+          <div class="ritual-shard" style="--shard-dx: -100px; --shard-dy: 10px; --shard-rot: -100deg;"></div>
+          <div class="ritual-shard" style="--shard-dx: 50px;  --shard-dy: -20px; --shard-rot: 60deg;"></div>
+        </div>
       </div>
       <div class="ritual-text-block">
         <p class="ritual-text-soft" id="ritualSealHint">Le sceau s'écrit pour vous.<br>Brisez-le quand il sera complet.</p>
@@ -3900,35 +4146,94 @@ function showRitualAct(actNumber) {
 function ritualGoToAct2() {
   showRitualAct(2);
 
-  // S'assurer que l'acte 2 démarre dans un état propre (pas de "ready" résiduel)
-  const act = document.getElementById('ritualAct2');
-  if (act) act.classList.remove('ritual-seal-ready');
+  // Reset complet du conteneur (au cas ou on rejoue le rituel)
+  const container = document.getElementById('ritualSealContainer');
+  const svg = document.getElementById('ritualSealSvg');
+  if (container) {
+    container.classList.remove('dropping', 'pressed', 'shattering', 'heat');
+  }
+  if (svg) {
+    svg.classList.remove('drawing', 'dissolving', 'forming', 'engraving', 'formed');
+  }
 
-  // Petit délai pour laisser l'acte 2 fade-in, puis on lance le tracé du sceau
+  // Le hint commence cache, il apparait quand le sceau est forme
+  const hint = document.getElementById('ritualSealHint');
+  if (hint) { hint.style.opacity = '0'; hint.style.transition = 'opacity 0.8s ease'; }
+  const breakBtn = document.getElementById('ritualBreakBtn');
+  if (breakBtn) {
+    breakBtn.style.opacity = '0';
+    breakBtn.style.pointerEvents = 'none';
+    breakBtn.style.transition = 'opacity 0.8s ease';
+  }
+
+  // SEQUENCE CINEMATIQUE de formation du sceau :
+  // 1) Halo de chaleur monte (0s, dure 8s en background)
+  // 2) Goutte de cire tombe (0.6s -> 1.8s)
+  // 3) Le SVG du sceau se forme molten -> mat (1.8s -> 4.8s)
+  // 4) Les gravures du V se tracent sur la cire (4.8s -> 8.2s)
+  // 5) Flash de pression au moment ou le V termine (8.0s)
+  // 6) Etat final, texte et bouton apparaissent (8.5s)
+
+  // Phase 1 : halo de chaleur
   setTimeout(() => {
-    const svg = document.getElementById('ritualSealSvg');
-    if (svg) {
-      // Reset complet (au cas où on rejoue le rituel)
-      svg.classList.remove('drawing', 'dissolving');
-      // Force reflow pour relancer les animations CSS depuis zéro
-      void svg.offsetWidth;
-      svg.classList.add('drawing');
+    if (container) {
+      void container.offsetWidth;
+      container.classList.add('heat');
     }
-    // Une fois le tracé terminé (~3.4s), on autorise le tap sur "Briser le sceau"
-    setTimeout(() => {
-      const a = document.getElementById('ritualAct2');
-      if (a) a.classList.add('ritual-seal-ready');
-    }, 3400);
+  }, 200);
+
+  // Phase 2 : la goutte de cire tombe
+  setTimeout(() => {
+    if (container) {
+      void container.offsetWidth;
+      container.classList.add('dropping');
+    }
   }, 600);
+
+  // Phase 3 : le sceau se forme
+  setTimeout(() => {
+    if (svg) {
+      void svg.offsetWidth;
+      svg.classList.add('forming');
+    }
+  }, 1800);
+
+  // Phase 4 : les gravures se tracent (le V est presse dans la cire)
+  setTimeout(() => {
+    if (svg) svg.classList.add('engraving');
+  }, 4800);
+
+  // Phase 5 : flash de pression au moment ou le V est complet
+  setTimeout(() => {
+    if (container) {
+      void container.offsetWidth;
+      container.classList.add('pressed');
+    }
+  }, 8000);
+
+  // Phase 6 : etat final, le sceau respire et les controles apparaissent
+  setTimeout(() => {
+    if (svg) {
+      svg.classList.remove('forming');
+      svg.classList.add('formed');
+    }
+    if (hint) hint.style.opacity = '1';
+    if (breakBtn) {
+      breakBtn.style.opacity = '1';
+      breakBtn.style.pointerEvents = 'auto';
+    }
+    const a = document.getElementById('ritualAct2');
+    if (a) a.classList.add('ritual-seal-ready');
+  }, 8500);
 }
 
-// ACTE 2 : Le joueur brise le sceau. Le sceau s'embrase et se dissout
-// dans un flash plein-écran. Plus de séparation horizontale moche.
+// ACTE 2 : Le joueur brise le sceau. Il vole en eclats, puis flash.
 function ritualBreakSeal() {
   const svg = document.getElementById('ritualSealSvg');
+  const container = document.getElementById('ritualSealContainer');
   if (!svg) return;
 
-  // Empêche les double-clics
+  // Empeche les double-clics
   const btn = document.getElementById('ritualBreakBtn');
   if (btn) {
     btn.style.pointerEvents = 'none';
@@ -3938,35 +4243,42 @@ function ritualBreakSeal() {
   // Vibration de la rupture (deux temps : pression + brisure)
   if (navigator.vibrate) navigator.vibrate([20, 40, 80, 60, 30]);
 
-  // Le hint disparaît
+  // Le hint disparait
   const hint = document.getElementById('ritualSealHint');
   if (hint) hint.style.opacity = '0';
 
-  // Le sceau s'embrase puis se dissout
-  svg.classList.remove('drawing');
+  // Le sceau s'embrase, monte en intensite, puis vole en eclats
+  svg.classList.remove('drawing', 'engraving', 'forming', 'formed');
   svg.classList.add('dissolving');
 
-  // Flash plein-écran (légèrement décalé pour synchro avec le pic d'embrasement)
+  // Les eclats partent en eventail (legerement decales pour donner du rythme)
+  setTimeout(() => {
+    if (container) container.classList.add('shattering');
+  }, 200);
+
+  // Flash plein-ecran au pic d'embrasement
   setTimeout(() => {
     const flash = document.getElementById('ritualFlash');
     if (flash) {
       flash.classList.remove('flashing');
-      void flash.offsetWidth; // reflow pour relancer l'anim
+      void flash.offsetWidth;
       flash.classList.add('flashing');
     }
-  }, 180);
+  }, 550);
 
-  // Bascule vers l'acte de révélation au pic du flash
+  // Bascule vers l'acte de revelation au pic du flash, mais avec un
+  // delai un peu plus long pour que le sceau soit bien parti et qu'on
+  // ne voie pas les deux actes superposes.
   setTimeout(() => {
     showRitualAct(3);
     ritualRevealMedallion();
-  }, 850);
+  }, 1100);
 
-  // Nettoyage du flash après animation
+  // Nettoyage du flash apres animation
   setTimeout(() => {
     const flash = document.getElementById('ritualFlash');
     if (flash) flash.classList.remove('flashing');
-  }, 1900);
+  }, 2200);
 }
 
 // ACTE 3 (fusionné) : la villa nomme le joueur en faisant défiler les
