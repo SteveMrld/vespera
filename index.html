@@ -188,7 +188,7 @@
   .hall-message-content .hall-msg-sig { display: block; margin-top: 10px; font-family: 'Fraunces', serif; font-style: italic; font-size: 11px; color: #D4B870; }
   .hall-message-content .hall-msg-cta { display: block; margin-top: 10px; font-family: 'Inter', sans-serif; font-style: normal; font-size: 9px; color: #D4B870; letter-spacing: 0.3em; cursor: pointer; }
 
-  /* HOTSPOTS — petit point doré pulsant permanent au centre de chaque zone */
+  /* HOTSPOTS — point lumineux + cartouche élégant avec nom de pièce */
   .hall-hotspot {
     position: absolute;
     background: transparent;
@@ -197,72 +197,153 @@
     padding: 0;
     overflow: visible;
     z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
-  /* Le point lumineux au centre du hotspot */
+
+  /* Le point lumineux principal — plus généreux, halo dynamique */
   .hall-hotspot::before {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    background: rgba(245, 220, 150, 0.85);
+    background: radial-gradient(circle, #FFE9B0 0%, #F5DC96 40%, rgba(212,184,112,0.6) 100%);
     box-shadow:
-      0 0 12px rgba(245, 220, 150, 0.9),
-      0 0 24px rgba(212, 184, 112, 0.5);
+      0 0 16px rgba(245, 220, 150, 0.95),
+      0 0 32px rgba(245, 220, 150, 0.5),
+      0 0 50px rgba(212, 184, 112, 0.3);
     transform: translate(-50%, -50%);
-    animation: dotPulse 2.4s ease-in-out infinite;
+    animation: dotBreathe 2.8s ease-in-out infinite;
+    z-index: 2;
   }
-  @keyframes dotPulse {
+
+  /* Halo extérieur qui s'étire — anneau qui s'éloigne et disparaît */
+  .hall-hotspot::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(245, 220, 150, 0.7);
+    transform: translate(-50%, -50%);
+    animation: ringExpand 2.8s ease-out infinite;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  @keyframes dotBreathe {
     0%, 100% {
-      opacity: 0.55;
-      box-shadow: 0 0 8px rgba(245, 220, 150, 0.6), 0 0 16px rgba(212, 184, 112, 0.3);
+      width: 12px; height: 12px;
+      opacity: 0.85;
+      box-shadow: 0 0 12px rgba(245, 220, 150, 0.8), 0 0 24px rgba(245, 220, 150, 0.4);
     }
     50% {
+      width: 16px; height: 16px;
       opacity: 1;
-      box-shadow: 0 0 14px rgba(245, 220, 150, 1), 0 0 28px rgba(212, 184, 112, 0.7);
+      box-shadow: 0 0 18px rgba(245, 220, 150, 1), 0 0 40px rgba(245, 220, 150, 0.6), 0 0 60px rgba(212, 184, 112, 0.35);
     }
   }
-  .hall-hotspot.locked::before {
-    background: rgba(168, 160, 149, 0.6);
-    box-shadow: 0 0 8px rgba(168, 160, 149, 0.5);
-    animation-duration: 4s;
+
+  @keyframes ringExpand {
+    0% {
+      width: 14px; height: 14px;
+      opacity: 0.8;
+      border-color: rgba(245, 220, 150, 0.7);
+    }
+    100% {
+      width: 50px; height: 50px;
+      opacity: 0;
+      border-color: rgba(245, 220, 150, 0);
+    }
   }
-  /* Au tap : le point grandit + le nom de la pièce apparaît */
+
+  .hall-hotspot.locked::before {
+    background: radial-gradient(circle, rgba(220,210,195,0.7) 0%, rgba(168,160,149,0.6) 100%);
+    box-shadow: 0 0 10px rgba(168, 160, 149, 0.5);
+    animation-duration: 4.5s;
+  }
+  .hall-hotspot.locked::after {
+    border-color: rgba(168, 160, 149, 0.5);
+    animation-duration: 4.5s;
+  }
+
+  /* Cartouche du nom de la pièce — plaque élégante sous le point */
+  .hall-hotspot-label {
+    position: absolute;
+    top: calc(50% + 22px);
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    font-weight: 400;
+    color: #F5DC96;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    pointer-events: none;
+    background: rgba(8, 6, 4, 0.78);
+    padding: 5px 12px;
+    border: 1px solid rgba(245, 220, 150, 0.35);
+    border-radius: 2px;
+    backdrop-filter: blur(2px);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: labelFloat 4s ease-in-out infinite;
+  }
+
+  @keyframes labelFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-2px); }
+  }
+
+  .hall-hotspot.locked .hall-hotspot-label {
+    color: rgba(220, 210, 195, 0.85);
+    border-color: rgba(168, 160, 149, 0.3);
+  }
+
+  /* Au tap : tout grandit, le cartouche devient solide */
   .hall-hotspot:active::before {
-    width: 18px;
-    height: 18px;
-    background: #F5DC96;
-    box-shadow: 0 0 22px rgba(245, 220, 150, 1), 0 0 40px rgba(212, 184, 112, 0.8);
+    width: 22px;
+    height: 22px;
+    background: radial-gradient(circle, #FFFFFF 0%, #FFE9B0 40%, #F5DC96 100%);
+    box-shadow: 0 0 28px #FFE9B0, 0 0 60px rgba(245, 220, 150, 0.9);
+    animation: none;
+  }
+  .hall-hotspot:active::after {
+    animation: ringBurst 0.6s ease-out 1;
+  }
+  @keyframes ringBurst {
+    0% {
+      width: 14px; height: 14px;
+      opacity: 1;
+      border-color: rgba(255, 255, 255, 1);
+      border-width: 2px;
+    }
+    100% {
+      width: 80px; height: 80px;
+      opacity: 0;
+      border-color: rgba(245, 220, 150, 0);
+      border-width: 1px;
+    }
+  }
+  .hall-hotspot:active .hall-hotspot-label {
+    background: rgba(245, 220, 150, 0.95);
+    color: #1A0F08;
+    border-color: #F5DC96;
+    font-size: 15px;
+    text-shadow: none;
     animation: none;
   }
 
-  /* Nom de la pièce — toujours présent mais semi-transparent, plus net au tap */
-  .hall-hotspot-label {
-    position: absolute;
-    top: calc(50% + 16px);
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 11px;
-    color: rgba(245, 220, 150, 0.7);
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-    pointer-events: none;
-    text-shadow: 0 1px 6px rgba(0,0,0,1), 0 1px 3px rgba(0,0,0,0.9);
-    transition: all 0.3s;
-  }
-  .hall-hotspot.locked .hall-hotspot-label {
-    color: rgba(168, 160, 149, 0.55);
-  }
-  .hall-hotspot:active .hall-hotspot-label {
-    color: #F5DC96;
-    font-size: 13px;
-  }
-
-  /* On retire le hint en bas — plus besoin */
+  /* Le hint en bas reste supprimé */
   .hall-hint { display: none; }
 
   /* Positions des points lumineux — pile sur les éléments cliquables */
