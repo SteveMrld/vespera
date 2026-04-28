@@ -324,21 +324,22 @@
     top: calc(50% + 22px);
     left: 50%;
     transform: translateX(-50%) translateY(0);
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 14px;
-    font-weight: 400;
-    color: #F5DC96;
-    letter-spacing: 0.06em;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 500;
+    color: #FFFFFF;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
     white-space: nowrap;
     pointer-events: none;
-    background: rgba(8, 6, 4, 0.78);
-    padding: 5px 12px;
-    border: 1px solid rgba(245, 220, 150, 0.35);
+    background: rgba(8, 6, 4, 0.88);
+    padding: 7px 14px;
+    border: 1px solid rgba(245, 220, 150, 0.5);
     border-radius: 2px;
-    backdrop-filter: blur(2px);
-    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    backdrop-filter: blur(3px);
+    text-shadow: 0 1px 3px rgba(0,0,0,1);
+    box-shadow: 0 2px 14px rgba(0,0,0,0.6);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     animation: labelFloat 4s ease-in-out infinite;
   }
@@ -349,8 +350,8 @@
   }
 
   .hall-hotspot.locked .hall-hotspot-label {
-    color: rgba(220, 210, 195, 0.85);
-    border-color: rgba(168, 160, 149, 0.3);
+    color: rgba(255, 255, 255, 0.85);
+    border-color: rgba(168, 160, 149, 0.4);
   }
 
   /* Au tap : tout grandit, le cartouche devient solide */
@@ -379,10 +380,10 @@
     }
   }
   .hall-hotspot:active .hall-hotspot-label {
-    background: rgba(245, 220, 150, 0.95);
+    background: rgba(245, 220, 150, 0.98);
     color: #1A0F08;
     border-color: #F5DC96;
-    font-size: 15px;
+    font-size: 13px;
     text-shadow: none;
     animation: none;
   }
