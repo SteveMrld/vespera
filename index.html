@@ -5240,12 +5240,12 @@ function renderHall() {
     msg = 'Vous êtes le sixième. Les autres sont déjà là, quelque part dans la villa.<br><br>Vous les rencontrerez ce soir, à table. D\'ici là, prenez vos repères.<br><br>Cette villa est à vous pour sept jours.';
     cta = 'COMMENCER';
     ctaAction = 'startTutoStep1()';
-  } else if (day === 1 && gameState.tutoStep === 1 && !dayData.hallEntered) {
+  } else if (day === 1 && gameState.tutoStep === 1) {
     // ETAPE 1 — V invite a explorer la villa avant le premier diner.
-    // Comme tous les hotspots sont accessibles des le J1, le joueur peut
-    // visiter Chambre, Bibliotheque, Couloir, Piscine librement. Quand il
-    // sera pret, il ira a table de lui-meme. Le cartouche se ferme une fois
-    // valide pour ne pas reapparaitre a chaque retour au Hall.
+    // Le cartouche reste affiche tant que tutoStep === 1 (jusqu'au
+    // premier diner). Si le joueur le ferme et revient au Hall, le
+    // cartouche revient. Ne disparait que si le joueur passe en
+    // tutoStep 2 (apres le 1er diner).
     showMessage = true;
     label = 'V';
     msg = 'Avant le premier dîner, faites le tour. La villa parle, écoutez-la.<br><br>Allez voir ce que j\'ai laissé pour vous dans les pièces. Quand vous serez prêt, venez à la table.';
@@ -5258,8 +5258,11 @@ function renderHall() {
     msg = 'Vous savez maintenant ce qui vous attend.<br><br>La villa est à vous. Lisez ses pièces, écoutez ce qu\'elles disent. À demain, à table.';
     cta = 'EXPLORER';
     ctaAction = 'startTutoStep2()';
-  } else if (day >= 2 && day <= 7 && !dayData.hallEntered && SEASON_1_CONTENT[day]) {
+  } else if (day >= 2 && day <= 7 && SEASON_1_CONTENT[day]) {
     // J2-J7 — Murmure du matin (lu depuis SEASON_1_CONTENT)
+    // Le cartouche reste accessible chaque fois que le joueur revient
+    // au Hall, le Murmure n'est pas une etape qu'on dismiss une fois
+    // pour toutes - c'est le ton de la journee.
     showMessage = true;
     label = `MURMURE · J${day} · ${SEASON_1_CONTENT[day].theme}`;
     msg = (SEASON_1_CONTENT[day].murmur || '').replace(/\n\n/g, '<br><br>');
