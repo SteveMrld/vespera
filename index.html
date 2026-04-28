@@ -71,7 +71,16 @@
   .seuil-step { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; text-align: center; }
   .seuil-step.active { display: flex; animation: fadeIn 1.4s ease forwards; }
   .seuil-label { font-family: 'Inter', sans-serif; font-size: 11px; color: #D4B870; letter-spacing: 0.4em; margin-bottom: 50px; }
-  .seuil-text { font-family: 'Fraunces', serif; font-size: 19px;  color: #EDE8DD; line-height: 1.85; max-width: 340px; }
+  .seuil-text {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 400;
+    font-variation-settings: "opsz" 14, "SOFT" 50;
+    color: #EDE8DD;
+    line-height: 1.7;
+    max-width: 340px;
+    letter-spacing: 0.005em;
+  }
   .seuil-sig { font-family: 'Fraunces', serif; font-size: 14px; color: #D4B870; letter-spacing: 0.2em; margin-top: 50px; margin-bottom: 50px; }
   .seuil-btn { background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 14px 32px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; border-radius: 2px; }
   .seuil-btn:active { background: rgba(212,184,112,0.15); color: #EDE8DD; }
@@ -2558,7 +2567,7 @@ const GUEST_PROFILES = {
     sunday: 'Classe et trie. Met de l\'ordre dans des choses qui n\'en avaient pas besoin.',
     color: 'Le gris-bleu de l\'ardoise. Vêtements, intérieur, choix esthétiques.',
     word: '"Tenu". Sans le décider. Aussi : "patiemment".',
-    lastCried: 'À l\'enterrement de son grand-père, il y a onze ans.',
+    keptObject: `Une bague d'homme, en or pâle, qu'il ne porte pas et ne range pas.`,
     disappearance: 'Une île au nord, au bord d\'une mer froide.',
     belief: 'Que la patience est une forme de courage qu\'on n\'enseigne plus.',
     self: 'Un homme qui a appris à ne pas demander, et qui le regrette.'
@@ -2572,7 +2581,7 @@ const GUEST_PROFILES = {
     sunday: 'Marche. Des kilomètres. Sans destination précise.',
     color: 'Plomb, gris froid. Comme la couleur de l\'eau d\'un canal en novembre.',
     word: '"Bon", "Franchement". Sans le décider.',
-    lastCried: 'Il y a six ans, après une rupture qu\'il a encore en travers.',
+    keptObject: `Un carnet noir relié, qu'il transporte partout sans jamais le montrer.`,
     disappearance: 'Dans le sud, près d\'une plage déserte hors saison.',
     belief: 'Que les gens ne changent pas vraiment.',
     self: 'Un type qui n\'a jamais su demander, et qui en veut à tout le monde de ne pas avoir deviné.'
@@ -2586,7 +2595,7 @@ const GUEST_PROFILES = {
     sunday: 'Relit des passages d\'auteurs qu\'elle aime. Annie Ernaux, Marguerite Duras, Pascal Quignard.',
     color: 'Brouillard. Une couleur qui n\'en est pas vraiment une.',
     word: '"Peut-être". Tout le temps. Aussi : "simplement".',
-    lastCried: 'Récemment, en lisant un manuscrit qu\'elle a refusé puis regretté.',
+    keptObject: `Un cahier de citations recopiées, qu'elle ne fait lire à personne.`,
     disappearance: 'Dans une maison isolée à la campagne, sans Wi-Fi.',
     belief: 'Qu\'on n\'écrit jamais ce qu\'on voulait dire.',
     self: 'Une femme à qui l\'on prête tant qu\'elle a fini par ne plus se reconnaître dans ce qu\'on lui rendait.'
@@ -2600,7 +2609,7 @@ const GUEST_PROFILES = {
     sunday: 'Court. Qu\'il pleuve ou non. Douze kilomètres comme une discipline.',
     color: 'Encre. Le noir bleuté du stylo plume, et de tout ce qu\'elle achète.',
     word: '"Verdict". Aussi : "désappris".',
-    lastCried: 'Elle ne sait plus exactement. Peut-être il y a deux ans.',
+    keptObject: `Une photo polaroid d'elle plus jeune, où on ne voit pas son visage.`,
     disappearance: 'Une retraite spirituelle silencieuse. Ou rien.',
     belief: 'Que la rigueur protège.',
     self: 'Une lame qui s\'est faite à elle-même, et qui voudrait apprendre à ne plus couper.'
@@ -2614,7 +2623,7 @@ const GUEST_PROFILES = {
     sunday: 'Rattrape du retard de travail. En réalité, scrolle son téléphone.',
     color: 'Gris perle. Intérieur, vêtements, choix.',
     word: '"Composer". Sans le décider.',
-    lastCried: 'Il ne sait plus. Il pense que c\'est un problème.',
+    keptObject: `Une montre qui n'est pas la sienne. Trop grande pour son poignet.`,
     disappearance: 'Il ne sait pas. Il n\'a jamais vraiment imaginé.',
     belief: 'Que l\'apparence est une forme de protection légitime.',
     self: 'Un homme qui s\'est tellement bien composé qu\'il ne sait plus quel air il jouait au début.'
@@ -3466,10 +3475,10 @@ const ONBOARDING_QUESTIONS = [
   },
   {
     block: 'VOTRE INTIMITÉ',
-    field: 'lastCried',
-    question: 'La dernière fois que vous avez vraiment pleuré :',
+    field: 'keptObject',
+    question: 'Un objet que vous gardez sans pouvoir tout à fait l\'expliquer :',
     type: 'choice',
-    options: ['Cette semaine', 'Ce mois-ci', 'Cette année', 'Il y a longtemps', 'Je ne m\'en souviens plus']
+    options: ['Une lettre, un mot', 'Une photo', 'Un bijou hérité', 'Un livre, un disque', 'Aucun, je ne garde rien']
   },
   {
     block: 'VOTRE INTIMITÉ',
@@ -4057,8 +4066,8 @@ function openGuestFiche(guestId) {
       <p class="fiche-section-text">${profile.word || ''}</p>
     </div>
     <div class="fiche-section">
-      <div class="fiche-section-label">DERNIÈRE FOIS PLEURÉ</div>
-      <p class="fiche-section-text">${profile.lastCried || ''}</p>
+      <div class="fiche-section-label">OBJET GARDÉ</div>
+      <p class="fiche-section-text">${profile.keptObject || ''}</p>
     </div>
     <div class="fiche-section">
       <div class="fiche-section-label">DISPARAÎTRE TROIS MOIS</div>
@@ -4134,8 +4143,8 @@ function openSelfFiche() {
         <p class="fiche-section-text">${userProfile.color || '(non renseigné)'}</p>
       </div>
       <div class="fiche-section">
-        <div class="fiche-section-label">DERNIÈRE FOIS PLEURÉ</div>
-        <p class="fiche-section-text">${userProfile.lastCried || ''}</p>
+        <div class="fiche-section-label">OBJET GARDÉ</div>
+        <p class="fiche-section-text">${userProfile.keptObject || ''}</p>
       </div>
       <div class="fiche-section">
         <div class="fiche-section-label">DISPARAÎTRE TROIS MOIS</div>
