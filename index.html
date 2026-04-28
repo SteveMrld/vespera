@@ -1520,36 +1520,7 @@
   /* SCÈNE PISCINE — meme pattern hero que la chambre */
   #pool { background: #0F1A2E; align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .pool-hero { background-image: url('assets/pool.png'); }
-
-  /* Hero du Couloir : on n'a pas encore de photo dediee. On compose
-     un couloir nocturne au CSS pur - profondeur suggeree par une
-     lumiere chaude au fond (la fenetre du couloir nord), murs sombres
-     sur les cotes, sol qui s'eteint au premier plan. */
-  .couloir-hero {
-    background:
-      /* Halo chaud au fond, la fenetre */
-      radial-gradient(ellipse 35% 22% at 50% 38%,
-        rgba(232, 185, 98, 0.22) 0%,
-        rgba(184, 124, 60, 0.10) 40%,
-        rgba(15, 18, 32, 0) 70%),
-      /* Mur lateral gauche, plus sombre */
-      linear-gradient(to right,
-        rgba(8, 10, 18, 0.95) 0%,
-        rgba(15, 18, 32, 0.4) 22%,
-        rgba(15, 18, 32, 0) 30%),
-      /* Mur lateral droit, plus sombre */
-      linear-gradient(to left,
-        rgba(8, 10, 18, 0.95) 0%,
-        rgba(15, 18, 32, 0.4) 22%,
-        rgba(15, 18, 32, 0) 30%),
-      /* Plafond qui descend en obscur */
-      linear-gradient(to bottom,
-        rgba(6, 8, 14, 1) 0%,
-        rgba(20, 22, 36, 0.35) 30%,
-        rgba(15, 18, 32, 0.15) 55%,
-        rgba(8, 10, 18, 0.85) 100%);
-    background-color: #0A0C18;
-  }
+  .couloir-hero { background-image: url('assets/corridor.png'); }
   .pool-content { padding: 36px 32px 60px; text-align: center; }
   .pool-entries { margin-top: 28px; text-align: left; }
   .chambre-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 300; color: #EDE8DD; margin-bottom: 14px; letter-spacing: 0.03em; }
