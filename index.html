@@ -4415,10 +4415,10 @@ function renderHall() {
     cta = "J'Y VAIS";
     ctaAction = 'startTutoStep1Confirm()';
   } else if (day === 1 && gameState.tutoStep === 2 && !dayData.hallEntered2) {
-    // ÉTAPE 2 — Après le 1er dîner, V libère le reste
+    // APRES LE 1ER DINER — V acte que les regles sont comprises
     showMessage = true;
     label = 'V';
-    msg = 'Bien. La villa est à vous maintenant. Explorez ses pièces, écoutez ce qu\'elles ont à vous dire.';
+    msg = 'Vous savez maintenant ce qui vous attend.<br><br>La villa est à vous. Lisez ses pièces, écoutez ce qu\'elles disent. À demain, à table.';
     cta = 'EXPLORER';
     ctaAction = 'startTutoStep2()';
   } else if (day >= 2 && day <= 7 && !dayData.hallEntered && typeof MORNING_TEXTS !== 'undefined' && MORNING_TEXTS[day-1]) {
@@ -4431,11 +4431,9 @@ function renderHall() {
     ctaAction = 'enterHallProper()';
   }
 
-  // Appliquer l'état des hotspots selon le tutoStep
-  if (gameState.tutoStep === 1) {
-    // Seule la salle à manger est visible
-    imageEl.classList.add('tuto-step-1');
-  }
+  // Toutes les pieces sont accessibles des le debut. Le cartouche de V
+  // guide doucement vers la salle a manger en priorite mais le joueur
+  // est libre d'explorer ce qu'il veut. Plus de tutorial gating brutal.
 
   if (showMessage) {
     contentEl.innerHTML = `
