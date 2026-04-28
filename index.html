@@ -1546,7 +1546,34 @@
 
   /* SCÈNE COULOIR */
   #couloir { background: radial-gradient(ellipse at top, #1A1B2E 0%, #0A0B14 100%); align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-  .couloir-intro { padding: 36px 32px 24px; text-align: center; }
+  .couloir-intro { padding: 36px 32px 12px; text-align: center; }
+  /* Indices nocturnes deposes par V (cumulatifs) */
+  .couloir-entries { padding: 18px 0 8px; }
+  /* Section vote, separee visuellement et apparaissant plus tard dans le Cycle */
+  .couloir-vote-section { padding: 0; }
+  .couloir-vote-divider {
+    margin: 12px 32px 22px;
+    border-top: 1px dashed rgba(212, 184, 112, 0.25);
+  }
+  .couloir-vote-title {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: #EDE8DD;
+    text-align: center;
+    margin: 0 0 10px;
+    letter-spacing: 0.02em;
+  }
+  .couloir-vote-desc {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    color: #A8A095;
+    line-height: 1.55;
+    max-width: 320px;
+    margin: 0 auto 18px;
+    padding: 0 32px;
+    text-align: center;
+  }
   .couloir-current { margin: 0 24px 18px; padding: 14px 18px; background: rgba(212,184,112,0.08); border: 1px solid rgba(212,184,112,0.3); border-radius: 4px; text-align: center; font-family: 'Fraunces', serif; font-size: 14px;  color: #D4B870; }
   .couloir-options { padding: 0 24px 40px; display: flex; flex-direction: column; gap: 10px; }
   .couloir-option { display: flex; align-items: center; gap: 16px; padding: 16px; background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.12); border-radius: 4px; cursor: pointer; transition: all 0.3s; }
@@ -2174,11 +2201,19 @@
     <div style="width: 56px;"></div>
   </div>
   <div class="couloir-intro">
-    <h2 class="chambre-title">Votre vote</h2>
-    <p class="chambre-desc">Qui pensez-vous porte la Clé ? Votre vote restera secret jusqu'à la Nuit du Collapse. Vous pouvez changer d'avis tant que le Cycle n'est pas terminé.</p>
+    <h2 class="chambre-title">Le couloir nord</h2>
+    <p class="chambre-desc">La fenêtre, au bout. Quelqu'un revient ici chaque nuit. La villa garde la trace de ce qui s'y passe.</p>
   </div>
-  <div class="couloir-current" id="couloirCurrent" style="display:none;"></div>
-  <div class="couloir-options" id="couloirOptions"></div>
+  <!-- Indices nocturnes deposes par V, cumulatifs J1 -> jour courant -->
+  <div class="couloir-entries fiche-cards" id="couloirEntries"></div>
+  <!-- Section vote (apparait quand le joueur a assez d'indices) -->
+  <div class="couloir-vote-section" id="couloirVoteSection" style="display:none;">
+    <div class="couloir-vote-divider"></div>
+    <h3 class="couloir-vote-title">Votre intuition</h3>
+    <p class="couloir-vote-desc">Lequel d'entre eux pensez-vous porte la Clé ? Vous pourrez changer d'avis tant que le Cycle n'est pas terminé.</p>
+    <div class="couloir-current" id="couloirCurrent" style="display:none;"></div>
+    <div class="couloir-options" id="couloirOptions"></div>
+  </div>
 </div>
 
 <!-- MODAL DEVINETTE -->
@@ -4426,6 +4461,38 @@ function openCouloir() {
 }
 
 function renderCouloir() {
+  const day = gameState.currentDay || 1;
+
+  // 1) Indices nocturnes cumulatifs deposes par V dans le couloir nord
+  const entriesEl = document.getElementById('couloirEntries');
+  if (entriesEl) {
+    const entries = getCumulativeRoomContent('couloir', day).reverse();
+    if (entries.length === 0) {
+      entriesEl.innerHTML = '<div class="notes-empty">V n\'a pas encore noté ce qui se passe ici la nuit.</div>';
+    } else {
+      entriesEl.innerHTML = entries.map(e => `
+        <div class="chambre-entry">
+          <div class="chambre-entry-meta">
+            <span class="chambre-entry-day">JOUR ${e.day}</span>
+            <span class="chambre-entry-theme">${e.theme}</span>
+          </div>
+          <h3 class="chambre-entry-title">${e.title}</h3>
+          <div class="chambre-entry-body">${formatNarrativeBody(e.body)}</div>
+          ${e.observation ? `<div class="chambre-entry-obs"><span class="obs-label">V observe</span>${e.observation}</div>` : ''}
+        </div>
+      `).join('');
+    }
+  }
+
+  // 2) Section vote : ne s'affiche qu'a partir du J3 (le joueur a au moins
+  //    croise un peu d'information avant). Avant, le couloir est purement
+  //    contemplatif, sans pression a se positionner.
+  const voteSection = document.getElementById('couloirVoteSection');
+  if (voteSection) {
+    voteSection.style.display = day >= 3 ? 'block' : 'none';
+  }
+  if (day < 3) return;
+
   const current = gameState.porterVote;
   const currentEl = document.getElementById('couloirCurrent');
   if (current) {
