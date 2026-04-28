@@ -10,6 +10,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  /* Fraunces est une police variable. Sans contrainte explicite, le
+     navigateur peut rendre la variante Display avec des contrastes
+     pleins/delies extremes - tres beau pour un titre, illisible pour
+     un paragraphe sur mobile. On force partout la variante Text plus
+     reguliere via l'axe optical-size (opsz = 14). */
+  *, *::before, *::after {
+    font-variation-settings: "opsz" 14;
+  }
+
   html, body {
     height: 100%; width: 100%; overflow: hidden;
     font-family: 'Inter', -apple-system, sans-serif;
@@ -1080,17 +1090,19 @@
   }
   .table-center.voice-active .voice-text {
     display: block;
-    font-family: 'Fraunces', serif;
-    
-    font-size: 11px;
-    line-height: 1.4;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.55;
     color: #F5F0E5;
-    margin: 8px 0;
+    margin: 10px 0;
+    letter-spacing: 0.005em;
   }
   .table-center.voice-active .voice-text em {
+    font-style: normal;
     font-weight: 500;
     color: #E8C77A;
-    
   }
   .table-center.voice-active .center-label {
     font-size: 8px;
@@ -3115,8 +3127,8 @@ const QUANTUM_PROFILES = {
 // Chaque Invité a 7 réponses (une par jour), avec sa voix distincte
 const GUEST_RESPONSES = {
   marc: [
-    // J1 — sobre, nuancé
-    'On me voit comme un homme calme. C\'est en partie vrai. Mais ce calme me coûte un effort que personne ne soupçonne, il n\'est pas naturel, il est tenu.',
+    // J1 — pourquoi etes-vous venu a Vespera ?
+    'Une amie m\'a parlé d\'un endroit où on disait des choses qu\'on n\'avait jamais dites. Je n\'ai pas su dire non. Patiemment, j\'attendais peut-être une raison de venir.',
     // J2 — le doute
     'De ma capacité à finir ce que je commence. Patiemment, j\'ai appris à ne plus rien promettre. Pas même à moi-même.',
     // J3 — ce qu'on ne dit jamais
@@ -3131,8 +3143,8 @@ const GUEST_RESPONSES = {
     'Un homme qui a tenu, jusqu\'à ce que tenir devienne mentir.'
   ],
   theo: [
-    // J1 — brut, direct
-    'Bon. On me prend pour quelqu\'un qui choisit sa solitude. C\'est faux. Je suis seul parce que je n\'ai jamais su comment on entre dans la vie des autres. Voilà.',
+    // J1 — pourquoi etes-vous venu a Vespera ?
+    'Bon. On m\'a parlé d\'un endroit où on dit des choses vraies. Franchement, je voulais voir. Pour de vrai.',
     // J2
     'De rien. Franchement, je ne doute plus. À deux heures du matin, on apprend à arrêter.',
     // J3
@@ -3147,8 +3159,8 @@ const GUEST_RESPONSES = {
     'Un type qui n\'a jamais su demander, et qui en veut à tout le monde de ne pas avoir deviné.'
   ],
   camille: [
-    // J1 — paradoxal, littéraire
-    'Les gens me disent souvent que je devine tout. C\'est faux : je vois moins, simplement, je parle moins. Peut-être est-ce ce silence qu\'on confond avec la sagesse.',
+    // J1 — pourquoi etes-vous venu a Vespera ?
+    'Peut-être pour me taire. Simplement. Pendant sept jours, ne pas être celle qu\'on consulte. Voir ce que je dis quand on ne me demande rien.',
     // J2
     'De la qualité de mon silence. Je me demande peut-être s\'il vient d\'une vraie écoute, ou simplement d\'une peur de mal dire.',
     // J3
@@ -3163,8 +3175,8 @@ const GUEST_RESPONSES = {
     'Une femme à qui l\'on prête tant qu\'elle a fini par ne plus se reconnaître dans ce qu\'on lui rendait.'
   ],
   ines: [
-    // J1 — cassant, lucide
-    'On dit de moi que je suis dure, exigeante, intransigeante. Le verdict est juste. Mais il manque ceci : avec moi-même je le suis bien plus, et j\'ai désappris la douceur.',
+    // J1 — pourquoi etes-vous venu a Vespera ?
+    'Le verdict est simple : j\'avais besoin de me confronter à autre chose qu\'à un dossier. J\'ai désappris trop de choses pour rester encore une saison.',
     // J2
     'De mon verdict sur les autres. À force de juger vite, je me demande si je vois vraiment.',
     // J3
@@ -3179,8 +3191,8 @@ const GUEST_RESPONSES = {
     'Une lame qui s\'est faite à elle-même, et qui aujourd\'hui voudrait apprendre à ne plus couper.'
   ],
   karim: [
-    // J1 — fluide, charmeur
-    'Mes amis pensent que je sais toujours quoi dire. La vérité, c\'est que je passe ma vie à composer des réponses, et qu\'au fond je sais rarement ce que je pense vraiment.',
+    // J1 — pourquoi etes-vous venu a Vespera ?
+    'Pour ne plus avoir à composer pendant sept jours. Personne ici ne sait qui je suis censé être pour eux. C\'est presque reposant. Presque.',
     // J2
     'De la première phrase que je viens d\'écrire. Et de la deuxième. Je compose toujours trois versions avant de me décider.',
     // J3
