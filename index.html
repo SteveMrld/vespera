@@ -214,6 +214,105 @@
     opacity: 1;
   }
 
+  /* === MEDAILLON DU SCEAU ===
+     Disque ivoire avec bordure brune, anneau interieur decoratif,
+     halo or qui pulse en fond. La roue des 12 sceaux defile dedans. */
+  .ritual-medallion-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 40px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    isolation: isolate;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .ritual-medallion-container.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .ritual-medallion {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: rgba(245, 235, 210, 0.97);
+    border: 1.5px solid rgba(120, 80, 40, 0.7);
+    box-shadow:
+      0 8px 28px rgba(0, 0, 0, 0.6),
+      0 0 0 2px rgba(245, 235, 210, 0.18),
+      inset 0 0 10px rgba(80, 50, 20, 0.25),
+      0 0 80px rgba(245, 220, 150, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .ritual-medallion::before {
+    content: '';
+    position: absolute;
+    top: 7px; left: 7px; right: 7px; bottom: 7px;
+    border-radius: 50%;
+    border: 0.5px solid rgba(120, 80, 40, 0.4);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .ritual-medallion.locked {
+    animation: medallionLockIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes medallionLockIn {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.08);
+           box-shadow:
+             0 6px 20px rgba(0, 0, 0, 0.6),
+             0 0 0 2px rgba(245, 220, 150, 0.4),
+             inset 0 0 10px rgba(80, 50, 20, 0.25),
+             0 0 90px rgba(245, 220, 150, 0.55); }
+    100% { transform: scale(1); }
+  }
+  .ritual-medallion-halo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 140%;
+    height: 140%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,220,150,0.32) 0%, transparent 60%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .ritual-medallion-container.visible .ritual-medallion-halo {
+    animation: haloPulse 3.2s ease-in-out infinite 0.6s;
+  }
+  @keyframes haloPulse {
+    0%, 100% { opacity: 0.35; transform: translate(-50%, -50%) scale(1); }
+    50%      { opacity: 0.7;  transform: translate(-50%, -50%) scale(1.12); }
+  }
+  .ritual-medallion-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    background: rgba(245, 235, 210, 0.97);
+  }
+  .ritual-medallion-inner img,
+  .ritual-medallion-inner svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+  }
+
   /* PHASE 4 : la vertu - une phrase courte, en serif, plus mince. */
   .ritual-typo-vertu {
     font-family: 'Fraunces', serif;
@@ -2226,7 +2325,7 @@
   <div class="overlay"></div>
   <div class="content">
     <h1 class="logo">VESPERA</h1>
-    <p class="logo-subtitle">Sept soirées vous attendent.</p>
+    <p class="logo-subtitle">Sept soirées. Cinq inconnus. Une vérité.</p>
     <div class="invitation">
       <p>Vous êtes attendu.</p>
       <button class="enter-btn" onclick="startSeuil()">ENTRER</button>
@@ -2290,6 +2389,16 @@
       <p class="ritual-typo-line ritual-typo-label" id="ritualLineLabel">
         Votre Sceau pour ce Cycle
       </p>
+
+      <!-- Medaillon qui contient la roue des 12 sceaux. Apparait avec
+           un fade + scale, la roue tourne dedans en accelerant puis
+           ralentissant pour s'arreter sur l'animal du joueur. -->
+      <div class="ritual-medallion-container" id="ritualMedallionContainer">
+        <div class="ritual-medallion-halo" id="ritualMedallionHalo"></div>
+        <div class="ritual-medallion" id="ritualMedallion">
+          <div class="ritual-medallion-inner" id="ritualMedallionInner"></div>
+        </div>
+      </div>
 
       <p class="ritual-typo-line ritual-typo-name" id="ritualLineName"></p>
 
@@ -4232,38 +4341,38 @@ function startRitual() {
   setTimeout(() => runRitualTypo(), 200);
 }
 
-// SCENE RITUEL (V36) - typographie pure, fades en cascade.
-// Plus de medaillon, plus de roue qui tourne, plus d'encre. Le Sceau
-// se revele simplement par son nom et sa vertu, dans le silence.
-// Cette fonction est appelee a l'arrivee dans la scene #ritual.
+// SCENE RITUEL (V37) - typographie pure + medaillon avec roue qui tourne.
+// Le rituel revele le Sceau du joueur par 3 mouvements :
+// 1) V parle ("Vespera vous reconnait")
+// 2) Le medaillon emerge, la roue des 12 sceaux defile dedans en
+//    accelerant puis ralentissant, jusqu'a s'arreter sur l'animal.
+// 3) Le nom + trait + vertu + signature + bouton se composent en typo.
 function runRitualTypo() {
   const seal = ALL_SEALS[gameState.userSeal];
   if (!seal) return;
 
-  // Reset des classes au cas ou on rejoue le rituel
-  const lines = ['ritualLineIntro', 'ritualLineLabel', 'ritualLineName', 'ritualLineRule', 'ritualLineVertu', 'ritualLineVsig'];
+  // Reset de toutes les classes au cas ou on rejoue le rituel
+  const lines = ['ritualLineIntro', 'ritualLineLabel', 'ritualLineName',
+                 'ritualLineRule', 'ritualLineVertu', 'ritualLineVsig'];
   lines.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('visible');
   });
   const btn = document.getElementById('ritualAcceptBtn');
   if (btn) btn.classList.remove('visible');
+  const medallionContainer = document.getElementById('ritualMedallionContainer');
+  if (medallionContainer) medallionContainer.classList.remove('visible');
+  const medallion = document.getElementById('ritualMedallion');
+  if (medallion) medallion.classList.remove('locked');
+  const inner = document.getElementById('ritualMedallionInner');
+  if (inner) inner.innerHTML = '';
 
-  // Pre-remplir le nom et la vertu
+  // Pre-remplir le nom et la vertu (caches pour l'instant)
   const nameEl = document.getElementById('ritualLineName');
-  if (nameEl) nameEl.textContent = seal.name; // ex: "Le Faucon"
+  if (nameEl) nameEl.textContent = seal.name;
   const vertuEl = document.getElementById('ritualLineVertu');
   if (vertuEl) vertuEl.textContent = seal.desc || '';
   if (btn) btn.textContent = 'ACCEPTER CE SCEAU →';
-
-  // SEQUENCE DES FADES (timing pense pour une lecture posee) :
-  // 0.6s   : "Vespera vous reconnait."
-  // 2.6s   : "Votre Sceau pour ce Cycle"
-  // 3.8s   : Le nom de l'animal en grand
-  // 4.6s   : Le trait fin se trace sous le nom
-  // 6.4s   : La vertu
-  // 7.8s   : V.
-  // 9.0s   : Bouton ACCEPTER
 
   const reveal = (id, delay) => {
     setTimeout(() => {
@@ -4272,18 +4381,121 @@ function runRitualTypo() {
     }, delay);
   };
 
-  reveal('ritualLineIntro', 600);
-  reveal('ritualLineLabel', 2600);
-  reveal('ritualLineName', 3800);
-  reveal('ritualLineRule', 4600);
-  reveal('ritualLineVertu', 6400);
-  reveal('ritualLineVsig', 7800);
+  // SEQUENCE DU RITUEL (timing pense pour une lecture posee) :
+  reveal('ritualLineIntro', 600);    // "Vespera vous reconnait."
+  reveal('ritualLineLabel', 2600);   // "VOTRE SCEAU POUR CE CYCLE"
 
+  // 3.6s : le medaillon emerge avec un fade-up + scale
   setTimeout(() => {
-    const acceptBtn = document.getElementById('ritualAcceptBtn');
-    if (acceptBtn) acceptBtn.classList.add('visible');
-    if (navigator.vibrate) navigator.vibrate([20, 30, 30]);
-  }, 9000);
+    if (medallionContainer) medallionContainer.classList.add('visible');
+  }, 3600);
+
+  // 4.6s : la roue commence a tourner. preloadAllSeals charge les 12
+  // images d'abord pour eviter le flicker, puis spinSealWheel defile
+  // les sceaux en accelerant puis ralentissant.
+  setTimeout(() => {
+    preloadAllSeals(() => {
+      spinSealWheel(gameState.userSeal, inner, () => {
+        // La roue s'est arretee sur l'animal du joueur.
+        if (navigator.vibrate) navigator.vibrate([20, 30, 50]);
+        if (medallion) medallion.classList.add('locked');
+
+        // Le nom apparait apres un petit silence
+        setTimeout(() => {
+          const ne = document.getElementById('ritualLineName');
+          if (ne) ne.classList.add('visible');
+        }, 500);
+
+        // Le trait fin or se trace sous le nom
+        setTimeout(() => {
+          const re = document.getElementById('ritualLineRule');
+          if (re) re.classList.add('visible');
+        }, 1200);
+
+        // La vertu
+        setTimeout(() => {
+          const ve = document.getElementById('ritualLineVertu');
+          if (ve) ve.classList.add('visible');
+        }, 2400);
+
+        // V.
+        setTimeout(() => {
+          const vs = document.getElementById('ritualLineVsig');
+          if (vs) vs.classList.add('visible');
+        }, 3600);
+
+        // Le bouton ACCEPTER
+        setTimeout(() => {
+          const acceptBtn = document.getElementById('ritualAcceptBtn');
+          if (acceptBtn) acceptBtn.classList.add('visible');
+          if (navigator.vibrate) navigator.vibrate([20, 30, 30]);
+        }, 4500);
+      });
+    });
+  }, 4600);
+}
+
+// Pre-charge les 12 sceaux pour que la roue tourne sans saccade.
+// Securite : si une image met plus de 1.5s, on continue quand meme.
+function preloadAllSeals(callback) {
+  const keys = Object.keys(ALL_SEALS);
+  let loaded = 0;
+  let done = false;
+  const safety = setTimeout(() => {
+    if (!done) { done = true; if (callback) callback(); }
+  }, 1500);
+  keys.forEach(key => {
+    const img = new Image();
+    img.onload = img.onerror = () => {
+      loaded++;
+      if (loaded === keys.length && !done) {
+        done = true;
+        clearTimeout(safety);
+        if (callback) callback();
+      }
+    };
+    img.src = ALL_SEALS[key].img;
+  });
+}
+
+// Roue des 12 Sceaux : defile rapidement puis ralentit jusqu'a s'arreter
+// sur la cible. Effet machine a sous mais ceremonial.
+function spinSealWheel(targetKey, container, onComplete) {
+  if (!container) { if (onComplete) onComplete(); return; }
+
+  const allKeys = Object.keys(ALL_SEALS);
+  // Ordre aleatoire pour ne jamais avoir la meme sequence
+  const shuffled = [...allKeys].sort(() => Math.random() - 0.5);
+
+  // Sequence : 2 cycles rapides + queue qui ralentit + cible en final
+  const sequence = [];
+  for (let i = 0; i < 2; i++) sequence.push(...shuffled);
+  const tail = shuffled.filter(k => k !== targetKey);
+  sequence.push(...tail.slice(-6), targetKey);
+
+  let step = 0;
+  function tick() {
+    if (step >= sequence.length) {
+      if (onComplete) onComplete();
+      return;
+    }
+    const key = sequence[step];
+    container.innerHTML = renderSealSVG(key);
+
+    // Delai croissant sur les 7 derniers pas (ralentissement progressif)
+    const remaining = sequence.length - step - 1;
+    let delay;
+    if (remaining > 7) {
+      delay = 50; // cycle rapide, presque flou
+    } else {
+      // 90, 130, 190, 280, 410, 600, 880 ms
+      delay = Math.round(90 * Math.pow(1.46, 7 - remaining));
+    }
+
+    step++;
+    setTimeout(tick, delay);
+  }
+  tick();
 }
 
 // Le joueur accepte son Sceau et passe a l'onboarding du jeu (ou Hall
