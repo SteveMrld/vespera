@@ -821,6 +821,149 @@
   /* SCÈNE SALON */
   #salon { background: #0F1A2E; overflow-y: auto; -webkit-overflow-scrolling: touch; align-items: stretch; justify-content: flex-start; transition: background 0.7s, color 0.7s; }
 
+  /* SCÈNE PRÉSENTATIONS — premier soir, les cinq se nomment */
+  #introductions {
+    background: #050810;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+  }
+  .intro-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgba(60, 30, 25, 0.35) 0%, transparent 70%),
+      linear-gradient(to bottom, rgba(8, 10, 18, 0.95) 0%, rgba(15, 18, 32, 1) 100%);
+    pointer-events: none;
+  }
+  .intro-card {
+    position: relative;
+    z-index: 1;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .intro-card.visible { opacity: 1; transform: translateY(0); }
+  .intro-step {
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px;
+    color: rgba(212, 184, 112, 0.55);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+  .intro-seal {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 22px;
+    opacity: 0;
+    animation: introSealIn 1.2s 0.2s ease forwards;
+  }
+  .intro-seal svg { width: 100%; height: 100%; }
+  @keyframes introSealIn {
+    0%   { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .intro-archetype {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: #D4B870;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    opacity: 0;
+    animation: introFadeUp 1s 0.6s ease forwards;
+  }
+  .intro-divider {
+    width: 36px;
+    height: 1px;
+    background: rgba(212, 184, 112, 0.35);
+    margin: 0 auto 20px;
+    opacity: 0;
+    animation: introFadeUp 0.8s 1.0s ease forwards;
+  }
+  .intro-name {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: #EDE8DD;
+    letter-spacing: 0.04em;
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: introFadeUp 1s 1.4s ease forwards;
+  }
+  .intro-line {
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    font-weight: 300;
+    color: #A8A095;
+    line-height: 1.6;
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: introFadeUp 1.1s 1.9s ease forwards;
+  }
+  .intro-hint {
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px;
+    color: rgba(168, 160, 149, 0.5);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: introHintPulse 2.4s 2.8s ease infinite;
+  }
+  @keyframes introFadeUp {
+    0%   { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes introHintPulse {
+    0%, 100% { opacity: 0; }
+    50%      { opacity: 0.7; }
+  }
+  /* Etat final - V cloture */
+  .intro-card.final .intro-archetype { display: none; }
+  .intro-card.final .intro-divider { display: none; }
+  .intro-card.final .intro-seal { display: none; }
+  .intro-card.final .intro-name {
+    font-size: 18px;
+    color: #D4B870;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    animation: introFadeUp 1s 0.4s ease forwards;
+  }
+  .intro-card.final .intro-line {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: #EDE8DD;
+    line-height: 1.55;
+    animation: introFadeUp 1.2s 1.0s ease forwards;
+  }
+  .intro-card.final .intro-cta {
+    display: inline-block;
+    margin-top: 28px;
+    padding: 14px 36px;
+    background: transparent;
+    border: 1px solid rgba(212, 184, 112, 0.5);
+    color: #D4B870;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    opacity: 0;
+    animation: introFadeUp 1s 2.2s ease forwards;
+  }
+  .intro-card.final .intro-cta:active {
+    background: rgba(212, 184, 112, 0.15);
+  }
+
   /* SCENE ONBOARDING DU JEU - explique les regles apres le rituel */
   #gameOnboarding {
     background: radial-gradient(ellipse at center, #14182A 0%, #0A0E1C 70%, #050810 100%);
@@ -2536,6 +2679,24 @@
   </button>
   <!-- Mode jour simple : un seul hotspot central (J2 - J7 actuellement) -->
   <button type="button" class="hotspot" id="hotspot-library-daily" onclick="openLibraryDaily()"></button>
+</div>
+
+<!-- SCÈNE COMPOSE -->
+<!-- SCÈNE PRÉSENTATIONS — premier soir uniquement.
+     Les cinq invites se nomment a tour de role. Le joueur tape pour
+     avancer. A la fin, l'etat dayData[1].introductionsDone est mis,
+     les sieges revelent les prenoms, la soiree se cloture. -->
+<div id="introductions" class="scene" onclick="advanceIntroduction()">
+  <div class="intro-bg"></div>
+  <div class="intro-card" id="introCard">
+    <div class="intro-step" id="introStep">1 / 5</div>
+    <div class="intro-seal" id="introSeal"></div>
+    <div class="intro-archetype" id="introArchetype"></div>
+    <div class="intro-divider"></div>
+    <div class="intro-name" id="introName"></div>
+    <div class="intro-line" id="introLine"></div>
+    <div class="intro-hint" id="introHint">Toucher pour la suite</div>
+  </div>
 </div>
 
 <!-- SCÈNE COMPOSE -->
@@ -4616,6 +4777,17 @@ function renderTableCenter() {
   }
 
   if (isNight) {
+    // Cas special J1 : pas de Question ce soir, mais des presentations.
+    // Le joueur arrive, decouvre les invites un par un. La Question
+    // ne commence qu'au J2.
+    if (gameState.currentDay === 1 && !dayData.introductionsDone) {
+      center.classList.add('has-action');
+      center.onclick = () => startIntroductions();
+      content.innerHTML = `<span class="center-label">PREMIER SOIR</span><span style="font-size:13px;">Ils sont là. Cinq silhouettes autour de la table. Vous ne les avez encore jamais vus.</span><span class="center-cta">FAIRE LES PRÉSENTATIONS →</span>`;
+      hint.textContent = 'Tapez le centre pour entendre chacun se présenter.';
+      return;
+    }
+
     if (dayData.completed) {
       // Soiree terminee : on guide le joueur vers la villa pour qu'il explore
       // ce que V a depose, plutot que de le laisser sur un dead-end.
@@ -4664,11 +4836,128 @@ function renderTableCenter() {
   }
 }
 
+// === PRÉSENTATIONS DU PREMIER SOIR ===
+// Au J1, pas de Question. Les cinq invites se nomment a tour de role,
+// chacun donne son prenom et son Sceau, plus une phrase courte qui
+// installe sa voix (sans encore reveler profession ni biographie).
+// La grammaire respecte la convention : Sceau d'abord, prenom apres.
+
+const INTRODUCTIONS_J1 = [
+  {
+    guestId: 'marc',
+    archetype: 'Le Cerf',
+    name: 'Marc',
+    line: '« J\'attendais peut-être une raison de venir. Elle n\'est pas encore claire. »'
+  },
+  {
+    guestId: 'theo',
+    archetype: 'Le Loup',
+    name: 'Théo',
+    line: '« Je pose des questions pour gagner ma vie. Ce soir, je vais essayer de me taire. »'
+  },
+  {
+    guestId: 'camille',
+    archetype: 'La Chouette',
+    name: 'Camille',
+    line: '« On me dit que j\'écoute trop. Je ne sais pas faire autrement. »'
+  },
+  {
+    guestId: 'ines',
+    archetype: 'Le Lynx',
+    name: 'Inès',
+    line: '« J\'ai dit oui sans vraiment réfléchir. Je commence à comprendre pourquoi. »'
+  },
+  {
+    guestId: 'karim',
+    archetype: 'Le Corbeau',
+    name: 'Karim',
+    line: '« Je suis là. C\'est déjà beaucoup pour ce soir. »'
+  }
+];
+
+let introductionsIndex = 0;
+
+function startIntroductions() {
+  introductionsIndex = 0;
+  showScene('introductions');
+  renderIntroductionCard();
+}
+
+function renderIntroductionCard() {
+  const card = document.getElementById('introCard');
+  const stepEl = document.getElementById('introStep');
+  const sealEl = document.getElementById('introSeal');
+  const archEl = document.getElementById('introArchetype');
+  const nameEl = document.getElementById('introName');
+  const lineEl = document.getElementById('introLine');
+  const hintEl = document.getElementById('introHint');
+
+  // Reset des classes et de l'opacite
+  card.classList.remove('visible', 'final');
+
+  // 5 invites + 1 carte de cloture = 6 etats au total
+  const total = INTRODUCTIONS_J1.length;
+
+  setTimeout(() => {
+    if (introductionsIndex < total) {
+      // Carte d'un invite qui se presente
+      const intro = INTRODUCTIONS_J1[introductionsIndex];
+      const guest = SEASON_1_GUESTS.find(g => g.id === intro.guestId);
+      stepEl.textContent = `${introductionsIndex + 1} / ${total}`;
+      sealEl.innerHTML = renderSealSVG(guest.seal);
+      archEl.textContent = intro.archetype;
+      nameEl.textContent = intro.name;
+      lineEl.textContent = intro.line;
+      hintEl.textContent = (introductionsIndex < total - 1) ? 'Toucher pour la suite' : 'Toucher pour clore le premier soir';
+      hintEl.style.display = '';
+    } else {
+      // Carte finale : V cloture le premier soir
+      card.classList.add('final');
+      stepEl.textContent = `V`;
+      // On reutilise les memes elements avec un styling different
+      nameEl.textContent = 'À demain';
+      lineEl.innerHTML = 'Vous les avez vus. Demain, le Cycle commence vraiment.<br><br>Reposez-vous. Ou écoutez la villa, si vous préférez.';
+      // Bouton final pour cloturer
+      hintEl.outerHTML = '<button class="intro-cta" id="introHint" onclick="finishIntroductions(event)">FERMER LE PREMIER SOIR</button>';
+    }
+
+    card.classList.add('visible');
+  }, 280);
+}
+
+function advanceIntroduction() {
+  // Sur la carte finale, le tap n'avance pas (le bouton CTA s'en occupe)
+  if (introductionsIndex >= INTRODUCTIONS_J1.length) return;
+  introductionsIndex++;
+  renderIntroductionCard();
+}
+
+function finishIntroductions(ev) {
+  if (ev) ev.stopPropagation();
+  // Mark le J1 comme presentations faites + soiree terminee.
+  // Le joueur est libre d'explorer la villa la nuit ensuite.
+  if (!gameState.daysData[1]) gameState.daysData[1] = {};
+  gameState.daysData[1].introductionsDone = true;
+  gameState.daysData[1].completed = true;
+  // On marque aussi tutoStep === 3 pour que le Hall affiche le bon
+  // cartouche (PASSER AU JOUR 2) - coherent avec la logique existante.
+  if (gameState.tutoStep < 3) gameState.tutoStep = 3;
+  saveState();
+  // On retourne au Hall pour que le joueur puisse explorer la villa
+  // la nuit, ou passer au J2 quand il sera pret.
+  goToHall();
+}
+
 function onTableCenterTap() {
   if (gameState.cycleEnded) return;
   const isNight = !document.getElementById('salon').classList.contains('day');
   if (!isNight) return;
   const dayData = gameState.daysData[gameState.currentDay] || {};
+  // Cas special J1 : presentations au lieu de Question
+  if (gameState.currentDay === 1 && !dayData.introductionsDone) {
+    startIntroductions();
+    return;
+  }
   if (dayData.completed) {
     // Soiree finie : on retourne au Hall pour explorer la villa la nuit.
     goToHall();
@@ -4712,10 +5001,17 @@ function renderSeats() {
     const guest = SEASON_1_GUESTS.find(g => g.id === p.id);
     const seal = ALL_SEALS[guest.seal];
     const veiled = gameState.veiledGuestId === guest.id;
+    // Avant les presentations du J1, on affiche le Sceau, pas le prenom.
+    // Le joueur n'a encore vu personne. La grammaire de la rencontre demande
+    // qu'il decouvre les prenoms a table, lors des presentations.
+    const introsDone = gameState.daysData[1] && gameState.daysData[1].introductionsDone;
+    const displayName = (gameState.currentDay === 1 && !introsDone)
+      ? guest.archetype.toUpperCase()
+      : `${guest.name} <span style="opacity:0.55;font-size:0.85em;">(${guest.archetype.toLowerCase()})</span>`;
     return `
       <button type="button" class="seat seat-pos-${p.pos}${veiled ? ' seat-veiled' : ''}" onclick="onSeatTap('${guest.id}')">
         <div class="seat-img">${renderSealSVG(guest.seal)}</div>
-        <div class="seat-name">${guest.name}${veiled ? ' (voilé)' : ''}</div>
+        <div class="seat-name">${displayName}${veiled ? ' (voilé)' : ''}</div>
       </button>
     `;
   }).join('');
@@ -5634,15 +5930,16 @@ const DINNER_INTRO_BEATS = [
 let _dinnerIntroStep = 0;
 
 function maybeShowFirstDinnerIntro() {
-  if (gameState.firstDinnerIntroDone) return;
-  if (gameState.currentDay !== 1) return;
-  // On laisse le salon s'afficher d'abord, puis l'overlay se pose dessus
-  setTimeout(() => {
-    _dinnerIntroStep = 0;
-    showDinnerIntroBeat(0);
-    const overlay = document.getElementById('salonIntro');
-    if (overlay) overlay.classList.remove('hidden');
-  }, 350);
+  // OBSOLETE V30 : ce briefing est desormais redondant. Les regles du jeu
+  // sont expliquees dans l'onboarding du jeu (5 cartes apres le rituel),
+  // et les invites se presentent dans la nouvelle scene #introductions.
+  // On marque comme deja vu pour ne pas l'afficher, mais on garde la
+  // fonction pour ne pas casser les references.
+  if (!gameState.firstDinnerIntroDone) {
+    gameState.firstDinnerIntroDone = true;
+    saveState();
+  }
+  return;
 }
 
 function showDinnerIntroBeat(idx) {
@@ -5730,38 +6027,27 @@ function renderHall() {
   let showMessage = false;
 
   if (day === 1 && gameState.tutoStep === 0) {
-    // PREMIER PASSAGE — V t'accueille et te dit de commencer
+    // PREMIER PASSAGE — V t'accueille a l'arrivee
     showMessage = true;
     label = 'V';
-    msg = 'Vous êtes le sixième. Les autres sont déjà là, quelque part dans la villa.<br><br>Vous les rencontrerez ce soir, à table. D\'ici là, prenez vos repères.<br><br>Cette villa est à vous pour sept jours.';
+    msg = 'Vous êtes le sixième. Les cinq autres dorment quelque part dans la villa, ou attendent en silence.<br><br>Vous les verrez ce soir, à table. C\'est là que vous saurez leurs prénoms. D\'ici là, faites le tour. La villa garde des traces de leur passage.';
     cta = 'COMMENCER';
     ctaAction = 'startTutoStep1()';
   } else if (day === 1 && gameState.tutoStep === 1) {
-    // ETAPE 1 — V invite a explorer la villa avant le premier diner.
-    // Le cartouche reste affiche tant que tutoStep === 1 (jusqu'au
-    // premier diner). Si le joueur le ferme et revient au Hall, le
-    // cartouche revient. Ne disparait que si le joueur passe en
-    // tutoStep 2 (apres le 1er diner).
+    // ETAPE 1 — V invite a explorer la villa puis a descendre a la table.
+    // La table aujourd'hui = presentations, pas Question.
     showMessage = true;
     label = 'V';
-    msg = 'Avant le premier dîner, faites le tour. La villa parle, écoutez-la.<br><br>Allez voir ce que j\'ai laissé pour vous dans les pièces. Quand vous serez prêt, venez à la table.';
+    msg = 'Faites le tour. La villa parle, écoutez-la. Lisez les traces qu\'ils ont laissées.<br><br>Quand vous serez prêt, descendez à la salle à manger. C\'est ce soir que vous les verrez pour la première fois.';
     cta = 'JE PRENDS MES REPÈRES';
     ctaAction = 'startTutoStep1Confirm()';
-  } else if (day === 1 && gameState.tutoStep === 2) {
-    // APRES LE 1ER DINER — V acte que les regles sont comprises.
-    // Cartouche persistant tant que le joueur est en tutoStep 2.
-    showMessage = true;
-    label = 'V';
-    msg = 'Vous savez maintenant ce qui vous attend.<br><br>La villa est à vous. Lisez ses pièces, écoutez ce qu\'elles disent. À demain, à table.';
-    cta = 'EXPLORER';
-    ctaAction = 'startTutoStep2()';
   } else if (day === 1 && gameState.tutoStep === 3) {
-    // FIN DE LA PHASE GUIDEE DU J1 - le joueur a deja vu le tutoriel
-    // mais on ne suppose pas qu'il a forcement mange. Le cartouche est
-    // un repere pour qu'il sache qu'il peut avancer quand il veut.
+    // APRES LES PRESENTATIONS DU J1 - le joueur les a vus a table.
+    // La nuit est libre, la villa garde encore des choses, et le J2
+    // attend quand il sera pret.
     showMessage = true;
     label = 'V';
-    msg = 'Vous avez fait le tour. La villa est ouverte. Restez le temps que vous voulez ce soir.<br><br>Quand vous serez prêt, le deuxième jour vous attend.';
+    msg = 'Vous les avez vus. Cinq visages, cinq prénoms posés sur cinq Sceaux.<br><br>La nuit est à vous. La villa garde encore des choses cette nuit. Demain, le Cycle commencera vraiment.';
     cta = 'PASSER AU JOUR 2';
     ctaAction = 'advanceDay()';
   } else if (day >= 2 && day <= 7 && SEASON_1_CONTENT[day]) {
