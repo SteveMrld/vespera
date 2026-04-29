@@ -5108,22 +5108,24 @@ function showVerdict() {
 
   if (!labelEl || !accused) return;
 
-  const sealName = ALL_SEALS[accused.seal].name.toLowerCase();
+  // ALL_SEALS[].name contient deja "Le Corbeau" / "Le Cerf" / etc. avec
+  // le "Le" majuscule. Pas besoin de prefixer.
+  const sealName = ALL_SEALS[accused.seal].name;
 
   if (isCorrect) {
     labelEl.textContent = "VOUS L'AVEZ NOMMÉ";
     lineEl.textContent = `Vous avez vu juste. C'était`;
-    strongEl.innerHTML = `${accused.name}<br><span style="font-size:0.55em;letter-spacing:0.25em;color:#D4B870;">LE ${sealName.toUpperCase()}</span>`;
+    strongEl.innerHTML = `${accused.name}<br><span style="font-size:0.55em;letter-spacing:0.25em;color:#D4B870;">${sealName.toUpperCase()}</span>`;
     truthEl.innerHTML = `<strong>${accusedKey.truthLine}</strong><br><br>${accusedKey.truthDetails}<br><br>Ce qu'il a porté seul pendant quatorze ans cesse de peser seul, ce soir.`;
   } else {
     labelEl.textContent = "L'ACCUSATION";
     lineEl.textContent = `Vous avez nommé`;
-    strongEl.innerHTML = `${accused.name}<br><span style="font-size:0.55em;letter-spacing:0.25em;color:#A8A095;">LE ${sealName.toUpperCase()}</span>`;
+    strongEl.innerHTML = `${accused.name}<br><span style="font-size:0.55em;letter-spacing:0.25em;color:#A8A095;">${sealName.toUpperCase()}</span>`;
     // Le porteur reel
     const realPorter = SEASON_1_GUESTS.find(g => g.id === gameState.porterId);
     const realKey = GUEST_KEYS[gameState.porterId];
-    const realSealName = ALL_SEALS[realPorter.seal].name.toLowerCase();
-    truthEl.innerHTML = `Ce n'était pas lui. ${accusedKey ? accusedKey.truthDetails : ''}<br><br>Le Porteur, c'était <strong>${realPorter.name} (le ${realSealName})</strong>.<br><br>${realKey.truthLine}<br><br>Il repartira avec ce qu'il a apporté. Vous, vous repartirez avec une vérité qui n'était pas la sienne. Un autre Cycle, peut-être, vous redonnera l'occasion de voir.`;
+    const realSealName = ALL_SEALS[realPorter.seal].name; // "Le Cerf"
+    truthEl.innerHTML = `Ce n'était pas lui. ${accusedKey ? accusedKey.truthDetails : ''}<br><br>Le Porteur, c'était <strong>${realPorter.name} (${realSealName})</strong>.<br><br>${realKey.truthLine}<br><br>Il repartira avec ce qu'il a apporté. Vous, vous repartirez avec une vérité qui n'était pas la sienne. Un autre Cycle, peut-être, vous redonnera l'occasion de voir.`;
   }
   ctaEl.textContent = 'FERMER LE CYCLE';
   showScene('verdict');
