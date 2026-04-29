@@ -6404,18 +6404,22 @@ function closeFirstDinnerIntro() {
 
 // === HALL — hub central de la villa ===
 function goToHall() {
+  // V44 : Approche defensive. On affiche TOUJOURS le Hall en premier
+  // puis on tente le bypass si conditions sont reunies. Comme ca si une
+  // erreur JS interrompt, le Hall est au moins visible.
+  try {
+    showScene('hall');
+  } catch (e) {
+    console.error('[goToHall] showScene failed:', e);
+  }
+
   // V43 : Bypass automatique - si le parcours du jour est fini et que
   // le diner n'a pas eu lieu, on enchaine directement sur le diner.
-  // Si le diner a eu lieu et que le jour est complet, on passe au jour
-  // suivant proposait par le bouton dedie.
   const day = gameState.currentDay;
   if (day >= 1 && day <= 6) {
     const dayData = gameState.daysData[day] || {};
     const visitedThisDay = (gameState.visitedRoomsByDay && gameState.visitedRoomsByDay[day]) || [];
     const allVisited = DAILY_ROOM_ORDER.every(r => visitedThisDay.includes(r));
-    // Le diner du jour est-il fini ? On utilise dayData.completed,
-    // qui est pose : au J1 a la fin des presentations, au J2-J6 a la
-    // fin de la lecture des voix.
     const introsOrDinnerDone = dayData.completed;
     if (allVisited && !introsOrDinnerDone) {
       // Toutes les pieces sont visitees mais le diner n'a pas encore eu lieu :
@@ -6424,8 +6428,13 @@ function goToHall() {
       return;
     }
   }
-  showScene('hall');
-  renderHall();
+
+  // Si on arrive ici, on reste au Hall (pas de bypass)
+  try {
+    renderHall();
+  } catch (e) {
+    console.error('[goToHall] renderHall failed:', e);
+  }
 }
 
 // V43 : Cache le cartouche du soir et le memorise pour ne plus le reafficher
@@ -6462,25 +6471,27 @@ function onNextDayTap() {
 // V43 : Met a jour l'etat visuel du bouton JOUR SUIVANT selon le contexte
 // (actif, inactif, cache). Appele depuis renderHall.
 function updateNextDayButton() {
-  const btn = document.getElementById('nextDayBtn');
-  const labelEl = document.getElementById('nextDayBtnLabel');
-  if (!btn || !labelEl) return;
+  try {
+    const btn = document.getElementById('nextDayBtn');
+    const labelEl = document.getElementById('nextDayBtnLabel');
+    if (!btn || !labelEl) return;
 
-  const day = gameState.currentDay;
-  // Cache au J7 (le J7 termine sur l'accusation, pas un bouton 'jour suivant')
-  // et si le cycle est termine
-  if (day === 7 || gameState.cycleEnded) {
-    btn.classList.add('hidden');
-    return;
+    const day = gameState.currentDay || 1;
+    if (day === 7 || gameState.cycleEnded) {
+      btn.classList.add('hidden');
+      return;
+    }
+
+    btn.classList.remove('hidden');
+    const dayData = (gameState.daysData && gameState.daysData[day]) || {};
+    const dinnerDone = !!dayData.completed;
+
+    labelEl.textContent = `PASSER AU JOUR ${day + 1} →`;
+    btn.classList.toggle('active', dinnerDone);
+    btn.classList.toggle('inactive', !dinnerDone);
+  } catch (e) {
+    console.error('[updateNextDayButton] error:', e);
   }
-
-  btn.classList.remove('hidden');
-  const dayData = gameState.daysData[day] || {};
-  const dinnerDone = dayData.completed;
-
-  labelEl.textContent = `PASSER AU JOUR ${day + 1} →`;
-  btn.classList.toggle('active', !!dinnerDone);
-  btn.classList.toggle('inactive', !dinnerDone);
 }
 
 // V43 : Le joueur a lu le Murmure du jour J2-J6 et confirme entrer
