@@ -6413,11 +6413,10 @@ function goToHall() {
     const dayData = gameState.daysData[day] || {};
     const visitedThisDay = (gameState.visitedRoomsByDay && gameState.visitedRoomsByDay[day]) || [];
     const allVisited = DAILY_ROOM_ORDER.every(r => visitedThisDay.includes(r));
-    // Au J1, on regarde aussi introductionsDone ; aux J2-J6, on regarde si
-    // le diner est deja fait ou non.
-    const introsOrDinnerDone = (day === 1)
-      ? (dayData.introductionsDone)
-      : (dayData.userResponse && dayData.responsesRead);
+    // Le diner du jour est-il fini ? On utilise dayData.completed,
+    // qui est pose : au J1 a la fin des presentations, au J2-J6 a la
+    // fin de la lecture des voix.
+    const introsOrDinnerDone = dayData.completed;
     if (allVisited && !introsOrDinnerDone) {
       // Toutes les pieces sont visitees mais le diner n'a pas encore eu lieu :
       // on enchaine directement sans repasser par le Hall.
@@ -6445,9 +6444,7 @@ function dismissNightCartouche() {
 function onNextDayTap() {
   const day = gameState.currentDay;
   const dayData = gameState.daysData[day] || {};
-  const dinnerDone = (day === 1)
-    ? dayData.introductionsDone
-    : (dayData.userResponse && dayData.responsesRead);
+  const dinnerDone = dayData.completed;
 
   if (!dinnerDone) {
     // Cartouche d'avertissement : on ne passe pas tant que le diner
@@ -6479,9 +6476,7 @@ function updateNextDayButton() {
 
   btn.classList.remove('hidden');
   const dayData = gameState.daysData[day] || {};
-  const dinnerDone = (day === 1)
-    ? dayData.introductionsDone
-    : (dayData.userResponse && dayData.responsesRead);
+  const dinnerDone = dayData.completed;
 
   labelEl.textContent = `PASSER AU JOUR ${day + 1} →`;
   btn.classList.toggle('active', !!dinnerDone);
@@ -6600,7 +6595,7 @@ function renderHall() {
     const dayData2 = gameState.daysData[day] || {};
     const visitedThisDay = (gameState.visitedRoomsByDay && gameState.visitedRoomsByDay[day]) || [];
     const allVisited = DAILY_ROOM_ORDER.every(r => visitedThisDay.includes(r));
-    const dinnerCompleted = dayData2.userResponse && dayData2.responsesRead;
+    const dinnerCompleted = dayData2.completed;
     const nightDismissed = gameState.nightCartoucheDismissed && gameState.nightCartoucheDismissed[day];
 
     if (!dayData2.hallEntered && SEASON_1_CONTENT[day]) {
