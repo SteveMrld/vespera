@@ -58,10 +58,10 @@
     font-size: 13px;
     font-weight: 300;
     letter-spacing: 0.32em;
-    color: rgba(212, 184, 112, 0.75);
+    color: #EDE8DD;
     text-transform: uppercase;
     text-align: center;
-    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.85);
+    text-shadow: 0 2px 22px rgba(0, 0, 0, 0.95), 0 1px 4px rgba(0, 0, 0, 1);
     opacity: 0;
     animation: fadeIn 2s 2.6s ease forwards;
   }
@@ -109,547 +109,179 @@
   .seuil-btn:active { background: rgba(212,184,112,0.15); color: #EDE8DD; }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-  /* SCÈNE RITUEL */
+  /* ============================================================
+     SCENE RITUEL (V36) - typographie pure, pas d'effets matiere.
+     Fond noir profond. Le texte se compose en cascade, ligne par
+     ligne, avec des fades doux. Pas de medaillon, pas d'encre,
+     pas de roue qui tourne. Le Sceau, c'est juste son nom et sa
+     vertu poses dans le silence. Inspire d'Alba.
+     ============================================================ */
   #ritual {
-    background: radial-gradient(ellipse at center, #1B2536 0%, #0A1220 100%);
+    background: radial-gradient(ellipse at center, #0F1424 0%, #04070F 80%, #02040A 100%);
     padding: 0;
     overflow: hidden;
   }
   .ritual-stage {
     width: 100%;
     min-height: 100vh;
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-sizing: border-box;
+    padding: 56px 32px;
   }
-
-  /* Chaque acte = un layout flex column qui remplit toute la scène.
-     Garantit que le bouton est TOUJOURS visible en bas, même sur petit écran. */
-  .ritual-act {
-    position: absolute;
-    inset: 0;
+  .ritual-typo {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 32px;
-    padding: 48px 28px 56px;
-    box-sizing: border-box;
-    text-align: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .ritual-act.active {
-    opacity: 1;
-    pointer-events: auto;
+    gap: 0;
   }
 
-  .ritual-text-block {
+  /* Toutes les lignes commencent invisibles, animees par classe ajoutee
+     en JS. La classe .visible sur la ligne declenche le fade-up. */
+  .ritual-typo-line {
     margin: 0;
-    width: 100%;
-    max-width: 340px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .ritual-v-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    color: #D4B870;
-    letter-spacing: 0.4em;
-    margin-bottom: 22px;
+  .ritual-typo-line.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
-  .ritual-text {
+
+  /* PHASE 1 : "Vespera vous reconnait." Une phrase courte, doucement
+     posee. La couleur est entre creme et or sourd, en italique non
+     marque. */
+  .ritual-typo-intro {
     font-family: 'Fraunces', serif;
-    font-size: 20px;
+    font-size: 22px;
+    font-weight: 300;
+    color: #DCC9A0;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+    margin-bottom: 72px;
+  }
+
+  /* PHASE 2 : "Votre Sceau pour ce Cycle" - label fin, lettering
+     discret pour que ce soit clairement de la "carte d'identite". */
+  .ritual-typo-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    font-weight: 400;
+    color: rgba(212, 184, 112, 0.65);
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  /* PHASE 3 : LE NOM DE L'ANIMAL en grand. C'est le centre de la
+     scene. Capitales espacees, Fraunces fin, blanc casse, posees comme
+     une sentence. */
+  .ritual-typo-name {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
     font-weight: 300;
     color: #EDE8DD;
-    line-height: 1.55;
-    letter-spacing: 0.01em;
-    margin: 0 0 14px;
-  }
-  .ritual-text-soft {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    font-weight: 300;
-    color: #A8A095;
-    letter-spacing: 0.06em;
-    line-height: 1.65;
-    margin: 8px 0 0;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin-bottom: 28px;
+    /* On laisse les espaces respirer cote droit comme cote gauche */
+    text-indent: 0.22em;
   }
 
-  .ritual-btn-act {
-    flex: 0 0 auto;
+  /* Le trait fin or qui se trace sous le nom. C'est notre seul ornement
+     visuel. CSS pur : un span vide qui scale sa width via animation. */
+  .ritual-typo-rule {
+    width: 0;
+    height: 1px;
+    background: linear-gradient(to right,
+      rgba(212, 184, 112, 0) 0%,
+      rgba(212, 184, 112, 0.85) 50%,
+      rgba(212, 184, 112, 0) 100%);
+    margin: 0 auto 36px;
+    opacity: 0;
+    transition: width 1.8s cubic-bezier(0.65, 0, 0.35, 1),
+                opacity 0.6s ease;
+  }
+  .ritual-typo-rule.visible {
+    width: 56px;
+    opacity: 1;
+  }
+
+  /* PHASE 4 : la vertu - une phrase courte, en serif, plus mince. */
+  .ritual-typo-vertu {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: #BBA89A;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+
+  /* La signature V. en or sourd. */
+  .ritual-typo-vsig {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(212, 184, 112, 0.85);
+    letter-spacing: 0.3em;
+    margin-bottom: 64px;
+  }
+
+  /* Le bouton final, sobre, sans fioritures */
+  .ritual-typo-btn {
     background: transparent;
-    border: 1px solid rgba(212,184,112,0.5);
+    border: 1px solid rgba(212, 184, 112, 0.5);
     color: #D4B870;
-    padding: 14px 36px;
+    padding: 14px 32px;
     font-family: 'Inter', sans-serif;
     font-size: 11px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.4s ease;
     border-radius: 2px;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 1s cubic-bezier(0.4, 0, 0.2, 1),
+                background 0.4s ease,
+                color 0.4s ease,
+                border-color 0.4s ease;
   }
-  .ritual-btn-act:active {
-    background: rgba(212,184,112,0.15);
+  .ritual-typo-btn.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .ritual-typo-btn:active {
+    background: rgba(212, 184, 112, 0.15);
     color: #FFE9B0;
     border-color: #F5DC96;
   }
 
-  /* ============================================================
-     ACTE 2 : L'ENCRE (V35)
-     Une goutte d'encre noire tombe sur un cercle de papier ivoire
-     pale. Elle se diffuse en volutes lentes. Un V calligraphique
-     se forme dans l'encre, comme tire au pinceau japonais. A la
-     "brisure", l'encre se disperse sous une onde et tout s'estompe.
-     Pas de rouge, pas de matiere lourde. Liquide, contemplatif.
-     ============================================================ */
-  .ritual-ink-stage {
-    position: relative;
-    width: 240px;
-    height: 240px;
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    isolation: isolate;
-  }
-
-  /* Le papier : disque ivoire pale, presque uniforme, avec une legere
-     texture pour eviter l'effet plastique. C'est la zone d'impact. */
-  .ritual-ink-paper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    background:
-      radial-gradient(ellipse at 35% 30%,
-        rgba(248, 244, 232, 0.96) 0%,
-        rgba(238, 230, 212, 0.92) 50%,
-        rgba(220, 210, 188, 0.88) 100%);
-    transform: translate(-50%, -50%) scale(0.92);
-    opacity: 0;
-    box-shadow:
-      0 6px 30px rgba(0, 0, 0, 0.4),
-      inset 0 0 16px rgba(140, 120, 90, 0.15);
-    z-index: 0;
-    animation: paperFadeIn 1.6s 0.2s ease forwards;
-  }
-  @keyframes paperFadeIn {
-    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
-    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  }
-
-  /* La goutte : ovale noir profond, qui tombe d'au dessus avec un
-     effet d'allongement avant l'impact. */
-  .ritual-ink-drop {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 14px;
-    height: 18px;
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    background: radial-gradient(ellipse at 35% 30%, #1A1A1E 0%, #050507 70%, #000 100%);
-    transform: translate(-50%, -150%) scaleY(0.8);
-    opacity: 0;
-    z-index: 3;
-    box-shadow:
-      0 0 4px rgba(0, 0, 0, 0.6),
-      inset 1px 1px 1.5px rgba(80, 80, 90, 0.25);
-    animation: inkDrop 1.4s 1.0s cubic-bezier(0.55, 0, 0.7, 0.4) forwards;
-  }
-  @keyframes inkDrop {
-    0% {
-      opacity: 0;
-      transform: translate(-50%, -150%) scaleY(0.8);
-    }
-    20% {
-      opacity: 1;
-      transform: translate(-50%, -150%) scaleY(0.8);
-    }
-    72% {
-      opacity: 1;
-      transform: translate(-50%, -8%) scaleY(1.6) scaleX(0.65);
-    }
-    85% {
-      opacity: 0.85;
-      transform: translate(-50%, 10%) scaleY(0.4) scaleX(2.2);
-    }
-    100% {
-      opacity: 0;
-      transform: translate(-50%, 10%) scaleY(0.15) scaleX(3.5);
-    }
-  }
-
-  /* L'onde concentrique au moment de l'impact - une seule, brève. */
-  .ritual-ink-ripple {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(40, 30, 35, 0.5);
-    transform: translate(-50%, -50%) scale(0.3);
-    opacity: 0;
-    z-index: 2;
-    animation: inkRipple 1.6s 2.2s ease-out forwards;
-  }
-  @keyframes inkRipple {
-    0% {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0.2);
-      border-width: 2px;
-    }
-    20% {
-      opacity: 0.8;
-      transform: translate(-50%, -50%) scale(0.6);
-      border-width: 1.5px;
-    }
-    100% {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(4);
-      border-width: 0.3px;
-    }
-  }
-
-  /* Volutes d'encre qui se diffusent. Trois couches superposees, chacune
-     un peu decalee, pour donner l'effet d'encre qui se dilue dans l'eau. */
-  .ritual-ink-cloud {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-    z-index: 1;
-    pointer-events: none;
-    mix-blend-mode: multiply;
-    filter: blur(2px);
-  }
-  .ritual-ink-cloud-1 {
-    width: 90px;
-    height: 90px;
-    background:
-      radial-gradient(circle at 45% 40%,
-        rgba(15, 18, 28, 0.85) 0%,
-        rgba(20, 22, 32, 0.6) 30%,
-        rgba(40, 40, 50, 0.25) 60%,
-        rgba(60, 60, 70, 0) 100%);
-    animation: inkCloud1 4.5s 2.3s ease-out forwards;
-  }
-  .ritual-ink-cloud-2 {
-    width: 130px;
-    height: 130px;
-    background:
-      radial-gradient(circle at 60% 55%,
-        rgba(15, 18, 28, 0.55) 0%,
-        rgba(25, 25, 35, 0.35) 35%,
-        rgba(45, 45, 55, 0.15) 70%,
-        rgba(60, 60, 70, 0) 100%);
-    animation: inkCloud2 5s 2.7s ease-out forwards;
-  }
-  .ritual-ink-cloud-3 {
-    width: 175px;
-    height: 175px;
-    background:
-      radial-gradient(circle at 50% 50%,
-        rgba(15, 18, 28, 0.3) 0%,
-        rgba(30, 30, 40, 0.18) 40%,
-        rgba(50, 50, 60, 0.08) 70%,
-        rgba(60, 60, 70, 0) 100%);
-    animation: inkCloud3 5.5s 3.0s ease-out forwards;
-  }
-  @keyframes inkCloud1 {
-    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.1) rotate(0deg); }
-    25%  { opacity: 1; transform: translate(-50%, -50%) scale(0.7) rotate(20deg); }
-    100% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.05) rotate(45deg); }
-  }
-  @keyframes inkCloud2 {
-    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.2) rotate(0deg); }
-    35%  { opacity: 0.85; transform: translate(-50%, -50%) scale(0.7) rotate(-15deg); }
-    100% { opacity: 0.85; transform: translate(-50%, -50%) scale(1.02) rotate(-30deg); }
-  }
-  @keyframes inkCloud3 {
-    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.3) rotate(0deg); }
-    40%  { opacity: 0.7; transform: translate(-50%, -50%) scale(0.75) rotate(10deg); }
-    100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1) rotate(20deg); }
-  }
-
-  /* Le V calligraphique en SVG, tracé au pinceau. */
-  .ritual-ink-svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 200px;
-    height: 200px;
-    transform: translate(-50%, -50%);
-    z-index: 5;
-    pointer-events: none;
-  }
-  .ritual-ink-stroke {
-    fill: none;
-    stroke: #0A0C12;
-    stroke-width: 5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-dasharray: var(--len, 200);
-    stroke-dashoffset: var(--len, 200);
-    animation: drawInkStroke var(--dur, 2s) var(--del, 0s) cubic-bezier(0.45, 0, 0.55, 1) forwards;
-    filter:
-      drop-shadow(0 0 1.5px rgba(10, 12, 18, 0.4))
-      drop-shadow(0 0 4px rgba(20, 22, 30, 0.18));
-  }
-  @keyframes drawInkStroke {
-    0%   { stroke-dashoffset: var(--len, 200); }
-    100% { stroke-dashoffset: 0; }
-  }
-  .ritual-ink-dot {
-    fill: #0A0C12;
-    opacity: 0;
-    animation: inkDotIn 0.6s var(--del, 0s) ease forwards;
-    filter: drop-shadow(0 0 1.5px rgba(10, 12, 18, 0.4));
-  }
-  @keyframes inkDotIn {
-    0%   { opacity: 0; transform: translateY(-4px) scale(0.5); transform-origin: 100px 158px; }
-    100% { opacity: 1; transform: translateY(0) scale(1); transform-origin: 100px 158px; }
-  }
-
-  /* === BRISURE === Quand le joueur tape BRISER, l'encre se disperse
-     sous une onde, le V s'efface en se diffusant lui-meme. */
-  .ritual-ink-stage.dispersing .ritual-ink-cloud {
-    animation: inkDisperse 1.4s cubic-bezier(0.4, 0, 0.6, 1) forwards;
-  }
-  .ritual-ink-stage.dispersing .ritual-ink-cloud-1 { animation-delay: 0s; }
-  .ritual-ink-stage.dispersing .ritual-ink-cloud-2 { animation-delay: 0.1s; }
-  .ritual-ink-stage.dispersing .ritual-ink-cloud-3 { animation-delay: 0.2s; }
-  @keyframes inkDisperse {
-    0%   { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: var(--starting-opacity, 0.85); filter: blur(2px); }
-    50%  { transform: translate(-50%, -50%) scale(2) rotate(120deg); opacity: 0.4; filter: blur(8px); }
-    100% { transform: translate(-50%, -50%) scale(3.5) rotate(240deg); opacity: 0; filter: blur(20px); }
-  }
-  .ritual-ink-stage.dispersing .ritual-ink-svg {
-    animation: inkStrokeFade 1s ease-out forwards;
-  }
-  @keyframes inkStrokeFade {
-    0%   { opacity: 1; filter: blur(0); }
-    100% { opacity: 0; filter: blur(8px); }
-  }
-  .ritual-ink-stage.dispersing .ritual-ink-paper {
-    animation: paperFadeOut 1.4s ease-out forwards;
-  }
-  @keyframes paperFadeOut {
-    0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.15); }
-  }
-
-  /* Sur ecran court (paysage tablette), on retrecit l'etage. */
+  /* Sur ecrans courts, on resserre */
   @media (max-height: 700px) {
-    .ritual-ink-stage { width: 180px; height: 180px; }
-    .ritual-ink-paper { width: 165px; height: 165px; }
-    .ritual-ink-svg { width: 150px; height: 150px; }
-    .ritual-act { gap: 18px; padding: 24px 24px 28px; }
+    .ritual-typo-intro { font-size: 19px; margin-bottom: 56px; }
+    .ritual-typo-name { font-size: 32px; margin-bottom: 24px; }
+    .ritual-typo-vsig { margin-bottom: 48px; }
   }
   @media (max-height: 520px) {
-    .ritual-ink-stage { width: 130px; height: 130px; }
-    .ritual-ink-paper { width: 120px; height: 120px; }
-    .ritual-ink-svg { width: 110px; height: 110px; }
-    .ritual-act { gap: 12px; padding: 16px 20px 20px; }
-  }
-
-  /* Flash plein-écran qui jaillit du sceau */
-  .ritual-flash {
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(circle at center,
-      rgba(255, 245, 215, 1) 0%,
-      rgba(245, 220, 150, 0.92) 25%,
-      rgba(212, 184, 112, 0.55) 55%,
-      rgba(15, 26, 46, 0) 90%);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 50;
-    mix-blend-mode: screen;
-  }
-  .ritual-flash.flashing {
-    animation: ritualFlash 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-  @keyframes ritualFlash {
-    0%   { opacity: 0; transform: scale(0.4); }
-    25%  { opacity: 1; transform: scale(1); }
-    55%  { opacity: 0.85; transform: scale(1.15); }
-    100% { opacity: 0; transform: scale(1.3); }
-  }
-
-  /* Le hint et le bouton n'apparaissent qu'une fois le sceau dessiné */
-  #ritualSealHint {
-    opacity: 0;
-    transition: opacity 0.9s 3s ease;
-  }
-  .ritual-seal-ready #ritualSealHint { opacity: 1; }
-  #ritualBreakBtn {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.9s 3.4s ease;
-  }
-  .ritual-seal-ready #ritualBreakBtn {
-    opacity: 1;
-    pointer-events: auto;
-    animation: pulseBtn 2.4s ease-in-out infinite 4.4s;
-  }
-  @keyframes pulseBtn {
-    0%, 100% { box-shadow: 0 0 0 rgba(212,184,112,0); }
-    50%      { box-shadow: 0 0 22px rgba(212,184,112,0.45); }
-  }
-
-  /* ============================================================
-     ACTE 3 : LA RÉVÉLATION DU MÉDAILLON (acte unique fusionné)
-     Style EXACT des place cards du dîner : disque ivoire, bordure
-     brune, anneau intérieur décoratif, ombre gravée. Le médaillon
-     émerge depuis la lumière résiduelle du flash.
-     ============================================================ */
-  .ritual-medallion-container {
-    width: 220px;
-    height: 220px;
-    flex: 0 0 auto;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    isolation: isolate;
-  }
-  .ritual-medallion {
-    position: relative;
-    width: 190px;
-    height: 190px;
-    border-radius: 50%;
-    background: rgba(245, 235, 210, 0.97);
-    border: 1.5px solid rgba(120, 80, 40, 0.7);
-    box-shadow:
-      0 8px 28px rgba(0, 0, 0, 0.6),
-      0 0 0 2px rgba(245, 235, 210, 0.18),
-      inset 0 0 10px rgba(80, 50, 20, 0.25),
-      0 0 100px rgba(245, 220, 150, 0.45);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    transform: scale(0.4);
-    opacity: 0;
-    filter: blur(8px);
-    transition: all 1.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  /* Anneau intérieur décoratif (comme une vraie place card) */
-  .ritual-medallion::before {
-    content: '';
-    position: absolute;
-    top: 7px; left: 7px; right: 7px; bottom: 7px;
-    border-radius: 50%;
-    border: 0.5px solid rgba(120, 80, 40, 0.4);
-    pointer-events: none;
-    z-index: 2;
-  }
-  .ritual-medallion.emerging {
-    transform: scale(1);
-    opacity: 1;
-    filter: blur(0);
-  }
-  /* Effet "verrouillage" quand la roue s'arrête sur l'animal du joueur */
-  .ritual-medallion.locked {
-    animation: medallionLockIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  }
-  @keyframes medallionLockIn {
-    0%   { transform: scale(1); }
-    35%  { transform: scale(1.08); box-shadow:
-            0 6px 20px rgba(0, 0, 0, 0.6),
-            0 0 0 2px rgba(245, 220, 150, 0.4),
-            inset 0 0 10px rgba(80, 50, 20, 0.25),
-            0 0 90px rgba(245, 220, 150, 0.55); }
-    100% { transform: scale(1); }
-  }
-  .ritual-medallion-halo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 140%;
-    height: 140%;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(245,220,150,0.38) 0%, transparent 60%);
-    opacity: 0;
-    animation: haloPulse 3.2s ease-in-out infinite;
-    pointer-events: none;
-    z-index: -1;
-  }
-  @keyframes haloPulse {
-    0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
-    50%      { opacity: 0.8; transform: translate(-50%, -50%) scale(1.12); }
-  }
-  /* L'animal à l'intérieur, sur fond ivoire */
-  .ritual-medallion-inner {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-    background: rgba(245, 235, 210, 0.97);
-  }
-  .ritual-medallion-inner img,
-  .ritual-medallion-inner svg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    display: block;
-  }
-  .ritual-seal-name {
-    font-family: 'Fraunces', serif;
-    font-size: 32px;
-    font-weight: 300;
-    color: #FFE9B0;
-    margin: 18px 0 8px;
-    letter-spacing: 0.06em;
-    opacity: 0;
-    transition: opacity 1.2s 0.5s ease;
-  }
-  .ritual-seal-name.visible { opacity: 1; }
-  .ritual-seal-vertu {
-    font-family: 'Inter', sans-serif;
-    font-size: 11.5px;
-    color: #A8A095;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    line-height: 1.55;
-    margin: 0 auto;
-    max-width: 280px;
-    opacity: 0;
-    transition: opacity 1.2s 1s ease;
-  }
-  .ritual-seal-vertu.visible { opacity: 1; }
-
-  /* Bouton final "JE SUIS [X]" — n'apparaît qu'à la toute fin */
-  .ritual-btn-accept {
-    background: rgba(212,184,112,0.12);
-    border: 1px solid #D4B870;
-    color: #FFE9B0;
-    padding: 16px 32px;
-    font-size: 12px;
-    letter-spacing: 0.25em;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.9s ease;
-  }
-  .ritual-btn-accept.visible {
-    opacity: 1;
-    pointer-events: auto;
-    animation: pulseBtn 2.4s ease-in-out infinite 1.5s;
-  }
-  .ritual-btn-accept:active {
-    background: #D4B870;
-    color: #0F1A2E;
+    .ritual-stage { padding: 32px 24px; }
+    .ritual-typo-intro { font-size: 17px; margin-bottom: 40px; }
+    .ritual-typo-label { margin-bottom: 24px; }
+    .ritual-typo-name { font-size: 28px; margin-bottom: 18px; }
+    .ritual-typo-rule.visible { width: 44px; }
+    .ritual-typo-rule { margin-bottom: 24px; }
+    .ritual-typo-vertu { font-size: 14px; margin-bottom: 24px; }
+    .ritual-typo-vsig { margin-bottom: 32px; }
   }
 
   /* PROLOGUE DU 1ER DÎNER — V explique les règles au joueur.
@@ -2639,80 +2271,39 @@
   </div>
 </div>
 
-<!-- SCÈNE RITUEL -->
+<!-- SCÈNE RITUEL - V36 : tout-typo, fond noir, transitions douces.
+     Une seule mise en page qui se compose en 4 phases :
+     1. Murmure d'introduction (V parle)
+     2. Annonce du Sceau ("Votre Sceau pour ce Cycle :")
+     3. Le nom de l'animal en grand, avec un trait fin qui se trace
+     4. La vertu courte + bouton d'acceptation
+     Pas de medaillon, pas de roue qui tourne, pas d'encre. Juste de
+     la typographie qui apparait dans le silence. -->
 <div id="ritual" class="scene">
-  <!-- Flash plein-écran qui jaillit du sceau au moment de la brisure -->
-  <div class="ritual-flash" id="ritualFlash"></div>
-
   <div class="ritual-stage">
+    <div class="ritual-typo" id="ritualTypo">
 
-    <!-- ACTE 1 : Le seuil — V demande de tendre la main -->
-    <div class="ritual-act ritual-act-1 active" id="ritualAct1">
-      <div class="ritual-text-block">
-        <p class="ritual-v-label">V.</p>
-        <p class="ritual-text">Vous avez répondu.<br>Maintenant, la villa va vous nommer.</p>
-        <p class="ritual-text-soft">Tendez la main.</p>
-      </div>
-      <button class="ritual-btn-act" onclick="ritualGoToAct2()">TENDRE LA MAIN →</button>
+      <p class="ritual-typo-line ritual-typo-intro" id="ritualLineIntro">
+        Vespera vous reconnaît.
+      </p>
+
+      <p class="ritual-typo-line ritual-typo-label" id="ritualLineLabel">
+        Votre Sceau pour ce Cycle
+      </p>
+
+      <p class="ritual-typo-line ritual-typo-name" id="ritualLineName"></p>
+
+      <div class="ritual-typo-rule" id="ritualLineRule"></div>
+
+      <p class="ritual-typo-line ritual-typo-vertu" id="ritualLineVertu"></p>
+
+      <p class="ritual-typo-line ritual-typo-vsig" id="ritualLineVsig">V.</p>
+
+      <button class="ritual-typo-btn" id="ritualAcceptBtn" onclick="ritualAccept()">
+        ACCEPTER CE SCEAU →
+      </button>
+
     </div>
-
-    <!-- ACTE 2 : LE SCEAU DE CIRE — il se forme puis vole en eclats -->
-    <div class="ritual-act ritual-act-2" id="ritualAct2">
-      <div class="ritual-ink-stage" id="ritualInkStage">
-        <!-- Goutte d'encre noire qui tombe depuis le haut. Quand elle touche
-             la surface, elle se diffuse en volutes lentes. Le V se forme
-             dans la calligraphie de l'encre. -->
-        <div class="ritual-ink-drop"></div>
-        <!-- Surface : un cercle ivoire / parchemin sur lequel l'encre se pose.
-             C'est la zone de contact, le "papier" suggere par un disque clair. -->
-        <div class="ritual-ink-paper"></div>
-        <!-- Onde concentrique au moment de l'impact (tres bref, comme une
-             goutte sur de l'eau). -->
-        <div class="ritual-ink-ripple"></div>
-        <!-- Volutes d'encre qui se diffusent en spirale, donnent la matiere
-             liquide. 3 couches superposees pour la profondeur. -->
-        <div class="ritual-ink-cloud ritual-ink-cloud-1"></div>
-        <div class="ritual-ink-cloud ritual-ink-cloud-2"></div>
-        <div class="ritual-ink-cloud ritual-ink-cloud-3"></div>
-        <!-- Le V calligraphique trace au pinceau, qui se forme dans l'encre.
-             SVG pour pouvoir tracer trait par trait avec stroke-dashoffset. -->
-        <svg class="ritual-ink-svg" id="ritualInkSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <!-- V calligraphique tres organique, comme tire au pinceau japonais.
-               Une seule longue ligne qui descend, remonte, et se termine
-               par un retour de pinceau. -->
-          <path class="ritual-ink-stroke"
-                d="M 70 60
-                   Q 78 100 100 140
-                   Q 122 100 130 60"
-                style="--len:200; --dur:2.4s; --del:1.4s;" />
-          <!-- Petit point de signature en bas, tombe a la fin -->
-          <circle class="ritual-ink-dot" cx="100" cy="158" r="2.2"
-                  style="--del:4.2s;" />
-        </svg>
-      </div>
-      <div class="ritual-text-block">
-        <p class="ritual-text-soft" id="ritualSealHint">L'encre se pose pour vous.<br>Brisez-la quand elle sera tracée.</p>
-      </div>
-      <button class="ritual-btn-act" onclick="ritualBreakSeal()" id="ritualBreakBtn">BRISER LE SCEAU</button>
-    </div>
-
-    <!-- ACTE 3 : LA RÉVÉLATION (acte unique fusionné — médaillon + nom + bouton final) -->
-    <div class="ritual-act ritual-act-3" id="ritualAct3">
-      <div class="ritual-medallion-container">
-        <div class="ritual-medallion-halo"></div>
-        <div class="ritual-medallion" id="ritualMedallion">
-          <div class="ritual-medallion-inner" id="ritualMedallionInner"></div>
-        </div>
-      </div>
-      <div class="ritual-text-block">
-        <p class="ritual-v-label">V.</p>
-        <p class="ritual-text">Voici qui vous êtes ce soir.</p>
-        <p class="ritual-seal-name" id="ritualSealName"></p>
-        <p class="ritual-seal-vertu" id="ritualSealVertu"></p>
-      </div>
-      <button class="ritual-btn-act ritual-btn-accept" onclick="ritualAccept()" id="ritualAcceptBtn"></button>
-    </div>
-
   </div>
 </div>
 
@@ -4636,244 +4227,71 @@ function startRitual() {
   if (!isLoaded || !gameState.userSeal) {
     initNewCycle();
   }
-  // Démarrer en acte 1 (V parle, demande de tendre la main)
-  showRitualAct(1);
   showScene('ritual');
+  // Petit delai pour que la scene apparaisse avant que les fades commencent
+  setTimeout(() => runRitualTypo(), 200);
 }
 
-// Affiche un acte du rituel et cache les autres (3 actes désormais : seuil → sceau → révélation)
-function showRitualAct(actNumber) {
-  for (let i = 1; i <= 3; i++) {
-    const el = document.getElementById('ritualAct' + i);
-    if (el) el.classList.toggle('active', i === actNumber);
-  }
-}
-
-// ACTE 1 → ACTE 2 : V demande de briser le sceau
-function ritualGoToAct2() {
-  showRitualAct(2);
-
-  // Reset complet de l'etage encre (au cas ou on rejoue le rituel).
-  // Le pattern V35 utilise des classes CSS pour declencher les animations,
-  // donc on doit retirer/reattacher le DOM pour relancer les keyframes.
-  const stage = document.getElementById('ritualInkStage');
-  if (stage) {
-    stage.classList.remove('dispersing');
-    // Astuce pour relancer les animations CSS : on clone l'innerHTML.
-    // Plus fiable que offsetWidth sur des nested animations multiples.
-    const parent = stage.parentNode;
-    const fresh = stage.cloneNode(true);
-    parent.replaceChild(fresh, stage);
-  }
-
-  // Le hint et le bouton commencent caches, ils apparaissent une fois le V trace
-  const hint = document.getElementById('ritualSealHint');
-  if (hint) { hint.style.opacity = '0'; hint.style.transition = 'opacity 0.8s ease'; }
-  const breakBtn = document.getElementById('ritualBreakBtn');
-  if (breakBtn) {
-    breakBtn.style.opacity = '0';
-    breakBtn.style.pointerEvents = 'none';
-    breakBtn.style.transition = 'opacity 0.8s ease';
-  }
-
-  // SEQUENCE de l'encre :
-  // 0.2s   : le papier ivoire fade in
-  // 1.0s   : la goutte d'encre commence sa chute
-  // 2.2s   : impact - onde concentrique
-  // 2.3-3s : volutes d'encre se diffusent en spirale (4.5-5.5s de duree)
-  // 1.4s   : le V calligraphique commence a se tracer (delay du SVG)
-  // 4.0s   : V trace, le point final tombe a 4.2s
-  // 5.5s   : tout est en place, hint et bouton apparaissent
-
-  setTimeout(() => {
-    if (hint) hint.style.opacity = '1';
-    if (breakBtn) {
-      breakBtn.style.opacity = '1';
-      breakBtn.style.pointerEvents = 'auto';
-    }
-    const a = document.getElementById('ritualAct2');
-    if (a) a.classList.add('ritual-seal-ready');
-  }, 5500);
-}
-
-// ACTE 2 : Le joueur brise le sceau. L'encre se disperse en volutes,
-// le V s'efface en se diffusant. Pas d'eclats, pas de flash blanc :
-// quelque chose qui s'estompe, pas qui explose.
-function ritualBreakSeal() {
-  const stage = document.getElementById('ritualInkStage');
-  if (!stage) return;
-
-  // Empeche les double-clics
-  const btn = document.getElementById('ritualBreakBtn');
-  if (btn) {
-    btn.style.pointerEvents = 'none';
-    btn.style.opacity = '0';
-  }
-
-  // Vibration douce, presque effleuree (l'encre n'explose pas)
-  if (navigator.vibrate) navigator.vibrate([15, 60, 25]);
-
-  // Le hint disparait
-  const hint = document.getElementById('ritualSealHint');
-  if (hint) hint.style.opacity = '0';
-
-  // L'encre se disperse
-  stage.classList.add('dispersing');
-
-  // Flash plein-ecran au pic d'embrasement, MAIS plus doux : c'est plus
-  // une lueur qu'un eclair. On garde l'element pour la transition vers
-  // l'acte 3, mais on l'attenue.
-  setTimeout(() => {
-    const flash = document.getElementById('ritualFlash');
-    if (flash) {
-      flash.classList.remove('flashing');
-      void flash.offsetWidth;
-      flash.classList.add('flashing');
-    }
-  }, 700);
-
-  // Bascule vers l'acte de revelation. Plus long delai car l'encre
-  // se disperse plus lentement qu'une cire qui eclate.
-  setTimeout(() => {
-    showRitualAct(3);
-    ritualRevealMedallion();
-  }, 1400);
-
-  // Nettoyage du flash apres animation
-  setTimeout(() => {
-    const flash = document.getElementById('ritualFlash');
-    if (flash) flash.classList.remove('flashing');
-  }, 2600);
-}
-
-// ACTE 3 (fusionné) : la villa nomme le joueur en faisant défiler les
-// 12 Sceaux comme une roue qui ralentit, jusqu'à s'arrêter sur l'animal
-// du joueur. On voit donc qu'on aurait pu être autre chose. C'est ce qui
-// donne du sens au "la villa va vous nommer" — la villa choisit pour vous.
-function ritualRevealMedallion() {
+// SCENE RITUEL (V36) - typographie pure, fades en cascade.
+// Plus de medaillon, plus de roue qui tourne, plus d'encre. Le Sceau
+// se revele simplement par son nom et sa vertu, dans le silence.
+// Cette fonction est appelee a l'arrivee dans la scene #ritual.
+function runRitualTypo() {
   const seal = ALL_SEALS[gameState.userSeal];
   if (!seal) return;
 
-  const inner = document.getElementById('ritualMedallionInner');
-  const medallion = document.getElementById('ritualMedallion');
+  // Reset des classes au cas ou on rejoue le rituel
+  const lines = ['ritualLineIntro', 'ritualLineLabel', 'ritualLineName', 'ritualLineRule', 'ritualLineVertu', 'ritualLineVsig'];
+  lines.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('visible');
+  });
+  const btn = document.getElementById('ritualAcceptBtn');
+  if (btn) btn.classList.remove('visible');
 
-  // Pré-charger les 12 images pour que la roue tourne sans flicker
-  preloadAllSeals(() => {
+  // Pre-remplir le nom et la vertu
+  const nameEl = document.getElementById('ritualLineName');
+  if (nameEl) nameEl.textContent = seal.name; // ex: "Le Faucon"
+  const vertuEl = document.getElementById('ritualLineVertu');
+  if (vertuEl) vertuEl.textContent = seal.desc || '';
+  if (btn) btn.textContent = 'ACCEPTER CE SCEAU →';
+
+  // SEQUENCE DES FADES (timing pense pour une lecture posee) :
+  // 0.6s   : "Vespera vous reconnait."
+  // 2.6s   : "Votre Sceau pour ce Cycle"
+  // 3.8s   : Le nom de l'animal en grand
+  // 4.6s   : Le trait fin se trace sous le nom
+  // 6.4s   : La vertu
+  // 7.8s   : V.
+  // 9.0s   : Bouton ACCEPTER
+
+  const reveal = (id, delay) => {
     setTimeout(() => {
-      // Émergence du médaillon (flou → net)
-      if (medallion) medallion.classList.add('emerging');
+      const el = document.getElementById(id);
+      if (el) el.classList.add('visible');
+    }, delay);
+  };
 
-      // Petit temps mort dramatique avant que la roue ne s'élance
-      setTimeout(() => {
-        spinSealWheel(gameState.userSeal, inner, () => {
-          // La roue s'est arrêtée sur l'animal du joueur.
-          if (navigator.vibrate) navigator.vibrate([20, 30, 50]);
-          if (medallion) medallion.classList.add('locked');
+  reveal('ritualLineIntro', 600);
+  reveal('ritualLineLabel', 2600);
+  reveal('ritualLineName', 3800);
+  reveal('ritualLineRule', 4600);
+  reveal('ritualLineVertu', 6400);
+  reveal('ritualLineVsig', 7800);
 
-          // Le nom apparaît avec un peu de respiration
-          setTimeout(() => {
-            const nameEl = document.getElementById('ritualSealName');
-            if (nameEl) {
-              nameEl.textContent = seal.name;
-              nameEl.classList.add('visible');
-            }
-          }, 450);
-
-          // Puis la vertu
-          setTimeout(() => {
-            const vertuEl = document.getElementById('ritualSealVertu');
-            if (vertuEl) {
-              vertuEl.textContent = seal.desc || '';
-              vertuEl.classList.add('visible');
-            }
-          }, 1250);
-
-          // Enfin le bouton d'acceptation
-          setTimeout(() => {
-            const acceptBtn = document.getElementById('ritualAcceptBtn');
-            if (acceptBtn) {
-              acceptBtn.textContent = `JE SUIS ${seal.name.toUpperCase()}`;
-              acceptBtn.classList.add('visible');
-            }
-          }, 2150);
-        });
-      }, 600);
-    }, 200);
-  });
+  setTimeout(() => {
+    const acceptBtn = document.getElementById('ritualAcceptBtn');
+    if (acceptBtn) acceptBtn.classList.add('visible');
+    if (navigator.vibrate) navigator.vibrate([20, 30, 30]);
+  }, 9000);
 }
 
-// Pré-charge les 12 sceaux pour que la roue tourne sans saccade.
-// Sécurité : si une image met plus de 1.5s, on continue quand même.
-function preloadAllSeals(callback) {
-  const keys = Object.keys(ALL_SEALS);
-  let loaded = 0;
-  let done = false;
-  const safety = setTimeout(() => {
-    if (!done) { done = true; if (callback) callback(); }
-  }, 1500);
-  keys.forEach(key => {
-    const img = new Image();
-    img.onload = img.onerror = () => {
-      loaded++;
-      if (loaded === keys.length && !done) {
-        done = true;
-        clearTimeout(safety);
-        if (callback) callback();
-      }
-    };
-    img.src = ALL_SEALS[key].img;
-  });
-}
-
-// Roue des 12 Sceaux : défile rapidement puis ralentit jusqu'à s'arrêter
-// sur la cible. Effet machine à sous mais cérémonial.
-function spinSealWheel(targetKey, container, onComplete) {
-  if (!container) { if (onComplete) onComplete(); return; }
-
-  const allKeys = Object.keys(ALL_SEALS);
-  // Ordre aléatoire pour ne jamais avoir la même séquence
-  const shuffled = [...allKeys].sort(() => Math.random() - 0.5);
-
-  // Séquence : 2 cycles rapides + queue qui ralentit + cible en final
-  const sequence = [];
-  for (let i = 0; i < 2; i++) sequence.push(...shuffled);
-  const tail = shuffled.filter(k => k !== targetKey);
-  sequence.push(...tail.slice(-6), targetKey);
-
-  let step = 0;
-  function tick() {
-    if (step >= sequence.length) {
-      if (onComplete) onComplete();
-      return;
-    }
-    const key = sequence[step];
-    container.innerHTML = renderSealSVG(key);
-
-    // Délai croissant sur les 7 derniers pas (ralentissement progressif)
-    const remaining = sequence.length - step - 1;
-    let delay;
-    if (remaining > 7) {
-      delay = 50; // cycle rapide, presque flou
-    } else {
-      // 90, 130, 190, 280, 410, 600, 880 ms
-      delay = Math.round(90 * Math.pow(1.46, 7 - remaining));
-    }
-
-    step++;
-    setTimeout(tick, delay);
-  }
-  tick();
-}
-
-// ACTE 3 : Le joueur accepte son Sceau et entre dans le Hall
+// Le joueur accepte son Sceau et passe a l'onboarding du jeu (ou Hall
+// si deja vu).
 function ritualAccept() {
-  // Vibration tactile de confirmation
   if (navigator.vibrate) navigator.vibrate([30, 50, 30, 50, 100]);
-
-  // Petit fade out puis on enchaine sur l'onboarding du jeu
-  // (sauf si deja vu dans une session precedente, auquel cas on saute
-  // directement au Hall pour ne pas se taper l'onboarding 3 fois).
   const stage = document.querySelector('.ritual-stage');
+  if (stage) stage.style.transition = 'opacity 0.7s ease';
   if (stage) stage.style.opacity = '0';
   setTimeout(() => {
     if (stage) stage.style.opacity = '1';
