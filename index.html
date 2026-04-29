@@ -2237,10 +2237,25 @@
 
   /* SCÈNE PISCINE — meme pattern hero que la chambre */
   #pool { background: #0F1A2E; align-items: stretch; justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-  .pool-hero { background-image: url('assets/pool.png'); }
-  .couloir-hero { background-image: url('assets/corridor.png'); }
+  .pool-hero { background-image: url('assets/pool.png'); position: relative; }
+  .couloir-hero { background-image: url('assets/corridor.png'); position: relative; }
   .pool-content { padding: 36px 32px 60px; text-align: center; }
   .pool-entries { margin-top: 28px; text-align: left; }
+  /* Hotspots multi-objets sur la photo de la piscine.
+     Positions reparties sur la zone du rebord en pierre / table en teck
+     pour pointer 3 zones d'examen distinctes. */
+  .pool-obj { position: absolute; z-index: 4; }
+  #pool-obj-0 { bottom: 28%; left: 22%; width: 56px; height: 56px; }
+  #pool-obj-1 { bottom: 22%; left: 50%; transform: translateX(-50%); width: 56px; height: 56px; }
+  #pool-obj-2 { bottom: 30%; left: 78%; width: 56px; height: 56px; }
+
+  /* Hotspots multi-objets sur la photo du couloir.
+     Position : la fenetre a gauche (baie vitree), le tapis au centre, et
+     la porte / piece eclairee au fond. */
+  .couloir-obj { position: absolute; z-index: 4; }
+  #couloir-obj-0 { bottom: 50%; left: 18%; width: 56px; height: 56px; }
+  #couloir-obj-1 { bottom: 28%; left: 50%; transform: translateX(-50%); width: 56px; height: 56px; }
+  #couloir-obj-2 { bottom: 55%; left: 80%; width: 56px; height: 56px; }
   .chambre-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 300; color: #EDE8DD; margin-bottom: 14px; letter-spacing: 0.03em; }
   .chambre-desc { font-family: 'Fraunces', serif; font-size: 14px;  color: #A8A095; line-height: 1.6; max-width: 320px; margin: 0 auto; }
   .fiche-cards { padding: 0 24px 40px; display: flex; flex-direction: column; gap: 18px; }
@@ -3083,19 +3098,34 @@
     <div style="width: 56px;"></div>
   </div>
 
-  <!-- HERO immersif : on rentre dans l'extérieur -->
+  <!-- HERO immersif : on rentre dans l'extérieur. La photo de la piscine
+       est un fond fixe ; trois hotspots se posent dessus pour les objets
+       du jour courant (mode multi-objets). En dessous, la liste cumulative
+       des entrees des jours precedents reste accessible. -->
   <div class="chambre-hero pool-hero">
     <div class="chambre-hero-label">La Piscine</div>
     <div class="chambre-hero-sublabel">Le souffle de la nuit</div>
+    <!-- Hotspots multi-objets, n'apparaissent que si le contenu du jour
+         a un tableau objects[]. Sinon le mode classique 'liste' s'affiche
+         en dessous. -->
+    <button type="button" class="hotspot pool-obj" id="pool-obj-0" onclick="openPoolObject(0)" style="display:none;">
+      <span class="hotspot-label" id="pool-obj-0-label"></span>
+    </button>
+    <button type="button" class="hotspot pool-obj" id="pool-obj-1" onclick="openPoolObject(1)" style="display:none;">
+      <span class="hotspot-label" id="pool-obj-1-label"></span>
+    </button>
+    <button type="button" class="hotspot pool-obj" id="pool-obj-2" onclick="openPoolObject(2)" style="display:none;">
+      <span class="hotspot-label" id="pool-obj-2-label"></span>
+    </button>
   </div>
 
   <div class="pool-content">
-    <p class="chambre-desc">L'eau réfléchit ce que vous taisez. V a laissé des traces ici cette nuit.</p>
+    <p class="chambre-desc" id="poolInstruction">L'eau réfléchit ce que vous taisez. V a laissé des traces ici cette nuit.</p>
     <div class="pool-entries fiche-cards" id="poolEntries"></div>
   </div>
 </div>
 
-<!-- SCÈNE COULOIR — vote secret sur le Porteur -->
+<!-- SCÈNE COULOIR — multi-objets sur la photo + intuition reviseable J3-J6 -->
 <div id="couloir" class="scene">
   <div class="chambre-header">
     <button type="button" class="murmur-back" onclick="goToHall()">← RETOUR</button>
@@ -3103,14 +3133,24 @@
     <div style="width: 56px;"></div>
   </div>
 
-  <!-- HERO immersif : couloir nocturne, fenetre eclairee au fond -->
+  <!-- HERO immersif : couloir nocturne, fenetre eclairee au fond.
+       Trois hotspots multi-objets pour les jours qui en ont. -->
   <div class="chambre-hero couloir-hero">
     <div class="chambre-hero-label">Le Couloir</div>
     <div class="chambre-hero-sublabel">La fenêtre, au bout</div>
+    <button type="button" class="hotspot couloir-obj" id="couloir-obj-0" onclick="openCouloirObject(0)" style="display:none;">
+      <span class="hotspot-label" id="couloir-obj-0-label"></span>
+    </button>
+    <button type="button" class="hotspot couloir-obj" id="couloir-obj-1" onclick="openCouloirObject(1)" style="display:none;">
+      <span class="hotspot-label" id="couloir-obj-1-label"></span>
+    </button>
+    <button type="button" class="hotspot couloir-obj" id="couloir-obj-2" onclick="openCouloirObject(2)" style="display:none;">
+      <span class="hotspot-label" id="couloir-obj-2-label"></span>
+    </button>
   </div>
 
   <div class="couloir-intro">
-    <p class="chambre-desc">Quelqu'un revient ici chaque nuit. La villa garde la trace de ce qui s'y passe.</p>
+    <p class="chambre-desc" id="couloirInstruction">Quelqu'un revient ici chaque nuit. La villa garde la trace de ce qui s'y passe.</p>
   </div>
   <!-- Indices nocturnes deposes par V, cumulatifs J1 -> jour courant -->
   <div class="couloir-entries fiche-cards" id="couloirEntries"></div>
@@ -3755,15 +3795,69 @@ Et au dos, en plus petit :
     },
     pool: {
       title: `Au bord de la piscine`,
-      body: `Personne au bord à cette heure. Mais sur le rebord en pierre, un verre de whisky vide et une cigarette écrasée dans la soucoupe.
+      intro: `Personne au bord à cette heure. Mais quelqu'un est passé. Trois traces.`,
+      objects: [
+        {
+          id: 'glass',
+          label: 'Le verre',
+          title: `Le verre`,
+          body: `Un verre vide posé sur le rebord en pierre. Whisky, à l'odeur. Il reste un quart de glaçon qui n'a pas encore fini de fondre.
 
-Quelqu'un est venu cette nuit, tard, seul.`,
-      observation: `La cigarette est blonde, fine. Une marque européenne qu'on ne trouve pas ici. Un fumeur qui voyage.`
+L'empreinte d'une bouche sur le bord, mais pas de rouge à lèvres.`,
+          observation: `Quelqu'un est venu seul, tard, et n'a pas mis longtemps à finir son verre.`
+        },
+        {
+          id: 'cigarette',
+          label: 'La cigarette',
+          title: `La cigarette`,
+          body: `Une cigarette écrasée dans la soucoupe à côté du verre. Blonde, fine, longue. Une marque qu'on ne trouve pas en France.
+
+Pas de rouge sur le filtre.`,
+          observation: `Un fumeur qui voyage. Quelqu'un qui fume parfois, pas toujours, dans des moments précis.`
+        },
+        {
+          id: 'transat',
+          label: 'Le transat',
+          title: `Le transat déplacé`,
+          body: `Le transat du fond a été tiré vers la piscine. Pas pour s'y allonger. Pour s'y asseoir, face à l'eau.
+
+Le coussin garde une marque. Quelqu'un est resté assis là un long moment.`,
+          observation: `Pas pour nager. Pour regarder.`
+        }
+      ]
     },
     couloir: {
       title: `Des pas dans la nuit`,
-      body: `Vers 3h17, des pas dans le couloir nord. Lents, mesurés. Quelqu'un qui traverse, s'arrête longuement, repart.`,
-      observation: `Les pas n'ont pas mené à une chambre. Juste à une fenêtre. Puis ils sont repartis comme ils étaient venus.`
+      intro: `Vers 3h17 cette nuit, quelqu'un a marché ici. Trois traces.`,
+      objects: [
+        {
+          id: 'window',
+          label: 'La fenêtre',
+          title: `La fenêtre`,
+          body: `La fenêtre nord, au bout du couloir. Elle donne sur le jardin et la piscine éclairée. Quelqu'un est venu s'y tenir cette nuit, longuement.
+
+Sur le rebord intérieur, une marque tiède dans la condensation. La forme d'une main posée à plat. Doigts longs.`,
+          observation: `Quelqu'un qui regarde dehors comme on cherche quelque chose qu'on a perdu là-bas.`
+        },
+        {
+          id: 'rug',
+          label: 'Le tapis',
+          title: `Le tapis`,
+          body: `Le runner du couloir garde la trace des pas de cette nuit. Lents, mesurés. Quelqu'un qui ne voulait pas réveiller.
+
+Les pas vont de la chambre du fond jusqu'à la fenêtre, puis font le chemin inverse. Pas de détour.`,
+          observation: `Pas pour aller quelque part. Pour venir ici, et puis repartir.`
+        },
+        {
+          id: 'door',
+          label: 'La porte du fond',
+          title: `La porte du fond`,
+          body: `Au bout du couloir, à droite, une porte mal refermée. La pièce derrière est éclairée d'une lumière chaude — V l'a laissée allumée.
+
+Personne dedans à cette heure. Mais sur le fauteuil, un livre fermé, une couverture en désordre, comme si quelqu'un venait à peine de partir.`,
+          observation: `Quelqu'un dort mal cette nuit, et n'a pas voulu rester dans sa chambre.`
+        }
+      ]
     }
   },
 
@@ -5825,30 +5919,97 @@ function formatNarrativeBody(text) {
 // === COULOIR — vote sur le Porteur ===
 function openCouloir() {
   showScene('couloir');
+  // Hotspots multi-objets selon le contenu du jour
+  const day = gameState.currentDay || 1;
+  const content = getDayContent(day);
+  const instr = document.getElementById('couloirInstruction');
+  const objHs = [
+    document.getElementById('couloir-obj-0'),
+    document.getElementById('couloir-obj-1'),
+    document.getElementById('couloir-obj-2')
+  ];
+
+  if (content && content.couloir && Array.isArray(content.couloir.objects) && content.couloir.objects.length > 0) {
+    if (instr) instr.textContent = content.couloir.intro || content.couloir.title || 'Quelqu\'un revient ici chaque nuit. Touchez ce que la villa garde.';
+    objHs.forEach((h, i) => {
+      if (!h) return;
+      const obj = content.couloir.objects[i];
+      if (obj) {
+        h.style.display = '';
+        const labelEl = document.getElementById(`couloir-obj-${i}-label`);
+        if (labelEl) labelEl.textContent = obj.label || '';
+      } else {
+        h.style.display = 'none';
+      }
+    });
+  } else {
+    if (instr) instr.textContent = 'Quelqu\'un revient ici chaque nuit. La villa garde la trace de ce qui s\'y passe.';
+    objHs.forEach(h => { if (h) h.style.display = 'none'; });
+  }
+
   renderCouloir();
+}
+
+// Ouvre un objet specifique du Couloir (mode multi-objets)
+function openCouloirObject(idx) {
+  const day = gameState.currentDay || 1;
+  const content = getDayContent(day);
+  if (!content || !content.couloir || !content.couloir.objects) return;
+  const obj = content.couloir.objects[idx];
+  if (!obj) return;
+
+  document.getElementById('libraryClueLabel').textContent =
+    `JOUR ${day} · ${content.theme} · LE COULOIR`;
+  document.getElementById('libraryClueTitle').textContent = obj.title || obj.label || '';
+  document.getElementById('libraryClueText').innerHTML = formatNarrativeBody(obj.body || '');
+  document.getElementById('libraryClueObs').textContent = obj.observation || '';
+  document.getElementById('library-clue-modal').classList.add('active');
 }
 
 function renderCouloir() {
   const day = gameState.currentDay || 1;
 
-  // 1) Indices nocturnes cumulatifs deposes par V dans le couloir nord
+  // 1) Indices nocturnes cumulatifs deposes par V dans le couloir nord.
+  // Si le jour courant a des objects[], on saute son entree (les hotspots
+  // sur la photo couvrent deja le contenu du jour).
   const entriesEl = document.getElementById('couloirEntries');
   if (entriesEl) {
-    const entries = getCumulativeRoomContent('couloir', day).reverse();
+    const todayContent = getDayContent(day);
+    const todayHasObjects = todayContent && todayContent.couloir && Array.isArray(todayContent.couloir.objects) && todayContent.couloir.objects.length > 0;
+    let entries = getCumulativeRoomContent('couloir', day);
+    if (todayHasObjects) entries = entries.filter(e => e.day !== day);
+    entries = entries.reverse();
+
     if (entries.length === 0) {
       entriesEl.innerHTML = '<div class="notes-empty">V n\'a pas encore noté ce qui se passe ici la nuit.</div>';
     } else {
-      entriesEl.innerHTML = entries.map(e => `
+      entriesEl.innerHTML = entries.map(e => {
+        let bodyHtml;
+        let observation = e.observation;
+        if (Array.isArray(e.objects) && e.objects.length > 0) {
+          bodyHtml = e.objects.map(o => {
+            const t = o.title ? `<strong>${o.title}.</strong> ` : '';
+            return `<p>${t}${formatNarrativeBody(o.body || '').replace(/<\/?p[^>]*>/g, '')}</p>`;
+          }).join('');
+          if (!observation) {
+            const firstObs = e.objects.find(o => o.observation);
+            if (firstObs) observation = firstObs.observation;
+          }
+        } else {
+          bodyHtml = formatNarrativeBody(e.body || '');
+        }
+        return `
         <div class="chambre-entry">
           <div class="chambre-entry-meta">
             <span class="chambre-entry-day">JOUR ${e.day}</span>
             <span class="chambre-entry-theme">${e.theme}</span>
           </div>
           <h3 class="chambre-entry-title">${e.title}</h3>
-          <div class="chambre-entry-body">${formatNarrativeBody(e.body)}</div>
-          ${e.observation ? `<div class="chambre-entry-obs"><span class="obs-label">V observe</span>${e.observation}</div>` : ''}
+          <div class="chambre-entry-body">${bodyHtml}</div>
+          ${observation ? `<div class="chambre-entry-obs"><span class="obs-label">V observe</span>${observation}</div>` : ''}
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
   }
 
@@ -6671,32 +6832,108 @@ function dismissSalonIntro() {
 // === LA PISCINE ===
 function openPool() {
   showScene('pool');
+  // Met a jour les hotspots multi-objets selon le contenu du jour, et
+  // affiche la liste cumulative des entrees plus bas.
+  const day = gameState.currentDay || 1;
+  const content = getDayContent(day);
+  const instr = document.getElementById('poolInstruction');
+  const objHs = [
+    document.getElementById('pool-obj-0'),
+    document.getElementById('pool-obj-1'),
+    document.getElementById('pool-obj-2')
+  ];
+
+  if (content && content.pool && Array.isArray(content.pool.objects) && content.pool.objects.length > 0) {
+    // Mode multi-objets : on affiche un hotspot par objet du jour
+    if (instr) instr.textContent = content.pool.intro || content.pool.title || 'L\'eau réfléchit ce que vous taisez. Touchez les traces.';
+    objHs.forEach((h, i) => {
+      if (!h) return;
+      const obj = content.pool.objects[i];
+      if (obj) {
+        h.style.display = '';
+        const labelEl = document.getElementById(`pool-obj-${i}-label`);
+        if (labelEl) labelEl.textContent = obj.label || '';
+      } else {
+        h.style.display = 'none';
+      }
+    });
+  } else {
+    // Pas d'objets du jour : on cache tous les hotspots et on s'appuie
+    // uniquement sur la liste cumulative ci-dessous.
+    if (instr) instr.textContent = 'L\'eau réfléchit ce que vous taisez. V a laissé des traces ici cette nuit.';
+    objHs.forEach(h => { if (h) h.style.display = 'none'; });
+  }
+
   renderPoolEntries();
 }
 
-// Rendu cumulatif des indices Piscine du J1 jusqu'au jour courant
+// Ouvre un objet specifique de la Piscine (mode multi-objets).
+// Reutilise le meme modal que la Bibliotheque pour la coherence visuelle.
+function openPoolObject(idx) {
+  const day = gameState.currentDay || 1;
+  const content = getDayContent(day);
+  if (!content || !content.pool || !content.pool.objects) return;
+  const obj = content.pool.objects[idx];
+  if (!obj) return;
+
+  document.getElementById('libraryClueLabel').textContent =
+    `JOUR ${day} · ${content.theme} · LA PISCINE`;
+  document.getElementById('libraryClueTitle').textContent = obj.title || obj.label || '';
+  document.getElementById('libraryClueText').innerHTML = formatNarrativeBody(obj.body || '');
+  document.getElementById('libraryClueObs').textContent = obj.observation || '';
+  document.getElementById('library-clue-modal').classList.add('active');
+}
+
+// Rendu cumulatif des indices Piscine du J1 jusqu'au jour courant.
+// Si le contenu du jour courant a des objects[] (mode multi-objets), on
+// saute ce jour-la dans la liste : ses traces sont deja sur la photo.
 function renderPoolEntries() {
   const container = document.getElementById('poolEntries');
   if (!container) return;
   const day = gameState.currentDay || 1;
-  const entries = getCumulativeRoomContent('pool', day).reverse();
+  const todayContent = getDayContent(day);
+  const todayHasObjects = todayContent && todayContent.pool && Array.isArray(todayContent.pool.objects) && todayContent.pool.objects.length > 0;
+
+  let entries = getCumulativeRoomContent('pool', day);
+  if (todayHasObjects) {
+    entries = entries.filter(e => e.day !== day);
+  }
+  entries = entries.reverse();
 
   if (entries.length === 0) {
     container.innerHTML = '<div class="notes-empty">V n\'a encore rien laissé au bord de la piscine.</div>';
     return;
   }
 
-  container.innerHTML = entries.map(e => `
+  container.innerHTML = entries.map(e => {
+    // Si le jour a des objects[], on concatene leurs textes pour une
+    // vue retrospective dans la liste cumulative.
+    let bodyHtml;
+    let observation = e.observation;
+    if (Array.isArray(e.objects) && e.objects.length > 0) {
+      bodyHtml = e.objects.map(o => {
+        const t = o.title ? `<strong>${o.title}.</strong> ` : '';
+        return `<p>${t}${formatNarrativeBody(o.body || '').replace(/<\/?p[^>]*>/g, '')}</p>`;
+      }).join('');
+      if (!observation) {
+        const firstObs = e.objects.find(o => o.observation);
+        if (firstObs) observation = firstObs.observation;
+      }
+    } else {
+      bodyHtml = formatNarrativeBody(e.body || '');
+    }
+    return `
     <div class="chambre-entry">
       <div class="chambre-entry-meta">
         <span class="chambre-entry-day">JOUR ${e.day}</span>
         <span class="chambre-entry-theme">${e.theme}</span>
       </div>
       <h3 class="chambre-entry-title">${e.title}</h3>
-      <div class="chambre-entry-body">${formatNarrativeBody(e.body)}</div>
-      ${e.observation ? `<div class="chambre-entry-obs"><span class="obs-label">V observe</span>${e.observation}</div>` : ''}
+      <div class="chambre-entry-body">${bodyHtml}</div>
+      ${observation ? `<div class="chambre-entry-obs"><span class="obs-label">V observe</span>${observation}</div>` : ''}
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function showHallLockedMessage(roomName, msg) {
