@@ -1210,6 +1210,53 @@
     justify-content: center;
   }
 
+  /* === PARCOURS GUIDE DU J1 ===
+     Au J1, les hotspots apparaissent un par un selon la progression du
+     joueur (bibliotheque puis piscine puis couloir puis chambre puis
+     salle a manger). Les hotspots non encore atteints sont caches, les
+     hotspots deja visites sont eteints (visibles mais discrets). */
+
+  /* Hotspot encore inaccessible : completement cache */
+  .hall-hotspot.guided-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease;
+  }
+
+  /* Hotspot deja visite : reste visible mais en gris discret, sans halo
+     ni animation. Le joueur peut y revenir s'il veut relire. */
+  .hall-hotspot.guided-visited {
+    pointer-events: auto;
+    opacity: 0.5;
+    transition: opacity 0.8s ease;
+  }
+  .hall-hotspot.guided-visited::before {
+    background: radial-gradient(circle, rgba(168, 160, 149, 0.85) 0%, rgba(168, 160, 149, 0.45) 60%, rgba(168, 160, 149, 0.1) 100%);
+    box-shadow: 0 0 8px rgba(168, 160, 149, 0.4);
+    animation: none;
+  }
+  .hall-hotspot.guided-visited::after {
+    display: none;
+  }
+  .hall-hotspot.guided-visited .hall-hotspot-label {
+    color: rgba(168, 160, 149, 0.65);
+    font-style: normal;
+  }
+
+  /* Hotspot actif (le seul que le joueur doit visiter maintenant) :
+     fade in spectaculaire pour bien attirer l'oeil au moment de la
+     revelation. */
+  .hall-hotspot.guided-active {
+    opacity: 0;
+    pointer-events: auto;
+    animation: hotspotReveal 1.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  @keyframes hotspotReveal {
+    0%   { opacity: 0; transform: scale(0.7); }
+    60%  { opacity: 1; transform: scale(1.08); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
   /* Le point lumineux principal — plus généreux, halo dynamique */
   .hall-hotspot::before {
     content: '';
@@ -2457,20 +2504,23 @@
         <div class="hall-message-content" id="hallMessageContent"></div>
       </div>
 
-      <!-- HOTSPOTS — éléments cliquables sur l'image -->
-      <button type="button" class="hall-hotspot hall-hot-mirror" onclick="goToRoom('chambre')" aria-label="Chambre">
+      <!-- HOTSPOTS — elements cliquables sur l'image.
+           Au J1, ils apparaissent un par un selon la progression :
+           bibliotheque -> piscine -> couloir -> chambre -> salle a manger.
+           Les autres jours, tous accessibles d'emblee. -->
+      <button type="button" class="hall-hotspot hall-hot-mirror" data-room="chambre" onclick="goToRoom('chambre')" aria-label="Chambre">
         <span class="hall-hotspot-label">Chambre</span>
       </button>
-      <button type="button" class="hall-hotspot hall-hot-console" onclick="goToRoom('library')" aria-label="Bibliothèque">
+      <button type="button" class="hall-hotspot hall-hot-console" data-room="library" onclick="goToRoom('library')" aria-label="Bibliothèque">
         <span class="hall-hotspot-label">Bibliothèque</span>
       </button>
-      <button type="button" class="hall-hotspot hall-hot-door" onclick="goToRoom('pool')" aria-label="Piscine">
+      <button type="button" class="hall-hotspot hall-hot-door" data-room="pool" onclick="goToRoom('pool')" aria-label="Piscine">
         <span class="hall-hotspot-label">Piscine</span>
       </button>
-      <button type="button" class="hall-hotspot hall-hot-stairs" onclick="goToRoom('salon')" aria-label="Salle à manger">
+      <button type="button" class="hall-hotspot hall-hot-stairs" data-room="salon" onclick="goToRoom('salon')" aria-label="Salle à manger">
         <span class="hall-hotspot-label">Salle à manger</span>
       </button>
-      <button type="button" class="hall-hotspot hall-hot-bench" onclick="goToRoom('couloir')" aria-label="Couloir des indices">
+      <button type="button" class="hall-hotspot hall-hot-bench" data-room="couloir" onclick="goToRoom('couloir')" aria-label="Couloir des indices">
         <span class="hall-hotspot-label">Couloir</span>
       </button>
 
@@ -3957,6 +4007,9 @@ let gameState = {
   porterVote: null,    // 'marc' | 'theo' | ... | null
   // Carnet d'enquete : notes libres du joueur sur chaque invite
   investigatorNotes: {},  // {marc: '...', theo: '...', ...}
+  // Parcours guide du J1 : ordre de pieces visitees pour reveler les
+  // hotspots un par un (bibliotheque, piscine, couloir, chambre, salon).
+  j1VisitedRooms: [],
   cycleEnded: false    // true après le Collapse
 };
 
@@ -6277,20 +6330,33 @@ function renderHall() {
     cta = accusedId ? 'REVOIR LE VERDICT' : 'FERMER';
     ctaAction = accusedId ? 'reopenVerdict()' : 'enterHallProper()';
   } else if (day === 1 && gameState.tutoStep === 0) {
-    // PREMIER PASSAGE — V t'accueille a l'arrivee
+    // PREMIER PASSAGE - V t'accueille a l'arrivee
     showMessage = true;
     label = 'V';
-    msg = 'Vous êtes le sixième. Les cinq autres dorment quelque part dans la villa, ou attendent en silence.<br><br>Vous les verrez ce soir, à table. C\'est là que vous saurez leurs prénoms. D\'ici là, faites le tour. La villa garde des traces de leur passage.';
+    msg = 'Vous êtes le sixième. Les cinq autres dorment quelque part dans la villa, ou attendent en silence.<br><br>Vous les verrez ce soir, à table. C\'est là que vous saurez leurs prénoms. D\'ici là, je vais vous guider, pièce après pièce.';
     cta = 'COMMENCER';
     ctaAction = 'startTutoStep1()';
-  } else if (day === 1 && gameState.tutoStep === 1) {
-    // ETAPE 1 — V invite a explorer la villa puis a descendre a la table.
-    // La table aujourd'hui = presentations, pas Question.
-    showMessage = true;
-    label = 'V';
-    msg = 'Faites le tour. La villa parle, écoutez-la. Lisez les traces qu\'ils ont laissées.<br><br>Quand vous serez prêt, descendez à la salle à manger. C\'est ce soir que vous les verrez pour la première fois.';
-    cta = 'JE PRENDS MES REPÈRES';
-    ctaAction = 'startTutoStep1Confirm()';
+  } else if (day === 1 && (gameState.tutoStep === 1 || gameState.tutoStep === 2)) {
+    // PARCOURS GUIDE J1 - le cartouche s'adapte a la progression du joueur.
+    // tutoStep est passe a 1 apres COMMENCER, et reste a 1 jusqu'aux
+    // presentations a table (qui passent a tutoStep 3).
+    const visited = gameState.j1VisitedRooms || [];
+    const nextRoom = getNextJ1Room();
+    let progressKey;
+    if (nextRoom === 'library') progressKey = 'start';
+    else if (nextRoom === 'pool') progressKey = 'after_library';
+    else if (nextRoom === 'couloir') progressKey = 'after_pool';
+    else if (nextRoom === 'chambre') progressKey = 'after_couloir';
+    else progressKey = 'ready_for_dinner';
+
+    const progress = J1_PROGRESSION_MESSAGES[progressKey];
+    if (progress) {
+      showMessage = true;
+      label = progress.label;
+      msg = progress.msg;
+      cta = progress.cta;
+      ctaAction = progress.ctaAction;
+    }
   } else if (day === 1 && gameState.tutoStep === 3) {
     // APRES LES PRESENTATIONS DU J1 - le joueur les a vus a table.
     // La nuit est libre, la villa garde encore des choses, et le J2
@@ -6301,7 +6367,7 @@ function renderHall() {
     cta = 'PASSER AU JOUR 2';
     ctaAction = 'advanceDay()';
   } else if (day >= 2 && day <= 7 && SEASON_1_CONTENT[day]) {
-    // J2-J7 — Murmure du matin (lu depuis SEASON_1_CONTENT)
+    // J2-J7 - Murmure du matin (lu depuis SEASON_1_CONTENT)
     // Le cartouche reste accessible chaque fois que le joueur revient
     // au Hall, le Murmure n'est pas une etape qu'on dismiss une fois
     // pour toutes - c'est le ton de la journee.
@@ -6312,9 +6378,8 @@ function renderHall() {
     ctaAction = 'enterHallProper()';
   }
 
-  // Toutes les pieces sont accessibles des le debut. Le cartouche de V
-  // guide doucement vers la salle a manger en priorite mais le joueur
-  // est libre d'explorer ce qu'il veut. Plus de tutorial gating brutal.
+  // Applique le parcours guide des hotspots (J1) ou les libere (J2-J7)
+  applyJ1GuidedHotspots();
 
   if (showMessage) {
     contentEl.innerHTML = `
@@ -6328,7 +6393,141 @@ function renderHall() {
   }
 }
 
-// Étape 1 du tuto : V te désigne la salle à manger
+// === PARCOURS GUIDE DU J1 ===
+// Au J1 uniquement, les hotspots du Hall apparaissent un par un selon
+// l'ordre defini. Le joueur doit visiter chaque piece avant que la
+// suivante n'apparaisse. La salle a manger n'apparait qu'a la fin,
+// apres un ecran de transition. Aux autres jours, tous les hotspots
+// sont accessibles d'emblee (le joueur connait la villa).
+
+const J1_ROOM_ORDER = ['library', 'pool', 'couloir', 'chambre'];
+// La salle a manger ('salon') n'est pas dans cette liste : elle apparait
+// SEULEMENT apres l'ecran de transition, qui se declenche quand les 4
+// pieces ci-dessus sont visitees.
+
+const J1_PROGRESSION_MESSAGES = {
+  // Avant la 1ere visite : V invite a aller a la bibliotheque
+  start: {
+    label: 'V',
+    msg: 'Commencez par la bibliothèque. Quelqu\'un y est passé cette nuit.',
+    cta: 'JE VOIS',
+    ctaAction: 'dismissHallMessage()'
+  },
+  // Apres bibliotheque : direction piscine
+  after_library: {
+    label: 'V',
+    msg: 'La piscine maintenant. L\'eau garde mieux les traces que les murs.',
+    cta: 'CONTINUER',
+    ctaAction: 'dismissHallMessage()'
+  },
+  // Apres piscine : direction couloir
+  after_pool: {
+    label: 'V',
+    msg: 'Le couloir nord. C\'est là que la villa devient personnelle.',
+    cta: 'CONTINUER',
+    ctaAction: 'dismissHallMessage()'
+  },
+  // Apres couloir : direction chambre
+  after_couloir: {
+    label: 'V',
+    msg: 'Votre chambre, enfin. J\'y ai laissé quelque chose pour vous.',
+    cta: 'CONTINUER',
+    ctaAction: 'dismissHallMessage()'
+  },
+  // Apres chambre : ecran de transition vers le diner
+  ready_for_dinner: {
+    label: 'V',
+    msg: 'Vous avez fait le tour. Ils vous attendent à table.<br><br>Le premier soir commence.',
+    cta: 'DESCENDRE À TABLE',
+    ctaAction: 'startJ1Dinner()'
+  }
+};
+
+// Determine la prochaine piece a visiter au J1 (ou null si parcours fini).
+function getNextJ1Room() {
+  const visited = gameState.j1VisitedRooms || [];
+  for (const room of J1_ROOM_ORDER) {
+    if (!visited.includes(room)) return room;
+  }
+  return null; // Toutes visitees -> ecran de transition vers diner
+}
+
+// Applique les classes guided-* sur les hotspots selon la progression J1.
+// Aux jours 2-7, on retire toutes ces classes (acces complet).
+function applyJ1GuidedHotspots() {
+  const day = gameState.currentDay;
+  const hotspots = document.querySelectorAll('.hall-hotspot[data-room]');
+
+  // Hors J1 : on libere tout, on retire toutes les classes guided-*
+  if (day !== 1) {
+    hotspots.forEach(h => {
+      h.classList.remove('guided-hidden', 'guided-visited', 'guided-active');
+    });
+    return;
+  }
+
+  // J1 : on applique l'etat selon le parcours
+  const visited = gameState.j1VisitedRooms || [];
+  const nextRoom = getNextJ1Room(); // ex: 'pool'
+  const allDone = (nextRoom === null);
+
+  hotspots.forEach(h => {
+    const room = h.getAttribute('data-room');
+    h.classList.remove('guided-hidden', 'guided-visited', 'guided-active');
+
+    if (room === 'salon') {
+      // Salle a manger : cachee tant que les 4 autres pieces ne sont pas
+      // visitees. Apparait via ecran de transition (startJ1Dinner).
+      // ETAT FINAL : visible et active une fois que le joueur a passe
+      // l'ecran de transition (gameState.daysData[1].dinnerReady).
+      const dinnerReady = (gameState.daysData[1] && gameState.daysData[1].dinnerReady);
+      if (dinnerReady) {
+        h.classList.add('guided-active');
+      } else {
+        h.classList.add('guided-hidden');
+      }
+      return;
+    }
+
+    // Pieces du parcours (library, pool, couloir, chambre)
+    if (visited.includes(room)) {
+      // Deja visitee : eteinte mais accessible
+      h.classList.add('guided-visited');
+    } else if (room === nextRoom) {
+      // C'est la prochaine a visiter : active
+      h.classList.add('guided-active');
+    } else {
+      // Pas encore son tour : cachee
+      h.classList.add('guided-hidden');
+    }
+  });
+}
+
+// Marque une piece comme visitee dans le parcours J1 (appele par
+// goToRoom quand la piece est ouverte). Sauvegarde l'etat.
+function markJ1RoomVisited(room) {
+  if (gameState.currentDay !== 1) return;
+  if (!J1_ROOM_ORDER.includes(room)) return;
+  if (!gameState.j1VisitedRooms) gameState.j1VisitedRooms = [];
+  if (!gameState.j1VisitedRooms.includes(room)) {
+    gameState.j1VisitedRooms.push(room);
+    saveState();
+  }
+}
+
+// Ecran de transition entre l'exploration J1 et le diner. Appele quand
+// le joueur tape DESCENDRE A TABLE dans le cartouche ready_for_dinner.
+function startJ1Dinner() {
+  if (!gameState.daysData[1]) gameState.daysData[1] = {};
+  gameState.daysData[1].dinnerReady = true;
+  saveState();
+  // Le hotspot Salle a manger apparait, le joueur peut taper dessus.
+  // Mais en plus, on l'envoie directement au salon pour fluidifier.
+  dismissHallMessage();
+  goToRoom('salon');
+}
+
+// Etape 1 du tuto : V t'accueille puis lance le parcours guide
 function startTutoStep1() {
   gameState.tutoStep = 1;
   saveState();
@@ -6384,6 +6583,11 @@ function dismissHallMessage() {
 function goToRoom(roomId) {
   // Cacher le message du Hall avant de naviguer
   dismissHallMessage();
+
+  // Au J1, on marque la piece comme visitee pour le parcours guide.
+  // markJ1RoomVisited filtre lui-meme sur day === 1 et sur les rooms du
+  // J1_ROOM_ORDER (donc 'salon' n'est pas trace ici, c'est volontaire).
+  markJ1RoomVisited(roomId);
 
   switch (roomId) {
     case 'salon':
@@ -6767,6 +6971,7 @@ function resetCycle() {
       collectedClues: [],
       porterVote: null,
       investigatorNotes: {},
+      j1VisitedRooms: [],
       cycleEnded: false,
       tutoStep: 0
     };
