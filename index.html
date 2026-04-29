@@ -1073,6 +1073,17 @@
     letter-spacing: 0.2em;
     text-transform: uppercase;
   }
+  /* Snippet de la note du carnet d'enquete - rappel discret */
+  .accusation-option-note {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(180, 80, 70, 0.15);
+    font-family: 'Fraunces', serif;
+    font-size: 12.5px;
+    color: rgba(212, 197, 181, 0.75);
+    line-height: 1.55;
+    font-style: normal;
+  }
   .accusation-option-radio {
     width: 18px;
     height: 18px;
@@ -2363,6 +2374,110 @@
   .note-meta { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.2em; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
   .note-meta .note-source { color: #A8A095;  text-transform: lowercase; letter-spacing: 0.1em; }
   .note-text { font-family: 'Fraunces', serif; font-size: 14px;  color: #EDE8DD; line-height: 1.65; }
+
+  /* CARNET D'ENQUETE - une carte par invite avec champ libre */
+  .notebook-intro {
+    font-family: 'Fraunces', serif;
+    font-size: 13.5px;
+    font-style: normal;
+    color: #A8A095;
+    line-height: 1.65;
+    margin: 0 0 22px;
+    text-align: center;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .notebook-card {
+    background: rgba(237,232,221,0.03);
+    border: 1px solid rgba(237,232,221,0.10);
+    border-left: 2px solid rgba(212,184,112,0.4);
+    border-radius: 4px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+  }
+  .notebook-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .notebook-card-seal {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+  .notebook-card-seal svg { width: 100%; height: 100%; }
+  .notebook-card-name { flex: 1; }
+  .notebook-card-prenom {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: #EDE8DD;
+    margin-bottom: 1px;
+  }
+  .notebook-card-archetype {
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px;
+    color: rgba(212, 184, 112, 0.7);
+    letter-spacing: 0.25em;
+  }
+  .notebook-card-textarea {
+    width: 100%;
+    min-height: 80px;
+    background: rgba(8, 10, 18, 0.6);
+    border: 1px solid rgba(237, 232, 221, 0.08);
+    border-radius: 3px;
+    padding: 12px 14px;
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #EDE8DD;
+    resize: vertical;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .notebook-card-textarea:focus {
+    border-color: rgba(212, 184, 112, 0.5);
+    background: rgba(8, 10, 18, 0.85);
+  }
+  .notebook-card-textarea::placeholder {
+    color: rgba(168, 160, 149, 0.4);
+    font-style: italic;
+  }
+  /* Recap discret des indices auto en bas du carnet */
+  .notebook-auto-clues {
+    margin-top: 28px;
+    padding: 18px 0 0;
+    border-top: 1px solid rgba(237, 232, 221, 0.08);
+  }
+  .notebook-auto-clues-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    color: rgba(212, 184, 112, 0.55);
+    letter-spacing: 0.35em;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .notebook-auto-clues ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    color: rgba(168, 160, 149, 0.85);
+    line-height: 1.6;
+  }
+  .notebook-auto-clues li { margin-bottom: 8px; }
+  .notebook-auto-clues .auto-clue-day {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    color: rgba(212, 184, 112, 0.6);
+    letter-spacing: 0.2em;
+    margin-right: 8px;
+  }
 
   /* BOUTON COULOIR (CTA depuis la Chambre) */
   .chambre-footer { padding: 24px 24px 40px; text-align: center; border-top: 1px solid rgba(237,232,221,0.08); margin-top: 12px; }
@@ -4309,6 +4424,8 @@ let gameState = {
   collectedClues: [],  // [{day, source, fragmentType, wording, guestId (révélé au Collapse)}]
   // Vote sur le Porteur (au Couloir)
   porterVote: null,    // 'marc' | 'theo' | ... | null
+  // Carnet d'enquete : notes libres du joueur sur chaque invite
+  investigatorNotes: {},  // {marc: '...', theo: '...', ...}
   cycleEnded: false    // true après le Collapse
 };
 
@@ -5296,15 +5413,21 @@ function startAccusation() {
 function renderAccusationOptions() {
   const opts = document.getElementById('accusationOptions');
   if (!opts) return;
+  const notes = gameState.investigatorNotes || {};
   opts.innerHTML = SEASON_1_GUESTS.map(g => {
     const seal = ALL_SEALS[g.seal];
     const selected = _accusationSelected === g.id;
+    const noteText = (notes[g.id] || '').trim();
+    const noteSnippet = noteText
+      ? `<div class="accusation-option-note">« ${noteText.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, ' ').slice(0, 180)}${noteText.length > 180 ? '…' : ''} »</div>`
+      : '';
     return `
       <button type="button" class="accusation-option${selected ? ' selected' : ''}" onclick="selectAccusation('${g.id}')">
         <div class="accusation-option-seal">${renderSealSVG(g.seal)}</div>
         <div class="accusation-option-info">
           <div class="accusation-option-name">${g.name}</div>
           <div class="accusation-option-archetype">${seal.name}</div>
+          ${noteSnippet}
         </div>
         <div class="accusation-option-radio"></div>
       </button>
@@ -5811,7 +5934,9 @@ function switchChambreTab(tab) {
 }
 
 function updateNotesCount() {
-  const count = (gameState.collectedClues || []).length;
+  // Compte les notes du carnet (pas les indices auto)
+  const notes = gameState.investigatorNotes || {};
+  const count = Object.values(notes).filter(n => n && n.trim().length > 0).length;
   const span = document.getElementById('notesCount');
   span.textContent = count > 0 ? '(' + count + ')' : '';
 }
@@ -5827,34 +5952,96 @@ function updateCouloirCTA() {
   cta.style.display = count >= 2 ? 'block' : 'none';
 }
 
+// CARNET D'ENQUETE
+// L'onglet MES NOTES est un carnet ou le joueur ecrit ce qu'il
+// observe sur chaque invite, jour apres jour. Sauvegarde dans
+// gameState.investigatorNotes[guestId].
 function renderNotes() {
   const container = document.getElementById('notesContent');
-  const clues = gameState.collectedClues || [];
-  if (clues.length === 0) {
-    container.innerHTML = '<div class="notes-empty">Vous n\'avez pas encore collecté d\'indices. Lisez les Murmures du matin et explorez la Bibliothèque pour trouver des traces.</div>';
+  if (!container) return;
+
+  // Tant que les presentations ne sont pas faites, le carnet est vide :
+  // le joueur n'a encore rencontre personne.
+  const introsDone = gameState.daysData[1] && gameState.daysData[1].introductionsDone;
+  if (!introsDone) {
+    container.innerHTML = `
+      <div class="notes-empty">
+        Le carnet est vide. Vous n'avez encore vu personne.<br><br>
+        Descendez à table ce soir. Vous écrirez après.
+      </div>
+    `;
     return;
   }
-  // Trier par jour, puis par source (murmur avant library)
-  const sorted = [...clues].sort((a, b) => {
-    if (a.day !== b.day) return a.day - b.day;
-    if (a.source === 'murmur' && b.source !== 'murmur') return -1;
-    if (a.source !== 'murmur' && b.source === 'murmur') return 1;
-    return 0;
-  });
 
-  container.innerHTML = sorted.map(c => {
-    const sourceLabel = c.source === 'murmur' ? 'Murmure' : 'Bibliothèque';
-    const typeLabel = { couleur: 'une couleur', objet: 'un objet', lieu: 'un lieu', mot: 'un mot', habitude: 'une habitude' }[c.type] || c.type;
+  // Init de la structure si pas encore presente
+  if (!gameState.investigatorNotes) gameState.investigatorNotes = {};
+
+  const intro = `
+    <p class="notebook-intro">
+      Notez ici ce que vous lisez d'eux. Doutes, intuitions, contradictions, ce qui ne colle pas. Ce que vous écrivez ne sera lu par personne d'autre.
+    </p>
+  `;
+
+  const cards = SEASON_1_GUESTS.map(g => {
+    const seal = ALL_SEALS[g.seal];
+    const note = (gameState.investigatorNotes[g.id] || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    const placeholder = `Ce que vous remarquez chez ${g.name}…`;
     return `
-      <div class="note-card">
-        <div class="note-meta">
-          <span>JOUR ${c.day}</span>
-          <span class="note-source">${sourceLabel} — ${typeLabel}</span>
+      <div class="notebook-card">
+        <div class="notebook-card-header">
+          <div class="notebook-card-seal">${renderSealSVG(g.seal)}</div>
+          <div class="notebook-card-name">
+            <div class="notebook-card-prenom">${g.name}</div>
+            <div class="notebook-card-archetype">${seal.name.toUpperCase()}</div>
+          </div>
         </div>
-        <div class="note-text">« ${c.wording.charAt(0).toUpperCase() + c.wording.slice(1)} »</div>
+        <textarea
+          class="notebook-card-textarea"
+          data-guest-id="${g.id}"
+          placeholder="${placeholder}"
+          oninput="saveInvestigatorNote(this)"
+        >${note}</textarea>
       </div>
     `;
   }).join('');
+
+  // En complement, recap discret des indices auto-collectes.
+  const autoClues = gameState.collectedClues || [];
+  let autoSection = '';
+  if (autoClues.length > 0) {
+    const sorted = [...autoClues].sort((a, b) => {
+      if (a.day !== b.day) return a.day - b.day;
+      if (a.source === 'murmur' && b.source !== 'murmur') return -1;
+      if (a.source !== 'murmur' && b.source === 'murmur') return 1;
+      return 0;
+    });
+    const items = sorted.map(c => {
+      const sourceLabel = c.source === 'murmur' ? 'Murmure' : 'Bibliothèque';
+      return `<li><span class="auto-clue-day">J${c.day} · ${sourceLabel}</span> « ${c.wording.charAt(0).toUpperCase() + c.wording.slice(1)} »</li>`;
+    }).join('');
+    autoSection = `
+      <div class="notebook-auto-clues">
+        <div class="notebook-auto-clues-label">CE QUE VOUS AVEZ RAMASSÉ EN PASSANT</div>
+        <ul>${items}</ul>
+      </div>
+    `;
+  }
+
+  container.innerHTML = intro + cards + autoSection;
+}
+
+function saveInvestigatorNote(textarea) {
+  const guestId = textarea.getAttribute('data-guest-id');
+  if (!guestId) return;
+  if (!gameState.investigatorNotes) gameState.investigatorNotes = {};
+  gameState.investigatorNotes[guestId] = textarea.value;
+  // On ne sauvegarde pas a chaque keystroke pour ne pas spam le storage.
+  // On utilise un debounce simple via setTimeout.
+  if (saveInvestigatorNote._debounce) clearTimeout(saveInvestigatorNote._debounce);
+  saveInvestigatorNote._debounce = setTimeout(() => {
+    saveState();
+    updateNotesCount();
+  }, 350);
 }
 
 function renderFiches() {
@@ -7160,6 +7347,7 @@ function resetCycle() {
       cluesPlan: { murmurs: [], library: [] },
       collectedClues: [],
       porterVote: null,
+      investigatorNotes: {},
       cycleEnded: false,
       tutoStep: 0
     };
