@@ -964,6 +964,272 @@
     background: rgba(212, 184, 112, 0.15);
   }
 
+  /* SCENE ACCUSATION FINALE - J7 soir, le joueur nomme le Porteur */
+  #accusation {
+    background: radial-gradient(ellipse at center, #1A0A0E 0%, #0A0508 80%);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
+  }
+  .accusation-stage {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 48px 24px 40px;
+  }
+  .accusation-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .accusation-step-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px;
+    color: rgba(180, 80, 70, 0.85);
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .accusation-title {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 300;
+    color: #EDE8DD;
+    letter-spacing: 0.04em;
+    margin: 0 0 22px;
+    line-height: 1.25;
+  }
+  .accusation-prelude {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: #BBA89A;
+    line-height: 1.65;
+    max-width: 380px;
+    margin: 0 auto 0;
+    letter-spacing: 0.005em;
+  }
+  .accusation-prelude .v-sig {
+    display: block;
+    margin-top: 24px;
+    font-family: 'Fraunces', serif;
+    color: #D4B870;
+    letter-spacing: 0.3em;
+    font-size: 13px;
+  }
+  .accusation-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 420px;
+    margin: 32px auto 0;
+    width: 100%;
+  }
+  .accusation-option {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    background: rgba(20, 8, 10, 0.6);
+    border: 1px solid rgba(180, 80, 70, 0.18);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    text-align: left;
+    width: 100%;
+    color: inherit;
+    font-family: inherit;
+  }
+  .accusation-option:active {
+    transform: scale(0.98);
+  }
+  .accusation-option.selected {
+    background: rgba(180, 80, 70, 0.22);
+    border-color: rgba(220, 130, 110, 0.7);
+    box-shadow: 0 0 24px rgba(180, 80, 70, 0.18);
+  }
+  .accusation-option-seal {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+  .accusation-option-seal svg { width: 100%; height: 100%; }
+  .accusation-option.selected .accusation-option-seal { opacity: 1; }
+  .accusation-option-info { flex: 1; }
+  .accusation-option-name {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: #EDE8DD;
+    margin-bottom: 3px;
+  }
+  .accusation-option-archetype {
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    color: rgba(168, 160, 149, 0.75);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .accusation-option-radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(180, 80, 70, 0.5);
+    flex-shrink: 0;
+    transition: all 0.3s;
+  }
+  .accusation-option.selected .accusation-option-radio {
+    background: rgba(220, 130, 110, 0.95);
+    border-color: rgba(255, 180, 160, 0.95);
+    box-shadow: 0 0 12px rgba(220, 130, 110, 0.7);
+  }
+  .accusation-actions {
+    margin: 40px auto 0;
+    max-width: 380px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+  .accusation-confirm {
+    background: transparent;
+    border: 1px solid rgba(220, 130, 110, 0.6);
+    color: #E8B0A0;
+    padding: 16px 40px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s;
+    width: 100%;
+    max-width: 320px;
+  }
+  .accusation-confirm:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .accusation-confirm:not(:disabled):active {
+    background: rgba(220, 130, 110, 0.18);
+    color: #FFD8C8;
+  }
+  .accusation-back {
+    background: transparent;
+    border: none;
+    color: rgba(168, 160, 149, 0.65);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 8px 12px;
+  }
+  .accusation-warn {
+    margin-top: 28px;
+    padding: 18px 22px;
+    background: rgba(60, 14, 18, 0.5);
+    border-left: 2px solid rgba(220, 130, 110, 0.6);
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: #D4C5B5;
+    line-height: 1.6;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 2px;
+  }
+
+  /* SCENE VERDICT - apres l'accusation */
+  #verdict {
+    background: radial-gradient(ellipse at center, #14182A 0%, #050810 100%);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+  }
+  .verdict-stage {
+    text-align: center;
+    max-width: 420px;
+    width: 100%;
+    opacity: 0;
+    animation: verdictIn 1.4s 0.3s ease forwards;
+  }
+  @keyframes verdictIn {
+    0%   { opacity: 0; transform: translateY(12px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .verdict-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: rgba(212, 184, 112, 0.7);
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .verdict-name-line {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: #BBA89A;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .verdict-name-strong {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: #EDE8DD;
+    letter-spacing: 0.04em;
+    margin: 0 0 38px;
+    line-height: 1.3;
+  }
+  .verdict-divider {
+    width: 36px;
+    height: 1px;
+    background: rgba(212, 184, 112, 0.4);
+    margin: 0 auto 32px;
+  }
+  .verdict-truth {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 300;
+    color: #D4C5B5;
+    line-height: 1.65;
+    margin-bottom: 36px;
+    letter-spacing: 0.005em;
+  }
+  .verdict-truth strong {
+    color: #EDE8DD;
+    font-weight: 400;
+  }
+  .verdict-vsig {
+    font-family: 'Fraunces', serif;
+    color: #D4B870;
+    letter-spacing: 0.3em;
+    font-size: 12px;
+    margin-top: 12px;
+    margin-bottom: 32px;
+  }
+  .verdict-cta {
+    background: transparent;
+    border: 1px solid rgba(212, 184, 112, 0.55);
+    color: #D4B870;
+    padding: 14px 36px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+
   /* SCENE ONBOARDING DU JEU - explique les regles apres le rituel */
   #gameOnboarding {
     background: radial-gradient(ellipse at center, #14182A 0%, #0A0E1C 70%, #050810 100%);
@@ -2682,6 +2948,41 @@
 </div>
 
 <!-- SCÈNE COMPOSE -->
+<!-- SCENE ACCUSATION FINALE - J7 soir, le joueur nomme le Porteur.
+     Deux etapes : selection puis confirmation. Action irreversible. -->
+<div id="accusation" class="scene">
+  <div class="accusation-stage">
+    <div class="accusation-header">
+      <div class="accusation-step-label" id="accusationStepLabel">SEPTIÈME SOIR · L'ACCUSATION</div>
+      <h1 class="accusation-title" id="accusationTitle">Nommer le Porteur</h1>
+      <div class="accusation-prelude" id="accusationPrelude">
+        Le Cycle se termine ce soir. L'un des cinq porte la Clé depuis sept jours, sans rien dire.<br><br>
+        Vous allez le nommer.
+        <span class="v-sig">V.</span>
+      </div>
+    </div>
+    <div class="accusation-options" id="accusationOptions"></div>
+    <div class="accusation-actions">
+      <button class="accusation-confirm" id="accusationConfirmBtn" onclick="confirmAccusation()" disabled>NOMMER</button>
+      <button class="accusation-back" onclick="goToHall()">Revenir au Hall</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE VERDICT - apres confirmation de l'accusation. Affiche si le
+     joueur a vu juste, et revele la Cle du Porteur. -->
+<div id="verdict" class="scene">
+  <div class="verdict-stage">
+    <div class="verdict-label" id="verdictLabel">L'ACCUSATION</div>
+    <div class="verdict-name-line" id="verdictNameLine">Vous avez nommé</div>
+    <div class="verdict-name-strong" id="verdictNameStrong"></div>
+    <div class="verdict-divider"></div>
+    <div class="verdict-truth" id="verdictTruth"></div>
+    <div class="verdict-vsig">V.</div>
+    <button class="verdict-cta" onclick="closeVerdict()" id="verdictCta">FERMER LE CYCLE</button>
+  </div>
+</div>
+
 <!-- SCÈNE PRÉSENTATIONS — premier soir uniquement.
      Les cinq invites se nomment a tour de role. Le joueur tape pour
      avancer. A la fin, l'etat dayData[1].introductionsDone est mis,
@@ -2817,7 +3118,7 @@
   <div class="couloir-vote-section" id="couloirVoteSection" style="display:none;">
     <div class="couloir-vote-divider"></div>
     <h3 class="couloir-vote-title">Votre intuition</h3>
-    <p class="couloir-vote-desc">Lequel d'entre eux pensez-vous porte la Clé ? Vous pourrez changer d'avis tant que le Cycle n'est pas terminé.</p>
+    <p class="couloir-vote-desc">Lequel d'entre eux pensez-vous porte la Clé ? C'est un brouillon. L'accusation finale se fera au septième soir, à table.</p>
     <div class="couloir-current" id="couloirCurrent" style="display:none;"></div>
     <div class="couloir-options" id="couloirOptions"></div>
   </div>
@@ -4780,6 +5081,16 @@ function renderTableCenter() {
       return;
     }
 
+    // Cas special J7 : pas de Question ce soir non plus. Le centre de
+    // table porte l'accusation finale. Le joueur va nommer le Porteur.
+    if (gameState.currentDay === 7 && !dayData.accusationDone) {
+      center.classList.add('has-action');
+      center.onclick = () => startAccusation();
+      content.innerHTML = `<span class="center-label">L'ACCUSATION</span><span style="font-size:13px;">Le Cycle s'achève ce soir. L'un des cinq porte la Clé depuis sept jours.</span><span class="center-cta">NOMMER LE PORTEUR →</span>`;
+      hint.textContent = 'Tapez le centre quand vous serez prêt à nommer.';
+      return;
+    }
+
     if (dayData.completed) {
       // Soiree terminee : on guide le joueur vers la villa pour qu'il explore
       // ce que V a depose, plutot que de le laisser sur un dead-end.
@@ -4826,6 +5137,164 @@ function renderTableCenter() {
       hint.textContent = 'Lisez ce qui vous attend, puis basculez en NUIT.';
     }
   }
+}
+
+// === ACCUSATION FINALE - J7 SOIR ===
+// Au septieme soir, le joueur ne repond plus a une Question : il nomme
+// celui qu'il pense porter la Cle. Action irreversible. Apres
+// confirmation, le verdict est affiche et le Cycle se cloture.
+
+// Cles narratives par invite. Si le joueur nomme juste, V revele la
+// verite de l'invite. Pour la Saison 1, le Porteur est MARC (le Cerf).
+// Les autres Cles sont la pour si le joueur se trompe : V revele la
+// verite de l'invite accuse, qui n'est PAS la Cle (mais une autre verite
+// portee, en plus douce). C'est la philosophie de Vespera : meme se
+// tromper laisse une trace humaine.
+const GUEST_KEYS = {
+  marc: {
+    isPorter: true,
+    truthLine: `Marc a quitté Sara, sa fiancée, six mois avant qu'elle ne meure d'une longue maladie. Il y a quatorze ans.`,
+    truthDetails: `Personne ne le savait. Pas même sa famille. Il ne s'est plus jamais marié. Il regarde les fenêtres la nuit comme on regarde une chambre où l'on n'ose pas rentrer.`
+  },
+  theo: {
+    isPorter: false,
+    truthLine: `Théo a écrit, il y a six ans, un article qu'il n'a jamais publié. Il avait promis de protéger sa source. Il a tenu parole. La source, elle, ne s'en est pas remise.`,
+    truthDetails: `Ce n'est pas la Clé du Cycle. Mais c'est une vérité qu'il porte aussi.`
+  },
+  camille: {
+    isPorter: false,
+    truthLine: `Camille a su, dans une consultation, que l'un de ses patients allait peut-être passer à l'acte. Elle a respecté le secret. Il l'a fait.`,
+    truthDetails: `Ce n'est pas la Clé du Cycle. Mais c'est une vérité qu'elle porte aussi.`
+  },
+  ines: {
+    isPorter: false,
+    truthLine: `Inès a fait passer une œuvre pour authentique alors qu'elle savait. Pas pour l'argent. Pour quelqu'un.`,
+    truthDetails: `Ce n'est pas la Clé du Cycle. Mais c'est une vérité qu'elle porte aussi.`
+  },
+  karim: {
+    isPorter: false,
+    truthLine: `Karim, en pleine opération, a senti sa main hésiter. Il a continué. Le patient est mort. Personne ne saura jamais que ce n'était pas inévitable.`,
+    truthDetails: `Ce n'est pas la Clé du Cycle. Mais c'est une vérité qu'il porte aussi.`
+  }
+};
+
+// Force le Porteur de la Saison 1 a etre Marc (le Cerf).
+// Le code actuel tire au sort au premier chargement, mais notre pilote
+// narratif a ete ecrit pour Marc. On override si jamais l'init s'est
+// faite avec un autre invite.
+function ensurePorterIsMarc() {
+  if (gameState.porterId !== 'marc') {
+    gameState.porterId = 'marc';
+    saveState();
+  }
+}
+
+let _accusationSelected = null;
+
+function startAccusation() {
+  ensurePorterIsMarc();
+  _accusationSelected = gameState.porterVote || null;
+  showScene('accusation');
+  renderAccusationOptions();
+  updateAccusationButton();
+}
+
+function renderAccusationOptions() {
+  const opts = document.getElementById('accusationOptions');
+  if (!opts) return;
+  opts.innerHTML = SEASON_1_GUESTS.map(g => {
+    const seal = ALL_SEALS[g.seal];
+    const selected = _accusationSelected === g.id;
+    return `
+      <button type="button" class="accusation-option${selected ? ' selected' : ''}" onclick="selectAccusation('${g.id}')">
+        <div class="accusation-option-seal">${renderSealSVG(g.seal)}</div>
+        <div class="accusation-option-info">
+          <div class="accusation-option-name">${g.name}</div>
+          <div class="accusation-option-archetype">${seal.name}</div>
+        </div>
+        <div class="accusation-option-radio"></div>
+      </button>
+    `;
+  }).join('');
+}
+
+function selectAccusation(guestId) {
+  _accusationSelected = guestId;
+  renderAccusationOptions();
+  updateAccusationButton();
+}
+
+function updateAccusationButton() {
+  const btn = document.getElementById('accusationConfirmBtn');
+  if (!btn) return;
+  if (_accusationSelected) {
+    const guest = SEASON_1_GUESTS.find(g => g.id === _accusationSelected);
+    btn.textContent = `NOMMER ${guest.name.toUpperCase()}`;
+    btn.disabled = false;
+  } else {
+    btn.textContent = 'NOMMER';
+    btn.disabled = true;
+  }
+}
+
+function confirmAccusation() {
+  if (!_accusationSelected) return;
+  // Vibration de la confirmation
+  if (navigator.vibrate) navigator.vibrate([60, 80, 60]);
+
+  ensurePorterIsMarc();
+  gameState.porterVote = _accusationSelected;
+  if (!gameState.daysData[7]) gameState.daysData[7] = {};
+  gameState.daysData[7].accusationDone = true;
+  gameState.daysData[7].completed = true;
+  gameState.cycleEnded = true;
+  saveState();
+
+  showVerdict();
+}
+
+// Si le joueur revoit le verdict apres avoir ferme le cycle
+function reopenVerdict() {
+  showVerdict();
+}
+
+function showVerdict() {
+  const accusedId = gameState.porterVote;
+  const accused = SEASON_1_GUESTS.find(g => g.id === accusedId);
+  const isCorrect = (accusedId === gameState.porterId);
+  const accusedKey = GUEST_KEYS[accusedId] || null;
+
+  const labelEl = document.getElementById('verdictLabel');
+  const lineEl = document.getElementById('verdictNameLine');
+  const strongEl = document.getElementById('verdictNameStrong');
+  const truthEl = document.getElementById('verdictTruth');
+  const ctaEl = document.getElementById('verdictCta');
+
+  if (!labelEl || !accused) return;
+
+  const sealName = ALL_SEALS[accused.seal].name.toLowerCase();
+
+  if (isCorrect) {
+    labelEl.textContent = "VOUS L'AVEZ NOMMÉ";
+    lineEl.textContent = `Vous avez vu juste. C'était`;
+    strongEl.innerHTML = `${accused.name}<br><span style="font-size:0.55em;letter-spacing:0.25em;color:#D4B870;">LE ${sealName.toUpperCase()}</span>`;
+    truthEl.innerHTML = `<strong>${accusedKey.truthLine}</strong><br><br>${accusedKey.truthDetails}<br><br>Ce qu'il a porté seul pendant quatorze ans cesse de peser seul, ce soir.`;
+  } else {
+    labelEl.textContent = "L'ACCUSATION";
+    lineEl.textContent = `Vous avez nommé`;
+    strongEl.innerHTML = `${accused.name}<br><span style="font-size:0.55em;letter-spacing:0.25em;color:#A8A095;">LE ${sealName.toUpperCase()}</span>`;
+    // Le porteur reel
+    const realPorter = SEASON_1_GUESTS.find(g => g.id === gameState.porterId);
+    const realKey = GUEST_KEYS[gameState.porterId];
+    const realSealName = ALL_SEALS[realPorter.seal].name.toLowerCase();
+    truthEl.innerHTML = `Ce n'était pas lui. ${accusedKey ? accusedKey.truthDetails : ''}<br><br>Le Porteur, c'était <strong>${realPorter.name} (le ${realSealName})</strong>.<br><br>${realKey.truthLine}<br><br>Il repartira avec ce qu'il a apporté. Vous, vous repartirez avec une vérité qui n'était pas la sienne. Un autre Cycle, peut-être, vous redonnera l'occasion de voir.`;
+  }
+  ctaEl.textContent = 'FERMER LE CYCLE';
+  showScene('verdict');
+}
+
+function closeVerdict() {
+  goToHall();
 }
 
 // === PRÉSENTATIONS DU PREMIER SOIR ===
@@ -4948,6 +5417,11 @@ function onTableCenterTap() {
   // Cas special J1 : presentations au lieu de Question
   if (gameState.currentDay === 1 && !dayData.introductionsDone) {
     startIntroductions();
+    return;
+  }
+  // Cas special J7 : accusation finale au lieu de Question
+  if (gameState.currentDay === 7 && !dayData.accusationDone) {
+    startAccusation();
     return;
   }
   if (dayData.completed) {
@@ -5380,12 +5854,14 @@ function renderCouloir() {
 
   // 2) Section vote : ne s'affiche qu'a partir du J3 (le joueur a au moins
   //    croise un peu d'information avant). Avant, le couloir est purement
-  //    contemplatif, sans pression a se positionner.
+  //    contemplatif, sans pression a se positionner. Au J7, le vote
+  //    disparait du couloir car l'accusation se fait a table.
   const voteSection = document.getElementById('couloirVoteSection');
   if (voteSection) {
-    voteSection.style.display = day >= 3 ? 'block' : 'none';
+    const showVote = (day >= 3 && day <= 6);
+    voteSection.style.display = showVote ? 'block' : 'none';
   }
-  if (day < 3) return;
+  if (day < 3 || day === 7) return;
 
   const current = gameState.porterVote;
   const currentEl = document.getElementById('couloirCurrent');
@@ -6018,7 +6494,22 @@ function renderHall() {
   let ctaAction = 'enterHallProper()';
   let showMessage = false;
 
-  if (day === 1 && gameState.tutoStep === 0) {
+  if (gameState.cycleEnded) {
+    // Cycle termine : V cloture
+    showMessage = true;
+    label = 'V';
+    const accusedId = gameState.porterVote;
+    const isCorrect = (accusedId === gameState.porterId);
+    if (isCorrect) {
+      msg = 'Vous avez nommé juste. Le Cycle est clos.<br><br>La villa va se reposer. Si vous voulez relire votre verdict, il est encore là.';
+    } else if (accusedId) {
+      msg = 'Vous avez nommé. Le Cycle est clos.<br><br>Vous repartirez avec quelque chose qui n\'était pas votre vérité. C\'est aussi une manière d\'avoir vu.';
+    } else {
+      msg = 'Le Cycle s\'est terminé.<br><br>Si vous voulez le rouvrir, il faudra recommencer.';
+    }
+    cta = accusedId ? 'REVOIR LE VERDICT' : 'FERMER';
+    ctaAction = accusedId ? 'reopenVerdict()' : 'enterHallProper()';
+  } else if (day === 1 && gameState.tutoStep === 0) {
     // PREMIER PASSAGE — V t'accueille a l'arrivee
     showMessage = true;
     label = 'V';
