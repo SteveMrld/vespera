@@ -6280,6 +6280,20 @@ function closeFirstDinnerIntro() {
 
 // === HALL — hub central de la villa ===
 function goToHall() {
+  // V42 : si au J1 le parcours guide est termine (les 4 pieces ont
+  // ete visitees) et que les presentations n'ont pas encore eu lieu,
+  // on enchaine directement sur le diner sans repasser par le Hall.
+  // Evite le bug du hotspot Salle a manger qui ne reagissait pas.
+  if (gameState.currentDay === 1) {
+    const introsDone = gameState.daysData[1] && gameState.daysData[1].introductionsDone;
+    const visited = gameState.j1VisitedRooms || [];
+    const allFourVisited = J1_ROOM_ORDER.every(r => visited.includes(r));
+    if (allFourVisited && !introsDone) {
+      // On passe par startJ1Dinner pour la coherence d'etat
+      startJ1Dinner();
+      return;
+    }
+  }
   showScene('hall');
   renderHall();
 }
