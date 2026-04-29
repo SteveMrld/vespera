@@ -1846,6 +1846,115 @@
 
   .salon-footer { padding: 0 24px 40px; text-align: center; }
   .reset-btn { background: transparent; border: none; color: #5C5448; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.25em; padding: 12px 18px; cursor: pointer; text-transform: uppercase; opacity: 0.6; transition: opacity 0.4s; }
+
+  /* V43 : Gros bouton 'PASSER AU JOUR N+1' au centre du footer du Hall.
+     - Etat ACTIF (diner fait) : or, pulse, lisible.
+     - Etat INACTIF (diner pas fait) : gris, semi-transparent, mais
+       cliquable pour afficher un cartouche d'avertissement.
+     - Etat HIDDEN (J7 ou cycle fini) : non affiche. */
+  .next-day-btn {
+    display: block;
+    margin: 0 auto 14px;
+    padding: 16px 36px;
+    background: transparent;
+    border: 1.5px solid rgba(212, 184, 112, 0.6);
+    color: #D4B870;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.4s ease;
+  }
+  .next-day-btn.active {
+    border-color: #D4B870;
+    color: #FFE9B0;
+    background: rgba(212, 184, 112, 0.08);
+    animation: nextDayPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes nextDayPulse {
+    0%, 100% { box-shadow: 0 0 0 rgba(212, 184, 112, 0); }
+    50%      { box-shadow: 0 0 22px rgba(212, 184, 112, 0.45); }
+  }
+  .next-day-btn.inactive {
+    border-color: rgba(150, 140, 120, 0.25);
+    color: rgba(150, 140, 120, 0.5);
+    cursor: pointer;
+    animation: none;
+    opacity: 0.6;
+  }
+  .next-day-btn:active {
+    transform: scale(0.97);
+  }
+  .next-day-btn.hidden {
+    display: none;
+  }
+
+  /* V43 : Overlay du conseil 'notez bien' (1ere piece visitee de la journee).
+     Modal centre, fond noir semi-transparent, carte fade-in. */
+  .notes-tip-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 6, 4, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .notes-tip-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .notes-tip-card {
+    background: #0F1424;
+    border: 1px solid rgba(212, 184, 112, 0.35);
+    border-radius: 4px;
+    padding: 32px 28px;
+    max-width: 360px;
+    text-align: center;
+    box-shadow: 0 12px 60px rgba(0, 0, 0, 0.6);
+    animation: notesTipIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @keyframes notesTipIn {
+    0%   { opacity: 0; transform: translateY(20px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .notes-tip-label {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    color: #D4B870;
+    letter-spacing: 0.4em;
+    margin-bottom: 20px;
+  }
+  .notes-tip-text {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: #EDE8DD;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .notes-tip-close {
+    background: transparent;
+    border: 1px solid rgba(212, 184, 112, 0.5);
+    color: #D4B870;
+    padding: 12px 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  .notes-tip-close:active {
+    background: rgba(212, 184, 112, 0.15);
+  }
   .reset-btn:active { opacity: 1; color: #A8A095; }
   #salon.day .reset-btn { color: #8C8275; }
   .dev-row { display: flex; gap: 12px; justify-content: center; margin-top: 12px; opacity: 0.4; }
@@ -2555,7 +2664,7 @@
 <!-- SCÈNE HALL — hub central de la villa -->
 <div id="hall" class="scene">
   <div class="hall-header">
-    <button type="button" class="hall-back-btn" onclick="advanceDay()">JOUR SUIVANT →</button>
+    <div style="width: 90px;"></div>
     <div class="hall-title">VESPERA</div>
     <button type="button" class="hall-back-btn" onclick="toggleDayNight()">JOUR / NUIT</button>
   </div>
@@ -2597,6 +2706,12 @@
   </div>
 
   <div class="hall-footer">
+    <!-- V43 : Bouton 'PASSER AU JOUR N+1' tres visible, condittionnel.
+         S'affiche actif (or, pulse) seulement si le diner du jour a eu
+         lieu. Sinon, gris, et au tap montre un cartouche d'erreur. -->
+    <button type="button" class="next-day-btn" id="nextDayBtn" onclick="onNextDayTap()">
+      <span class="next-day-btn-label" id="nextDayBtnLabel">PASSER AU JOUR 2 →</span>
+    </button>
     <button type="button" class="reset-btn" onclick="resetCycle()">Recommencer le Cycle</button>
     <div class="dev-row">
       <button type="button" class="dev-btn" onclick="devSkipToDay(7)">[dev] Sauter au J7</button>
@@ -4077,6 +4192,15 @@ let gameState = {
   // Parcours guide du J1 : ordre de pieces visitees pour reveler les
   // hotspots un par un (bibliotheque, piscine, couloir, chambre, salon).
   j1VisitedRooms: [],
+  // V43 : suivi des pieces visitees par jour (pour parcours guide J2-J6)
+  // {2: ['library', 'pool'], 3: ['library'], ...}
+  visitedRoomsByDay: {},
+  // V43 : cartouche du soir (apres diner) deja ferme par le joueur
+  // {1: true, 2: false, ...} - evite la reapparition apres pieces visitees
+  nightCartoucheDismissed: {},
+  // V43 : conseil 'notez bien' affiche une fois par jour a la 1ere piece
+  // {1: true, 2: false, ...}
+  notesTipShownByDay: {},
   cycleEnded: false    // true après le Collapse
 };
 
@@ -6280,21 +6404,100 @@ function closeFirstDinnerIntro() {
 
 // === HALL — hub central de la villa ===
 function goToHall() {
-  // V42 : si au J1 le parcours guide est termine (les 4 pieces ont
-  // ete visitees) et que les presentations n'ont pas encore eu lieu,
-  // on enchaine directement sur le diner sans repasser par le Hall.
-  // Evite le bug du hotspot Salle a manger qui ne reagissait pas.
-  if (gameState.currentDay === 1) {
-    const introsDone = gameState.daysData[1] && gameState.daysData[1].introductionsDone;
-    const visited = gameState.j1VisitedRooms || [];
-    const allFourVisited = J1_ROOM_ORDER.every(r => visited.includes(r));
-    if (allFourVisited && !introsDone) {
-      // On passe par startJ1Dinner pour la coherence d'etat
-      startJ1Dinner();
+  // V43 : Bypass automatique - si le parcours du jour est fini et que
+  // le diner n'a pas eu lieu, on enchaine directement sur le diner.
+  // Si le diner a eu lieu et que le jour est complet, on passe au jour
+  // suivant proposait par le bouton dedie.
+  const day = gameState.currentDay;
+  if (day >= 1 && day <= 6) {
+    const dayData = gameState.daysData[day] || {};
+    const visitedThisDay = (gameState.visitedRoomsByDay && gameState.visitedRoomsByDay[day]) || [];
+    const allVisited = DAILY_ROOM_ORDER.every(r => visitedThisDay.includes(r));
+    // Au J1, on regarde aussi introductionsDone ; aux J2-J6, on regarde si
+    // le diner est deja fait ou non.
+    const introsOrDinnerDone = (day === 1)
+      ? (dayData.introductionsDone)
+      : (dayData.userResponse && dayData.responsesRead);
+    if (allVisited && !introsOrDinnerDone) {
+      // Toutes les pieces sont visitees mais le diner n'a pas encore eu lieu :
+      // on enchaine directement sans repasser par le Hall.
+      startDailyDinner();
       return;
     }
   }
   showScene('hall');
+  renderHall();
+}
+
+// V43 : Cache le cartouche du soir et le memorise pour ne plus le reafficher
+function dismissNightCartouche() {
+  const day = gameState.currentDay;
+  if (!gameState.nightCartoucheDismissed) gameState.nightCartoucheDismissed = {};
+  gameState.nightCartoucheDismissed[day] = true;
+  saveState();
+  dismissHallMessage();
+  // Le bouton JOUR SUIVANT est maintenant visible et activable
+  renderHall();
+}
+
+// V43 : Tap sur le bouton JOUR SUIVANT (gros, central). Verifie que le
+// diner du jour a eu lieu. Si non, affiche un cartouche d'avertissement.
+function onNextDayTap() {
+  const day = gameState.currentDay;
+  const dayData = gameState.daysData[day] || {};
+  const dinnerDone = (day === 1)
+    ? dayData.introductionsDone
+    : (dayData.userResponse && dayData.responsesRead);
+
+  if (!dinnerDone) {
+    // Cartouche d'avertissement : on ne passe pas tant que le diner
+    // n'a pas eu lieu.
+    showHallLockedMessage(
+      'Pas encore',
+      'V vous attend à table. Visitez les pièces, descendez à la salle à manger, puis vous pourrez passer au jour suivant.'
+    );
+    return;
+  }
+  // OK, on passe au jour suivant
+  advanceDay();
+}
+
+// V43 : Met a jour l'etat visuel du bouton JOUR SUIVANT selon le contexte
+// (actif, inactif, cache). Appele depuis renderHall.
+function updateNextDayButton() {
+  const btn = document.getElementById('nextDayBtn');
+  const labelEl = document.getElementById('nextDayBtnLabel');
+  if (!btn || !labelEl) return;
+
+  const day = gameState.currentDay;
+  // Cache au J7 (le J7 termine sur l'accusation, pas un bouton 'jour suivant')
+  // et si le cycle est termine
+  if (day === 7 || gameState.cycleEnded) {
+    btn.classList.add('hidden');
+    return;
+  }
+
+  btn.classList.remove('hidden');
+  const dayData = gameState.daysData[day] || {};
+  const dinnerDone = (day === 1)
+    ? dayData.introductionsDone
+    : (dayData.userResponse && dayData.responsesRead);
+
+  labelEl.textContent = `PASSER AU JOUR ${day + 1} →`;
+  btn.classList.toggle('active', !!dinnerDone);
+  btn.classList.toggle('inactive', !dinnerDone);
+}
+
+// V43 : Le joueur a lu le Murmure du jour J2-J6 et confirme entrer
+// dans la journee. On passe en hallEntered=true pour declencher le
+// parcours guide des pieces.
+function enterDayProper() {
+  const day = gameState.currentDay;
+  if (!gameState.daysData[day]) gameState.daysData[day] = {};
+  gameState.daysData[day].hallEntered = true;
+  gameState.daysData[day].murmurRead = true;
+  saveState();
+  dismissHallMessage();
   renderHall();
 }
 
@@ -6379,27 +6582,82 @@ function renderHall() {
     }
   } else if (day === 1 && gameState.tutoStep === 3) {
     // APRES LES PRESENTATIONS DU J1 - le joueur les a vus a table.
-    // La nuit est libre, la villa garde encore des choses, et le J2
-    // attend quand il sera pret.
-    showMessage = true;
-    label = 'V';
-    msg = 'Vous les avez vus. Cinq visages, cinq prénoms posés sur cinq Sceaux.<br><br>La nuit est à vous. La villa garde encore des choses cette nuit. Demain, le Cycle commencera vraiment.';
-    cta = 'PASSER AU JOUR 2';
-    ctaAction = 'advanceDay()';
-  } else if (day >= 2 && day <= 7 && SEASON_1_CONTENT[day]) {
-    // J2-J7 - Murmure du matin (lu depuis SEASON_1_CONTENT)
-    // Le cartouche reste accessible chaque fois que le joueur revient
-    // au Hall, le Murmure n'est pas une etape qu'on dismiss une fois
-    // pour toutes - c'est le ton de la journee.
-    showMessage = true;
-    label = `MURMURE · J${day} · ${SEASON_1_CONTENT[day].theme}`;
-    msg = (SEASON_1_CONTENT[day].murmur || '').replace(/\n\n/g, '<br><br>');
-    cta = 'ENTRER';
-    ctaAction = 'enterHallProper()';
+    // V43 : ce cartouche ne se reaffiche pas si le joueur l'a deja ferme.
+    if (!gameState.nightCartoucheDismissed || !gameState.nightCartoucheDismissed[1]) {
+      showMessage = true;
+      label = 'V';
+      msg = 'Vous les avez vus. Cinq visages, cinq prénoms posés sur cinq Sceaux.<br><br>La nuit est à vous. La villa garde encore des choses cette nuit.';
+      cta = 'JE COMPRENDS';
+      ctaAction = 'dismissNightCartouche()';
+    }
+  } else if (day >= 2 && day <= 6) {
+    // V43 : J2-J6 - parcours guide journalier comme au J1
+    // Phases :
+    // - hallEntered=false (1ere arrivee du jour) : Murmure du matin
+    // - hallEntered=true, pieces non toutes visitees : guidage piece par piece
+    // - toutes pieces visitees, dinnerReady=false : direction salle a manger
+    // - dinner+responses faits, !nightCartoucheDismissed : message du soir
+    const dayData2 = gameState.daysData[day] || {};
+    const visitedThisDay = (gameState.visitedRoomsByDay && gameState.visitedRoomsByDay[day]) || [];
+    const allVisited = DAILY_ROOM_ORDER.every(r => visitedThisDay.includes(r));
+    const dinnerCompleted = dayData2.userResponse && dayData2.responsesRead;
+    const nightDismissed = gameState.nightCartoucheDismissed && gameState.nightCartoucheDismissed[day];
+
+    if (!dayData2.hallEntered && SEASON_1_CONTENT[day]) {
+      // 1ere arrivee : Murmure du matin
+      showMessage = true;
+      label = `MURMURE · J${day} · ${SEASON_1_CONTENT[day].theme}`;
+      msg = (SEASON_1_CONTENT[day].murmur || '').replace(/\n\n/g, '<br><br>');
+      cta = 'COMMENCER LA JOURNÉE';
+      ctaAction = 'enterDayProper()';
+    } else if (!allVisited) {
+      // Parcours guide piece par piece
+      const nextRoom = getNextDailyRoom();
+      let progressKey;
+      if (nextRoom === 'library') progressKey = 'start';
+      else if (nextRoom === 'pool') progressKey = 'after_library';
+      else if (nextRoom === 'couloir') progressKey = 'after_pool';
+      else if (nextRoom === 'chambre') progressKey = 'after_couloir';
+      const progress = DAILY_PROGRESSION_MESSAGES[progressKey];
+      if (progress) {
+        showMessage = true;
+        label = progress.label;
+        msg = progress.msg;
+        cta = progress.cta;
+        ctaAction = progress.ctaAction;
+      }
+    } else if (allVisited && !dayData2.dinnerReady) {
+      // Toutes pieces visitees, direction salle a manger
+      const progress = DAILY_PROGRESSION_MESSAGES['ready_for_dinner'];
+      showMessage = true;
+      label = progress.label;
+      msg = progress.msg;
+      cta = progress.cta;
+      ctaAction = progress.ctaAction;
+    } else if (dinnerCompleted && !nightDismissed) {
+      // Apres le diner du jour : message du soir
+      showMessage = true;
+      label = 'V';
+      msg = `La soirée est passée. Demain, ${SEASON_1_CONTENT[day+1] ? 'le thème sera ' + SEASON_1_CONTENT[day+1].theme : 'un nouveau jour'}.<br><br>Reposez-vous. La villa attend.`;
+      cta = 'JE COMPRENDS';
+      ctaAction = 'dismissNightCartouche()';
+    }
+  } else if (day === 7 && SEASON_1_CONTENT[day]) {
+    // J7 - Murmure du dernier jour (parcours libre, accusation au centre)
+    if (!gameState.daysData[7] || !gameState.daysData[7].murmurRead) {
+      showMessage = true;
+      label = `MURMURE · J${day} · ${SEASON_1_CONTENT[day].theme}`;
+      msg = (SEASON_1_CONTENT[day].murmur || '').replace(/\n\n/g, '<br><br>');
+      cta = 'ENTRER';
+      ctaAction = 'enterHallProper()';
+    }
   }
 
-  // Applique le parcours guide des hotspots (J1) ou les libere (J2-J7)
+  // Applique le parcours guide des hotspots (J1-J6) ou les libere (J7)
   applyJ1GuidedHotspots();
+
+  // V43 : Met a jour le bouton 'PASSER AU JOUR N+1'
+  updateNextDayButton();
 
   if (showMessage) {
     contentEl.innerHTML = `
@@ -6420,87 +6678,129 @@ function renderHall() {
 // apres un ecran de transition. Aux autres jours, tous les hotspots
 // sont accessibles d'emblee (le joueur connait la villa).
 
-const J1_ROOM_ORDER = ['library', 'pool', 'couloir', 'chambre'];
-// La salle a manger ('salon') n'est pas dans cette liste : elle apparait
-// SEULEMENT apres l'ecran de transition, qui se declenche quand les 4
-// pieces ci-dessus sont visitees.
+// === PARCOURS GUIDE JOURNALIER (V43) ===
+// Chaque jour J1-J6, V guide le joueur de piece en piece dans le
+// meme ordre. La salle a manger n'apparait qu'apres avoir visite les
+// 4 pieces. Au J7, parcours libre (le joueur connait, et la mecanique
+// est centree sur l'accusation).
 
+const DAILY_ROOM_ORDER = ['library', 'pool', 'couloir', 'chambre'];
+
+// Pour compatibilite retroactive avec le code qui reference J1_ROOM_ORDER
+const J1_ROOM_ORDER = DAILY_ROOM_ORDER;
+
+// Messages du J1 (specifiques au premier soir : decouverte de la villa)
 const J1_PROGRESSION_MESSAGES = {
-  // Avant la 1ere visite : V invite a aller a la bibliotheque
   start: {
     label: 'V',
     msg: 'Commencez par la bibliothèque. Quelqu\'un y est passé cette nuit.',
     cta: 'JE VOIS',
     ctaAction: 'dismissHallMessage()'
   },
-  // Apres bibliotheque : direction piscine
   after_library: {
     label: 'V',
     msg: 'La piscine maintenant. L\'eau garde mieux les traces que les murs.',
     cta: 'CONTINUER',
     ctaAction: 'dismissHallMessage()'
   },
-  // Apres piscine : direction couloir
   after_pool: {
     label: 'V',
     msg: 'Le couloir nord. C\'est là que la villa devient personnelle.',
     cta: 'CONTINUER',
     ctaAction: 'dismissHallMessage()'
   },
-  // Apres couloir : direction chambre
   after_couloir: {
     label: 'V',
     msg: 'Votre chambre, enfin. J\'y ai laissé quelque chose pour vous.',
     cta: 'CONTINUER',
     ctaAction: 'dismissHallMessage()'
   },
-  // Apres chambre : ecran de transition vers le diner
   ready_for_dinner: {
     label: 'V',
     msg: 'Vous avez fait le tour. Ils vous attendent à table.<br><br>Le premier soir commence.',
     cta: 'DESCENDRE À TABLE',
-    ctaAction: 'startJ1Dinner()'
+    ctaAction: 'startDailyDinner()'
   }
 };
 
-// Determine la prochaine piece a visiter au J1 (ou null si parcours fini).
-function getNextJ1Room() {
-  const visited = gameState.j1VisitedRooms || [];
-  for (const room of J1_ROOM_ORDER) {
-    if (!visited.includes(room)) return room;
+// Messages des J2-J6 - plus sobres, moins didactiques (le joueur connait
+// la villa). On reste sur le ton des Murmures du jour.
+const DAILY_PROGRESSION_MESSAGES = {
+  start: {
+    label: 'V',
+    msg: 'Une journée nouvelle. La bibliothèque, pour commencer. Les livres mentent moins que les gens.',
+    cta: 'COMMENCER',
+    ctaAction: 'dismissHallMessage()'
+  },
+  after_library: {
+    label: 'V',
+    msg: 'À la piscine, maintenant. L\'eau a peut-être bougé cette nuit.',
+    cta: 'CONTINUER',
+    ctaAction: 'dismissHallMessage()'
+  },
+  after_pool: {
+    label: 'V',
+    msg: 'Le couloir, encore. Il garde ce que les pièces taisent.',
+    cta: 'CONTINUER',
+    ctaAction: 'dismissHallMessage()'
+  },
+  after_couloir: {
+    label: 'V',
+    msg: 'Votre chambre. J\'ai laissé quelque chose pour vous, comme chaque nuit.',
+    cta: 'CONTINUER',
+    ctaAction: 'dismissHallMessage()'
+  },
+  ready_for_dinner: {
+    label: 'V',
+    msg: 'Vous avez tout vu. Ils sont à table. La soirée commence.',
+    cta: 'DESCENDRE À TABLE',
+    ctaAction: 'startDailyDinner()'
   }
-  return null; // Toutes visitees -> ecran de transition vers diner
+};
+
+// Determine la prochaine piece a visiter pour le jour courant.
+// Retourne null si toutes les pieces ont ete visitees ce jour.
+function getNextDailyRoom() {
+  const day = gameState.currentDay;
+  const visitedThisDay = (gameState.visitedRoomsByDay && gameState.visitedRoomsByDay[day]) || [];
+  for (const room of DAILY_ROOM_ORDER) {
+    if (!visitedThisDay.includes(room)) return room;
+  }
+  return null;
 }
 
-// Applique les classes guided-* sur les hotspots selon la progression J1.
-// Aux jours 2-7, on retire toutes ces classes (acces complet).
+// Compatibilite : getNextJ1Room retourne juste getNextDailyRoom au J1
+function getNextJ1Room() {
+  if (gameState.currentDay !== 1) return null;
+  return getNextDailyRoom();
+}
+
+// Applique les classes guided-* sur les hotspots selon la progression
+// du jour courant. Au J7, on libere tout (acces complet pour l'accusation).
 function applyJ1GuidedHotspots() {
   const day = gameState.currentDay;
   const hotspots = document.querySelectorAll('.hall-hotspot[data-room]');
 
-  // Hors J1 : on libere tout, on retire toutes les classes guided-*
-  if (day !== 1) {
+  // J7 : on libere tout
+  if (day === 7) {
     hotspots.forEach(h => {
       h.classList.remove('guided-hidden', 'guided-visited', 'guided-active');
     });
     return;
   }
 
-  // J1 : on applique l'etat selon le parcours
-  const visited = gameState.j1VisitedRooms || [];
-  const nextRoom = getNextJ1Room(); // ex: 'pool'
-  const allDone = (nextRoom === null);
+  // J1-J6 : parcours guide
+  const visitedThisDay = (gameState.visitedRoomsByDay && gameState.visitedRoomsByDay[day]) || [];
+  const nextRoom = getNextDailyRoom();
 
   hotspots.forEach(h => {
     const room = h.getAttribute('data-room');
     h.classList.remove('guided-hidden', 'guided-visited', 'guided-active');
 
     if (room === 'salon') {
-      // Salle a manger : cachee tant que les 4 autres pieces ne sont pas
-      // visitees. Apparait via ecran de transition (startJ1Dinner).
-      // ETAT FINAL : visible et active une fois que le joueur a passe
-      // l'ecran de transition (gameState.daysData[1].dinnerReady).
-      const dinnerReady = (gameState.daysData[1] && gameState.daysData[1].dinnerReady);
+      // Salle a manger : cachee tant que les 4 pieces ne sont pas visitees.
+      // Apparait quand dinnerReady est pose pour ce jour.
+      const dinnerReady = (gameState.daysData[day] && gameState.daysData[day].dinnerReady);
       if (dinnerReady) {
         h.classList.add('guided-active');
       } else {
@@ -6509,43 +6809,88 @@ function applyJ1GuidedHotspots() {
       return;
     }
 
-    // Pieces du parcours (library, pool, couloir, chambre)
-    if (visited.includes(room)) {
-      // Deja visitee : eteinte mais accessible
+    // Pieces du parcours
+    if (visitedThisDay.includes(room)) {
       h.classList.add('guided-visited');
     } else if (room === nextRoom) {
-      // C'est la prochaine a visiter : active
       h.classList.add('guided-active');
     } else {
-      // Pas encore son tour : cachee
       h.classList.add('guided-hidden');
     }
   });
 }
 
-// Marque une piece comme visitee dans le parcours J1 (appele par
-// goToRoom quand la piece est ouverte). Sauvegarde l'etat.
+// Marque une piece comme visitee pour le jour courant.
 function markJ1RoomVisited(room) {
-  if (gameState.currentDay !== 1) return;
-  if (!J1_ROOM_ORDER.includes(room)) return;
-  if (!gameState.j1VisitedRooms) gameState.j1VisitedRooms = [];
-  if (!gameState.j1VisitedRooms.includes(room)) {
-    gameState.j1VisitedRooms.push(room);
+  const day = gameState.currentDay;
+  if (day === 7) return;
+  if (!DAILY_ROOM_ORDER.includes(room)) return;
+  if (!gameState.visitedRoomsByDay) gameState.visitedRoomsByDay = {};
+  if (!gameState.visitedRoomsByDay[day]) gameState.visitedRoomsByDay[day] = [];
+  // Aussi maintenir j1VisitedRooms pour compatibilite (utilise dans renderNotes etc)
+  if (day === 1) {
+    if (!gameState.j1VisitedRooms) gameState.j1VisitedRooms = [];
+    if (!gameState.j1VisitedRooms.includes(room)) gameState.j1VisitedRooms.push(room);
+  }
+  if (!gameState.visitedRoomsByDay[day].includes(room)) {
+    const isFirstRoomOfDay = (gameState.visitedRoomsByDay[day].length === 0);
+    gameState.visitedRoomsByDay[day].push(room);
     saveState();
+
+    // V43 : Conseil 'notez bien' affiche une seule fois par jour, a la
+    // premiere piece visitee. Pas affiche au J1 (le joueur est encore
+    // dans le tutoriel onboarding).
+    if (isFirstRoomOfDay && day >= 2 && day <= 6) {
+      if (!gameState.notesTipShownByDay) gameState.notesTipShownByDay = {};
+      if (!gameState.notesTipShownByDay[day]) {
+        gameState.notesTipShownByDay[day] = true;
+        saveState();
+        // Pop-up apres un petit delai pour laisser la piece se charger
+        setTimeout(() => showNotesTip(), 800);
+      }
+    }
   }
 }
 
-// Ecran de transition entre l'exploration J1 et le diner. Appele quand
-// le joueur tape DESCENDRE A TABLE dans le cartouche ready_for_dinner.
-function startJ1Dinner() {
-  if (!gameState.daysData[1]) gameState.daysData[1] = {};
-  gameState.daysData[1].dinnerReady = true;
+// V43 : Affiche un overlay discret avec le conseil 'notez bien'
+function showNotesTip() {
+  // Cree l'element s'il n'existe pas
+  let overlay = document.getElementById('notesTipOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'notesTipOverlay';
+    overlay.className = 'notes-tip-overlay';
+    overlay.innerHTML = `
+      <div class="notes-tip-card">
+        <div class="notes-tip-label">V</div>
+        <div class="notes-tip-text">
+          Notez ce que vous remarquez ici. Vous pourrez écrire dans votre carnet, dans la chambre. Ce que vous retenez ce soir comptera demain.
+        </div>
+        <button type="button" class="notes-tip-close" onclick="hideNotesTip()">JE COMPRENDS</button>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+  overlay.classList.add('visible');
+}
+function hideNotesTip() {
+  const overlay = document.getElementById('notesTipOverlay');
+  if (overlay) overlay.classList.remove('visible');
+}
+
+// Lance la transition vers le diner (appele par le bouton DESCENDRE A TABLE)
+// Pose dinnerReady=true pour le jour courant et envoie au salon.
+function startDailyDinner() {
+  const day = gameState.currentDay;
+  if (!gameState.daysData[day]) gameState.daysData[day] = {};
+  gameState.daysData[day].dinnerReady = true;
   saveState();
-  // Le hotspot Salle a manger apparait, le joueur peut taper dessus.
-  // Mais en plus, on l'envoie directement au salon pour fluidifier.
   dismissHallMessage();
   goToRoom('salon');
 }
+
+// Compatibilite avec ancien nom
+function startJ1Dinner() { startDailyDinner(); }
 
 // Etape 1 du tuto : V t'accueille puis lance le parcours guide
 function startTutoStep1() {
@@ -6992,6 +7337,9 @@ function resetCycle() {
       porterVote: null,
       investigatorNotes: {},
       j1VisitedRooms: [],
+      visitedRoomsByDay: {},
+      nightCartoucheDismissed: {},
+      notesTipShownByDay: {},
       cycleEnded: false,
       tutoStep: 0
     };
