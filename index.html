@@ -71,22 +71,90 @@
   .enter-btn:active { background: rgba(212,184,112,0.15); color: #EDE8DD; }
 
   /* SCÈNE ONBOARDING */
-  #onboarding { background: radial-gradient(ellipse at center, #1B2536 0%, #0A1220 100%); padding: 40px 32px; }
-  .onb-content { width: 100%; max-width: 420px; text-align: center; }
-  .onb-progress { font-family: 'Inter', sans-serif; font-size: 10px; color: #D4B870; letter-spacing: 0.3em; margin-bottom: 28px; }
-  .onb-block-label { font-family: 'Inter', sans-serif; font-size: 11px; color: #A8A095; letter-spacing: 0.4em; margin-bottom: 26px; }
-  .onb-question { font-family: 'Fraunces', serif; font-size: 19px;  color: #EDE8DD; line-height: 1.6; margin-bottom: 32px; }
-  .onb-input-zone { width: 100%; margin-bottom: 24px; }
-  .onb-options { display: flex; flex-direction: column; gap: 8px; width: 100%; }
-  .onb-option { background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.15); color: #EDE8DD; padding: 14px 16px; font-family: 'Fraunces', serif; font-size: 15px; cursor: pointer; transition: all 0.3s; border-radius: 4px; text-align: left; }
-  .onb-option:active { background: rgba(212,184,112,0.12); border-color: rgba(212,184,112,0.5); color: #EDE8DD; }
-  .onb-textarea { width: 100%; min-height: 100px; background: rgba(237,232,221,0.04); border: 1px solid rgba(237,232,221,0.15); border-radius: 4px; padding: 14px 16px; font-family: 'Fraunces', serif; font-size: 15px; color: #EDE8DD; line-height: 1.6; resize: vertical; outline: none; -webkit-appearance: none; }
-  .onb-textarea:focus { border-color: rgba(212,184,112,0.5); }
-  .onb-textarea::placeholder { color: #5C5448;  font-size: 14px; }
-  .onb-submit { background: transparent; border: 1px solid rgba(212,184,112,0.5); color: #D4B870; padding: 12px 28px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.3em; cursor: pointer; transition: all 0.4s; border-radius: 2px; margin-top: 16px; }
-  .onb-submit:active { background: rgba(212,184,112,0.15); color: #EDE8DD; }
-  .onb-submit:disabled { opacity: 0.4; cursor: not-allowed; }
-  .onb-skip { background: transparent; border: none; color: #5C5448; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.2em; padding: 8px 12px; margin-top: 24px; cursor: pointer; opacity: 0.7; }
+  #onboarding { background: radial-gradient(ellipse at center, #1B2536 0%, #0A1220 100%); padding: 40px 32px; align-items: center; justify-content: center; display: flex; }
+  .onb-content {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+  /* Mini-fade entre deux questions au moment du tap sur une reponse */
+  .onb-content.onb-fading {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  .onb-progress {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: rgba(212, 184, 112, 0.7);
+    letter-spacing: 0.3em;
+    margin-bottom: 32px;
+  }
+  .onb-block-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: rgba(168, 160, 149, 0.7);
+    letter-spacing: 0.45em;
+    margin-bottom: 22px;
+  }
+  .onb-question {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: #EDE8DD;
+    line-height: 1.45;
+    margin-bottom: 36px;
+    letter-spacing: 0.005em;
+  }
+  .onb-input-zone {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .onb-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+  .onb-option {
+    background: rgba(237, 232, 221, 0.04);
+    border: 1px solid rgba(237, 232, 221, 0.14);
+    color: #EDE8DD;
+    padding: 16px 20px;
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: background 0.3s ease,
+                border-color 0.3s ease,
+                color 0.3s ease,
+                transform 0.18s ease;
+    border-radius: 4px;
+    text-align: left;
+    line-height: 1.4;
+  }
+  .onb-option:hover {
+    background: rgba(212, 184, 112, 0.06);
+    border-color: rgba(212, 184, 112, 0.35);
+  }
+  .onb-option:active {
+    background: rgba(212, 184, 112, 0.14);
+    border-color: rgba(212, 184, 112, 0.6);
+    color: #FFE9B0;
+    transform: scale(0.985);
+  }
+  /* Skip est cache : tout passe en choix maintenant */
+  .onb-skip {
+    background: transparent;
+    border: none;
+    color: rgba(92, 84, 72, 0.7);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    padding: 8px 12px;
+    margin-top: 22px;
+    cursor: pointer;
+  }
 
   /* SCÈNE LE SEUIL — onboarding */
   #seuil { background: radial-gradient(ellipse at center, #1B2536 0%, #0A1220 100%); padding: 0 32px; }
@@ -2380,14 +2448,13 @@
   </div>
 </div>
 
-<!-- SCÈNE ONBOARDING — 15 questions pour construire le profil du joueur -->
+<!-- SCÈNE ONBOARDING (V39) — 8 questions tappables, plus de champ texte -->
 <div id="onboarding" class="scene">
   <div class="onb-content">
-    <div class="onb-progress" id="onbProgress">1 / 15</div>
-    <p class="onb-block-label" id="onbBlockLabel">D'OÙ VOUS VENEZ</p>
+    <div class="onb-progress" id="onbProgress">1 / 8</div>
+    <p class="onb-block-label" id="onbBlockLabel">VOTRE GESTE</p>
     <p class="onb-question" id="onbQuestion"></p>
     <div class="onb-input-zone" id="onbInputZone"></div>
-    <button type="button" class="onb-skip" id="onbSkip" onclick="skipOnboarding()">Passer cette étape</button>
   </div>
 </div>
 
@@ -4191,114 +4258,61 @@ function startSeuil() {
 // === ONBOARDING — 15 QUESTIONS POUR CONSTRUIRE LE PROFIL DU JOUEUR ===
 // Toutes en choix multiples sauf la toute dernière (Q15) qui est libre,
 // pour rester rapide et mobile-friendly.
+// V39 : onboarding ramene a 8 questions, toutes en choix (plus de
+// champ texte). 3 blocs courts, plus rythmes, plus ludiques. Chaque
+// question sert reellement a calibrer le ton de V, le tirage du Sceau
+// ou les Murmures, plutot qu'un formulaire demographique.
 const ONBOARDING_QUESTIONS = [
-  // BLOC 1 — D'OÙ VOUS VENEZ (5 questions, choix)
+  // BLOC 1 - VOTRE GESTE (3 questions, calibre le Sceau)
   {
-    block: 'D\'OÙ VOUS VENEZ',
-    field: 'age',
-    question: 'Vous avez :',
-    type: 'choice',
-    options: ['Moins de 30 ans', 'Entre 30 et 45 ans', 'Entre 45 et 60 ans', 'Plus de 60 ans']
+    block: 'VOTRE GESTE',
+    field: 'firstLook',
+    question: 'Dans une pièce inconnue, ce qui attire d\'abord votre regard :',
+    options: ['Les visages', 'Les objets', 'Les sorties', 'La lumière']
   },
   {
-    block: 'D\'OÙ VOUS VENEZ',
-    field: 'location',
-    question: 'Vous vivez :',
-    type: 'choice',
-    options: ['Dans une grande ville', 'Dans une ville moyenne', 'Dans un village ou à la campagne', 'À l\'étranger']
+    block: 'VOTRE GESTE',
+    field: 'tooMuchTalk',
+    question: 'Quand quelqu\'un parle trop, vous :',
+    options: ['Écoutez quand même', 'Cherchez à le faire taire', 'Décrochez en silence', 'Posez une question qui change tout']
   },
   {
-    block: 'D\'OÙ VOUS VENEZ',
-    field: 'profession',
-    question: 'Votre quotidien tourne autour de :',
-    type: 'choice',
-    options: ['Études', 'Salariat', 'Travail indépendant', 'Création (artistique, écriture)', 'Une période entre deux']
+    block: 'VOTRE GESTE',
+    field: 'natural',
+    question: 'Ce que vous faites le mieux sans y penser :',
+    options: ['Voir ce qui cloche', 'Mettre les gens à l\'aise', 'Disparaître quand il faut', 'Tenir bon']
+  },
+  // BLOC 2 - VOS NUITS (2 questions, calibre les Murmures)
+  {
+    block: 'VOS NUITS',
+    field: 'wakeAt3',
+    question: 'Une nuit, vous vous réveillez à 3h. Vous :',
+    options: ['Restez immobile', 'Vous levez sans bruit', 'Allumez quelque chose', 'Regardez par la fenêtre']
   },
   {
-    block: 'D\'OÙ VOUS VENEZ',
-    field: 'living',
-    question: 'Vous vivez :',
-    type: 'choice',
-    options: ['Seul', 'En couple', 'En famille (avec enfants)', 'En colocation', 'Autre']
+    block: 'VOS NUITS',
+    field: 'sleepless',
+    question: 'Ce qui vous tient éveillé, en général :',
+    options: ['Une conversation rejouée', 'Une décision pas prise', 'Quelqu\'un', 'Rien, je dors']
+  },
+  // BLOC 3 - VOTRE VERITE (3 questions, calibre le ton de V)
+  {
+    block: 'VOTRE VÉRITÉ',
+    field: 'secret',
+    question: 'Devant un secret de quelqu\'un que vous aimez, vous :',
+    options: ['Le gardez', 'Le creusez', 'L\'oubliez exprès', 'Le dites à un autre']
   },
   {
-    block: 'D\'OÙ VOUS VENEZ',
-    field: 'sibling',
-    question: 'Dans votre fratrie, vous êtes :',
-    type: 'choice',
-    options: ['Enfant unique', 'L\'aîné', 'Au milieu', 'Le cadet']
-  },
-  // BLOC 2 — VOS GESTES (5 questions, choix)
-  {
-    block: 'VOS GESTES',
-    field: 'solitudeSpot',
-    question: 'Quand vous voulez être seul, vous allez :',
-    type: 'choice',
-    options: ['Dans un café', 'Dans la nature', 'Chez vous, dans une pièce à part', 'Dans un bar', 'En voiture, en marchant', 'Dans un lieu ancien (musée, église, bibliothèque)']
+    block: 'VOTRE VÉRITÉ',
+    field: 'preference',
+    question: 'Ce que vous préférez :',
+    options: ['Comprendre', 'Être compris', 'Ni l\'un ni l\'autre']
   },
   {
-    block: 'VOS GESTES',
-    field: 'keptObject',
-    question: 'Un objet auquel vous tenez sans pouvoir vraiment l\'expliquer :',
-    type: 'choice',
-    options: ['Une lettre, une carte, un mot écrit', 'Un bijou ou un vêtement hérité', 'Un objet de l\'enfance', 'Un livre ou un disque', 'Une photo', 'Aucun, je ne garde pas']
-  },
-  {
-    block: 'VOS GESTES',
-    field: 'voiceStyle',
-    question: 'Quand vous parlez, on vous reconnaît à :',
-    type: 'choice',
-    options: ['Un rythme lent, posé', 'Un rythme rapide, une voix vive', 'Une expression qui revient toujours', 'Les silences entre vos phrases', 'Votre manière de digresser']
-  },
-  {
-    block: 'VOS GESTES',
-    field: 'habit',
-    question: 'Vous avez plutôt tendance à :',
-    type: 'choice',
-    options: ['Tout ranger autour de vous', 'Laisser un peu de désordre', 'Bouger sans tenir en place', 'Rester immobile longtemps', 'Toucher des objets en parlant']
-  },
-  {
-    block: 'VOS GESTES',
-    field: 'rainySunday',
-    question: 'Un dimanche pluvieux, vous :',
-    type: 'choice',
-    options: ['Restez au lit', 'Lisez ou regardez quelque chose', 'Cuisinez', 'Sortez quand même', 'Appelez quelqu\'un que vous aimez', 'Ne supportez pas la pluie']
-  },
-  // BLOC 3 — VOTRE INTIMITÉ (5 questions ; 4 choix + 1 texte final)
-  {
-    block: 'VOTRE INTIMITÉ',
-    field: 'color',
-    question: 'La gamme de couleurs qui revient dans vos espaces ?',
-    type: 'choice',
-    options: ['Sombres et froides (gris, noir, bleu)', 'Sombres et chaudes (brun, ocre, sépia)', 'Claires et neutres (blanc, ivoire, beige)', 'Vives et chaudes (rouge, orange, jaune)', 'Vives et froides (bleu vif, vert, violet)']
-  },
-  {
-    block: 'VOTRE INTIMITÉ',
-    field: 'keptObject',
-    question: 'Un objet que vous gardez sans pouvoir tout à fait l\'expliquer :',
-    type: 'choice',
-    options: ['Une lettre, un mot', 'Une photo', 'Un bijou hérité', 'Un livre, un disque', 'Aucun, je ne garde rien']
-  },
-  {
-    block: 'VOTRE INTIMITÉ',
-    field: 'disappearance',
-    question: 'Si vous deviez disparaître trois mois sans dire à personne, vous iriez :',
-    type: 'choice',
-    options: ['Au bord de la mer', 'À la montagne', 'À l\'étranger, dans une ville inconnue', 'Chez quelqu\'un, en silence', 'Je ne disparaîtrais pas']
-  },
-  {
-    block: 'VOTRE INTIMITÉ',
-    field: 'belief',
-    question: 'Ce qui vous touche le plus dans ce que vous lisez, regardez ou écoutez ?',
-    type: 'choice',
-    options: ['La beauté formelle, l\'élégance', 'Une vérité dite simplement', 'L\'émotion sincère, ce qui fait pleurer', 'Le mystère, ce qui reste sans réponse', 'L\'humour, la légèreté']
-  },
-  {
-    block: 'VOTRE INTIMITÉ',
-    field: 'self',
-    question: 'Si on vous demandait qui vous êtes vraiment, en une phrase que personne d\'autre n\'écrirait, vous répondriez :',
-    type: 'text',
-    placeholder: 'Une phrase qui vous ressemble vraiment...'
+    block: 'VOTRE VÉRITÉ',
+    field: 'novelHook',
+    question: 'Quand vous lisez un roman, ce qui vous accroche :',
+    options: ['Une vérité qui se révèle', 'Un personnage qui vous ressemble', 'Une atmosphère', 'Une fin qu\'on ne devine pas']
   }
 ];
 
@@ -4322,39 +4336,31 @@ function renderOnboardingStep() {
   document.getElementById('onbQuestion').textContent = q.question;
 
   const zone = document.getElementById('onbInputZone');
-  if (q.type === 'choice') {
-    zone.innerHTML = `
-      <div class="onb-options">
-        ${q.options.map(opt => `<button type="button" class="onb-option" onclick="onbAnswer('${q.field}', ${JSON.stringify(opt).replace(/"/g, '&quot;')})">${opt}</button>`).join('')}
-      </div>
-    `;
-  } else if (q.type === 'text') {
-    zone.innerHTML = `
-      <textarea class="onb-textarea" id="onbTextInput" placeholder="${q.placeholder || ''}" maxlength="200"></textarea>
-      <button type="button" class="onb-submit" onclick="onbAnswerText('${q.field}')">CONTINUER</button>
-    `;
-    setTimeout(() => {
-      const ta = document.getElementById('onbTextInput');
-      if (ta) ta.focus();
-    }, 100);
-  }
+  zone.innerHTML = `
+    <div class="onb-options">
+      ${q.options.map(opt => `<button type="button" class="onb-option" onclick="onbAnswer('${q.field}', ${JSON.stringify(opt).replace(/"/g, '&quot;')})">${opt}</button>`).join('')}
+    </div>
+  `;
 }
 
+// Au tap, on enregistre la reponse, on declenche un mini-fade out de la
+// carte question, puis on charge la suivante. Sensation plus fluide
+// que le switch brutal qu'on avait avant.
 function onbAnswer(field, value) {
   gameState.userProfile[field] = value;
   saveState();
-  currentOnbStep++;
-  renderOnboardingStep();
-}
-
-function onbAnswerText(field) {
-  const ta = document.getElementById('onbTextInput');
-  const val = ta ? ta.value.trim() : '';
-  // Permet de passer même sans réponse (mais on garde une trace)
-  gameState.userProfile[field] = val || '(non renseigné)';
-  saveState();
-  currentOnbStep++;
-  renderOnboardingStep();
+  const card = document.querySelector('#onboarding .onb-content');
+  if (card) {
+    card.classList.add('onb-fading');
+    setTimeout(() => {
+      currentOnbStep++;
+      renderOnboardingStep();
+      card.classList.remove('onb-fading');
+    }, 220);
+  } else {
+    currentOnbStep++;
+    renderOnboardingStep();
+  }
 }
 
 function skipOnboarding() {
