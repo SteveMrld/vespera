@@ -4928,10 +4928,12 @@ function renderTableCenter() {
       hint.textContent = 'Retournez au Hall pour visiter les pièces. Demain à l\'aube, V reviendra.';
     } else if (dayData.userResponse) {
       center.classList.add('has-action');
+      center.onclick = () => onTableCenterTap();
       content.innerHTML = `<span class="center-label">LES VOIX</span><span style="font-size:12px;">Six réponses ont été scellées.</span><span class="center-cta">CONSULTER →</span>`;
       hint.textContent = 'Tapez le centre pour lire les voix du soir.';
     } else {
       center.classList.add('has-action');
+      center.onclick = () => onTableCenterTap();
       content.innerHTML = `<span class="center-label">QUESTION DU SOIR</span><span>${QUESTIONS[dayIndex]}</span><span class="center-cta">RÉPONDRE →</span>`;
       hint.textContent = 'Tapez le centre pour répondre. Tapez un Sceau pour lire sa fiche.';
     }
