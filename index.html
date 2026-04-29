@@ -2273,6 +2273,76 @@
   .note-meta .note-source { color: #A8A095;  text-transform: lowercase; letter-spacing: 0.1em; }
   .note-text { font-family: 'Fraunces', serif; font-size: 14px;  color: #EDE8DD; line-height: 1.65; }
 
+  /* V49 : Journal automatique d'indices (carnet) */
+  .journal-day-block {
+    margin-bottom: 28px;
+  }
+  .journal-day-header {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: rgba(212, 184, 112, 0.85);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(212, 184, 112, 0.18);
+  }
+  .journal-entry {
+    background: rgba(237, 232, 221, 0.04);
+    border: 1px solid rgba(237, 232, 221, 0.10);
+    border-left: 2px solid rgba(212, 184, 112, 0.4);
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  .journal-entry-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    color: rgba(168, 160, 149, 0.75);
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .journal-entry-title {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    color: #EDE8DD;
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+  .journal-entry-obs {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    color: rgba(212, 184, 112, 0.7);
+    line-height: 1.5;
+    margin-bottom: 10px;
+    font-style: normal;
+  }
+  .journal-entry-input {
+    width: 100%;
+    min-height: 38px;
+    background: rgba(8, 10, 18, 0.5);
+    border: 1px solid rgba(237, 232, 221, 0.08);
+    border-radius: 3px;
+    padding: 8px 10px;
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #EDE8DD;
+    resize: vertical;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .journal-entry-input:focus {
+    border-color: rgba(212, 184, 112, 0.4);
+    background: rgba(8, 10, 18, 0.8);
+  }
+  .journal-entry-input::placeholder {
+    color: rgba(168, 160, 149, 0.35);
+    font-style: italic;
+  }
+
   /* CARNET D'ENQUETE - une carte par invite avec champ libre */
   .notebook-intro {
     font-family: 'Fraunces', serif;
@@ -4212,6 +4282,11 @@ let gameState = {
   // V43 : conseil 'notez bien' affiche une fois par jour a la 1ere piece
   // {1: true, 2: false, ...}
   notesTipShownByDay: {},
+  // V49 : Journal automatique des indices ramasses par le joueur
+  // [{day, room, key, title, body, observation, ts}]
+  journalEntries: [],
+  // V49 : Notes libres du joueur, indexees par entry.key
+  journalUserNotes: {},
   cycleEnded: false    // true après le Collapse
 };
 
@@ -4241,6 +4316,41 @@ function rollFragments() {
 }
 
 // === RENDU SVG GÉNÉRIQUE (fallback si l'image ne charge pas) ===
+// V49 : Journal automatique des indices.
+// Quand le joueur ouvre un objet dans une piece (multi-hotspot), on
+// l'enregistre dans le carnet pour qu'il le retrouve en chambre, classe
+// par jour. Pas de doublons : la cle 'jour-piece-objet' identifie de
+// maniere unique. Le joueur peut ajouter sa note libre apres coup.
+function recordJournalEntry(entry) {
+  if (!gameState.journalEntries) gameState.journalEntries = [];
+  // Cle unique pour eviter doublons : si le joueur retap le meme objet,
+  // on ne re-enregistre pas.
+  const key = `${entry.day}-${entry.room}-${entry.id || entry.label}`;
+  if (gameState.journalEntries.some(e => e.key === key)) return;
+  gameState.journalEntries.push({
+    key: key,
+    day: entry.day,
+    room: entry.room,         // 'library' / 'pool' / 'couloir' / 'chambre'
+    roomLabel: entry.roomLabel, // 'Bibliothèque' / 'Piscine' / etc.
+    title: entry.title || entry.label || '',
+    body: entry.body || '',
+    observation: entry.observation || '',
+    ts: Date.now()
+  });
+  saveState();
+}
+
+// Sauvegarde la note libre du joueur sur une entree du journal
+function saveJournalUserNote(key, value) {
+  if (!gameState.journalUserNotes) gameState.journalUserNotes = {};
+  gameState.journalUserNotes[key] = value;
+  // Debounce pour ne pas spam le storage
+  if (saveJournalUserNote._debounce) clearTimeout(saveJournalUserNote._debounce);
+  saveJournalUserNote._debounce = setTimeout(() => {
+    saveState();
+  }, 350);
+}
+
 function renderSealSVG(sealKey) {
   const seal = ALL_SEALS[sealKey];
   if (!seal) return '';
@@ -5032,21 +5142,15 @@ function startAccusation() {
 function renderAccusationOptions() {
   const opts = document.getElementById('accusationOptions');
   if (!opts) return;
-  const notes = gameState.investigatorNotes || {};
   opts.innerHTML = SEASON_1_GUESTS.map(g => {
     const seal = ALL_SEALS[g.seal];
     const selected = _accusationSelected === g.id;
-    const noteText = (notes[g.id] || '').trim();
-    const noteSnippet = noteText
-      ? `<div class="accusation-option-note">« ${noteText.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, ' ').slice(0, 180)}${noteText.length > 180 ? '…' : ''} »</div>`
-      : '';
     return `
       <button type="button" class="accusation-option${selected ? ' selected' : ''}" onclick="selectAccusation('${g.id}')">
         <div class="accusation-option-seal">${renderSealSVG(g.seal)}</div>
         <div class="accusation-option-info">
           <div class="accusation-option-name">${g.name}</div>
           <div class="accusation-option-archetype">${seal.name}</div>
-          ${noteSnippet}
         </div>
         <div class="accusation-option-radio"></div>
       </button>
@@ -5555,11 +5659,11 @@ function switchChambreTab(tab) {
 }
 
 function updateNotesCount() {
-  // Compte les notes du carnet (pas les indices auto)
-  const notes = gameState.investigatorNotes || {};
-  const count = Object.values(notes).filter(n => n && n.trim().length > 0).length;
+  // V49 : compte les entrees du journal automatique
+  const entries = gameState.journalEntries || [];
+  const count = entries.length;
   const span = document.getElementById('notesCount');
-  span.textContent = count > 0 ? '(' + count + ')' : '';
+  if (span) span.textContent = count > 0 ? '(' + count + ')' : '';
 }
 
 function updateCouloirCTA() {
@@ -5581,89 +5685,82 @@ function renderNotes() {
   const container = document.getElementById('notesContent');
   if (!container) return;
 
-  // Tant que les presentations ne sont pas faites, le carnet est vide :
-  // le joueur n'a encore rencontre personne.
-  const introsDone = gameState.daysData[1] && gameState.daysData[1].introductionsDone;
-  if (!introsDone) {
+  // V49 : Journal automatique des indices ramasses dans les pieces.
+  // Le joueur n'a plus a noter manuellement ses observations sur chaque
+  // invite ; le journal s'ecrit tout seul. Il peut commenter chaque
+  // entree dans un petit champ.
+
+  const entries = gameState.journalEntries || [];
+
+  if (entries.length === 0) {
     container.innerHTML = `
       <div class="notes-empty">
-        Le carnet est vide. Vous n'avez encore vu personne.<br><br>
-        Descendez à table ce soir. Vous écrirez après.
+        Votre journal est vide.<br><br>
+        Chaque trace que vous toucherez dans la villa s'inscrira ici, jour par jour.
       </div>
     `;
     return;
   }
 
-  // Init de la structure si pas encore presente
-  if (!gameState.investigatorNotes) gameState.investigatorNotes = {};
+  // Trier par jour croissant, puis par timestamp pour preserver l'ordre
+  // de decouverte au sein d'une journee.
+  const sorted = [...entries].sort((a, b) => {
+    if (a.day !== b.day) return a.day - b.day;
+    return (a.ts || 0) - (b.ts || 0);
+  });
+
+  // Grouper par jour
+  const byDay = {};
+  sorted.forEach(e => {
+    if (!byDay[e.day]) byDay[e.day] = [];
+    byDay[e.day].push(e);
+  });
 
   const intro = `
     <p class="notebook-intro">
-      Notez ici ce que vous lisez d'eux. Doutes, intuitions, contradictions, ce qui ne colle pas. Ce que vous écrivez ne sera lu par personne d'autre.
+      Tout ce que vous avez touché dans la villa s'inscrit ici. Vous pouvez ajouter une note libre à chaque entrée, si quelque chose vous frappe.
     </p>
   `;
 
-  const cards = SEASON_1_GUESTS.map(g => {
-    const seal = ALL_SEALS[g.seal];
-    const note = (gameState.investigatorNotes[g.id] || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
-    const placeholder = `Ce que vous remarquez chez ${g.name}…`;
-    return `
-      <div class="notebook-card">
-        <div class="notebook-card-header">
-          <div class="notebook-card-seal">${renderSealSVG(g.seal)}</div>
-          <div class="notebook-card-name">
-            <div class="notebook-card-prenom">${g.name}</div>
-            <div class="notebook-card-archetype">${seal.name.toUpperCase()}</div>
+  const userNotes = gameState.journalUserNotes || {};
+  const themes = ['IMAGE', 'DOUTE', 'SILENCE', 'MENSONGE', 'TRAHISON', 'PARDON', 'RÉVÉLATION'];
+
+  const dayBlocks = Object.keys(byDay).map(day => {
+    const dayNum = parseInt(day);
+    const theme = themes[dayNum - 1] || '';
+    const entriesHtml = byDay[day].map(e => {
+      const userNote = (userNotes[e.key] || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      const escapedKey = e.key.replace(/'/g, "\\'");
+      return `
+        <div class="journal-entry">
+          <div class="journal-entry-meta">
+            <span class="journal-entry-room">${e.roomLabel || e.room}</span>
           </div>
+          <div class="journal-entry-title">${e.title}</div>
+          ${e.observation ? `<div class="journal-entry-obs">${e.observation}</div>` : ''}
+          <textarea
+            class="journal-entry-input"
+            placeholder="Une note pour vous-même…"
+            oninput="saveJournalUserNote('${escapedKey}', this.value)"
+          >${userNote}</textarea>
         </div>
-        <textarea
-          class="notebook-card-textarea"
-          data-guest-id="${g.id}"
-          placeholder="${placeholder}"
-          oninput="saveInvestigatorNote(this)"
-        >${note}</textarea>
+      `;
+    }).join('');
+
+    return `
+      <div class="journal-day-block">
+        <div class="journal-day-header">JOUR ${dayNum} · ${theme}</div>
+        ${entriesHtml}
       </div>
     `;
   }).join('');
 
-  // En complement, recap discret des indices auto-collectes.
-  const autoClues = gameState.collectedClues || [];
-  let autoSection = '';
-  if (autoClues.length > 0) {
-    const sorted = [...autoClues].sort((a, b) => {
-      if (a.day !== b.day) return a.day - b.day;
-      if (a.source === 'murmur' && b.source !== 'murmur') return -1;
-      if (a.source !== 'murmur' && b.source === 'murmur') return 1;
-      return 0;
-    });
-    const items = sorted.map(c => {
-      const sourceLabel = c.source === 'murmur' ? 'Murmure' : 'Bibliothèque';
-      return `<li><span class="auto-clue-day">J${c.day} · ${sourceLabel}</span> « ${c.wording.charAt(0).toUpperCase() + c.wording.slice(1)} »</li>`;
-    }).join('');
-    autoSection = `
-      <div class="notebook-auto-clues">
-        <div class="notebook-auto-clues-label">CE QUE VOUS AVEZ RAMASSÉ EN PASSANT</div>
-        <ul>${items}</ul>
-      </div>
-    `;
-  }
-
-  container.innerHTML = intro + cards + autoSection;
+  container.innerHTML = intro + dayBlocks;
 }
 
-function saveInvestigatorNote(textarea) {
-  const guestId = textarea.getAttribute('data-guest-id');
-  if (!guestId) return;
-  if (!gameState.investigatorNotes) gameState.investigatorNotes = {};
-  gameState.investigatorNotes[guestId] = textarea.value;
-  // On ne sauvegarde pas a chaque keystroke pour ne pas spam le storage.
-  // On utilise un debounce simple via setTimeout.
-  if (saveInvestigatorNote._debounce) clearTimeout(saveInvestigatorNote._debounce);
-  saveInvestigatorNote._debounce = setTimeout(() => {
-    saveState();
-    updateNotesCount();
-  }, 350);
-}
+// La fonction saveInvestigatorNote n'est plus appelee mais on la garde
+// pour ne pas casser d'eventuelles references. Operation no-op.
+function saveInvestigatorNote(textarea) { /* noop V49 */ }
 
 function renderFiches() {
   const container = document.getElementById('ficheCards');
@@ -5765,6 +5862,13 @@ function openCouloirObject(idx) {
   if (!content || !content.couloir || !content.couloir.objects) return;
   const obj = content.couloir.objects[idx];
   if (!obj) return;
+
+  // V49 : enregistrer dans le journal
+  recordJournalEntry({
+    day, room: 'couloir', roomLabel: 'Couloir',
+    id: obj.id, label: obj.label, title: obj.title,
+    body: obj.body, observation: obj.observation
+  });
 
   document.getElementById('libraryClueLabel').textContent =
     `JOUR ${day} · ${content.theme} · LE COULOIR`;
@@ -5921,6 +6025,13 @@ function openLibraryObject(idx) {
   const obj = content.library.objects[idx];
   if (!obj) return;
 
+  // V49 : enregistrer dans le journal
+  recordJournalEntry({
+    day, room: 'library', roomLabel: 'Bibliothèque',
+    id: obj.id, label: obj.label, title: obj.title,
+    body: obj.body, observation: obj.observation
+  });
+
   document.getElementById('libraryClueLabel').textContent =
     `JOUR ${day} · ${content.theme}`;
   document.getElementById('libraryClueTitle').textContent = obj.title || obj.label || '';
@@ -5935,6 +6046,13 @@ function openLibraryDaily() {
   const content = getDayContent(day);
   if (!content || !content.library) return;
   const lib = content.library;
+
+  // V49 : enregistrer dans le journal
+  recordJournalEntry({
+    day, room: 'library', roomLabel: 'Bibliothèque',
+    id: lib.id || 'daily', label: lib.title, title: lib.title,
+    body: lib.body, observation: lib.observation
+  });
 
   document.getElementById('libraryClueLabel').textContent =
     `JOUR ${day} · ${content.theme}`;
@@ -7076,6 +7194,13 @@ function openPoolObject(idx) {
   const obj = content.pool.objects[idx];
   if (!obj) return;
 
+  // V49 : enregistrer dans le journal
+  recordJournalEntry({
+    day, room: 'pool', roomLabel: 'Piscine',
+    id: obj.id, label: obj.label, title: obj.title,
+    body: obj.body, observation: obj.observation
+  });
+
   document.getElementById('libraryClueLabel').textContent =
     `JOUR ${day} · ${content.theme} · LA PISCINE`;
   document.getElementById('libraryClueTitle').textContent = obj.title || obj.label || '';
@@ -7365,6 +7490,8 @@ function resetCycle() {
       visitedRoomsByDay: {},
       nightCartoucheDismissed: {},
       notesTipShownByDay: {},
+      journalEntries: [],
+      journalUserNotes: {},
       cycleEnded: false,
       tutoStep: 0
     };
