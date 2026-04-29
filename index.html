@@ -599,7 +599,13 @@
     opacity: 0;
     animation: introSealIn 1.2s 0.2s ease forwards;
   }
-  .intro-seal svg { width: 100%; height: 100%; }
+  .intro-seal svg,
+  .intro-seal img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
   @keyframes introSealIn {
     0%   { opacity: 0; transform: scale(0.8); }
     100% { opacity: 1; transform: scale(1); }
@@ -2300,7 +2306,13 @@
     flex-shrink: 0;
     opacity: 0.85;
   }
-  .notebook-card-seal svg { width: 100%; height: 100%; }
+  .notebook-card-seal svg,
+  .notebook-card-seal img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
   .notebook-card-name { flex: 1; }
   .notebook-card-prenom {
     font-family: 'Fraunces', serif;
@@ -2943,10 +2955,6 @@
     <div class="chambre-hero-sublabel">Le cercle de l'introspection</div>
   </div>
 
-  <div class="chambre-intro">
-    <p class="chambre-desc">Voici ce que les autres Invités laissent paraître d'eux. Votre fiche, vous, ne s'écrira qu'à la fin du Cycle.</p>
-  </div>
-
   <!-- Onglets -->
   <div class="chambre-tabs">
     <button type="button" class="chambre-tab active" id="tabFiches" onclick="switchChambreTab('fiches')">LES FICHES</button>
@@ -2954,6 +2962,9 @@
   </div>
 
   <div id="chambreContentFiches">
+    <div class="chambre-intro">
+      <p class="chambre-desc">Voici ce que les autres Invités laissent paraître d'eux. Votre fiche, vous, ne s'écrira qu'à la fin du Cycle.</p>
+    </div>
     <div class="fiche-cards" id="ficheCards"></div>
   </div>
 
@@ -4233,7 +4244,11 @@ function rollFragments() {
 function renderSealSVG(sealKey) {
   const seal = ALL_SEALS[sealKey];
   if (!seal) return '';
-  return `<img src="${seal.img}" alt="${seal.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<svg viewBox=\\'0 0 100 100\\'><circle cx=\\'50\\' cy=\\'50\\' r=\\'30\\' fill=\\'none\\' stroke=\\'%23D4B870\\' stroke-width=\\'1.5\\'/></svg>'">`;
+  // V46 : style inline pour forcer l'img a remplir son parent sans
+  // deborder. object-fit: contain garde le ratio. Sans ces styles,
+  // l'image prenait sa taille naturelle (souvent enorme) car aucun
+  // conteneur n'avait de regle CSS img specifique.
+  return `<img src="${seal.img}" alt="${seal.name}" style="width:100%;height:100%;object-fit:contain;display:block;" onerror="this.style.display='none'; this.parentElement.innerHTML='<svg viewBox=\\'0 0 100 100\\' style=\\'width:100%;height:100%\\'><circle cx=\\'50\\' cy=\\'50\\' r=\\'30\\' fill=\\'none\\' stroke=\\'%23D4B870\\' stroke-width=\\'1.5\\'/></svg>'">`;
 }
 
 // === MODE JOUR / NUIT ===
