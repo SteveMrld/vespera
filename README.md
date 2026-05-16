@@ -1,41 +1,35 @@
-# Vespera - Prototype HTML
+# VESPERA — DOSSIER DE PASSATION
 
-Vous êtes attendu.
+## À qui ce dossier est destiné
 
-## Contenu
+À l'instance de Claude Code (ou tout autre agent de code autonome) qui va reprendre le projet Vespera, le refactoriser proprement, et l'amener à un niveau de qualité production.
 
-- `index.html` — le prototype complet (3 scènes)
-- `vespera-arrival.mp4` — la vidéo de la villa au crépuscule
-- `vercel.json` — config de cache pour la vidéo
+## Ordre de lecture
 
-## Déploiement Vercel
+1. **PITCH_PRODUIT.md** — comprendre ce qu'on construit et pourquoi
+2. **REGLES_DE_STYLE.md** — les contraintes non-négociables (visuelles, textuelles, typographiques)
+3. **PILOTE_NARRATIF_S1.md** — l'histoire complète du premier Cycle. C'est le contenu narratif validé, à ne pas réécrire
+4. **MECANIQUES_DE_JEU.md** — les règles du jeu, le déroulé d'un Cycle, les épreuves, le journal, les profilages
+5. **ARCHITECTURE_CIBLE.md** — la stack technique recommandée pour le refactor
+6. **ETAT_ACTUEL_ET_BUGS.md** — bilan du code existant : ce qui marche, ce qui coince, ce qu'il faut jeter
+7. **BRIEF_POUR_CLAUDE_CODE.md** — le prompt initial à utiliser pour démarrer la mission
 
-```bash
-# 1. Init git
-git init
-git add .
-git commit -m "Vespera prototype"
+## Code existant
 
-# 2. Pousser sur GitHub
-git remote add origin https://github.com/[ton-user]/vespera.git
-git push -u origin main
+Le repo GitHub actuel est : `github.com/SteveMrld/vespera`
+Déployé sur : `vespera-peach.vercel.app`
 
-# 3. Sur vercel.com → New Project → Import → Deploy
-```
+Le code est un **mono-fichier HTML de 8000+ lignes** (HTML + CSS + JS inline). C'est un proof-of-concept fonctionnel mais impossible à maintenir sérieusement. Il sert de **référence narrative et fonctionnelle** mais pas de base de code.
 
-Vercel détecte automatiquement que c'est un site statique. Pas de framework à configurer.
+**Recommandation forte** : faire un fork ou une branche `legacy-v51` de l'état actuel pour le geler, puis démarrer un projet propre à zéro à côté.
 
-## Test local
+## Actif le plus précieux
 
-```bash
-# Avec Python
-python3 -m http.server 8000
+Le **pilote narratif S1** (PILOTE_NARRATIF_S1.md) est le résultat de plusieurs jours d'itération avec le porteur du projet. C'est l'élément à préserver intégralement. Le code se réécrit ; ce contenu, non.
 
-# Ou avec npx
-npx serve .
-```
+## Posture attendue de Claude Code
 
-Puis ouvre `http://localhost:8000`.
-
-> ⚠️ Pour voir le mode "Heure" (Question du soir), il faut être entre 20h et 8h.
-> Sinon utilise le bouton **JOUR / NUIT** en haut à droite pour basculer manuellement.
+- **Auditer avant de refactorer.** Ne pas tout réécrire en aveugle. Lire d'abord, comprendre, puis proposer un plan.
+- **Garder le contenu narratif intact.** Pas de réécriture des dialogues, des Murmures, des Questions, des présentations des invités. Ces textes ont été validés et sont la signature du jeu.
+- **Pousser la qualité visuelle.** Le proof-of-concept actuel est moche. La cible est *Saltburn / White Lotus / Glass Onion* — premium, contemplatif, méditerranéen.
+- **Préparer le multijoueur.** Phase 1 = solo (PNJ simulés). Phase 2 = vraies sessions partagées avec amis (asynchrone-journée + synchrone-soirée 20h-23h). L'architecture doit être prête pour la Phase 2 même si elle n'est pas implémentée tout de suite.

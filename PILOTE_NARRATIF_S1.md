@@ -1,398 +1,298 @@
-# PILOTE NARRATIF — SAISON 1 DE VESPERA
+# VESPERA — PILOTE NARRATIF SAISON 1
 
-Document de référence validé. Ne pas modifier sans validation explicite.
+Ce document contient l'intégralité du contenu narratif validé pour la Saison 1. Il ne se réécrit pas. Il s'intègre tel quel dans le jeu.
 
-## LE PORTEUR
+## STRUCTURE GÉNÉRALE D'UN CYCLE
 
-**Marc** (47 ans, architecte d'intérieur, Genève — Sceau du Cerf).
+Un Cycle = 7 jours.
 
-**Sa Clé.** Il y a 14 ans, il était fiancé à Sara. Elle est tombée gravement malade, longue, dégradante. Il n'a pas tenu. Il l'a quittée six mois avant qu'elle meure. Il a inventé une autre histoire à tout le monde — qu'ils s'étaient éloignés, qu'elle avait voulu être seule, qu'il avait respecté son choix. Personne ne sait. Sa femme actuelle ne sait pas. Ses amis ne savent pas.
+| Jour | Thème | Type de soirée |
+|------|-------|----------------|
+| J1 | IMAGE | Découverte : présentations + épreuve |
+| J2 | DOUTE | Court : une seule pièce + épreuve |
+| J3 | SILENCE | Long : toutes les pièces + Question |
+| J4 | MENSONGE | Court : une seule pièce + épreuve |
+| J5 | TRAHISON | Long : toutes les pièces + Question |
+| J6 | PARDON | Court : une seule pièce + épreuve |
+| J7 | RÉVÉLATION | Accusation finale |
 
-Il s'est construit la posture du "stable, droit, fiable" pour ne plus jamais avoir à fuir. Tout son personnage repose sur cette absence. Ses réponses aux Questions vibrent à côté du sujet, comme quelqu'un qui contourne.
+Voir MECANIQUES_DE_JEU.md pour le détail de chaque type de jour.
 
-## LES OBJETS PIVOT
+## LES CINQ INVITÉS
 
-- **Le polaroid** (Sara et Marc, été 2010) — Piscine
-- **La bague d'or pâle** gravée *à toujours* — Couloir
-- **La lettre signée M.** non envoyée à Sara — Bibliothèque
-- **Le livre sur l'art de paraître intact** + recueil allemand — Bibliothèque
-- **La fenêtre du couloir nord** — où Marc revient chaque nuit
+### Marc — Le Cerf (Porteur de la Clé)
 
-## ARC DES 7 JOURS
+- 47 ans
+- Architecte
+- Vit à Genève
+- Posture : calme, structuré, voix grave et lente, regards longs
+- Apparence : grand, mince, cheveux gris-cendre courts, costume sombre sans cravate
 
-| Jour | Thème | Méthode |
-|------|-------|---------|
-| J1 | L'IMAGE | Regarder |
-| J2 | LE DOUTE | Douter de la première intuition |
-| J3 | LE SILENCE | Distinguer silence de réserve / silence de fuite |
-| J4 | LE MENSONGE | Repérer les mensonges qu'on se fait à soi |
-| J5 | LA TRAHISON | Voir qui protège qui |
-| J6 | LE PARDON | Relire. Admettre. |
-| J7 | LA RÉVÉLATION | Nommer |
+**Sa Clé** : Il y a 14 ans, il s'est marié... non. Il devait se marier. Il a quitté sa fiancée Sara six mois avant la cérémonie. Sara avait découvert qu'elle était malade. Une longue maladie. Marc n'a pas su rester. Il est parti. Elle est morte sans lui six mois plus tard. Personne ne le sait, sauf Marc.
 
----
+**Sa voix dans les Questions** : courte, précise, évite les sujets personnels, sait masquer derrière le métier. Mais à partir du J4 (Mensonge) il commence à craquer sans s'en rendre compte. Voir réponses jour par jour ci-dessous.
 
-## J1 — L'IMAGE
+### Théo — Le Loup
 
-### Murmure du matin
-> Vous vous êtes endormi entouré.
->
-> Cinq personnes que vous n'aviez jamais rencontrées dorment maintenant à quelques pas. Elles sont venues comme vous. Sans savoir tout à fait pourquoi.
->
-> L'un d'eux porte la Clé. Une vérité qu'il a glissée dans sa valise, qu'il pose chaque soir sur la table de chevet, qu'il ne dit pas. Vous ne savez pas qui. Pas encore.
->
-> Aujourd'hui, je vous demande de regarder. Pas d'écouter, pas d'interroger. De regarder. Ce qu'on donne à voir d'abord, c'est déjà un demi-mensonge.
->
-> La villa a recueilli des choses cette nuit. Lisez-les.
->
+- 38 ans
+- Journaliste politique
+- Vit à Paris
+- Posture : attentif, regarde les autres, parle quand il a quelque chose à dire, sarcastique
+- Apparence : barbe courte, chemise blanche ouverte, jeans noir
+
+### Camille — La Chouette
+
+- 44 ans
+- Thérapeute (psychologie clinique)
+- Vit à Lyon
+- Posture : silencieuse, regarde les détails, voix posée, formule peu mais précis
+- Apparence : cheveux mi-longs châtains, blouse en lin couleur sable, lunettes fines
+
+### Inès — Le Lynx
+
+- 41 ans
+- Curatrice d'un musée d'art contemporain
+- Vit à Bruxelles
+- Posture : élégance, ironie, distance, peut être cassante
+- Apparence : robe sombre, bijoux fins, maquillage soigné, cheveux courts noirs
+
+### Karim — Le Corbeau
+
+- 49 ans
+- Neurochirurgien
+- Vit à Marseille
+- Posture : observateur scientifique, plus chaleureux qu'il en a l'air, peut être brusque
+- Apparence : barbe naissante, chemise grise, manches roulées
+
+## LES SEPT JOURS
+
+### J1 — IMAGE
+
+**Murmure du matin** : pas de murmure le J1 (le joueur arrive juste, fait son onboarding et son rituel).
+
+**Pièces visitées** :
+
+**Bibliothèque** (3 objets possibles) :
+
+1. *Le livre* — "L'art de paraître intact"
+   - Body : "Posé en évidence sur le bureau, comme si quelqu'un voulait qu'on le voie. La couverture est neuve, mais quelques pages ont été cornées."
+   - V observe : "Quelqu'un a souligné le mot 'paraître' au crayon."
+
+2. *Le marque-page* — Une photo d'identité fanée
+   - Body : "Une photo d'identité fanée, glissée entre les pages du livre. Coupée aux ciseaux : on n'en voit qu'un sourcil, une mèche de cheveux. Le reste a été retiré au ciseau, en un seul trait."
+   - V observe : "Une photo qu'on garde mais qu'on ne veut pas voir en entier."
+
+3. *Le crayon* — Posé en travers du livre
+   - Body : "Posé en travers du livre. Gras, court, taillé au couteau et non au taille-crayon. Pas un objet de la villa."
+   - V observe : "Quelqu'un qui taille ses crayons lui-même. Un geste qui se perd."
+
+**Piscine** (3 objets) :
+
+1. *Le verre* — Whisky, presque vide
+   - Body : "Un verre vide posé sur le rebord en pierre. Whisky, à l'odeur. Il reste un quart de glaçon qui n'a pas encore fini de fondre. L'empreinte d'une bouche sur le bord, mais pas de rouge à lèvres."
+   - V observe : "Quelqu'un est venu seul, tard, et n'a pas mis longtemps à finir son verre."
+
+2. *Le transat déplacé*
+   - Body : "Le transat du fond a été tiré vers la piscine. Pas pour s'y allonger. Pour s'y asseoir, face à l'eau. Le coussin garde une marque. Quelqu'un est resté assis là un long moment."
+   - V observe : "Pas pour nager. Pour regarder."
+
+3. *La cigarette* — À demi consumée
+   - Body : "Posée sur le rebord, à demi consumée. Marque rouge légère sur le filtre. Pas une cigarette qu'on fume jusqu'au bout. Une cigarette qu'on allume et qu'on oublie."
+   - V observe : "Quelqu'un qui ne fume plus, mais qui en avait besoin ce soir."
+
+**Couloir** (3 objets) :
+
+1. *La fenêtre* — Marque de main
+   - Body : "La fenêtre nord, au bout du couloir. Elle donne sur le jardin et la piscine éclairée. Quelqu'un est venu s'y tenir cette nuit, longuement. Sur le rebord intérieur, une marque tiède dans la condensation. La forme d'une main posée à plat. Doigts longs."
+   - V observe : "Quelqu'un qui regarde dehors comme on cherche quelque chose qu'on a perdu là-bas."
+
+2. *Le tapis* — Traces de pas
+   - Body : "Le runner du couloir garde la trace des pas de cette nuit. Lents, mesurés. Quelqu'un qui ne voulait pas réveiller. Les pas vont de la chambre du fond jusqu'à la fenêtre, puis font le chemin inverse. Pas de détour."
+   - V observe : "Pas pour aller quelque part. Pour venir ici, et puis repartir."
+
+3. *La porte du fond*
+   - Body : "Au bout du couloir, à droite, une porte mal refermée. La pièce derrière est éclairée d'une lumière chaude. V l'a laissée allumée. Personne dedans à cette heure. Mais sur le fauteuil, un livre fermé, une couverture en désordre, comme si quelqu'un venait à peine de partir."
+   - V observe : "Quelqu'un dort mal cette nuit, et n'a pas voulu rester dans sa chambre."
+
+**Chambre J1** :
+Une enveloppe sur l'oreiller. À l'intérieur, le mot de V. :
+
+> Bienvenue dans le Cycle.
+> Sept soirées. Cinq inconnus. Une vérité.
+> Vous repartirez avec quelque chose. Pas forcément ce que vous attendiez.
 > V.
 
-### Bibliothèque
-Un livre laissé ouvert sur la console. Le marque-page est une photo d'identité fanée, coupée aux ciseaux — on n'en voit qu'un sourcil, une mèche.
+**Présentations à table (cinématique)** :
+Chacun se présente brièvement avec son prénom et son Sceau.
 
-Le chapitre s'appelle *Sur l'art de paraître intact*. Une phrase est soulignée :
+1. Camille : "Camille. La Chouette. Je viens de Lyon. Je vois des gens toute la journée. Ce soir, j'ai envie d'être vue, pas de regarder."
+2. Théo : "Théo. Le Loup. Je suis journaliste. Je pose des questions pour gagner ma vie. Ce soir, je vais essayer de me taire."
+3. Inès : "Inès. Le Lynx. Je travaille avec ce que les autres trouvent beau. Ça finit par déformer la vue."
+4. Karim : "Karim. Le Corbeau. Je suis chirurgien. Quand vous m'aurez vu opérer, vous saurez que je ne crois pas à grand-chose. Mais je suis venu quand même."
+5. Marc : "Marc. Le Cerf. Architecte. Je construis pour les autres depuis vingt-cinq ans. Je suis venu voir si quelqu'un pouvait construire pour moi pour une fois."
 
-« Ce que nous donnons à voir n'est jamais l'image que nous avons de nous. C'est l'image que nous voulons qu'on doute. »
+(Marc dit "construire pour moi" sans s'en rendre compte. C'est le premier indice : Marc cherche quelqu'un qui le sortirait de son silence. Ce n'est pas anodin pour le Porteur.)
 
-V observe : le crayon est gras, court, taillé au couteau.
+**Épreuve J1** : LA BOÎTE (voir MECANIQUES_DE_JEU.md).
 
-### Chambre
-V dépose une fiche sur le secrétaire. Première de la semaine.
+**Question J1** : "Qu'est-ce que vous êtes venu chercher ici ?"
 
-**Marc — 47 ans, architecte d'intérieur. Vit à Genève.**
-
-Premier soir à Vespera. A peu parlé. A demandé l'heure trois fois pendant le dîner.
-
-V observe : il regarde sa montre comme on regarde une porte de sortie.
-
-### Piscine
-Personne au bord à cette heure. Mais sur le rebord en pierre, un verre de whisky vide et une cigarette écrasée dans la soucoupe.
-
-Quelqu'un est venu cette nuit, tard, seul.
-
-V observe : la cigarette est blonde, fine. Une marque européenne qu'on ne trouve pas ici.
-
-### Couloir
-Vers 3h17, des pas dans le couloir nord. Lents, mesurés. Quelqu'un qui traverse, s'arrête longuement, repart.
-
-V observe : les pas n'ont pas mené à une chambre. Juste à une fenêtre, semble-t-il. Et au retour.
+Réponses :
+- **Marc** : "À me déposer. Je porte des choses depuis trop longtemps. Je voulais voir si la villa pouvait en tenir une partie pour moi."
+- **Théo** : "Du silence. Mon travail est plein de bruit. Je voulais essayer le vide pendant une semaine."
+- **Camille** : "Une faille en moi. J'écoute celles des autres depuis trop longtemps. Je commence à perdre la mienne."
+- **Inès** : "Un test. Sur moi-même. Voir si je peux rester avec des inconnus sans construire une scène autour."
+- **Karim** : "Une distance d'avec l'hôpital. Quand on opère le cerveau, on finit par croire qu'on l'a compris. Je voulais me retrouver bête une semaine."
 
 ---
 
-## J2 — LE DOUTE
+### J2 — DOUTE
 
-### Murmure
-> Hier vous avez regardé.
->
-> Vous avez peut-être déjà une intuition. Une silhouette qui revient quand vous fermez les yeux. Ne lui faites pas confiance trop vite. Le Cercle est neuf, et la première intuition est souvent celle qu'on fabrique pour se rassurer.
->
-> Aujourd'hui, je vous demande de douter. De ce qu'ils ont dit hier soir, à table, dans leurs réponses sans nom. Et de ce que vous, vous avez dit. Une phrase qu'on prononce trop vite est rarement la sienne.
->
-> Je laisse d'autres choses dans la villa. Cherchez-les là où vous n'êtes pas allé hier.
->
+**Murmure du matin** :
+> Le doute est ce qui reste quand l'image se fissure.
+> Ce que vous avez vu hier, vous le regarderez deux fois aujourd'hui.
+
+**Une seule pièce s'ouvre ce soir** : la **Bibliothèque** (V choisit la pièce, c'est elle qui guide).
+
+**Indice unique** : un mouchoir oublié sur le fauteuil
+- Body : "Un mouchoir blanc, en lin. Soigneusement plié, posé sur l'accoudoir comme si on l'avait laissé là exprès. Une initiale brodée : 'S'."
+- V observe : "Un mouchoir qu'on garde même quand on n'en a plus l'usage."
+
+**Épreuve J2** : LE MENSONGE — quatre témoignages écrits, un seul ment. (À détailler dans MECANIQUES.)
+
+---
+
+### J3 — SILENCE
+
+**Murmure du matin** :
+> Tout le monde se tait parfois. Ce qui change, c'est ce que vous écoutez pendant ce temps-là.
+> Aujourd'hui, vous avez toutes les pièces ouvertes. Prenez le temps.
+
+**Pièces visitées** : libres, toutes accessibles.
+
+**Bibliothèque** : un nouveau livre est apparu. *"Lettres à celle qui ne lira pas"*, recueil épistolaire. Une page est cornée à la lettre VII.
+- V observe : "Quelqu'un lit ce que personne d'autre ne lit."
+
+**Piscine** : les transats sont tous alignés sauf un, légèrement décalé.
+- V observe : "On regarde l'eau seul ici, mais on ne se cache pas."
+
+**Couloir** : sur la fenêtre, plus de marque de main. Mais la condensation a été essuyée d'un trait.
+- V observe : "On efface ce qu'on a laissé."
+
+**Chambre** : sur le bureau, une enveloppe. À l'intérieur, V écrit :
+> Le troisième soir, certains se taisent parce qu'ils n'ont rien à dire. D'autres se taisent parce qu'ils ont trop à dire.
+> Vous, lequel êtes-vous ?
+
+**Question J3** : "À quoi vous taisez-vous le plus souvent ?"
+
+Réponses :
+- **Marc** : "À une chose que j'ai faite il y a longtemps. Je n'en parle pas parce que je n'ai pas trouvé comment."
+- **Théo** : "À ce que je pense vraiment des gens que j'aime. Mon travail m'a appris à formuler. À la maison, je n'y arrive plus."
+- **Camille** : "À ma propre fatigue. Quand on écoute des fatigues toute la journée, dire la sienne paraît indécent."
+- **Inès** : "À l'ennui. Je devrais me passionner pour ce que je montre. La plupart du temps, je trouve ça vide. Je ne le dis pas."
+- **Karim** : "À la peur. Quand on ouvre un crâne, on n'a pas le droit d'avoir peur. À la longue on oublie de dire qu'on a peur ailleurs aussi."
+
+---
+
+### J4 — MENSONGE
+
+**Murmure du matin** :
+> Le mensonge n'est pas le contraire de la vérité. C'est ce qu'on dit quand la vérité serait insupportable.
+> Quelqu'un mentira ce soir. Peut-être vous.
+
+**Une seule pièce s'ouvre** : la **Piscine** (au cœur de la nuit).
+
+**Indice unique** : une serviette de bain enroulée et trempée
+- Body : "Une serviette grise, enroulée autour de quelque chose. À l'intérieur : une photo encadrée, vitre cassée. La photo est trop mouillée pour qu'on voie clairement, mais on devine un visage de femme, des années 90. Sur le cadre, une initiale gravée : 'S'."
+- V observe : "Quelqu'un est venu noyer ce qu'il ne voulait plus garder. Mais l'a remonté quand même."
+
+(C'est un gros indice. Marc commence à craquer. Sara, l'initiale "S", la photo qu'il a coupée au J1 et qu'il essaie maintenant de détruire mais sans y arriver.)
+
+**Épreuve J4** : LE DÉTAIL — observation, photo qui change.
+
+---
+
+### J5 — TRAHISON
+
+**Murmure du matin** :
+> Trahir, c'est aussi se trahir soi-même.
+> Le cinquième soir, certains ont déjà commencé à le faire sans s'en apercevoir.
+
+**Pièces visitées** : libres, toutes accessibles.
+
+**Bibliothèque** : le livre des "Lettres à celle qui ne lira pas" est ouvert sur le bureau. Une phrase est soulignée : *"Je suis parti parce que je n'ai pas su rester."*
+
+**Piscine** : la photo trempée du J4 a été ramassée. Plus de trace.
+
+**Couloir** : la porte du fond est complètement ouverte. La lumière à l'intérieur est éteinte.
+
+**Chambre** : V :
+> Quelqu'un est revenu sur ses pas cette nuit.
+> Pour reprendre. Ou pour tenter de cacher.
+
+**Question J5** : "Qui avez-vous trahi, et qui vous a trahi ?"
+
+Réponses :
+- **Marc** : "J'ai trahi quelqu'un qui m'aimait, il y a longtemps. Je suis parti au moment où il fallait que je reste. Personne ne m'a trahi en retour. Je ne l'aurais pas mérité."
+- **Théo** : "J'ai trahi une source qui me faisait confiance. Une seule fois. Elle s'en est sortie, je m'en suis sorti. Mais je ne me regarde pas pareil depuis."
+- **Camille** : "Je n'ai pas trahi de personne en particulier. J'ai trahi des principes. C'est plus solitaire comme trahison, parce que personne ne vient vous demander des comptes."
+- **Inès** : "Plein de gens, plein de fois, sans vraiment m'en apercevoir. La trahison fait partie de mon métier, j'ai fini par croire que ça en faisait partie de moi."
+- **Karim** : "J'ai trahi un patient. Pas par négligence. Par lassitude. Je l'ai opéré comme un autre alors que c'était quelqu'un que je connaissais. Il est mort. Je n'ai pas dit que je le connaissais à la famille."
+
+(Marc est explicite ici. Le joueur attentif devrait commencer à faire le lien.)
+
+---
+
+### J6 — PARDON
+
+**Murmure du matin** :
+> Le pardon n'est pas pour celui qui a fauté. C'est pour celui qui pardonne.
+> Demain est le dernier jour. Aujourd'hui, vous pouvez encore choisir ce que vous emportez.
+
+**Une seule pièce s'ouvre** : la **Chambre** (pas celle du joueur, celle du fond du couloir).
+
+**Indice unique** : une lettre ouverte sur le bureau
+- Body : "Une lettre écrite à la main. L'écriture est petite, serrée, ralentie par l'âge ou l'émotion. Elle est adressée à 'S.' Elle n'est pas signée. Elle commence par : 'Je n'ai pas su rester. Je n'avais pas le courage de te voir t'éteindre. Je voudrais que tu saches que c'est ça, et pas autre chose, qui m'a fait partir.'"
+- V observe : "Quelqu'un écrit ce soir à quelqu'un qui ne pourra pas lire. C'est la forme la plus pure du pardon : se le donner à soi."
+
+(C'est la confession de Marc. Le J6 est le moment où le joueur attentif identifie clairement le Porteur.)
+
+**Épreuve J6** : LE VISAGE — empathie, lecture des visages.
+
+---
+
+### J7 — RÉVÉLATION
+
+**Murmure du matin** :
+> Le septième soir est différent.
+> Vous savez ce que vous avez vu. Vous savez ce que vous avez ressenti.
+> Maintenant, il faut nommer.
+
+**Pièces** : toutes ouvertes, parcours libre. Le joueur peut revisiter ce qu'il veut.
+
+**Pas de Question. Pas d'épreuve. Une seule action** : à table, au centre, **L'ACCUSATION**.
+
+Le joueur tape "NOMMER LE PORTEUR". Cinq options apparaissent (les cinq invités avec leur Sceau). Il choisit. Il confirme.
+
+**Verdict si juste (Marc)** :
+> VOUS L'AVEZ NOMMÉ
+> Vous avez vu juste. C'était Marc. Le Cerf.
+> Sa Clé : Il y a quatorze ans, il a quitté Sara, sa fiancée, six mois avant qu'elle ne meure d'une longue maladie. Il porte ce silence depuis. Personne ne le savait.
+> Ce qu'il a porté seul pendant quatorze ans cesse de peser seul, ce soir.
 > V.
 
-### Bibliothèque
-Une autre étagère. Un recueil de poésie en allemand, posé à l'envers — quelqu'un l'a remis sans regarder. Une phrase notée au stylo dans la marge, en français :
-
-« On peut quitter une personne et la garder en soi pour le restant de ses jours. C'est même la seule manière dont je sais aimer. »
-
-L'écriture est ronde, appuyée. Pas d'initiales.
-
-V observe : le livre n'a pas été emprunté à la bibliothèque de la villa. Il est arrivé avec quelqu'un.
-
-### Chambre
-**Théo — 39 ans, journaliste indépendant. Vit à Bruxelles.**
-
-A beaucoup parlé hier soir. A posé deux questions à Marc, qui n'ont pas eu de réponse claire.
-
-V observe : il pose des questions comme un homme qui en a déjà la réponse.
-
-### Piscine
-Aucun verre cette nuit. Mais une serviette pliée sur le transat du fond. Encore humide ce matin.
-
-Quelqu'un a nagé tard. Seul.
-
-V observe : la serviette est pliée trop bien. Comme on plie quand on essaie de ne pas faire de bruit.
-
-### Couloir
-Pas de pas cette nuit. Mais un détail dans le tapis, près de la fenêtre du couloir nord — celle où les pas de la veille s'étaient arrêtés.
-
-Une marque ronde, légère. Comme un verre posé directement sur le sol. Encore tiède quand V l'a trouvé.
-
-V observe : quelqu'un est resté là, un long moment, avec un verre. À regarder dehors.
-
----
-
-## J3 — LE SILENCE
-
-### Murmure
-> Vous commencez à entendre.
->
-> Pas leurs mots, leurs pauses. Ce qu'ils n'ont pas dit hier soir, ce qu'ils ont contourné. C'est là que le Cercle se révèle.
->
-> Il y a deux silences à table. Celui de quelqu'un qui n'a rien à dire. Et celui de quelqu'un qui a quelque chose à taire. Apprenez à les distinguer.
->
-> Aujourd'hui, je vous demande d'écouter ce que personne n'a dit.
->
+**Verdict si faux** :
+> L'ACCUSATION
+> Vous avez nommé [Prénom]. [Le Sceau].
+> Ce n'était pas lui. [détails de la Clé fictive du faux accusé selon GUEST_KEYS].
+> Le Porteur, c'était **Marc (Le Cerf)**.
+> [Clé de Marc, brièvement].
+> Il repartira avec ce qu'il a apporté. Vous, vous repartirez avec une vérité qui n'était pas la sienne. Un autre Cycle, peut-être, vous redonnera l'occasion de voir.
 > V.
 
-### Bibliothèque
-Le livre sur l'art de paraître intact a disparu. À sa place, un mot plié en quatre, posé sur la console.
-
-L'écriture est ronde, appuyée. La même que dans le recueil allemand.
-
-« Si tu lis ceci, tu sais déjà. Ne le dis pas. Pas encore. »
-
-V observe : le mot n'est adressé à personne. Ou à tout le monde.
-
-### Chambre
-Trois fiches arrivent ce matin. V remplit le Cercle.
-
-**Camille — 52 ans, thérapeute. Vit à Lyon.** A écouté hier soir sans presque parler. A fixé Marc deux fois pendant qu'il répondait. *V observe : elle écoute comme on diagnostique.*
-
-**Inès — 34 ans, conservatrice de musée. Vit à Madrid.** A souri beaucoup. A trinqué deux fois sans qu'on sache pourquoi. *V observe : elle sourit pour ne pas qu'on la regarde longtemps.*
-
-**Karim — 41 ans, neurochirurgien. Vit à Paris.** A peu mangé. A laissé son téléphone sur la table, écran face vers le bois. *V observe : il a une montre qui n'est pas la sienne. Trop grande au poignet.*
-
-### Piscine
-Personne n'a nagé cette nuit. Mais sur la table en teck, près des transats, une photo polaroid posée face contre le bois.
-
-Si on la retourne : un couple. Jeune. Elle porte une robe d'été, lui une chemise blanche ouverte. Le polaroid est daté au stylo, au dos. *Été 2010.*
-
-V observe : la photo est cornée à un angle. Comme une photo qu'on a sortie souvent et rangée vite.
-
-### Couloir
-À 2h41 cette nuit, des pas. Pas seuls cette fois.
-
-Deux personnes. L'une suit l'autre à distance. Elles se sont arrêtées à la fenêtre du couloir nord. Conversation à voix basse, indistincte. Puis chacune est repartie de son côté.
-
-V observe : la première marche comme quelqu'un qui ne veut pas réveiller. La seconde marche comme quelqu'un qui sait où elle va.
-
----
-
-## J4 — LE MENSONGE
-
-### Murmure
-> Le Cercle s'est fissuré cette nuit.
->
-> Quelqu'un a parlé à quelqu'un d'autre. Vous l'avez peut-être entendu, vous l'avez peut-être senti ce matin au petit déjeuner, dans la façon dont deux paires d'yeux s'évitaient.
->
-> Aujourd'hui, je vous demande de regarder un mensonge en face. Pas le leur. Le vôtre. Celui que vous vous racontez pour ne pas voir le leur.
->
-> Le Porteur, lui, ne se ment plus. C'est peut-être pour ça qu'il est si calme.
->
-> V.
-
-### Bibliothèque
-Le mot de J3 a été récupéré. À sa place, un livre est revenu sur la console — pas le même. Un roman, *L'Étrangère*, de Marie Beaumarchais. Ouvert page 134.
-
-Un passage est encadré au crayon. La même mine grasse qu'au J1.
-
-« Il l'avait laissée derrière. Pas par cruauté. Par épuisement. C'est la forme de cruauté qu'on se pardonne le mieux : celle qui ressemble à de la fatigue. »
-
-V observe : la mine de crayon de J1 et celle de J4 sont la même. Ce sont les mêmes mains.
-
-### Chambre
-**Marc** — Hier soir, sa réponse à la Question contenait une hésitation à la quatrième ligne. Comme si le mot lui était venu, puis avait été remplacé.
-**Camille** — A quitté la table avant le dessert, en s'excusant. Personne ne l'a vue avant minuit.
-**Théo** — A relu les réponses anonymes de J1 et J2 ce matin dans la Bibliothèque. Longuement.
-**Inès** — A reçu un appel ce matin, qu'elle a pris dehors. Voix basse, longue.
-**Karim** — Sa montre n'est plus à son poignet aujourd'hui. Une autre l'a remplacée, plus simple.
-
-V observe : trois d'entre eux savent quelque chose. Un seul porte la Clé.
-
-### Piscine
-Le polaroid n'a pas bougé depuis hier. Mais quelqu'un l'a regardé. La cire d'une bougie a coulé sur le coin gauche, tachant le ciel d'été 2010.
-
-Et sur le rebord de la piscine, écrit avec le doigt dans la condensation d'un verre — déjà presque effacé ce matin :
-
-*S.*
-
-V observe : une seule lettre. Une initiale. Peut-être un prénom. Peut-être autre chose.
-
-### Couloir
-Pas de pas la nuit dernière. Mais un objet trouvé dans le tapis du couloir nord, sous la fenêtre.
-
-Une bague d'homme, simple, en or pâle. Pas d'inscription à l'extérieur. À l'intérieur, deux mots gravés très petit : *à toujours.*
-
-V observe : la bague n'est à personne dans le Cercle. Ou alors, elle ne l'est plus depuis longtemps.
-
----
-
-## J5 — LA TRAHISON
-
-### Murmure
-> Hier vous avez vu un mensonge. Aujourd'hui vous allez voir une trahison.
->
-> Pas une grande. Pas une qui fait du bruit. La petite, celle qu'on commet sans la nommer, celle qu'on appelle plus tard "j'ai fait ce que je pouvais". On trahit toujours pour quelqu'un. La question, c'est : pour qui.
->
-> Je vous demande aujourd'hui d'écouter qui protège qui dans le Cercle. Le Porteur a trahi. Il ne s'est pas pardonné. Il a juste appris à porter ça en silence.
->
-> V.
-
-### Bibliothèque
-Le roman *L'Étrangère* a été refermé. Une nouvelle page cornée — page 247. Le crayon n'a rien souligné cette fois. Mais entre les pages, glissée comme un signet : une feuille pliée en deux, plus ancienne que le livre.
-
-Une lettre. Écriture d'homme, encre noire passée. Pas de date.
-
-> *Tu vas mieux aujourd'hui, m'a dit ta sœur. Je n'ai pas su quoi répondre. Je n'ai pas su si je voulais que ce soit vrai.*
->
-> *J'ai pris le train ce matin. Je n'ai pas regardé en arrière. Je sais ce que tu vas penser de moi. Je le pense déjà.*
->
-> *M.*
-
-V observe : la lettre n'a jamais été envoyée. Elle a été pliée, gardée, transportée jusqu'ici.
-
-### Chambre
-**Marc** — Il n'a pas dormi. La lampe de sa chambre est restée allumée jusqu'à 5h. Au petit déjeuner, il a tenu sa tasse à deux mains.
-**Camille** — A demandé à V ce matin si on pouvait quitter Vespera avant le 7e jour. V a répondu non.
-**Théo** — A noté quelque chose dans un carnet en regardant Marc. A refermé le carnet quand Marc a tourné la tête.
-**Inès** — N'a pas reçu d'appel ce matin. A vérifié son téléphone six fois pendant le café.
-**Karim** — Calme. Regarde les autres comme on regarde un échiquier.
-
-V observe : un Porteur ne demande jamais à partir. Un Porteur reste, parce que partir serait l'aveu.
-
-### Piscine
-Le polaroid a été retourné. Face contre le bois, comme la première fois. Quelqu'un n'a pas voulu le voir aujourd'hui.
-
-Sur le transat du fond, une chemise blanche oubliée. Pliée comme on plie quand on ne se souvient pas l'avoir enlevée.
-
-V observe : la chemise est froissée à un seul endroit. À hauteur de poitrine. Comme si quelqu'un avait été serré contre, longtemps.
-
-### Couloir
-À 4h12, quelqu'un est sorti de sa chambre. A marché jusqu'au bout du couloir nord. S'est tenu à la fenêtre, comme les autres nuits.
-
-Cette fois, V a entendu une voix. Une seule phrase, à peine audible, dite à personne :
-
-*"Je n'ai pas su."*
-
-Puis le silence, longtemps. Puis un retour à la chambre.
-
-V observe : ce sont les trois mots qu'on dit le plus tard dans une vie.
-
----
-
-## J6 — LE PARDON
-
-### Murmure
-> Demain est le dernier soir.
->
-> Aujourd'hui, je ne vais pas vous demander grand-chose. Je vais vous laisser relire. Tout ce que vous avez vu, tout ce que vous avez entendu, tout ce que vous avez écrit vous-même sans en être tout à fait sûr.
->
-> Le pardon est un mot qu'on prête trop vite aux autres. Il commence par soi. Le Porteur, demain, ne demandera pas à être pardonné. Il demandera juste à être nommé. C'est tout ce qu'on peut faire pour quelqu'un qui s'est tu trop longtemps : dire son nom à voix haute.
->
-> V.
-
-### Bibliothèque
-Le livre, la lettre, le mot — tout a disparu. La console est vide.
-
-À sa place, posé bien au centre, un seul objet : un cadre photo, vide. Le verre est intact, le dos en velours noir. Aucune image dedans.
-
-V observe : un cadre vide n'est pas un cadre qu'on a oublié de remplir. C'est un cadre dont on a retiré la photo.
-
-### Chambre
-Une seule fiche est ajoutée ce matin. Elle ne porte pas de nom.
-
-> *L'un d'entre vous a relu hier soir, dans le silence de sa chambre, toutes les réponses anonymes du Cycle. Il a passé quarante minutes sur la sienne. Il a essayé de la lire comme un autre la lirait.*
->
-> *Il n'y est pas arrivé.*
->
-> *Il a posé son téléphone face contre la table de chevet. Il a éteint la lampe. Il n'a pas pleuré, pas vraiment. Il a fait quelque chose de plus discret. Il a admis.*
-
-V observe : l'admettre seul, c'est déjà un commencement.
-
-### Piscine
-Le polaroid n'est plus là. Quelqu'un l'a pris.
-
-Mais à l'endroit exact où il était, V a déposé une nouvelle feuille. Une seule ligne, écrite de sa main :
-
-*Elle s'appelait Sara.*
-
-V observe : un prénom qu'on n'a pas dit depuis longtemps fait toujours le même bruit dans la pièce — celui d'une porte qui se rouvre.
-
-### Couloir
-Aucun pas cette nuit. Aucune voix.
-
-Mais sur la fenêtre du couloir nord — celle où quelqu'un est venu chaque nuit du Cycle — un mot écrit avec le doigt sur la buée du matin. Trois mots :
-
-*Je suis désolé.*
-
-Pas de signature. Le mot disparaîtra avec la lumière du jour.
-
-V observe : il n'a pas été écrit pour le Cercle. Il a été écrit pour elle.
-
----
-
-## J7 — LA RÉVÉLATION
-
-### Murmure
-> C'est le dernier matin.
->
-> Ce soir, vous direz un nom. Pas pour punir. Pas pour gagner. Pour reconnaître.
->
-> Le Porteur attend ce moment depuis longtemps, peut-être depuis bien avant Vespera. Il est venu ici pour ça, même s'il ne le savait pas. Quand vous le nommerez, il ne s'effondrera pas. Il respirera.
->
-> Si vous vous trompez, ce ne sera pas grave. Quelqu'un d'autre repartira avec une vérité qui n'est pas la sienne, et il faudra recommencer un Cycle plus tard. Mais si vous trouvez juste, alors ce qu'il a porté pendant quatorze ans cessera de peser seul.
->
-> Lisez une dernière fois. Puis venez à table. À ce soir.
->
-> V.
-
-### Bibliothèque
-Sur la console, un seul objet ce matin.
-
-La lettre signée *M.* du J5. Elle a été rouverte, reposée à plat, lissée à la main.
-
-Au bas de la lettre, sous la signature, une ligne ajoutée d'une autre main — plus ronde, plus appuyée. La même que dans le recueil allemand du J2.
-
-> *Tu lui parles encore. C'est déjà ça. Continue.*
-
-V observe : il n'a pas écrit seul cette nuit.
-
-### Chambre
-> *Vous savez maintenant.*
->
-> *Vous savez peut-être depuis hier, ou avant-hier, ou depuis le premier soir sans vouloir le savoir. Ce que vous direz ce soir n'a pas besoin d'être brillant. Il a besoin d'être juste.*
->
-> *Le Porteur ne se défendra pas. Personne ne se défend de quelque chose qu'il a porté seul si longtemps.*
-
-V observe : un Cycle ne juge pas. Il nomme.
-
-### Piscine
-Le polaroid est revenu. Posé au centre de la table en teck, face vers le ciel cette fois. Quelqu'un l'a remis là pour qu'on le voie.
-
-À côté, la bague d'or pâle du J4. Posée à plat, ouverte sur la gravure.
-
-V observe : il les a déposés là ensemble. Pour la première fois depuis quatorze ans.
-
-### Couloir
-La fenêtre du couloir nord est ouverte ce matin. Légèrement. Comme si quelqu'un avait voulu laisser sortir quelque chose.
-
-Aucun mot écrit dans la buée. Le couloir est calme.
-
-V observe : il n'est pas venu cette nuit. Il a dormi.
-
----
-
-## L'ACCUSATION DU 7e SOIR
-
-Le centre de la table change. Plus de Question. Une seule action : *Nommer le Porteur.*
-
-Le joueur tape un médaillon. Sa fiche s'ouvre une dernière fois, avec en bas un bouton : *Je nomme [nom] comme Porteur de la Clé.*
-
-### Si le joueur trouve juste (Marc)
-> Vous l'avez nommé. Il s'appelait Marc, ce soir comme tous les soirs, mais ce nom ne suffisait plus à le décrire.
->
-> Il y a quatorze ans, il s'appelait celui qui n'a pas tenu. Il a quitté Sara six mois avant qu'elle meure. Il a inventé une autre histoire, pour les autres et pour lui. Il l'a portée seul.
->
-> Vous l'avez nommé. C'est tout ce qu'on peut faire pour quelqu'un qui s'est tu trop longtemps.
->
-> Ce qu'il portait, vous le portez avec lui maintenant. C'est la règle de la Clé. Vous comprendrez en partant pourquoi elle pèse moins à deux.
-
-### Si le joueur se trompe
-> Vous avez nommé [autre]. Ce n'était pas lui.
->
-> Le vrai Porteur repart ce matin avec ce que vous, vous portiez. Il ne sait pas encore quoi. Vous le saurez en revenant pour un autre Cycle.
->
-> Marc reste. Il porte toujours la sienne. Personne ne l'a nommé.
+## NOTES CRITIQUES
+
+- Le pilote a été ajusté plusieurs fois. **Cette version est la version validée.**
+- Marc doit être **systématiquement le Porteur** dans la Saison 1. Il y a une fonction `ensurePorterIsMarc()` dans le code legacy à reprendre.
+- Les voix des invités doivent rester **distinctes** : Marc est lent, Théo est sec, Camille est précise, Inès est cassante, Karim est analytique.
+- Sara n'apparaît jamais comme personnage. Elle existe seulement par traces (initiale "S", photos, lettres).
