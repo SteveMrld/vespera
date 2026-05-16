@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# capture scripts scratch dir
+/scripts/.tmp-record/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
